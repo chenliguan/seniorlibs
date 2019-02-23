@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.seniorlibs.lifecycle.singletask.ActivityA;
+import com.seniorlibs.lifecycle.singletask.ActivityC;
 
 public class MainActivity extends Activity {
 
@@ -30,6 +34,17 @@ public class MainActivity extends Activity {
                 intent.putExtra("time", System.currentTimeMillis());
                 intent.addCategory("com.ryg.category.c");
                 intent.setDataAndType(Uri.parse("file://abc"), "text/plain");
+                startActivity(intent);
+            }
+        });
+
+        Button button = (Button) findViewById(R.id.button2);
+        button.setText("测试singleTask，从下一个ActivityA开始，现在跳转ActivityA");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, ActivityA.class);
                 startActivity(intent);
             }
         });
