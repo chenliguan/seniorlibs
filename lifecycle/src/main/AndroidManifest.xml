@@ -35,6 +35,7 @@
             <intent-filter>
                 <action android:name="com.ryg.charpter_1.c" />
                 <action android:name="com.ryg.charpter_1.d" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="com.ryg.category.c" />
                 <category android:name="com.ryg.category.d" />
@@ -43,7 +44,6 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-
 
 
         <activity android:name=".singletask.ActivityA" />
@@ -58,6 +58,13 @@
         <activity android:name=".singletask.ActivityD"
             android:launchMode="singleTask"
             android:taskAffinity="com.task"/>
+
+
+        <activity android:name=".flag.ActivityFlagA" />
+
+        <activity android:name=".flag.ActivityFlagB" />
+
+        <activity android:name=".flag.ActivityFlagC" />
     </application>
 
 </manifest>
