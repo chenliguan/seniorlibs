@@ -9,7 +9,7 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open activity B" />
+        android:text="open activity C" />
 
     <EditText
         android:id="@+id/editText1"
@@ -26,4 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="测试singleTask，从下一个ActivityA开始，现在跳转ActivityA" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="测试标志位，从下一个ActivityFlagA开始，现在跳转ActivityFlagA" />
 </LinearLayout>

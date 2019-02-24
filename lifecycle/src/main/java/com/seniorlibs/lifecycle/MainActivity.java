@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.seniorlibs.lifecycle.flag.ActivityFlagA;
 import com.seniorlibs.lifecycle.singletask.ActivityA;
 import com.seniorlibs.lifecycle.singletask.ActivityC;
 
@@ -29,8 +30,10 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent("com.ryg.charpter_1.c");
-                //intent.setClass(MainActivity.this, SecondActivity.class);
+                Intent intent = new Intent();
+//                Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setAction("com.ryg.charpter_1.c");
                 intent.putExtra("time", System.currentTimeMillis());
                 intent.addCategory("com.ryg.category.c");
                 intent.setDataAndType(Uri.parse("file://abc"), "text/plain");
@@ -45,6 +48,17 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, ActivityA.class);
+                startActivity(intent);
+            }
+        });
+
+        Button button3 = (Button) findViewById(R.id.button3);
+        button3.setText("测试标志位，从下一个ActivityFlagA开始，现在跳转ActivityFlagA");
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, ActivityFlagA.class);
                 startActivity(intent);
             }
         });
