@@ -1,2 +1,2 @@
-include ':app', ':lifecycle'
+include ':app', ':lifecycle', ':event'
 include ':ipc'
