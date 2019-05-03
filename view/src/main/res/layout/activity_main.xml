@@ -9,7 +9,7 @@
         android:id="@+id/button1"
         style="@style/AppTheme.Button.Green"
         android:onClick="onButtonClick"
-        android:text="View基础" />
+        android:text="View基础-测试测量结果" />
 
     <Button
         android:id="@+id/button2"

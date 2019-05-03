@@ -14,8 +14,8 @@
 
     <com.seniorlibs.view.ui.TextButton
         android:id="@+id/button2"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:background="#000000"
         android:gravity="center"
         android:textColor="@android:color/white"
