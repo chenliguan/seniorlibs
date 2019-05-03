@@ -1,2 +1,2 @@
-include ':app', ':lifecycle', ':event', ':baselib'
+include ':app', ':lifecycle', ':event', ':baselib', ':thirdlib'
 include ':ipc'

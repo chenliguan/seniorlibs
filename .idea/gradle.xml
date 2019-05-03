@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/event" />
             <option value="$PROJECT_DIR$/ipc" />
             <option value="$PROJECT_DIR$/lifecycle" />
+            <option value="$PROJECT_DIR$/thirdlib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
