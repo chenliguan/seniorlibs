@@ -94,9 +94,10 @@ public class RxJavaActivity extends Activity {
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-//                        mSplashAdStatus = SPLASH_AD_STATUS.TIME_OUT;
-//                        emitter.onNext(false);
-
+//                        if (mSplashAdStatus == SPLASH_AD_STATUS.INIT) {
+//                            mSplashAdStatus = SPLASH_AD_STATUS.TIME_OUT;
+//                            emitter.onNext(false);
+//                        }
                         Log.e(TAG, "subscribe + Action");
                     }
                 });
