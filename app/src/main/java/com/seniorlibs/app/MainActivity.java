@@ -1,4 +1,4 @@
-package com.seniorlibs;
+package com.seniorlibs.app;
 
 import android.app.Activity;
 import android.os.Bundle;
