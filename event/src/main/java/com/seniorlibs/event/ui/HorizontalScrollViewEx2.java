@@ -1,4 +1,4 @@
-package com.g.event.ui;
+package com.seniorlibs.event.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,37 +11,34 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 /**
- * 滑动冲突场景1-外部拦截
+ * 滑动冲突场景2-内部拦截
  * 父容器
  */
-public class HorizontalScrollViewEx extends ViewGroup {
-    private static final String TAG = "HorizontalScrollViewEx";
+public class HorizontalScrollViewEx2 extends ViewGroup {
+    private static final String TAG = "HorizontalScrollViewEx2";
 
     private int mChildrenSize;
     private int mChildWidth;
     private int mChildIndex;
-
-    // 分别记录上次滑动的坐标(onTouchEvent)
+    // 分别记录上次滑动的坐标
     private int mLastX = 0;
     private int mLastY = 0;
-    // 分别记录上次滑动的坐标(onInterceptTouchEvent)
-    private int mLastXIntercept = 0;
-    private int mLastYIntercept = 0;
 
     private Scroller mScroller;
     private VelocityTracker mVelocityTracker;
 
-    public HorizontalScrollViewEx(Context context) {
+    public HorizontalScrollViewEx2(Context context) {
         super(context);
         init();
     }
 
-    public HorizontalScrollViewEx(Context context, AttributeSet attrs) {
+    public HorizontalScrollViewEx2(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public HorizontalScrollViewEx(Context context, AttributeSet attrs, int defStyle) {
+    public HorizontalScrollViewEx2(Context context, AttributeSet attrs,
+            int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -53,62 +50,33 @@ public class HorizontalScrollViewEx extends ViewGroup {
 
     /**
      * 核心方法：在onInterceptTouchEvent方法中，
-     * 首先是ACTION_DOWN这个事件，父容器必须返回false，即不拦截ACTION_DOWN事件，这是因为一旦父容器拦截了ACTION_DOWN，那么后续的ACTION_MOVE和ACTION_UP事件都会直接交由父容器处理，这个时候事件没法再传递给子元素了；
-     * 其次是ACTION_MOVE事件，这个事件可以根据需要来决定是否拦截，如果父容器需要拦截就返回true，否则返回false；
-     * 最后是ACTION_UP事件，这里必须要返回false，因为ACTION_UP事件本身没有太多意义考虑一种情况
+     * ACTION_DOWN返回false，其他返回true
      *
      * @param event
      * @return
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        boolean intercepted = false;
         int x = (int) event.getX();
         int y = (int) event.getY();
-
-        switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN: {
-            intercepted = false;
+        int action = event.getAction();
+        if (action == MotionEvent.ACTION_DOWN) {
+            mLastX = x;
+            mLastY = y;
             if (!mScroller.isFinished()) {
-                // 提高滑动体验
                 mScroller.abortAnimation();
-                intercepted = true;
+                return true;
             }
-            break;
+            return false;
+        } else {
+            return true;
         }
-        case MotionEvent.ACTION_MOVE: {
-            int deltaX = x - mLastXIntercept;
-            int deltaY = y - mLastYIntercept;
-            // 在滑动过程中
-            // 当水平方向的距离大就判断水平滑动，为了能够水平滑动所以让父容器拦截事件;
-            // 当竖直方距离大于就不让父容器拦截，于是事件传递给了ListView，所以ListView能上下滑动，这就解决了冲突了
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                intercepted = true;
-            } else {
-                intercepted = false;
-            }
-            break;
-        }
-        case MotionEvent.ACTION_UP: {
-            intercepted = false;
-            break;
-        }
-        default:
-            break;
-        }
-
-        Log.d(TAG, "intercepted=" + intercepted);
-        mLastX = x;
-        mLastY = y;
-        mLastXIntercept = x;
-        mLastYIntercept = y;
-
-        return intercepted;
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG, "onTouchEvent action:" + event.getAction());
         mVelocityTracker.addMovement(event);
         int x = (int) event.getX();
         int y = (int) event.getY();
@@ -122,12 +90,14 @@ public class HorizontalScrollViewEx extends ViewGroup {
         case MotionEvent.ACTION_MOVE: {
             int deltaX = x - mLastX;
             int deltaY = y - mLastY;
+            Log.d(TAG, "move, deltaX:" + deltaX + " deltaY:" + deltaY);
             scrollBy(-deltaX, 0);
             break;
         }
         case MotionEvent.ACTION_UP: {
             int scrollX = getScrollX();
             int scrollToChildIndex = scrollX / mChildWidth;
+            Log.d(TAG, "current index:" + scrollToChildIndex);
             mVelocityTracker.computeCurrentVelocity(1000);
             float xVelocity = mVelocityTracker.getXVelocity();
             if (Math.abs(xVelocity) >= 50) {
@@ -139,6 +109,7 @@ public class HorizontalScrollViewEx extends ViewGroup {
             int dx = mChildIndex * mChildWidth - scrollX;
             smoothScrollBy(dx, 0);
             mVelocityTracker.clear();
+            Log.d(TAG, "index:" + scrollToChildIndex + " dx:" + dx);
             break;
         }
         default:
@@ -182,6 +153,7 @@ public class HorizontalScrollViewEx extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        Log.d(TAG, "width:" + getWidth());
         int childLeft = 0;
         final int childCount = getChildCount();
         mChildrenSize = childCount;

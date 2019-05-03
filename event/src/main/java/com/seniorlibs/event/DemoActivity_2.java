@@ -1,36 +1,37 @@
-package com.g.event;
+package com.seniorlibs.event;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.g.event.ui.HorizontalScrollViewEx;
 import com.g.event.utils.MyUtils;
+import com.seniorlibs.event.ui.HorizontalScrollViewEx2;
+import com.seniorlibs.event.ui.ListViewEx;
 
 import java.util.ArrayList;
 
 /**
- * 滑动冲突场景1-外部拦截
+ * 滑动冲突场景2-内部拦截
  */
-public class DemoActivity_1 extends Activity {
-    private static final String TAG = "DemoActivity_1";
+public class DemoActivity_2 extends Activity {
+    private static final String TAG = "DemoActivity_2";
 
-    private HorizontalScrollViewEx mListContainer;
+    private HorizontalScrollViewEx2 mListContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.demo_1);
+        setContentView(R.layout.demo_2);
         Log.d(TAG, "onCreate");
         initView();
     }
@@ -41,7 +42,7 @@ public class DemoActivity_1 extends Activity {
         final int screenWidth = MyUtils.getScreenMetrics(this).widthPixels;
         final int screenHeight = MyUtils.getScreenMetrics(this).heightPixels;
         for (int i = 0; i < 3; i++) {
-            ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.content_layout, mListContainer, false);
+            ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.content_layout2, mListContainer, false);
             layout.getLayoutParams().width = screenWidth;
             TextView textView = layout.findViewById(R.id.title);
             textView.setText("page " + (i + 1));
@@ -52,19 +53,31 @@ public class DemoActivity_1 extends Activity {
     }
 
     private void createList(ViewGroup layout) {
-        ListView listView = layout.findViewById(R.id.list);
+        ListViewEx listView = layout.findViewById(R.id.list);
         ArrayList<String> datas = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             datas.add("name " + i);
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.content_list_item, R.id.name, datas);
         listView.setAdapter(adapter);
+        listView.setHorizontalScrollViewEx2(mListContainer);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DemoActivity_1.this, "click item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DemoActivity_2.this, "click item", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.d(TAG, "dispatchTouchEvent action:" + ev.getAction());
+        return super.dispatchTouchEvent(ev);
+    }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG, "onTouchEvent action:" + event.getAction());
+        return super.onTouchEvent(event);
     }
 }

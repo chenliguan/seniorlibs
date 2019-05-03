@@ -1,4 +1,4 @@
-package com.g.event;
+package com.seniorlibs.event;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

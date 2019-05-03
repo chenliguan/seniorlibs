@@ -1,4 +1,4 @@
-package com.g.event.ui;
+package com.seniorlibs.event.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

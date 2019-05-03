@@ -1,4 +1,4 @@
-package com.g.event.ui;
+package com.seniorlibs.event.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.g.event.R;
+import com.seniorlibs.event.R;
 
 import java.util.ArrayList;
 

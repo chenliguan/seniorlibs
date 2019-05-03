@@ -1,4 +1,4 @@
-package com.g.event.ui;
+package com.seniorlibs.event.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
