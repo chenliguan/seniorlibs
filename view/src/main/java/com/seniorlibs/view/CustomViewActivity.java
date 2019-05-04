@@ -4,16 +4,16 @@ import android.app.Activity;
 import android.os.Bundle;
 
 /**
- * 测试自定义view-CircleView
+ * 测试自定义view
  */
-public class CircleViewActivity extends Activity {
+public class CustomViewActivity extends Activity {
 
-    private static final String TAG = "CircleViewActivity";
+    private static final String TAG = "CustomViewActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_circle_view);
+        setContentView(R.layout.activity_custom_view);
         initView();
     }
 

@@ -7,4 +7,21 @@
         <attr name="circle_height" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="LineLayout">
+        <!-- string/integer/boolean:基本属性-->
+        <attr name="titleText" format="string" />
+        <!-- color:颜色-->
+        <attr name="backgroundColor" format="color" />
+        <attr name="textColor" format="color" />
+        <!-- dimension:尺寸-->
+        <attr name="textSize" format="dimension" />
+        <!-- reference:引用-->
+        <attr name="endText" format="string" />
+        <attr name="icon" format="reference" />
+        <attr name="srcWidth" format="dimension" />
+        <attr name="srcHeight" format="dimension" />
+        <attr name="srcPadding" format="dimension" />
+        <attr name="border" format="boolean" />
+        <attr name="hasIcon" format="boolean" />
+    </declare-styleable>
 </resources>

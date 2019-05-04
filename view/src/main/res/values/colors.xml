@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="white">#ffffff</color>
+    <color name="gray_f0f0f0">#f0f0f0</color>
+    <color name="default_color">#000000</color>
+
+
+    <color name="orange">#FFA633</color>
     <color name="reveal_color">#1b000000</color>
     <color name="light_green">#0ac39e</color>
-    <color name="gray_d0d0d0">#d0d0d0</color>
-
 </resources>

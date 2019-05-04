@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
             Intent intent = new Intent(this, TestActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.button2) {
-            Intent intent = new Intent(this, CircleViewActivity.class);
+            Intent intent = new Intent(this, CustomViewActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.button3) {
             Intent intent = new Intent(this, ScrollViewExActivity.class);

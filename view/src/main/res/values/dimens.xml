@@ -1,0 +1,8 @@
+<resources>
+    <!-- 五类字体大小 -->
+    <dimen name="mini_text_size">10sp</dimen>
+    <dimen name="micro_text_size">12sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="medium_text_size">16sp</dimen>
+    <dimen name="large_text_size">18sp</dimen>
+</resources>

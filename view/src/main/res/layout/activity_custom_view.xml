@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.seniorlibs.view.ui.CircleView
+        android:id="@+id/circleView1"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_margin="20dp"
+        android:background="@color/orange"
+        android:padding="10dp"
+        app:circle_color="#d0d0d0"
+        app:circle_height="200dp"
+        app:circle_width="200dp" />
+
+    <com.seniorlibs.view.ui.LineLayout
+        android:id="@+id/ll_clear_cache"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:backgroundColor="@color/gray_f0f0f0"
+        app:endText="清理么"
+        app:srcHeight="24dp"
+        app:srcWidth="24dp"
+        app:textColor="@color/default_color"
+        app:titleText="清理缓存" />
+</LinearLayout>
