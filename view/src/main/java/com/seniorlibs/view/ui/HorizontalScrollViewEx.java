@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
+/**
+ * 继承于ViewGroup派生特殊Layout-HorizontalScrollViewEx
+ */
 public class HorizontalScrollViewEx extends ViewGroup {
     private static final String TAG = "HorizontalScrollViewEx";
 
@@ -114,9 +117,12 @@ public class HorizontalScrollViewEx extends ViewGroup {
             mVelocityTracker.computeCurrentVelocity(1000);
             float xVelocity = mVelocityTracker.getXVelocity();
             if (Math.abs(xVelocity) >= 50) {
+                // 从左往右滑动，xVelocity为正值，页面向左滚；从右往左滑动，xVelocity为负值，页面向右滚
                 mChildIndex = xVelocity > 0 ? mChildIndex - 1 : mChildIndex + 1;
             } else {
+                // 滑动慢时，根据滑动是否超过一半，判断是否需要滚动
                 mChildIndex = (scrollX + mChildWidth / 2) / mChildWidth;
+                Log.e(TAG, "scrollX + mChildWidth + mChildWidth / 2 + mChildIndex : " + scrollX  + " " +  mChildWidth + " " + (mChildWidth / 2) + " " +  mChildIndex);
             }
             mChildIndex = Math.max(0, Math.min(mChildIndex, mChildrenSize - 1));
             int dx = mChildIndex * mChildWidth - scrollX;
@@ -174,8 +180,7 @@ public class HorizontalScrollViewEx extends ViewGroup {
             if (childView.getVisibility() != View.GONE) {
                 final int childWidth = childView.getMeasuredWidth();
                 mChildWidth = childWidth;
-                childView.layout(childLeft, 0, childLeft + childWidth,
-                        childView.getMeasuredHeight());
+                childView.layout(childLeft, 0, childLeft + childWidth, childView.getMeasuredHeight());
                 childLeft += childWidth;
             }
         }

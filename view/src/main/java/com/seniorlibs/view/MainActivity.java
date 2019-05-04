@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
             Intent intent = new Intent(this, CircleViewActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.button3) {
-            Intent intent = new Intent(this, DemoActivity_2.class);
+            Intent intent = new Intent(this, ScrollViewExActivity.class);
             startActivity(intent);
         }
     }
