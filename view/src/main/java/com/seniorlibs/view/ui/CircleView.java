@@ -11,35 +11,51 @@ import android.view.View;
 import com.seniorlibs.view.R;
 
 /**
- * 画圆
+ * 继承于View重写onDraw()方法
  */
 public class CircleView extends View {
 
     private int mColor = Color.RED;
     private int mWidth;
     private int mHeight;
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mPaint;
 
     public CircleView(Context context) {
         super(context);
-        init();
+        init(context, null, 0);
     }
 
     public CircleView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init(context, attrs, 0);
     }
 
     public CircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleView);
-        mColor = a.getColor(R.styleable.CircleView_circle_color, Color.RED);
-        mWidth = a.getDimensionPixelSize(R.styleable.CircleView_circle_width, 200);
-        mHeight = a.getDimensionPixelSize(R.styleable.CircleView_circle_height, 200);
-        a.recycle();
-        init();
+        init(context, attrs, defStyleAttr);
     }
 
-    private void init() {
+    /**
+     * 初始化
+     *
+     * @param context
+     * @param attrs
+     * @param defStyleAttr
+     */
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+        if (null != attrs && !isInEditMode()) {
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleView);
+            mColor = a.getColor(R.styleable.CircleView_circle_color, Color.RED);
+            mWidth = a.getDimensionPixelSize(R.styleable.CircleView_circle_width, 200);
+            mHeight = a.getDimensionPixelSize(R.styleable.CircleView_circle_height, 200);
+            a.recycle();
+        }
+
+        initView();
+    }
+
+    private void initView() {
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(mColor);
     }
 
@@ -50,8 +66,7 @@ public class CircleView extends View {
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (widthSpecMode == MeasureSpec.AT_MOST
-                && heightSpecMode == MeasureSpec.AT_MOST) {
+        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
             setMeasuredDimension(mWidth, mHeight);
         } else if (widthSpecMode == MeasureSpec.AT_MOST) {
             setMeasuredDimension(mWidth, heightSpecSize);
