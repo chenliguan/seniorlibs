@@ -8,10 +8,12 @@
     <com.seniorlibs.view.ui.CircleView
         android:id="@+id/circleView1"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:layout_margin="20dp"
         android:background="#000000"
-        android:padding="20dp"
-        app:circle_color="@color/light_green" />
+        android:padding="10dp"
+        app:circle_color="@color/gray_d0d0d0"
+        app:circle_width="200dp"
+        app:circle_height="200dp" />
 
 </LinearLayout>

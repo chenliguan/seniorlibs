@@ -10,9 +10,14 @@ import android.view.View;
 
 import com.seniorlibs.view.R;
 
+/**
+ * 画圆
+ */
 public class CircleView extends View {
 
     private int mColor = Color.RED;
+    private int mWidth;
+    private int mHeight;
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public CircleView(Context context) {
@@ -28,6 +33,8 @@ public class CircleView extends View {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleView);
         mColor = a.getColor(R.styleable.CircleView_circle_color, Color.RED);
+        mWidth = a.getDimensionPixelSize(R.styleable.CircleView_circle_width, 200);
+        mHeight = a.getDimensionPixelSize(R.styleable.CircleView_circle_height, 200);
         a.recycle();
         init();
     }
@@ -45,11 +52,11 @@ public class CircleView extends View {
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         if (widthSpecMode == MeasureSpec.AT_MOST
                 && heightSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(200, 200);
+            setMeasuredDimension(mWidth, mHeight);
         } else if (widthSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(200, heightSpecSize);
+            setMeasuredDimension(mWidth, heightSpecSize);
         } else if (heightSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(widthSpecSize, 200);
+            setMeasuredDimension(widthSpecSize, mHeight);
         }
     }
 
@@ -63,7 +70,6 @@ public class CircleView extends View {
         int width = getWidth() - paddingLeft - paddingRight;
         int height = getHeight() - paddingTop - paddingBottom;
         int radius = Math.min(width, height) / 2;
-        canvas.drawCircle(paddingLeft + width / 2, paddingTop + height / 2,
-                radius, mPaint);
+        canvas.drawCircle(paddingLeft + width / 2, paddingTop + height / 2, radius, mPaint);
     }
 }
