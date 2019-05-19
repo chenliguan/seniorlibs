@@ -114,6 +114,7 @@ public class HorizontalScrollViewEx extends ViewGroup {
         }
         case MotionEvent.ACTION_UP: {
             int scrollX = getScrollX();
+            // 计算滚动的速度
             mVelocityTracker.computeCurrentVelocity(1000);
             float xVelocity = mVelocityTracker.getXVelocity();
             if (Math.abs(xVelocity) >= 50) {

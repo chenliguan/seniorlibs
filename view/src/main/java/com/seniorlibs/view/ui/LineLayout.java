@@ -86,6 +86,9 @@ public class LineLayout extends RelativeLayout {
 
     /**
      * 初始化自定义属性
+     *
+     * @param context
+     * @param attrs
      */
     private void initAttrs(Context context, AttributeSet attrs) {
         mBackgroundColor = ContextCompat.getColor(mContext, R.color.gray_f0f0f0);

@@ -16,8 +16,9 @@
         <!-- dimension:尺寸-->
         <attr name="textSize" format="dimension" />
         <!-- reference:引用-->
-        <attr name="endText" format="string" />
         <attr name="icon" format="reference" />
+
+        <attr name="endText" format="string" />
         <attr name="srcWidth" format="dimension" />
         <attr name="srcHeight" format="dimension" />
         <attr name="srcPadding" format="dimension" />
