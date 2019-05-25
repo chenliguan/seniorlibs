@@ -29,4 +29,8 @@
         android:text="A" >
     </EditText>
 
+    <com.seniorlibs.view.ui.MyViewGroup
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/orange"/>
 </LinearLayout>
