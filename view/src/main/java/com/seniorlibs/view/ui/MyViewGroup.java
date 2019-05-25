@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 /**
  * 如果有背景色，走onDraw()方法；如果没有背景色，不走onDraw()方法
+ *
  */
 public class MyViewGroup extends ViewGroup {
     private static final String TAG = "MyViewGroup";
