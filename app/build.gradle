@@ -1,3 +1,5 @@
+println "app.gradle start"
+
 apply plugin: 'com.android.application'
 
 android {
@@ -29,3 +31,5 @@ dependencies {
 
     implementation project(':baselib')
 }
+
+println "app.gradle end"

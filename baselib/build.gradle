@@ -1,3 +1,5 @@
+println "baselib.gradle start"
+
 apply plugin: 'com.android.library'
 
 android {
@@ -49,3 +51,5 @@ dependencies {
     api 'io.reactivex.rxjava2:rxandroid:2.1.0'
     api 'io.reactivex.rxjava2:rxjava:2.2.6'
 }
+
+println "baselib.gradle end"

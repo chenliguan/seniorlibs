@@ -1,3 +1,5 @@
+println "event.gradle start"
+
 apply plugin: 'com.android.application'
 
 android {
@@ -31,3 +33,5 @@ dependencies {
 
     implementation project(':baselib')
 }
+
+println "event.gradle end"
