@@ -1,0 +1,273 @@
+println "gradles.gradle start"
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+println "gradles.gradle end"
+
+/**
+ * 在当面目录下创建build.gradle文件，在里面创建一个task，然后在task中编写Groovy代码即可
+ *
+ * 只需要在haveFun方法中编写Groovy代码即可，如下命令即可运行：gradle sample
+ */
+task(sample).doLast {
+    println "start execute sample"   // 括号是可以省略的
+    println "haveString()-------------------------------------------------------------"
+    println haveString("参数")       // 语句后面的分号是可以省略的
+    println "haveClosure()------------------------------------------------------------"
+    haveClosure()
+    println "haveList()---------------------------------------------------------------"
+    haveList()
+    println "haveMap()----------------------------------------------------------------"
+    haveMap()
+    println "haveIo()-----------------------------------------------------------------"
+    println haveIo()
+    println "haveFun()----------------------------------------------------------------"
+    println haveFun()
+    println "haveSwitch()-------------------------------------------------------------"
+    println haveSwitch()
+    println "haveEquals() ==和equals--------------------------------------------------"
+    println haveEquals()
+}
+
+// 在Groovy中，通过def关键字来声明变量和方法
+// 测试String：方法省略参数类型，方法的返回值也是可以省略
+def haveString(msg) {
+    def a = 1
+    def b = msg + " hello"
+    def c = "a=${a}, b=${b}"
+    println c
+    10                               // 方法返回值省略return
+}
+
+// 测试闭包
+def haveClosure() {
+//    { parameters ->
+//        code
+//    }
+
+    def closure = { int a, String b ->
+        println "a=${a}, b=${b}, I am a closure!"
+    }
+
+    // 这里省略了闭包的返回值、参数类型
+    def test = { a, b ->
+        println "a=${a}, b=${b}, I am a closure!"
+    }
+
+    // 闭包有返回值和参数
+    def ryg = { a, b ->
+        a + b
+    }
+
+    // 闭包可以当做函数一样使用
+    closure(100, "xiaoguan")
+    test.call(100, 200)
+    def c = ryg(100, 200)
+    println c
+
+    // 如果闭包不指定参数类型，那么它会有一个隐含的参数it
+    def testIt = {
+        println "find ${it}, I am a closure!"
+    }
+    testIt(100)
+}
+
+def haveList() {
+    def emptyList = []
+    def test = [100, "hello", true]
+    test[1] = "world"
+    println test[0]
+    println test[1]
+    test << 200                      // 操作符<<，左移位表示向List中添加新元素的意思 --> leftShift()
+    println test.size
+    println test
+}
+
+def haveMap() {
+    def emptyMap = [:]
+    def test = ["id": 1, "name": "xiaoguan", "isMale": true]
+    test["id"] = 2
+    println test.id
+    test.id = 900
+    println test.id
+    println test.isMale
+
+    // 遍历
+    test.each { key, value ->
+        println "two parameters, find [${key} : ${value}]"
+    }
+    test.each {
+        println "one parameters, find [${it.key} : ${it.value}]"
+    }
+}
+
+def haveIo() {
+    // groovytest.txt
+    // 欢迎
+    // 关注
+    // 小
+    def path = "C:/Users/Administrator/Desktop/groovytest.txt"
+    def file = new File(path)
+    println "read file using two parameters"
+    file.eachLine { line, lineNo ->
+        println "${lineNo} ${line}"
+    }
+
+    println "read file using one parameters"
+    file.eachLine { line ->
+        println "${line}"
+    }
+
+    def file1 = new File(path)
+    def file2 = new File(path)
+    assert file1 == file2
+    assert !file1.is(file2)
+
+    return 1                        // 这个return不能省略
+    def file3 = new File("a.txt")
+}
+
+def haveFun() {
+    // 在Groovy中，所有的Class类型，都可以省略.class
+    func(Book.class)
+    func(Book)
+
+    // 当对同一个对象进行操作时，可以使用with
+    Book bk = new Book()
+    bk.id = 1
+    bk.name = "androidart"
+    println "bk.id：" + bk.id + "  bk.name：" + bk.name
+    // 可以简写为：
+    Book bk1 = new Book()
+    bk1.with {
+        id = 2
+        name = "androidart111"
+    }
+    println "bk1.id：" + bk1.id + "  bk1.name：" + bk1.name
+
+    // 判断是否为真
+    if (bk.name != null && bk.name.size() > 0) {
+        println "判断是否为真：" + bk.name
+    }
+    // 可以替换为：
+    if (bk.name) {
+        println "判断是否为真，可以替换为：" + bk.name
+    }
+
+    // 简洁的三元表达式
+    def result = bk.name != null ? bk.name : "Unknown"
+    // 省略了name
+    def result1 = bk.name ?: "Unknown"
+    println "简洁的三元表达式 result：" + result + "  result1：" + result1
+
+    // 非空判断可以用?表达式
+    if (bk != null) {
+        if (bk.name != null) {
+            println "非空判断可以用?表达式 bk.name：" + bk.name
+        }
+    }
+    // 可以简写为：
+    println "非空判断可以用?表达式 bk?.name：" + bk?.name
+
+    // 使用assert来设置断言，当断言的条件为false时，程序将会抛出异常
+    check(name)
+}
+
+def func(Class clazz) {
+    println clazz
+}
+
+// 下述两个类完全一致，只有有属性（public）就有Getter/Setter；同理，只要有Getter/Setter，那么它就有隐含属性
+class Book {
+    public String id
+    private String name
+
+    String getName() { return name }
+
+    void setName(String name) { this.name = name }
+}
+class Book1 {
+    String id
+    String name
+}
+
+static def check(String name) {
+    // name non-null and non-empty according to Gro    ovy Truth
+    assert name
+    // safe navigation + Groovy Truth to check
+    assert name?.size() > 3
+}
+
+def haveSwitch() {
+    def x = 1.23
+    def result = ""
+    switch (x) {
+        case "foo":
+            result = "found foo"
+    // lets fall through
+        case "bar":
+            result += "bar"
+        case [4, 5, 6, 'inList']:
+            result = "list"
+            break
+        case 12..30:
+            result = "range"
+            break
+        case Integer:
+            result = "integer"
+            break
+        case Number:
+            result = "number"
+            break
+        case { it > 3 }:
+            result = "number > 3"
+            break
+        default:
+            result = "default"
+            break
+    }
+
+    println "switch方法：" + result
+}
+
+// ==相当于Java的equals；如果需要比较两个对象是否是同一个，需要使用.is()，相当于Java里的==
+def haveEquals() {
+    Book a = new Book()
+    Book b = new Book()
+
+    println "a == b：" + (a == b)
+    println "a.is(b)：" + (a.is(b))
+}

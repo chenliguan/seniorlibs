@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/baselib" />
             <option value="$PROJECT_DIR$/event" />
+            <option value="$PROJECT_DIR$/gradles" />
             <option value="$PROJECT_DIR$/ipc" />
             <option value="$PROJECT_DIR$/lifecycle" />
             <option value="$PROJECT_DIR$/thirdlib" />
