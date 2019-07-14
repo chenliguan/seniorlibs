@@ -37,6 +37,101 @@ dependencies {
 
 println "gradles.gradle end"
 
+
+task myTask {
+    println "config myTask"
+}
+// 执行的最开始和最后做了一些事情
+myTask.doFirst {
+    println "before execute myTask"
+}
+// doLast还有一个等价的操作leftShift，leftShift还可以缩写为<<，下面的三种实现效果等价：
+myTask.doLast {
+    println "after1 execute myTask"
+}
+myTask.leftShift {
+    println "after2 execute myTask"
+}
+myTask << {
+    println "after3 execute myTask"
+}
+// 1、通过gradlew myTask来查看：
+// > Configure project :gradles
+// config myTask
+// > Task :gradles:myTask
+// before execute myTask
+// after1 execute myTask
+// after2 execute myTask
+// after3 execute myTask
+
+// 下面三种定义也一模一样
+// task myTask1 << {
+//    println "after execute myTask1"
+// }
+// task('myTask1').doLast { // project.task('myTask1').doLast
+//    println "after execute myTask1"
+// }
+// tasks.create('myTask1').doLast { // project.tasks.create('myTask1').doLast
+//    println "after execute myTask1"
+// }
+
+// 定义Task的时候是可以指定很多参数
+task myTask2 << {
+    println "execute myTask1"
+}
+task myTask3 << {
+    println "execute myTask2"
+}
+// 定义一个名字为myTask4的task，属于guan分组，并且依赖myTask1和myTask2两个task。
+task('myTask4', group: "guan", description: "我自己的Task", dependsOn: ["myTask2", "myTask3"] ).doLast {
+    println "execute myTask4"
+}
+// 1、通过gradlew tasks来查看：
+// Guan tasks
+// ----------
+// myTask4 - 我自己的Task
+//
+// Help tasks
+// ----------
+// 2、通过gradlew myTask4来查看：
+// > Task :gradles:myTask2
+// execute myTask1
+// > Task :gradles:myTask3
+// execute myTask2
+// > Task :gradles:myTask4
+// execute myTask4
+
+class RygTask extends DefaultTask {
+    String message = 'This is RygTask'
+
+    // @TaskAction 表示该Task要执行的动作,即在调用该Task时，hello()方法将被执行
+    @TaskAction
+    def hello(){
+        println "hello. $message"
+    }
+}
+// hello使用了默认的message值
+task hello(type:RygTask)
+// 重新设置了message的值
+task hello1(type:RygTask){
+    message ="hello1. I am an android developer"
+}
+// 1、通过gradlew hello hello1来查看：
+// > Task :gradles:hello
+// hello. This is RygTask
+// > Task :gradles:hello1
+// hello. hello1. I am an android developer
+
+// 继承自系统已有的Task的Task:"Copy"来完成文件的拷贝操作，还有：Copy、Delete、Sync等
+task copyTask(type:Copy) {
+    println "copyTask type: Copy"
+}
+// 1、通过gradlew myTask来查看：
+// > Configure project :gradles
+// copyTask type: Copy
+
+
+
 /**
  * 在当面目录下创建build.gradle文件，在里面创建一个task，然后在task中编写Groovy代码即可
  *
