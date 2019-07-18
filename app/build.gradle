@@ -2,7 +2,7 @@ println "app.gradle start"
 
 apply plugin: 'com.android.application'
 // com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
-//apply plugin: 'com.seniorlibs.buildsrc'
+apply plugin: 'com.seniorlibs.buildsrc'
 
 android {
     compileSdkVersion 28
