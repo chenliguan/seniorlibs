@@ -1,6 +1,6 @@
 println "settings.gradle start"
 
-include ':app', ':lifecycle', ':event', ':baselib', ':thirdlib', ':view', ':gradles'
+include ':app', ':lifecycle', ':event', ':baselib', ':thirdlib', ':view', ':gradles', ':systrace'
 include ':ipc'
 
 println "settings.gradle start"
