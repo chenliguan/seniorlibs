@@ -1,9 +1,4 @@
-println "app.gradle start"
-
 apply plugin: 'com.android.application'
-// com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
-apply plugin: 'com.seniorlibs.buildsrc'
-//apply plugin: 'com.seniorlibs.systrace-plugin'
 
 android {
     compileSdkVersion 28
@@ -35,4 +30,12 @@ dependencies {
     implementation project(':baselib')
 }
 
-println "app.gradle end"
+// com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
+//apply plugin: 'com.seniorlibs.buildsrc'
+
+apply plugin: 'com.seniorlibs.systrace-plugin'
+systrace {
+    enable = true
+    baseMethodMapFile = "${project.buildDir}/systrace_output/Debug.methodmap"
+    blackListFile = "${project.projectDir}/blacklist/blackMethodList.txt"
+}

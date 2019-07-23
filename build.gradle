@@ -1,13 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-println "seniorlibs.gradle start"
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
+
         maven {
             // 添加Maven的本地依赖
-            url uri('./gradles/repository')
+//            url uri('./gradles/repository')
+            url uri('./systrace/repository')
         }
     }
 
@@ -15,8 +16,8 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.2.0'
 
         // 格式为-->group:module:version
-        classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'
-//        classpath 'com.seniorlibs.systrace-plugin:systrace:1.0.0'
+//        classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'
+        classpath ("com.seniorlibs.systrace-plugin:systrace:1.0.0") { changing = true }
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,9 +28,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+
         maven {
             // 添加Maven的本地依赖
-            url uri('./repository')
+//            url uri('./gradles/repository')
+            url uri('./systrace/repository')
         }
     }
 }
@@ -37,5 +40,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-println "seniorlibs.gradle end"
