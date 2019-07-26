@@ -28,12 +28,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-
-        maven {
-            // 添加Maven的本地依赖
-//            url uri('./gradles/repository')
-            url uri('./systrace/repository')
-        }
     }
 }
 
