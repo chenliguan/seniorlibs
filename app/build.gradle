@@ -30,8 +30,8 @@ dependencies {
     implementation project(':baselib')
 }
 
-// com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
-//apply plugin: 'com.seniorlibs.buildsrc'
+// 测试gradles和systrace库：com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
+apply plugin: 'com.seniorlibs.buildsrc'
 
 apply plugin: 'com.seniorlibs.systrace-plugin'
 systrace {
