@@ -20,9 +20,12 @@ class SystracePlugin implements Plugin<Project> {
             throw new GradleException('Systrace Plugin, Android Application plugin required')
         }
 
+        // project配置完成后回调
         project.afterEvaluate {
             def android = project.extensions.android
             def configuration = project.systrace
+
+            // 对于每个APK输出变体遍历
             android.applicationVariants.all { variant ->
 
                 String output = configuration.output

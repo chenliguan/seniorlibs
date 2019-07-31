@@ -47,6 +47,11 @@ class TestPlugin extends Transform implements Plugin<Project> {
         return false
     }
 
+    /**
+     * 继承Transform，实现Plugin接口，通过Transform#transform()得到Collection<TransformInput> inputs，里面有我们想要的class文件
+     *
+     * @param transformInvocation
+     */
     @Override
     void transform(@NonNull TransformInvocation transformInvocation) {
         println '--------------- TestPlugin visit start --------------- '
@@ -56,7 +61,8 @@ class TestPlugin extends Transform implements Plugin<Project> {
         // 删除之前的输出
         if (outputProvider != null)
             outputProvider.deleteAll()
-        // 遍历inputs
+        // 遍历inputs,通过参数inputs可以拿到所有的class文件
+        // inputs中包括directoryInputs和jarInputs，directoryInputs为文件夹中的class文件，而jarInputs为jar包中的class文件。
         inputs.each { TransformInput input ->
             // 遍历directoryInputs
             input.directoryInputs.each { DirectoryInput directoryInput ->
@@ -87,10 +93,18 @@ class TestPlugin extends Transform implements Plugin<Project> {
                 def name = file.name
                 if (checkClassFile(name)) {
                     println '----------- deal with "class" file <' + name + '> -----------'
+                    // 1、处理class文件
+                    // （1）先通过ClassReader读入Class文件的原始字节码
                     ClassReader classReader = new ClassReader(file.bytes)
+                    // （2）使用ClassWriter类基于不同的Visitor类进行修改
                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
+                    // （3）用于访问class的工具，在visitMethod()里对类名和方法名进行判断，需要处理在MethodVisitor插入字节码
                     ClassVisitor cv = new LifecycleClassVisitor(classWriter)
+                    // （4）按照标志同意修改
                     classReader.accept(cv, ClassReader.EXPAND_FRAMES)
+
+                    // 2、替换
+                    // （1）从classWriter得到class修改后的byte流code，然后通过流的写入覆盖原来的class文件
                     byte[] code = classWriter.toByteArray()
                     FileOutputStream fos = new FileOutputStream(file.parentFile.absolutePath + File.separator + name)
                     fos.write(code)

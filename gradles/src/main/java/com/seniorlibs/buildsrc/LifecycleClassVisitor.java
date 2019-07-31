@@ -7,7 +7,8 @@ import org.objectweb.asm.Opcodes;
 /**
  * @author guan
  * @date 2019/2/18
- * lifecycle class visitor
+ *
+ * 用于访问class的工具，在visitMethod()里对类名和方法名进行判断是否需要处理。若需要，则交给MethodVisitor。
  */
 public class LifecycleClassVisitor extends ClassVisitor implements Opcodes {
 
@@ -31,11 +32,13 @@ public class LifecycleClassVisitor extends ClassVisitor implements Opcodes {
         // 匹配FragmentActivity
         if ("android/support/v4/app/FragmentActivity".equals(this.mClassName)) {
             if ("onCreate".equals(name) ) {
-                //处理onCreate
+                // 处理onCreate
                 System.out.println("LifecycleClassVisitor : change method ----> " + name);
+
+                // LifecycleOnCreateMethodVisitor处理在OnCreate的入口和出口插入字节码
                 return new LifecycleOnCreateMethodVisitor(mv);
             } else if ("onDestroy".equals(name)) {
-                //处理onDestroy
+                // 处理onDestroy
                 System.out.println("LifecycleClassVisitor : change method ----> " + name);
                 return new LifecycleOnDestroyMethodVisitor(mv);
             }
