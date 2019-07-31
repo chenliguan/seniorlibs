@@ -45,7 +45,6 @@ import java.util.zip.ZipOutputStream;
  * This class hooks all collected methods in oder to trace method in/out.
  * </p>
  */
-
 public class MethodTracer {
 
     private static final String TAG = "Matrix.MethodTracer";
