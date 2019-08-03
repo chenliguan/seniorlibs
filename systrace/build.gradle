@@ -40,6 +40,6 @@ repositories {
 
 //group和version在后面使用自定义插件的时候会用到
 group='com.seniorlibs.systrace-plugin'
-version='1.0.3'
+version='1.0.3.3'
 
 apply from: rootProject.file('gradle/maven-local-plugin-publish.gradle')

@@ -17,13 +17,14 @@
 package com.seniorlibs.systrace;
 
 import com.seniorlibs.systrace.item.TraceMethod;
+import com.seniorlibs.systrace.methodvisitor.MethodVisitorFactory;
+import com.seniorlibs.systrace.methodvisitor.TraceMethodAdapter;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.commons.AdviceAdapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -48,7 +48,6 @@ import java.util.zip.ZipOutputStream;
 public class MethodTracer {
 
     private static final String TAG = "Matrix.MethodTracer";
-    private static AtomicInteger traceMethodCount = new AtomicInteger();
     private final TraceBuildConfig mTraceConfig;
     private final HashMap<String, TraceMethod> mCollectedMethodMap;
     private final HashMap<String, String> mCollectedClassExtendMap;
@@ -104,12 +103,20 @@ public class MethodTracer {
                 if (mTraceConfig.isNeedTraceClass(classFile.getName())) {
                     is = new FileInputStream(classFile);
 
+                    // 1.Handle class files
+                    // (1) read the original bytecode of the Class file through ClassReader
                     ClassReader classReader = new ClassReader(is);
+                    // (2)Use the ClassWriter class to modify it based on a different Visitor class
                     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+                    // (3)The tools used to access the class, making judgments about the class name and method name in visit() and visitMethod(),
+                    // need to handle inserting bytecode into the ClassVisitor class
                     ClassVisitor classVisitor = new TraceClassAdapter(Opcodes.ASM5, classWriter);
+                    // (4)Agree to modify according to the mark
                     classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES);
                     is.close();
 
+                    // 2.replace
+                    // (1)Get the modified class byte stream from the classWriter, and then override the original class file by writing to the stream
                     if (output.isDirectory()) {
                         os = new FileOutputStream(changedFileOutput);
                     } else {
@@ -216,6 +223,7 @@ public class MethodTracer {
                 this.isABSClass = true;
             }
 
+            // 1.Judge class and method names
             if (mTraceConfig.isMethodBeatClass(className, mCollectedClassExtendMap)) {
                 isMethodBeatClass = true;
             }
@@ -227,74 +235,22 @@ public class MethodTracer {
             if (isABSClass) {
                 return super.visitMethod(access, name, desc, signature, exceptions);
             } else {
-                MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
+                // 2.Insert bytecode at the entry and exit of the function
 
-                return new TraceMethodAdapter(api, methodVisitor, access, name, desc, this.className, isMethodBeatClass);
+                MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
+                // Parameter class type
+                Class[] params = {int.class, MethodVisitor.class, int.class, String.class, String.class, String.class, boolean.class};
+                // Parameter type value
+                Object[] values = {api, methodVisitor, access, name, desc, className, isMethodBeatClass};
+                Log.i(TAG, "params = "+params[0]+" values = "+values[0]);
+                MethodVisitorFactory factory = new MethodVisitorFactory();
+                return factory.createMethodVisitor(TraceMethodAdapter.class, params, values);
             }
         }
-
 
         @Override
         public void visitEnd() {
             super.visitEnd();
-        }
-    }
-
-    private class TraceMethodAdapter extends AdviceAdapter {
-
-        private final String methodName;
-        private final String name;
-        private final String className;
-        private final boolean isMethodBeatClass;
-
-        protected TraceMethodAdapter(int api, MethodVisitor mv, int access, String name, String desc, String className,
-                                     boolean isMethodBeatClass) {
-            super(api, mv, access, name, desc);
-            TraceMethod traceMethod = TraceMethod.create(0, access, className, name, desc);
-            this.methodName = traceMethod.getMethodName();
-            this.isMethodBeatClass = isMethodBeatClass;
-            this.className = className;
-            this.name = name;
-        }
-
-        @Override
-        protected void onMethodEnter() {
-            TraceMethod traceMethod = mCollectedMethodMap.get(methodName);
-            if (traceMethod != null) {
-                traceMethodCount.incrementAndGet();
-                String sectionName = methodName;
-                int length = sectionName.length();
-                if (length > TraceBuildConstants.MAX_SECTION_NAME_LEN) {
-                    // gonna take out the parameters
-                    int parmIndex = sectionName.indexOf('(');
-                    sectionName = sectionName.substring(0, parmIndex);
-                    // If it's still bigger, cut it
-                    length = sectionName.length();
-                    if (length > TraceBuildConstants.MAX_SECTION_NAME_LEN) {
-                        sectionName = sectionName.substring(length - TraceBuildConstants.MAX_SECTION_NAME_LEN);
-                    }
-                }
-                mv.visitLdcInsn(sectionName);
-                mv.visitMethodInsn(INVOKESTATIC, TraceBuildConstants.MATRIX_TRACE_METHOD_BEAT_CLASS, "i", "(Ljava/lang/String;)V", false);
-            }
-        }
-
-        @Override
-        protected void onMethodExit(int opcode) {
-            //if (isMethodBeatClass && ("<clinit>").equals(name)) {
-            //    StringBuffer stringBuffer = new StringBuffer();
-            //
-            //    stringBuffer.deleteCharAt(stringBuffer.length() - 1);
-            //    mv.visitLdcInsn(stringBuffer.toString());
-            //    mv.visitFieldInsn(Opcodes.PUTSTATIC, className, TraceBuildConstants.MATRIX_TRACE_APPLICATION_CREATE_FILED, "Ljava/lang/String;");
-            //}
-            TraceMethod traceMethod = mCollectedMethodMap.get(methodName);
-            if (traceMethod != null) {
-
-                traceMethodCount.incrementAndGet();
-                //mv.visitLdcInsn(traceMethod.id);
-                mv.visitMethodInsn(INVOKESTATIC, TraceBuildConstants.MATRIX_TRACE_METHOD_BEAT_CLASS, "o", "()V", false);
-            }
         }
     }
 }
