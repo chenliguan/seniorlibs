@@ -2,6 +2,7 @@
 
 buildscript {
     repositories {
+        mavenLocal()
         google()
         jcenter()
 
@@ -9,7 +10,6 @@ buildscript {
             // 添加Maven的本地依赖
             url uri('./gradles/repository')
         }
-        maven { url uri('./systrace/repository') }
 
         // aliyun镜像加速下载aspectjx插件
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
@@ -20,7 +20,8 @@ buildscript {
 
         // 格式为-->group:module:version
         classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'
-        classpath ("com.seniorlibs.systrace-plugin:systrace:1.0.0") { changing = true }
+
+        classpath ("com.seniorlibs.systrace-plugin:systrace:1.0.3") { changing = true }
 
         classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.4'
 
@@ -31,6 +32,7 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         jcenter()
     }

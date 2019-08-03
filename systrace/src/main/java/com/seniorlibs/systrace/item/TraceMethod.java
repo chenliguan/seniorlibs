@@ -53,7 +53,7 @@ public class TraceMethod {
     }
 
     /**
-     * proguard -> original
+     * proguard  original
      *
      * @param processor
      */
@@ -68,7 +68,7 @@ public class TraceMethod {
     }
 
     /**
-     * original -> proguard
+     * original proguard
      *
      * @param processor
      */

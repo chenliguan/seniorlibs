@@ -104,19 +104,12 @@ public class MethodTracer {
                 if (mTraceConfig.isNeedTraceClass(classFile.getName())) {
                     is = new FileInputStream(classFile);
 
-                    // 1、处理class文件
-                    // （1）先通过ClassReader读入Class文件的原始字节码
                     ClassReader classReader = new ClassReader(is);
-                    // （2）使用ClassWriter类基于不同的Visitor类进行修改
                     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-                    // （3）用于访问class的工具，在visit()和visitMethod()里对类名和方法名进行判断，需要处理在ClassVisitor类中插入字节码
                     ClassVisitor classVisitor = new TraceClassAdapter(Opcodes.ASM5, classWriter);
-                    // （4）按照标志同意修改
                     classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES);
                     is.close();
 
-                    // 2、替换
-                    // （1）从classWriter得到class修改后的byte流，然后通过流的写入覆盖原来的class文件
                     if (output.isDirectory()) {
                         os = new FileOutputStream(changedFileOutput);
                     } else {
@@ -222,7 +215,7 @@ public class MethodTracer {
             if ((access & Opcodes.ACC_ABSTRACT) > 0 || (access & Opcodes.ACC_INTERFACE) > 0) {
                 this.isABSClass = true;
             }
-            // 1、对类名和方法名进行判断
+
             if (mTraceConfig.isMethodBeatClass(className, mCollectedClassExtendMap)) {
                 isMethodBeatClass = true;
             }
@@ -236,7 +229,6 @@ public class MethodTracer {
             } else {
                 MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
 
-                // 2、TraceMethodAdapter处理在函数的入口和出口插入字节码
                 return new TraceMethodAdapter(api, methodVisitor, access, name, desc, this.className, isMethodBeatClass);
             }
         }
@@ -265,9 +257,6 @@ public class MethodTracer {
             this.name = name;
         }
 
-        /**
-         * 在函数的入口插入字节码
-         */
         @Override
         protected void onMethodEnter() {
             TraceMethod traceMethod = mCollectedMethodMap.get(methodName);
@@ -290,11 +279,6 @@ public class MethodTracer {
             }
         }
 
-        /**
-         * 在函数的出口插入字节码
-         *
-         * @param opcode
-         */
         @Override
         protected void onMethodExit(int opcode) {
             //if (isMethodBeatClass && ("<clinit>").equals(name)) {

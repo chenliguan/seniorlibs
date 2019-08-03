@@ -1,6 +1,22 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
+sourceSets {
+    main {
+        groovy {
+            srcDir '../systrace/src/main/groovy'
+        }
+
+        java {
+            srcDir "../systrace/src/main/java"
+        }
+
+        resources {
+            srcDir '../systrace/src/main/resources'
+        }
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -24,18 +40,6 @@ repositories {
 
 //group和version在后面使用自定义插件的时候会用到
 group='com.seniorlibs.systrace-plugin'
-version='1.0.1'
+version='1.0.3'
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            //提交到远程服务器：
-            // repository(url: "http://www.xxx.com/repos") {
-            //    authentication(userName: "admin", password: "admin")
-            // }
-
-            // 本地的Maven地址:当前工程下（../是在seniorlibs-master下）
-            repository(url: uri("./repository"))
-        }
-    }
-}
+apply from: rootProject.file('gradle/maven-local-plugin-publish.gradle')
