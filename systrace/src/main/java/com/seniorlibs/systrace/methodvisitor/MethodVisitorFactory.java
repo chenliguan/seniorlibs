@@ -1,7 +1,5 @@
 package com.seniorlibs.systrace.methodvisitor;
 
-import org.objectweb.asm.commons.AdviceAdapter;
-
 import java.lang.reflect.Constructor;
 
 /**
@@ -24,14 +22,14 @@ public class MethodVisitorFactory extends AbstractFactory {
      * @return
      */
     public <T extends MethodAdapter> T createMethodVisitor(Class<T> clz, Class[] classParam, Object[] paramValues) {
-        AdviceAdapter adapter = null;
+        MethodAdapter adapter = null;
         try {
             // Get the class type based on the class path
             Class c = Class.forName(clz.getName());
             // Call its constructor to create an instance
             Constructor con = c.getConstructor(classParam);
             // Call the constructor and create the real
-            adapter = (AdviceAdapter) con.newInstance(paramValues);
+            adapter = (MethodAdapter) con.newInstance(paramValues);
         } catch (Exception e) {
             e.fillInStackTrace();
         }

@@ -239,12 +239,15 @@ public class MethodTracer {
 
                 MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
                 // Parameter class type
-                Class[] params = {int.class, MethodVisitor.class, int.class, String.class, String.class, String.class, boolean.class};
+                Class[] params = {int.class, MethodVisitor.class, int.class, String.class, String.class, String.class, boolean.class, HashMap.class};
                 // Parameter type value
-                Object[] values = {api, methodVisitor, access, name, desc, className, isMethodBeatClass};
+                Object[] values = {api, methodVisitor, access, name, desc, className, isMethodBeatClass, mCollectedMethodMap};
                 Log.i(TAG, "params = "+params[0]+" values = "+values[0]);
                 MethodVisitorFactory factory = new MethodVisitorFactory();
                 return factory.createMethodVisitor(TraceMethodAdapter.class, params, values);
+
+//                return new MethodTracer.TraceMethodAdapter(api, methodVisitor, access, name, desc, className, isMethodBeatClass);
+//                return new MethodTracer.ConsumeMethodAdapter(api, methodVisitor, access, name, desc, className, isMethodBeatClass);
             }
         }
 

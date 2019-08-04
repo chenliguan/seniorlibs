@@ -5,6 +5,7 @@ import com.seniorlibs.systrace.item.TraceMethod;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.AdviceAdapter;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -23,8 +24,10 @@ public class MethodAdapter extends AdviceAdapter {
     protected String className;
     protected boolean isMethodBeatClass;
     protected TraceMethod mTraceMethod;
+    protected HashMap<String, TraceMethod> mCollectedMethodMap;
 
-    public MethodAdapter(int api, MethodVisitor mv, int access, String name, String desc, String className, boolean isMethodBeatClass) {
+    public MethodAdapter(int api, MethodVisitor mv, int access, String name, String desc,
+                         String className, boolean isMethodBeatClass, HashMap<String, TraceMethod> collectedMethodMap) {
         super(api, mv, access, name, desc);
         TraceMethod traceMethod = TraceMethod.create(0, access, className, name, desc);
         this.methodName = traceMethod.getMethodName();
@@ -32,5 +35,6 @@ public class MethodAdapter extends AdviceAdapter {
         this.className = className;
         this.name = name;
         this.mTraceMethod = traceMethod;
+        this.mCollectedMethodMap = collectedMethodMap;
     }
 }

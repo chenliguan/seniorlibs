@@ -1,8 +1,11 @@
 package com.seniorlibs.systrace.methodvisitor;
 
 import com.seniorlibs.systrace.TraceBuildConstants;
+import com.seniorlibs.systrace.item.TraceMethod;
 
 import org.objectweb.asm.MethodVisitor;
+
+import java.util.HashMap;
 
 /**
  * Author: chenliguan
@@ -15,8 +18,8 @@ import org.objectweb.asm.MethodVisitor;
 public class TraceMethodAdapter extends MethodAdapter {
 
     public TraceMethodAdapter(int api, MethodVisitor mv, int access, String name, String desc,
-                              String className, boolean isMethodBeatClass) {
-        super(api, mv, access, name, desc, className, isMethodBeatClass);
+                              String className, boolean isMethodBeatClass, HashMap<String, TraceMethod> collectedMethodMap) {
+        super(api, mv, access, name, desc, className, isMethodBeatClass, collectedMethodMap);
     }
 
     /**
@@ -24,7 +27,8 @@ public class TraceMethodAdapter extends MethodAdapter {
      */
     @Override
     protected void onMethodEnter() {
-        if (mTraceMethod != null) {
+        TraceMethod traceMethod = mCollectedMethodMap.get(methodName);
+        if (traceMethod != null) {
             traceMethodCount.incrementAndGet();
             String sectionName = methodName;
             int length = sectionName.length();
@@ -57,7 +61,8 @@ public class TraceMethodAdapter extends MethodAdapter {
         //    mv.visitLdcInsn(stringBuffer.toString());
         //    mv.visitFieldInsn(Opcodes.PUTSTATIC, className, TraceBuildConstants.MATRIX_TRACE_APPLICATION_CREATE_FILED, "Ljava/lang/String;");
         //}
-        if (mTraceMethod != null) {
+        TraceMethod traceMethod = mCollectedMethodMap.get(methodName);
+        if (traceMethod != null) {
 
             traceMethodCount.incrementAndGet();
             //mv.visitLdcInsn(traceMethod.id);

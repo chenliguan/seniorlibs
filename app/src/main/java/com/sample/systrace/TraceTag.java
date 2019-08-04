@@ -1,4 +1,4 @@
-package com.seniorlibs.app.sample.systrace;
+package com.sample.systrace;
 
 import android.annotation.TargetApi;
 import android.os.Build;
