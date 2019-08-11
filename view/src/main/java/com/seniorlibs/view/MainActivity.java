@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.seniorlibs.view.remoteviews.RemoteViewsMainActivity;
+
 public class MainActivity extends Activity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "RemoteViewsMainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,9 @@ public class MainActivity extends Activity {
             startActivity(intent);
         } else if (v.getId() == R.id.button3) {
             Intent intent = new Intent(this, ScrollViewExActivity.class);
+            startActivity(intent);
+        } else if (v.getId() == R.id.button4) {
+            Intent intent = new Intent(this, RemoteViewsMainActivity.class);
             startActivity(intent);
         }
     }

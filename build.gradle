@@ -19,9 +19,9 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.2.0'
 
         // 格式为-->group:module:version
-        classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'
+//        classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'
 
-        classpath ("com.seniorlibs.systrace-plugin:systrace:1.0.3.7") { changing = true }
+//        classpath ("com.seniorlibs.systrace-plugin:systrace:1.0.3.7") { changing = true }
 
         classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.4'
 

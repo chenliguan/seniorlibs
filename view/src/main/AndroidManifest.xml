@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.seniorlibs.view">
@@ -7,6 +8,16 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".TestActivity"
             android:configChanges="orientation|screenSize"
@@ -23,14 +34,40 @@
             android:label="@string/app_name"
             android:launchMode="standard" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".remoteviews.NotificationTestActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name_5"
+            android:launchMode="standard" />
+        <activity
+            android:name=".remoteviews.DemoActivity_1"
+            android:configChanges="screenLayout"
+            android:exported="true"
+            android:label="@string/title_scene5_1"
+            android:launchMode="standard" />
+        <activity
+            android:name=".remoteviews.DemoActivity_2"
+            android:configChanges="screenLayout"
+            android:exported="true"
+            android:label="@string/title_scene5_2"
+            android:launchMode="standard" />
+        <activity
+            android:name=".remoteviews.RemoteViewsMainActivity"
+            android:label="@string/app_name_5"
+            android:process=":remote"/>
+        <activity
+            android:name=".remoteviews.ReceivePendingIntentFlagsActivity"
+            android:label="@string/app_name_5" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <receiver android:name=".remoteviews.MyAppWidgetProvider">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider_info"></meta-data>
+
+            <intent-filter>
+                <action android:name="com.seniorlibs.view.remoteviews.action.CLICK" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-        </activity>
+        </receiver>
     </application>
 
 </manifest>

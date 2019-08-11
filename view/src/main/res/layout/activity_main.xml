@@ -23,4 +23,9 @@
         android:onClick="onButtonClick"
         android:text="继承于ViewGroup派生特殊Layout-HorizontalScrollViewEx" />
 
+    <Button
+        android:id="@+id/button4"
+        style="@style/AppTheme.Button.Green"
+        android:onClick="onButtonClick"
+        android:text="RemoteViews" />
 </com.seniorlibs.view.ui.RevealLayout>

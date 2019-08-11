@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <Button
+        android:id="@+id/btn_default"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="show default notification" />
+
+    <Button
+        android:id="@+id/btn_update_default"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="update default notification" />
+
+    <Button
+        android:id="@+id/btn_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="update progress notification" />
+
+    <Button
+        android:id="@+id/btn_custom"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="show custom notification" />
+
+    <Button
+        android:id="@+id/btn_test_pending_intent_flags"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="test pending intent flag" />
+</LinearLayout>

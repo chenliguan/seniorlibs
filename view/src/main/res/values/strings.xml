@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Chapter_4</string>
+    <string name="app_name">View + RemoteViews</string>
+    <string name="app_name_5">RemoteViews</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_scene_1">Chapter_4:CircleView</string>
+    <string name="title_scene_1">View:CircleView</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="title_scene5_1">RemoteViews</string>
+    <string name="title_scene5_2">RemoteViews:发送模拟通知栏消息</string>
+    <string name="title_activity_remote_views_main">RemoteViewsMainActivity</string>
 </resources>

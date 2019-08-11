@@ -15,7 +15,7 @@ import android.widget.Button;
  */
 public class TestActivity extends Activity implements OnClickListener {
 
-    private static final String TAG = "TestActivity";
+    private static final String TAG = "NotificationTestActivity";
 
     private Button view;
     private View mButton2;
