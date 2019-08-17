@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
     defaultConfig {
         applicationId "com.seniorlibs.app"
         minSdkVersion 15
@@ -10,11 +12,63 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    signingConfigs {
+        seniorlibsConfig {
+            storeFile file("../keystore/seniorlibs.jks")
+            storePassword "seniorlibs"
+            keyAlias "seniorlibs_key"
+            keyPassword "seniorlibs"
         }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false   // 是否打开混淆
+            signingConfig signingConfigs.seniorlibsConfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false  // 移除无用的resource文件
+            zipAlignEnabled true   // Zipalign优化
+        }
+        release {
+            minifyEnabled true    // 是否打开混淆
+            signingConfig signingConfigs.seniorlibsConfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true  // 移除无用的resource文件
+            zipAlignEnabled true  // Zipalign优化
+
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = "seniorlibs_${variant.versionName}_${variant.versionCode}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                        outputFileName = fileName
+                    }
+                }
+            }
+        }
+    }
+
+    flavorDimensions "xstDimension"
+    productFlavors {
+        debugFlavor {
+            dimension "xstDimension"
+            manifestPlaceholders = [
+                    APP_CHANNEL_VALUE: "napp_1000",    // APP渠道号
+            ]
+        }
+
+        releaseFlavor {
+            dimension "xstDimension"
+            manifestPlaceholders = [
+                    APP_CHANNEL_VALUE: "napp_2000",    // APP渠道号
+            ]
+        }
+    }
+
+    dexOptions {
+        //incremental true
+        javaMaxHeapSize "4g"
     }
 
     sourceSets {
@@ -22,12 +76,23 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
+    repositories{flatDir{dirs 'libs'}}
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation project(':baselib')
+}
+
+def static releaseTime() {
+    return new Date().format("MMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
 }
 
 // 测试gradles和systrace库：com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
