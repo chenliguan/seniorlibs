@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/lifecycle" />
             <option value="$PROJECT_DIR$/systrace" />
             <option value="$PROJECT_DIR$/thirdlib" />
+            <option value="$PROJECT_DIR$/thread" />
             <option value="$PROJECT_DIR$/view" />
           </set>
         </option>
