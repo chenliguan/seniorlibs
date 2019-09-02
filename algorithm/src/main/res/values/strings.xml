@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">algorithm</string>
+    <string name="stack_get_min">带getMin功能的栈</string>
+</resources>
