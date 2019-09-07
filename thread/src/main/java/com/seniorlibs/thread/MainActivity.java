@@ -3,8 +3,7 @@ package com.seniorlibs.thread;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.seniorlibs.thread.atomic.AtomicIntegerTest;
-import com.seniorlibs.thread.synchronize.SynchronizedTest;
+import com.seniorlibs.thread.collection.ArrayListTest;
 
 public class MainActivity extends Activity {
 
@@ -15,6 +14,10 @@ public class MainActivity extends Activity {
 
 //        SynchronizedTest.mainTest();
 
-        AtomicIntegerTest.mainTest();
+        // 测试原子性Integer
+//        AtomicIntegerTest.mainTest();
+
+        // 测试ArrayList和Collections.synchronizedList(new ArrayList<>());
+        ArrayListTest.testWriteArrayListError();
     }
 }

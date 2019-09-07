@@ -1,5 +1,13 @@
 package com.seniorlibs.thread.synchronize;
 
+/**
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2019/9/1.
+ * Mender:
+ * Modify:
+ * Description: 测试Synchronized
+ */
 public class SynchronizedTest {
 
     public static void mainTest() {
