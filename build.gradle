@@ -10,9 +10,6 @@ buildscript {
             // 添加Maven的本地依赖
             url uri('./gradles/repository')
         }
-
-        // aliyun镜像加速下载aspectjx插件
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     }
 
     dependencies {
@@ -22,8 +19,6 @@ buildscript {
 //        classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'
 
 //        classpath ("com.seniorlibs.systrace-plugin:systrace:1.0.3.7") { changing = true }
-
-        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

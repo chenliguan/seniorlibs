@@ -13,8 +13,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+}
 
-
+// 插桩后的MainActivity  javac.debug.compileDebugJavaWithJavac.classes.com.aspectj.MainActivity
 //    public class MainActivity extends AppCompatActivity {
 //        static {}
 //
@@ -32,6 +33,5 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 //    }
-}
 
 
