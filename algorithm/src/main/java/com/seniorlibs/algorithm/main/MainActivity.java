@@ -13,6 +13,7 @@ import com.seniorlibs.algorithm.stack.getmin.StackGetMinOfficialB;
 import com.seniorlibs.algorithm.stack.twostacksqueue.ITwoStackQueue;
 import com.seniorlibs.algorithm.stack.twostacksqueue.TwoStackQueueMy;
 import com.seniorlibs.algorithm.stack.twostacksqueue.TwoStackQueueOfficial;
+import com.seniorlibs.algorithm.string.anagram.AnagramMy;
 
 /**
  * 主页
@@ -32,6 +33,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void initView() {
         findViewById(R.id.btn_stack_get_min).setOnClickListener(this);
         findViewById(R.id.two_stack_queue).setOnClickListener(this);
+        findViewById(R.id.anagram_my).setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +51,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 for (int i = 0; i < 10; i++) {
                     Log.d(TAG, "两个栈实现队列的接口 poll：" + i + " = " + twoStackQueue.poll());
                 }
+                break;
+            case R.id.anagram_my:
+                AnagramMy anagramMy = new AnagramMy();
+                Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy1：" + anagramMy.isAnagram("abcd", "abdc"));
+                Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy2：" + anagramMy.isAnagram("abcd", "acdb"));
+                Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy3：" + anagramMy.isAnagram("abcd", "abbd"));
+                Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy4：" + anagramMy.isAnagram("abcd", "axcd"));
+                Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy5：" + anagramMy.isAnagram("aaa", "aaaa"));
                 break;
             default:
                 break;

@@ -19,4 +19,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="@string/two_stack_queue" />
+
+    <Button
+        android:id="@+id/anagram_my"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/anagram_my" />
 </LinearLayout>
