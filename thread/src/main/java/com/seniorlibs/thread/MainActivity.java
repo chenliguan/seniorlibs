@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.seniorlibs.thread.aqs.SemaphoreTest;
 import com.seniorlibs.thread.collection.ArrayListTest;
 
 public class MainActivity extends Activity {
@@ -19,6 +20,10 @@ public class MainActivity extends Activity {
 //        AtomicIntegerTest.mainTest();
 
         // 测试ArrayList和Collections.synchronizedList(new ArrayList<>());
-        ArrayListTest.testWriteArrayListError();
+//        ArrayListTest.testWriteArrayListError();
+
+        // 测试Semaphore
+//        SemaphoreTest.testAcquire();
+        SemaphoreTest.testTryAcquire();
     }
 }
