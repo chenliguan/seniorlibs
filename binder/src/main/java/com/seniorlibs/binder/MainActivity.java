@@ -1,0 +1,97 @@
+package com.seniorlibs.binder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+import com.seniorlibs.binder.aidl.Book;
+import com.seniorlibs.binder.aidl.BookManagerActivity;
+import com.seniorlibs.binder.file.SecondActivity;
+import com.seniorlibs.binder.manager.UserManager;
+import com.seniorlibs.binder.messenger.MessengerActivity;
+import com.seniorlibs.binder.model.User;
+import com.seniorlibs.binder.utils.MyConstants;
+import com.seniorlibs.binder.utils.MyUtils;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+public class MainActivity extends Activity implements View.OnClickListener {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        UserManager.sUserId = 2;
+        findViewById(R.id.button1).setOnClickListener(this);
+        findViewById(R.id.button2).setOnClickListener(this);
+        findViewById(R.id.button3).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(MyUtils.TAG, "UserManage.sUserId=" + UserManager.sUserId);
+        persistToFile();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button1:
+                Intent intent1 = new Intent();
+                intent1.setClass(MainActivity.this, SecondActivity.class);
+                User user = new User(0, "jake", true);
+                user.book = new Book();
+                intent1.putExtra("extra_user", (Serializable) user);
+                startActivity(intent1);
+                break;
+            case R.id.button2:
+                Intent intent2 = new Intent();
+                intent2.setClass(MainActivity.this, MessengerActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.button3:
+                Intent intent3 = new Intent();
+                intent3.setClass(MainActivity.this, BookManagerActivity.class);
+                startActivity(intent3);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 文件共享,把对象写入到文件中
+     */
+    private void persistToFile() {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                User user = new User(1, "hello world", false);
+                File dir = new File(MyConstants.CHAPTER_2_PATH);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                File cachedFile = new File(MyConstants.CACHE_FILE_PATH);
+                ObjectOutputStream objectOutputStream = null;
+                try {
+                    objectOutputStream = new ObjectOutputStream(new FileOutputStream(cachedFile));
+                    objectOutputStream.writeObject(user);
+                    Log.d(MyUtils.TAG, "persist user:" + user);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    MyUtils.close(objectOutputStream);
+                }
+            }
+        }).start();
+    }
+}

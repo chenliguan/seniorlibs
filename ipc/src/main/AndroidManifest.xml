@@ -3,14 +3,14 @@
     package="com.seniorlibs.ipc">
 
     <permission
-        android:name="com.ryg.chapter_2.permission.ACCESS_BOOK_SERVICE"
+        android:name="com.seniorlibs.binder.permission.ACCESS_BOOK_SERVICE"
         android:protectionLevel="normal" />
     <permission
         android:name="com.ryg.PROVIDER"
         android:protectionLevel="normal" />
 
     <uses-permission android:name="com.ryg.PROVIDER" />
-    <uses-permission android:name="com.ryg.chapter_2.permission.ACCESS_BOOK_SERVICE" />
+    <uses-permission android:name="com.seniorlibs.binder.permission.ACCESS_BOOK_SERVICE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission
