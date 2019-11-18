@@ -23,12 +23,37 @@
         android:layout_height="wrap_content"
         android:text="open BookManagerActivity" />
 
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open MyAidlManagerActivity" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open ProviderActivity" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open TCPClientActivity" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open BinderPoolActivity" />
+
     <EditText
         android:id="@+id/editText1"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="A">
+
         <requestFocus />
     </EditText>
 </LinearLayout>

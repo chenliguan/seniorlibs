@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_messenger">MessengerActivity</string>
     <string name="title_activity_book_manager">BookManagerActivity</string>
+    <string name="title_activity_my_aidl_manager">MyAidlManagerActivity</string>
     <string name="title_activity_provider">ProviderActivity</string>
     <string name="title_activity_tcpserver">TCPServerActivity</string>
     <string name="title_activity_tcpclient">TCPClientActivity</string>

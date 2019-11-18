@@ -21,7 +21,6 @@ import android.util.Log;
 public class BookManagerService extends Service {
 
     private static final String TAG = "TAG-BookManagerService";
-
     /**
      * C1、加入权限验证功能，验证通过后才允许链接
      */
@@ -119,9 +118,6 @@ public class BookManagerService extends Service {
             return super.onTransact(code, data, reply, flags);
         }
 
-        /**
-         * CopyOnWriteArrayList<IOnNewBookArrivedListener>
-         */
 //        @Override
 //        public void registerListener(IOnNewBookArrivedListener listener) throws RemoteException {
 //            if(!mListenerList.contains(listener)){
@@ -143,17 +139,14 @@ public class BookManagerService extends Service {
 //            Log.i(TAG,"unregisterListener size:" + mListenerList.size());
 //        }
 
-        /**
-         * RemoteCallbackList<IOnNewBookArrivedListener>
-         */
         @Override
         public void registerListener(IOnNewBookArrivedListener listener) {
             // D2、注册监听器IOnNewBookArrivedListener
             mListenerList.register(listener);
 
-            final int N = mListenerList.beginBroadcast();
+            final int n = mListenerList.beginBroadcast();
             mListenerList.finishBroadcast();
-            Log.d(TAG, "registerListener, current size:" + N);
+            Log.d(TAG, "registerListener, current size:" + n);
         }
 
         @Override
@@ -163,9 +156,9 @@ public class BookManagerService extends Service {
             Log.d(TAG, success ? "unregister success." : "not found, can not unregister.");
 
             // D4、RemoteCallbackList并不是List，不能像操作List操作它，必须beginBroadcast()和finishBroadcast()配对使用
-            final int N = mListenerList.beginBroadcast();
+            final int n = mListenerList.beginBroadcast();
             mListenerList.finishBroadcast();
-            Log.d(TAG, "unregisterListener, current size:" + N);
+            Log.d(TAG, "unregisterListener, current size:" + n);
         }
     };
 
@@ -190,8 +183,8 @@ public class BookManagerService extends Service {
 
     private void setNewBookArrived(Book book) {
         mBookList.add(book);
-        final int N = mListenerList.beginBroadcast();
-        for (int i = 0; i < N; i++) {
+        final int n = mListenerList.beginBroadcast();
+        for (int i = 0; i < n; i++) {
             IOnNewBookArrivedListener listener = mListenerList.getBroadcastItem(i);
             if (listener != null) {
                 try {

@@ -8,10 +8,14 @@ import java.io.Serializable;
 
 import com.seniorlibs.binder.aidl.Book;
 import com.seniorlibs.binder.aidl.BookManagerActivity;
+import com.seniorlibs.binder.binderpool.BinderPoolActivity;
+import com.seniorlibs.binder.customaidl.MyAidlManagerActivity;
 import com.seniorlibs.binder.file.SecondActivity;
 import com.seniorlibs.binder.manager.UserManager;
 import com.seniorlibs.binder.messenger.MessengerActivity;
 import com.seniorlibs.binder.model.User;
+import com.seniorlibs.binder.provider.ProviderActivity;
+import com.seniorlibs.binder.socket.TCPClientActivity;
 import com.seniorlibs.binder.utils.MyConstants;
 import com.seniorlibs.binder.utils.MyUtils;
 
@@ -32,6 +36,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.button1).setOnClickListener(this);
         findViewById(R.id.button2).setOnClickListener(this);
         findViewById(R.id.button3).setOnClickListener(this);
+        findViewById(R.id.button4).setOnClickListener(this);
+        findViewById(R.id.button5).setOnClickListener(this);
+        findViewById(R.id.button6).setOnClickListener(this);
+        findViewById(R.id.button7).setOnClickListener(this);
     }
 
     @Override
@@ -61,6 +69,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Intent intent3 = new Intent();
                 intent3.setClass(MainActivity.this, BookManagerActivity.class);
                 startActivity(intent3);
+                break;
+            case R.id.button4:
+                Intent intent4 = new Intent();
+                intent4.setClass(MainActivity.this, MyAidlManagerActivity.class);
+                startActivity(intent4);
+            case R.id.button5:
+                Intent intent5 = new Intent();
+                intent5.setClass(MainActivity.this, ProviderActivity.class);
+                startActivity(intent5);
+                break;
+            case R.id.button6:
+                Intent intent6 = new Intent();
+                intent6.setClass(MainActivity.this, TCPClientActivity.class);
+                startActivity(intent6);
+                break;
+            case R.id.button7:
+                Intent intent7 = new Intent();
+                intent7.setClass(MainActivity.this, BinderPoolActivity.class);
+                startActivity(intent7);
                 break;
             default:
                 break;

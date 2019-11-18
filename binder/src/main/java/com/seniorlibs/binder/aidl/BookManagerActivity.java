@@ -54,8 +54,7 @@ public class BookManagerActivity extends Activity implements View.OnClickListene
         findViewById(R.id.button3).setOnClickListener(this);
 
         // A1、绑定服务
-        Intent intent = new Intent(this, BookManagerService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        rebindService();
     }
 
     /**
@@ -80,7 +79,7 @@ public class BookManagerActivity extends Activity implements View.OnClickListene
             mRemoteBookManager = null;
 
             // E1、解除绑定Binder方法二：在onServiceDisconnected()中重新绑定远程Service
-            // TODO:解除绑定，重新绑定远程Service
+            rebindService();
         }
     };
 
@@ -143,6 +142,7 @@ public class BookManagerActivity extends Activity implements View.OnClickListene
     /**
      * E1、解除绑定Binder方法一：给Binder设置Deathleciient监听
      * Deathleciient是一个接口，其内部只有一个方法binderDied，当Binder死亡的时候，系统就会回调binderDied方法
+     * binderDied方法在客户端的Binder线程池中被回调，所以在binderDied方法不能访问UI
      */
     private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
         @Override
@@ -157,9 +157,18 @@ public class BookManagerActivity extends Activity implements View.OnClickListene
             mRemoteBookManager.asBinder().unlinkToDeath(mDeathRecipient, 0);
             mRemoteBookManager = null;
 
-            // E2.2、TODO:这里重新绑定远程Service
+            // E2.2、重新绑定远程Service
+            rebindService();
         }
     };
+
+    /**
+     * 重新绑定远程Service
+     */
+    private void rebindService() {
+        Intent intent = new Intent(BookManagerActivity.this, BookManagerService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
 
     @Override
     protected void onDestroy() {
