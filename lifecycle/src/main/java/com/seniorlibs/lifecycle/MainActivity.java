@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.seniorlibs.lifecycle.flag.ActivityFlagA;
+import com.seniorlibs.lifecycle.service.TestActivity;
 import com.seniorlibs.lifecycle.singletask.ActivityA;
 import com.seniorlibs.lifecycle.singletask.ActivityC;
 
@@ -26,7 +27,16 @@ public class MainActivity extends Activity {
             String test = savedInstanceState.getString("extra_test");
             Log.d(TAG, "[onCreate]restore extra_test:" + test);
         }
-        findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
+
+        initEvent();
+    }
+
+    /**
+     * 初始化事件
+     */
+    private void initEvent() {
+        Button button1 = findViewById(R.id.button1);
+        button1.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -41,9 +51,9 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button button = (Button) findViewById(R.id.button2);
-        button.setText("测试singleTask，从下一个ActivityA开始，现在跳转ActivityA");
-        button.setOnClickListener(new View.OnClickListener() {
+        Button button2 = findViewById(R.id.button2);
+        button2.setText("测试singleTask，从下一个ActivityA开始，现在跳转ActivityA");
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -52,7 +62,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button button3 = (Button) findViewById(R.id.button3);
+        Button button3 = findViewById(R.id.button3);
         button3.setText("测试标志位，从下一个ActivityFlagA开始，现在跳转ActivityFlagA");
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +72,18 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        Button btnService = findViewById(R.id.btn_service);
+        btnService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, TestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

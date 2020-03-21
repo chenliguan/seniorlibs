@@ -33,4 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="测试标志位，从下一个ActivityFlagA开始，现在跳转ActivityFlagA" />
+
+    <Button
+        android:id="@+id/btn_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="启动测试服务Activity" />
 </LinearLayout>

@@ -13,7 +13,7 @@ public class BookProvider extends ContentProvider {
 
     public static final String TAG = "BookProvider";
 
-    public static final String AUTHORITY = "com.seniorlibs.binder.provider";
+    public static final String AUTHORITY = "com.seniorlibs.binder.BookProvider";
 
     public static final int BOOK_URI_CODE = 0;
     public static final int USER_URI_CODE = 1;

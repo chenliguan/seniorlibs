@@ -48,8 +48,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    api 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    api 'io.reactivex.rxjava2:rxjava:2.2.6'
+    api 'com.squareup.okhttp3:okhttp:3.12.1'
+    api 'com.squareup.retrofit2:retrofit:2.5.0'
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'io.reactivex.rxjava2:rxjava:2.2.8'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+
+    api 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 }
 
 println "baselib.gradle end"

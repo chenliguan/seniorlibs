@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,8 +20,33 @@
         </activity>
 
         <activity
-            android:name=".RxJavaActivity"
+            android:name=".retrofit.GankActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".rxjava.RxTestActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".rxjava.RxJavaActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".rxjava.RxCreateActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".rxjava.RxMapActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".rxjava.RxMergeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".rxjava.RxConditionsActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

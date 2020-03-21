@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 通用 -->
+    <color name="system_bg">#F6F6F6</color>
+    <color name="divider3_color">#ebebeb</color>
+
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+    <color name="transparent_10000000">#10000000</color>
+
+    <!-- 白色 -->
+    <color name="white_FFFFFFFF">#FFFFFF</color>
+    <color name="white_FFFFFF">#FFFFFF</color>
+    <color name="white_3DFFFFFF">#3DFFFFFF</color>
+
+    <!-- 黑色 -->
+    <color name="black_3D000000">#3d000000</color>
+    <color name="black_2B2B2B">#2b2b2b</color>
+    <color name="black_52000000">#52000000</color>
+    <color name="black_FF333333">#FF333333</color>
+    <color name="black_FF151515">#FF151515</color>
+
+    <!-- 灰色 -->
+    <color name="gray_8B8B8B">#8B8B8B</color>
+    <color name="gray_626262">#626262</color>
+    <color name="gray_FF999999">#FF999999</color>
+    <color name="gray_999999">#999999</color>
+    <color name="gray_333333">#333333</color>
+    <color name="gray_D0D0D0">#D0D0D0</color>
+
+    <!-- 黄橙色 -->
+    <color name="yellow_776245">#776245</color>
+
+</resources>

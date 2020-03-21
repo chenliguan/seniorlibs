@@ -121,13 +121,22 @@
             android:label="@string/title_activity_provider"
             android:screenOrientation="portrait" />
 
+<!--        <provider-->
+<!--            android:name=".provider.BookProvider"-->
+<!--            android:authorities="com.seniorlibs.binder.BookProvider"-->
+<!--            android:permission="com.seniorlibs.PROVIDER"-->
+<!--            android:process=":provider" >-->
+<!--        </provider>-->
+
         <provider
             android:name=".provider.BookProvider"
-            android:authorities="com.seniorlibs.binder.provider"
-            android:permission="com.seniorlibs.PROVIDER"
-            android:process=":provider" >
+            android:authorities="${applicationId}.BookProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
-
 
         <service
             android:name=".socket.TCPServerService"

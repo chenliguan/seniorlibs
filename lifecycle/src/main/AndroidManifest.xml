@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.seniorlibs.lifecycle">
@@ -20,6 +21,8 @@
             </intent-filter>
         </activity>
 
+
+        <!-- 四大组件-Activity -->
         <activity
             android:name=".SecondActivity"
             android:configChanges="screenLayout"
@@ -44,27 +47,27 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".singletask.ActivityA" />
-
-        <activity android:name=".singletask.ActivityB"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".singletask.ActivityC"
+        <activity
+            android:name=".singletask.ActivityB"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".singletask.ActivityC"
             android:launchMode="singleTask"
-            android:taskAffinity="com.task"/>
-
-        <activity android:name=".singletask.ActivityD"
+            android:taskAffinity="com.task" />
+        <activity
+            android:name=".singletask.ActivityD"
             android:launchMode="singleTask"
-            android:taskAffinity="com.task"/>
-
-
+            android:taskAffinity="com.task" />
         <activity android:name=".flag.ActivityFlagA" />
-
         <activity android:name=".flag.ActivityFlagB" />
-
         <activity android:name=".flag.ActivityFlagC" />
+
+
+        <!-- 四大组件-Service -->
+        <activity android:name=".service.TestActivity" />
+
+        <service android:name=".service.TestService" />
     </application>
 
 </manifest>
