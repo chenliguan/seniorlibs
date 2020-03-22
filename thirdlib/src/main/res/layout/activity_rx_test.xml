@@ -15,13 +15,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="rxCreate"
-        android:text="rxCreate"
+        android:text="创建操作符：rxCreate"
+        android:textAllCaps="false" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="rxMap"
+        android:text="变换操作符：rxMap"
+        android:textAllCaps="false" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="rxMerge"
+        android:text="组合/合并操作符：rxMerge"
+        android:textAllCaps="false" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="rxFunction"
+        android:text="功能性操作符：rxFunction"
+        android:textAllCaps="false" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="rxFilter"
+        android:text="过滤操作符：rxFilter"
         android:textAllCaps="false" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="rxConditions"
-        android:text="rxConditions"
+        android:text="条件/布尔操作符：rxConditions"
         android:textAllCaps="false" />
 </LinearLayout>

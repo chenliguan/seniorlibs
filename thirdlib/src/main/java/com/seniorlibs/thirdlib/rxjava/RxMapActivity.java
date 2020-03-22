@@ -26,7 +26,7 @@ import io.reactivex.functions.Function;
  * Version: 1.0.0
  * Date: 2020/3/15
  * Mender:
- * Modify:
+ * Modify: https://www.jianshu.com/p/904c14d253ba
  * Description: 变换操作符，对事件序列中的事件/整个事件序列进行加工处理（即变换），使得其转变成不同的事件/整个事件序列
  */
 public class RxMapActivity extends AppCompatActivity {

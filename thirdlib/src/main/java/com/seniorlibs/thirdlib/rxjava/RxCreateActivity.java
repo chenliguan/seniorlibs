@@ -27,7 +27,7 @@ import io.reactivex.functions.Consumer;
  * Version: 1.0.0
  * Date: 2020/3/15
  * Mender:
- * Modify:
+ * Modify: https://www.jianshu.com/p/e19f8ed863b1
  * Description: 创建操作符
  */
 public class RxCreateActivity extends AppCompatActivity {

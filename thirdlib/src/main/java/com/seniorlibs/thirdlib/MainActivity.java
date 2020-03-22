@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.seniorlibs.thirdlib.retrofit.GankActivity;
+import com.seniorlibs.thirdlib.rxjava.RxConditionsActivity;
 import com.seniorlibs.thirdlib.rxjava.RxCreateActivity;
+import com.seniorlibs.thirdlib.rxjava.RxFilterActivity;
+import com.seniorlibs.thirdlib.rxjava.RxFunctionActivity;
 import com.seniorlibs.thirdlib.rxjava.RxJavaActivity;
 import com.seniorlibs.thirdlib.rxjava.RxMapActivity;
 import com.seniorlibs.thirdlib.rxjava.RxMergeActivity;
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void textRxJava(View view) {
 //        RxTestActivity.actionStart(this);
-        RxMergeActivity.actionStart(this);
+        RxConditionsActivity.actionStart(this);
     }
 
     /**

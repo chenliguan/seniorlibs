@@ -36,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
  * Version: 1.0.0
  * Date: 2019/5/3
  * Mender:
- * Modify:
+ * Modify: https://www.jianshu.com/p/cd984dd5aae8
  * Description: 后台任务恢复启动闪屏页，区别于SplashActivity页面的神策统计
  */
 public class RxJavaActivity extends AppCompatActivity {

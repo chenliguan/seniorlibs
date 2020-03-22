@@ -44,6 +44,14 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".rxjava.RxFunctionActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".rxjava.RxFilterActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".rxjava.RxConditionsActivity"
             android:screenOrientation="portrait" />
 

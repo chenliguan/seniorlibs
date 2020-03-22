@@ -16,7 +16,7 @@ import org.openjdk.jol.info.ClassLayout;
  * Version: 1.0.0
  * Date: 2020/3/15
  * Mender:
- * Modify:
+ * Modify: https://www.jianshu.com/p/cd984dd5aae8
  * Description: RxJava测试
  */
 public class RxTestActivity extends AppCompatActivity {
@@ -48,7 +48,7 @@ public class RxTestActivity extends AppCompatActivity {
     }
 
     /**
-     * rxCreate
+     * 创建操作符：rxCreate
      *
      * @param view
      */
@@ -57,7 +57,43 @@ public class RxTestActivity extends AppCompatActivity {
     }
 
     /**
-     * rxConditions
+     * 变换操作符：rxMap
+     *
+     * @param view
+     */
+    public void rxMap(View view) {
+        RxMapActivity.actionStart(this);
+    }
+
+    /**
+     * 组合/合并操作符：rxMerge
+     *
+     * @param view
+     */
+    public void rxMerge(View view) {
+        RxMergeActivity.actionStart(this);
+    }
+
+    /**
+     * 功能性操作符：rxFunction
+     *
+     * @param view
+     */
+    public void rxFunction(View view) {
+        RxFunctionActivity.actionStart(this);
+    }
+
+    /**
+     * 过滤操作符：rxFilter
+     *
+     * @param view
+     */
+    public void rxFilter(View view) {
+        RxFilterActivity.actionStart(this);
+    }
+
+    /**
+     * 条件/布尔操作符：rxConditions
      *
      * @param view
      */

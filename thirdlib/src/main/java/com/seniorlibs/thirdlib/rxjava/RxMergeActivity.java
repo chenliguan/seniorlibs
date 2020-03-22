@@ -20,7 +20,7 @@ import io.reactivex.disposables.Disposable;
  * Version: 1.0.0
  * Date: 2020/3/15
  * Mender:
- * Modify:
+ * Modify: https://www.jianshu.com/p/c2a7c03da16d
  * Description: 组合/合并操作符
  */
 public class RxMergeActivity extends AppCompatActivity {
