@@ -1,2 +1,2 @@
 include ':app', ':lifecycle', ':event', ':baselib', ':thirdlib', ':view', ':gradles', ':systrace', ':aspectj', ':thread', ':algorithm', ':binder'
-include ':ipc'
+include ':ipc',':javalib'
