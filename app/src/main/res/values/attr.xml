@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 自定义通过?attr/:引用应用内的属性资源 -->
+    <attr name="fillColorAttr" format="color" />
+
+</resources>
