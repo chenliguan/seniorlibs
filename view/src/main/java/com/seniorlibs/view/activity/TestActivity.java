@@ -1,4 +1,4 @@
-package com.seniorlibs.view;
+package com.seniorlibs.view.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
+
+import com.seniorlibs.view.R;
 
 /**
  * 测试测量结果

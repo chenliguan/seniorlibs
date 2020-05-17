@@ -1,31 +1,47 @@
-<com.seniorlibs.view.ui.RevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.seniorlibs.view.widget.RevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:layout_marginTop="12dp"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/button1"
-        style="@style/AppTheme.Button.Green"
-        android:onClick="onButtonClick"
-        android:text="View基础-测试测量结果" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="button1"
+        android:text="View基础-测试测量结果"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button2"
-        style="@style/AppTheme.Button.Green"
-        android:onClick="onButtonClick"
-        android:text="继承于View和特定的ViewGroup(RelativeLayout)" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="button2"
+        android:text="继承于View和特定的ViewGroup(RelativeLayout)"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button3"
-        style="@style/AppTheme.Button.Green"
-        android:onClick="onButtonClick"
-        android:text="继承于ViewGroup派生特殊Layout-HorizontalScrollViewEx" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="button3"
+        android:text="继承于ViewGroup派生特殊Layout-HorizontalScrollViewEx"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button4"
-        style="@style/AppTheme.Button.Green"
-        android:onClick="onButtonClick"
-        android:text="RemoteViews" />
-</com.seniorlibs.view.ui.RevealLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="button4"
+        android:text="RemoteViews"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="button5"
+        android:text="App页面置灰"
+        android:textAllCaps="false" />
+</com.seniorlibs.view.widget.RevealLayout>

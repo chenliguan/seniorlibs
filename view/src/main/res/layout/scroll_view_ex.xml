@@ -5,7 +5,7 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
-    <com.seniorlibs.view.ui.HorizontalScrollViewEx
+    <com.seniorlibs.view.widget.HorizontalScrollViewEx
         android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />

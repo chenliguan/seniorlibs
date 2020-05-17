@@ -1,4 +1,4 @@
-package com.seniorlibs.view.ui;
+package com.seniorlibs.view.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;

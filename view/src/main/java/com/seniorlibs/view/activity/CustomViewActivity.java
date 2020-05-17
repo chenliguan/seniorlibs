@@ -1,7 +1,9 @@
-package com.seniorlibs.view;
+package com.seniorlibs.view.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.seniorlibs.view.R;
 
 /**
  * 测试自定义view

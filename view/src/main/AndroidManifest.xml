@@ -8,9 +8,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".activity.PutAshActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,17 +19,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TestActivity"
+            android:name=".activity.TestActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="standard" />
         <activity
-            android:name=".CustomViewActivity"
+            android:name=".activity.CustomViewActivity"
             android:configChanges="screenLayout"
             android:label="@string/title_scene_1"
             android:launchMode="standard" />
         <activity
-            android:name=".ScrollViewExActivity"
+            android:name=".activity.ScrollViewExActivity"
             android:configChanges="screenLayout"
             android:label="@string/app_name"
             android:launchMode="standard" />
@@ -53,7 +53,7 @@
         <activity
             android:name=".remoteviews.RemoteViewsMainActivity"
             android:label="@string/app_name_5"
-            android:process=":remote"/>
+            android:process=":remote" />
         <activity
             android:name=".remoteviews.ReceivePendingIntentFlagsActivity"
             android:label="@string/app_name_5" />
@@ -61,7 +61,7 @@
         <receiver android:name=".remoteviews.MyAppWidgetProvider">
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/appwidget_provider_info"></meta-data>
+                android:resource="@xml/appwidget_provider_info" />
 
             <intent-filter>
                 <action android:name="com.seniorlibs.view.remoteviews.action.CLICK" />

@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void textRxJava(View view) {
-//        RxTestActivity.actionStart(this);
-        RxConditionsActivity.actionStart(this);
+        RxTestActivity.actionStart(this);
     }
 
     /**

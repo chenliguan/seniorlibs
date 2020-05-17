@@ -12,7 +12,7 @@
         android:background="#ff0000"
         android:text="MovingButton" />
 
-    <com.seniorlibs.view.ui.TextButton
+    <com.seniorlibs.view.widget.TextButton
         android:id="@+id/button2"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -29,7 +29,7 @@
         android:text="A" >
     </EditText>
 
-    <com.seniorlibs.view.ui.MyViewGroup
+    <com.seniorlibs.view.widget.MyViewGroup
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/orange"/>

@@ -1,4 +1,4 @@
-package com.seniorlibs.view;
+package com.seniorlibs.view.activity;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -13,7 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.seniorlibs.view.ui.HorizontalScrollViewEx;
+
+import com.seniorlibs.view.R;
+import com.seniorlibs.view.widget.HorizontalScrollViewEx;
 import com.seniorlibs.view.utils.MyUtils;
 
 import java.util.ArrayList;
