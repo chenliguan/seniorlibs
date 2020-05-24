@@ -55,6 +55,8 @@
             android:name=".rxjava.RxConditionsActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".eventbus.EventBusActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

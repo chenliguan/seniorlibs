@@ -4,14 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.seniorlibs.thirdlib.eventbus.EventBusActivity;
 import com.seniorlibs.thirdlib.retrofit.GankActivity;
-import com.seniorlibs.thirdlib.rxjava.RxConditionsActivity;
-import com.seniorlibs.thirdlib.rxjava.RxCreateActivity;
-import com.seniorlibs.thirdlib.rxjava.RxFilterActivity;
-import com.seniorlibs.thirdlib.rxjava.RxFunctionActivity;
-import com.seniorlibs.thirdlib.rxjava.RxJavaActivity;
-import com.seniorlibs.thirdlib.rxjava.RxMapActivity;
-import com.seniorlibs.thirdlib.rxjava.RxMergeActivity;
 import com.seniorlibs.thirdlib.rxjava.RxTestActivity;
 
 import org.openjdk.jol.info.ClassLayout;
@@ -33,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
 
     /**
      * 测试RxJava
@@ -60,5 +55,15 @@ public class MainActivity extends AppCompatActivity {
     public void textClassLayout(View view) {
         Object lock = new Object();
         System.out.println(ClassLayout.parseInstance(lock).toPrintable());
+    }
+
+
+    /**
+     * 测试EventBus
+     *
+     * @param view
+     */
+    public void textEventBus(View view) {
+        EventBusActivity.actionStart(this);
     }
 }

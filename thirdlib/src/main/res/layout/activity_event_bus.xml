@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="1dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="1dp" />
+
+    <Button
+        android:id="@+id/btn_normal_post"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="normalPost"
+        android:text="normalPost"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_post_sticky"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="postSticky"
+        android:text="postSticky"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_normal_post"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_remove_sticky_event"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="removeStickyEvent"
+        android:text="removeStickyEvent"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_post_sticky"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_throw_exception"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="throwSubscriberException"
+        android:text="throwSubscriberException"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_remove_sticky_event"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_no_event"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="noEvent"
+        android:text="noEvent"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_throw_exception"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="register"
+        android:text="register"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_no_event"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_un_register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="unRegister"
+        android:text="unRegister"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_register"
+        tools:ignore="MissingConstraints" />
+
+</android.support.constraint.ConstraintLayout>

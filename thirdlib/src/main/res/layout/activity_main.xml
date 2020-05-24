@@ -24,4 +24,11 @@
         android:onClick="textClassLayout"
         android:text="textClassLayout"
         android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="textEventBus"
+        android:text="EventBus测试"
+        android:textAllCaps="false"/>
 </LinearLayout>
