@@ -32,7 +32,6 @@ android {
             maven { url "https://jitpack.io" }
         }
     }
-
 }
 
 dependencies {
@@ -56,8 +55,7 @@ dependencies {
     api 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
 
     api 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
-
-    api 'org.greenrobot:eventbus:3.2.0'
 }
+
 
 println "baselib.gradle end"

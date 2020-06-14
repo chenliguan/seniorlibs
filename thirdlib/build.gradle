@@ -10,6 +10,15 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // EventBus processor
+        javaCompileOptions {
+            // 注解处理器参数配置
+            annotationProcessorOptions {
+                // 配置参数名和值
+                arguments = [eventBusIndex: 'com.seniorlibs.thirdlib.MyEventBusIndex']
+            }
+        }
     }
 
     buildTypes {
@@ -36,4 +45,10 @@ dependencies {
     // openjdk-可以查看内存布局
     implementation 'org.openjdk.jol:jol-core:0.9'
     implementation 'com.android.support:appcompat-v7:28.0.0'
+
+    // EventBus
+    api 'org.greenrobot:eventbus:3.2.0'
+    // EventBus processor
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.2.0'
 }
+
