@@ -56,6 +56,8 @@ dependencies {
     api 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
 
     api 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+
+    api 'com.alibaba:fastjson:1.1.71.android'
 }
 
 

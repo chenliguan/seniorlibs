@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="1dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="1dp" />
+
+    <Button
+        android:id="@+id/btn_get_enqueue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:onClick="getEnqueue"
+        android:text="异步get"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_get_execute"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="getExecute"
+        android:text="同步get"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_get_enqueue"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_add_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="addHeader"
+        android:text="添加请求头"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_get_execute"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_post_form"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="postForm"
+        android:text="Post方式提交表单"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_header"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_post_string"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="postString"
+        android:text="Post方式提交String"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_post_form"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_post_file"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="postFile"
+        android:text="Post方式提交文件"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_post_string"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="cancel"
+        android:text="取消请求"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/btn_post_file"
+        tools:ignore="MissingConstraints" />
+
+</android.support.constraint.ConstraintLayout>

@@ -7,28 +7,35 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="textRxJava"
+        android:onClick="testRxJava"
         android:text="RxJava测试"
         android:textAllCaps="false"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="textRetrofit"
+        android:onClick="testOkHttp"
+        android:text="OkHttp测试"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testRetrofit"
         android:text="Retrofit测试"
         android:textAllCaps="false"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="textClassLayout"
-        android:text="textClassLayout"
+        android:onClick="testClassLayout"
+        android:text="testClassLayout"
         android:textAllCaps="false"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="textEventBus"
+        android:onClick="testEventBus"
         android:text="EventBus测试"
         android:textAllCaps="false"/>
 </LinearLayout>

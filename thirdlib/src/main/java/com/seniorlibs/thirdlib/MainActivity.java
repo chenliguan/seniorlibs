@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.seniorlibs.thirdlib.eventbus.EventBusActivity;
+import com.seniorlibs.thirdlib.okhttp.OkHttpActivity;
 import com.seniorlibs.thirdlib.retrofit.GankActivity;
 import com.seniorlibs.thirdlib.rxjava.RxTestActivity;
 
@@ -34,8 +35,17 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view
      */
-    public void textRxJava(View view) {
+    public void testRxJava(View view) {
         RxTestActivity.actionStart(this);
+    }
+
+    /**
+     * 测试OkHttp
+     *
+     * @param view
+     */
+    public void testOkHttp(View view) {
+        OkHttpActivity.actionStart(this);
     }
 
     /**
@@ -43,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view
      */
-    public void textRetrofit(View view) {
+    public void testRetrofit(View view) {
         GankActivity.actionStart(this);
     }
 
@@ -52,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view
      */
-    public void textClassLayout(View view) {
+    public void testClassLayout(View view) {
         Object lock = new Object();
         System.out.println(ClassLayout.parseInstance(lock).toPrintable());
     }
@@ -63,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view
      */
-    public void textEventBus(View view) {
+    public void testEventBus(View view) {
         EventBusActivity.actionStart(this);
     }
 }

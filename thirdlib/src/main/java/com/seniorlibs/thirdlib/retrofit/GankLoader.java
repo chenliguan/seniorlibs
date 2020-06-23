@@ -11,6 +11,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Url;
 
+/**
+ * 干货集中营api https://gank.io/api
+ */
 public class GankLoader extends ObjectLoader {
 
     private GankService mGankService;
