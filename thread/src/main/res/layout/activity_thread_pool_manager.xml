@@ -10,26 +10,26 @@
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="textRejectedExecution"
+            android:onClick="rejectedExecution"
             android:text="测试线程池的拒绝策略"
             android:textAllCaps="false"/>
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="flatMap"
-            android:text="flatMap()"
+            android:onClick="futureGet"
+            android:text="测试Future的get方法"
             android:textAllCaps="false"/>
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="concatMap"
-            android:text="concatMap()"
+            android:onClick="futureIsDone"
+            android:text="测试Future的isDone方法"
             android:textAllCaps="false"/>
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="buffer"
-            android:text="buffer()"
+            android:onClick="futureTask"
+            android:text="测试FutureTask"
             android:textAllCaps="false"/>
     </LinearLayout>
 </ScrollView>
