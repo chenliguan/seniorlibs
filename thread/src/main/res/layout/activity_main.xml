@@ -2,61 +2,53 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/BaseMatchParent"
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/BaseMatchWrap"
         android:orientation="vertical">
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            style="@style/BaseMatchWrap"
             android:onClick="synchronizedTest"
             android:text="synchronizedTest"
-            android:textSize="16sp" />
+            android:textAllCaps="false" />
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            style="@style/BaseMatchWrap"
             android:onClick="atomicIntegerTest"
             android:text="atomicIntegerTest"
-            android:textSize="16sp" />
+            android:textAllCaps="false" />
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            style="@style/BaseMatchWrap"
             android:onClick="testWriteArrayListError"
             android:text="testWriteArrayListError"
-            android:textSize="16sp" />
+            android:textAllCaps="false" />
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            style="@style/BaseMatchWrap"
             android:onClick="testAcquire"
             android:text="testAcquire"
-            android:textSize="16sp" />
+            android:textAllCaps="false" />
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            style="@style/BaseMatchWrap"
             android:onClick="testTryAcquire"
             android:text="testTryAcquire"
-            android:textSize="16sp" />
+            android:textAllCaps="false" />
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:onClick="textrejectedExecution"
-            android:text="textrejectedExecution"
-            android:textSize="16sp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            style="@style/BaseMatchWrap"
             android:onClick="testHashSet"
             android:text="testHashSet"
-            android:textSize="16sp" />
+            android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="textRejectedExecution"
+            android:text="测试线程池"
+            android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>

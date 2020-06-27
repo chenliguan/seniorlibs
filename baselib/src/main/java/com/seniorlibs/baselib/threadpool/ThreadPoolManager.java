@@ -39,7 +39,7 @@ public class ThreadPoolManager {
         };
 
         THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
-                TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(MAX_QUEUE_SIZE), threadFactory);
+                TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(MAX_QUEUE_SIZE), threadFactory, new ThreadPoolExecutor.AbortPolicy());
         THREAD_POOL_EXECUTOR.allowCoreThreadTimeOut(true);
     }
 

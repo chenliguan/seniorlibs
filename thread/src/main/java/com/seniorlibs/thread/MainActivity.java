@@ -9,9 +9,19 @@ import com.seniorlibs.thread.atomic.AtomicIntegerTest;
 import com.seniorlibs.thread.collection.ArrayListTest;
 import com.seniorlibs.thread.collection.HashSetTest;
 import com.seniorlibs.thread.synchronize.SynchronizedTest;
-import com.seniorlibs.thread.sysnctask.AsyncTaskTest;
+import com.seniorlibs.thread.threadpool.ThreadPoolManagerActivity;
 
+/**
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/6/26.
+ * Mender:
+ * Modify:
+ * Description: 测试线程
+ */
 public class MainActivity extends AppCompatActivity {
+
+    public final static String TAG = "seniorLibsThread";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +70,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 测试为什么线程池容量不够抛出异常rejectedExecution
-     *
-     * @param view
-     */
-    public void textrejectedExecution(View view) {
-        AsyncTaskTest.textrejectedExecution();
-    }
-
-    /**
      * 测试HashSet是否线程安全
      *
      * @param view
      */
     public void testHashSet(View view) {
         HashSetTest.main();
+    }
+
+    /**
+     * 测试线程池的拒绝策略：为什么线程池容量不够抛出异常rejectedExecution？
+     *
+     * @param view
+     */
+    public void textRejectedExecution(View view) {
+        ThreadPoolManagerActivity.actionStart(this);
     }
 }

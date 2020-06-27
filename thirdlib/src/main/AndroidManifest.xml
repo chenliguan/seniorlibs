@@ -8,10 +8,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:name"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:name">
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -21,47 +22,27 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".retrofit.GankActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".retrofit.GankActivity" />
 
-        <activity
-            android:name=".rxjava.RxTestActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxTestActivity" />
 
-        <activity
-            android:name=".rxjava.RxJavaActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxJavaActivity" />
 
-        <activity
-            android:name=".rxjava.RxCreateActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxCreateActivity" />
 
-        <activity
-            android:name=".rxjava.RxMapActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxMapActivity" />
 
-        <activity
-            android:name=".rxjava.RxMergeActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxMergeActivity" />
 
-        <activity
-            android:name=".rxjava.RxFunctionActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxFunctionActivity" />
 
-        <activity
-            android:name=".rxjava.RxFilterActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxFilterActivity" />
 
-        <activity
-            android:name=".rxjava.RxConditionsActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".rxjava.RxConditionsActivity" />
 
-        <activity android:name=".eventbus.EventBusActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".eventbus.EventBusActivity" />
 
-        <activity android:name=".okhttp.OkHttpActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".okhttp.OkHttpActivity" />
     </application>
 
 </manifest>
