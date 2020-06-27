@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.seniorlibs.baselib.threadpool.ThreadPoolManager;
 import com.seniorlibs.baselib.utils.LogUtils;
 import com.seniorlibs.thread.R;
 
@@ -75,12 +76,11 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-            LogUtils.d(ThreadPoolManagerActivity.TAG, "InterruptedException ：" + e.toString());
+            LogUtils.e(ThreadPoolManagerActivity.TAG, "InterruptedException ：" + e.toString());
         } catch (ExecutionException e) {
             e.printStackTrace();
-            LogUtils.d(ThreadPoolManagerActivity.TAG, "ExecutionException ：" + e.toString());
+            LogUtils.e(ThreadPoolManagerActivity.TAG, "ExecutionException ：" + e.toString());
         }
-        service.shutdown();
     }
 
     static class CallableTask implements Callable<Integer> {
@@ -116,12 +116,11 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
             future.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            LogUtils.d(ThreadPoolManagerActivity.TAG, "InterruptedException ：" + e.toString());
+            LogUtils.e(ThreadPoolManagerActivity.TAG, "InterruptedException ：" + e.toString());
         } catch (ExecutionException e) {
             e.printStackTrace();
-            LogUtils.d(ThreadPoolManagerActivity.TAG, "ExecutionException ：" + e.toString());
+            LogUtils.e(ThreadPoolManagerActivity.TAG, "ExecutionException ：" + e.toString());
         }
-        service.shutdown();
     }
 
     static class CallableTask1 implements Callable<Integer> {
@@ -152,10 +151,10 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
             LogUtils.d(ThreadPoolManagerActivity.TAG, "future.isDone() ：" + futureTask.isDone());
         } catch (InterruptedException e) {
             e.printStackTrace();
-            LogUtils.d(ThreadPoolManagerActivity.TAG, "InterruptedException ：" + e.toString());
+            LogUtils.e(ThreadPoolManagerActivity.TAG, "InterruptedException ：" + e.toString());
         } catch (ExecutionException e) {
             e.printStackTrace();
-            LogUtils.d(ThreadPoolManagerActivity.TAG, "ExecutionException ：" + e.toString());
+            LogUtils.e(ThreadPoolManagerActivity.TAG, "ExecutionException ：" + e.toString());
         }
 
         service.shutdown();
@@ -189,13 +188,6 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
         for (int i = 0; i < 1000; i++) {
             service.execute(new MyTask());
         }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                LogUtils.d(ThreadPoolManagerActivity.TAG,"service.shutdownNow().size()：" + service.shutdownNow().size());
-            }
-        }, 5000);
     }
 
     /**
@@ -261,6 +253,43 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
             }
             LogUtils.d(ThreadPoolManagerActivity.TAG, "new Random().nextInt()：" + new Random().nextInt()
                     + " Thread.currentThread().getName()：" + Thread.currentThread().getName());
+        }
+    }
+
+    /**
+     * execute
+     *
+     * @param view
+     */
+    public void execute(View view) {
+        for (int i = 0; i < 1000; i++) {
+            ThreadPoolManager.getCpuExecutor().execute(new MyTask());
+        }
+    }
+
+    /**
+     * shutdown
+     *
+     * @param view
+     */
+    public void shutdown(View view) {
+        // 调用shutdown()后线程池会在执行完正在执行的任务和队列中等待的任务后才彻底关闭
+        ThreadPoolManager.getCpuExecutor().shutdown();
+        /**
+         * 首先会给所有线程池中的线程发送 interrupt 中断信号，尝试中断这些任务的执行，
+         * 然后会将任务队列中正在等待的所有任务转移到一个List中并返回，我们可以根据List来进行一些补救的操作，例如记录在案并在后期重试；
+         * 如果被中断的线程对于中断信号不理不睬，那么依然有可能导致任务不会停止
+         */
+        ThreadPoolManager.getCpuExecutor().shutdownNow();
+        // isShutdown()：返回true仅仅代表线程池开始了关闭的流程；可能线程池中依然有线程在执行任务，队列里也可能有等待被执行的任务
+        LogUtils.d(ThreadPoolManagerActivity.TAG, "isShutdown()：" + ThreadPoolManager.getCpuExecutor().isShutdown());
+        // isTerminated()：检测线程池是否真正“终结”了，这不仅代表线程池已关闭，同时代表线程池中的所有任务都已经都执行完毕了
+        LogUtils.d(ThreadPoolManagerActivity.TAG, "isTerminated()：" + ThreadPoolManager.getCpuExecutor().isTerminated());
+        try {
+            // awaitTermination(5, TimeUnit.SECONDS)：当前线程会尝试等待一段指定的时间，如果在等待时间内，线程池已关闭并且内部的任务都执行完毕了，也就是说线程池真正“终结”了，那么方法就返回true，否则超时返回false
+            LogUtils.e(ThreadPoolManagerActivity.TAG, "awaitTermination()：" + ThreadPoolManager.getCpuExecutor().awaitTermination(5, TimeUnit.SECONDS));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

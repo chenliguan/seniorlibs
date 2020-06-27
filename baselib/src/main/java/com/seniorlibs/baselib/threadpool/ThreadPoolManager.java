@@ -2,6 +2,8 @@ package com.seniorlibs.baselib.threadpool;
 
 import android.support.annotation.NonNull;
 
+import com.seniorlibs.baselib.utils.LogUtils;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -88,6 +90,10 @@ public class ThreadPoolManager {
             }
         };
 
+        LogUtils.e("TagThreadPoolManagerActivity", "CPU_COUNT：" + CPU_COUNT);
+        LogUtils.e("TagThreadPoolManagerActivity", "CORE_POOL_SIZE：" + CORE_POOL_SIZE);
+        LogUtils.e("TagThreadPoolManagerActivity", "MAXIMUM_POOL_SIZE：" + MAXIMUM_POOL_SIZE);
+
         sCpuThreadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE,
                 KEEP_ALIVE_TIME, TimeUnit.SECONDS,
                 blockingQueue, sThreadFactory, rejectedExecutionHandler);
@@ -146,12 +152,5 @@ public class ThreadPoolManager {
      */
     public static ExecutorService getIoExecutor() {
         return sIoThreadPoolExecutor;
-    }
-
-    /**
-     * 获取无界阻塞队列
-     */
-    public BlockingQueue<Runnable> getQueue() {
-        return sIoThreadPoolExecutor.getQueue();
     }
 }

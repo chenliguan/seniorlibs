@@ -52,8 +52,14 @@
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="newScheduledThreadPool"
-            android:text="newScheduledThreadPool"
+            android:onClick="execute"
+            android:text="execute"
+            android:textAllCaps="false"/>
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="shutdown"
+            android:text="shutdown"
             android:textAllCaps="false"/>
     </LinearLayout>
 </ScrollView>
