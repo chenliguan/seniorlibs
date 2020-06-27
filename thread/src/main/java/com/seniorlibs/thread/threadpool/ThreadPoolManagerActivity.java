@@ -3,6 +3,7 @@ package com.seniorlibs.thread.threadpool;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -16,6 +17,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Author: 陈李冠
@@ -167,6 +170,97 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
                 sum += i;
             }
             return sum;
+        }
+    }
+
+    /**
+     * newSingleThreadExecutor
+     *
+     * D/TagThreadPoolManagerActivity: new Random().nextInt()：519240209 Thread.currentThread().getName()：pool-1-thread-1
+     * D/TagThreadPoolManagerActivity: new Random().nextInt()：-2126627150 Thread.currentThread().getName()：pool-1-thread-1
+     * D/TagThreadPoolManagerActivity: new Random().nextInt()：739670292 Thread.currentThread().getName()：pool-1-thread-1
+     * D/TagThreadPoolManagerActivity: new Random().nextInt()：-1463648297 Thread.currentThread().getName()：pool-1-thread-1
+     * D/TagThreadPoolManagerActivity: service.shutdownNow().size()：995
+     * D/TagThreadPoolManagerActivity: new Random().nextInt()：1246144705 Thread.currentThread().getName()：pool-1-thread-1
+     * @param view
+     */
+    public void newSingleThreadExecutor(View view) {
+        final ExecutorService service = Executors.newSingleThreadExecutor();
+        for (int i = 0; i < 1000; i++) {
+            service.execute(new MyTask());
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LogUtils.d(ThreadPoolManagerActivity.TAG,"service.shutdownNow().size()：" + service.shutdownNow().size());
+            }
+        }, 5000);
+    }
+
+    /**
+     * newFixedThreadPool
+     *
+     * @param view
+     */
+    public void newFixedThreadPool(View view) {
+        ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int i = 0; i < 1000; i++) {
+            service.execute(new MyTask());
+        }
+    }
+
+    /**
+     * newCachedThreadPool
+     *
+     * @param view
+     */
+    public void newCachedThreadPool(View view) {
+        ExecutorService service = Executors.newCachedThreadPool();
+        for (int i = 0; i < 1000; i++) {
+            service.execute(new MyTask());
+        }
+    }
+
+    /**
+     * newScheduledThreadPool
+     *
+     * @param view
+     */
+    public void newScheduledThreadPool(View view) {
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(10);
+        // 2秒后执行一次任务后就结束
+//        service.schedule(new MyTask(), 2, TimeUnit.SECONDS);
+
+        /**
+         * 以固定的频率执行任务: 第一次延时2秒后，每次延时3秒执行一次任务（以任务开始的时间为时间起点开始计时，时间到就开始执行第二次任务，而不管任务需要花多久执行）
+         *
+         * 06-27 15:52:02.386 new Random().nextInt()：-1912208461 Thread.currentThread().getName()：pool-1-thread-1
+         * 06-27 15:52:05.386 new Random().nextInt()：-1378944765 Thread.currentThread().getName()：pool-1-thread-1
+         * 06-27 15:52:08.385 new Random().nextInt()：-97809203 Thread.currentThread().getName()：pool-1-thread-2
+         */
+//        service.scheduleAtFixedRate(new MyTask(), 2, 3, TimeUnit.SECONDS);
+
+        /**
+         * 任务结束的时间为下一次循环的时间起点开始计时: 第一次延时2秒后，每次延时3+1秒执行一次任务（以任务结束的时间为下一次循环的时间起点开始计时）
+         *
+         * 06-27 15:58:24.535 new Random().nextInt()：779350097 Thread.currentThread().getName()：pool-1-thread-1
+         * 06-27 15:58:28.536 new Random().nextInt()：277033286 Thread.currentThread().getName()：pool-1-thread-1
+         * 06-27 15:58:32.538 new Random().nextInt()：-1066926209 Thread.currentThread().getName()：pool-1-thread-2
+         */
+        service.scheduleWithFixedDelay(new MyTask(), 2, 3, TimeUnit.SECONDS);
+    }
+
+    public class MyTask implements Runnable {
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            LogUtils.d(ThreadPoolManagerActivity.TAG, "new Random().nextInt()：" + new Random().nextInt()
+                    + " Thread.currentThread().getName()：" + Thread.currentThread().getName());
         }
     }
 }

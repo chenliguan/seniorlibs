@@ -31,5 +31,29 @@
             android:onClick="futureTask"
             android:text="测试FutureTask"
             android:textAllCaps="false"/>
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="newSingleThreadExecutor"
+            android:text="newSingleThreadExecutor"
+            android:textAllCaps="false"/>
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="newFixedThreadPool"
+            android:text="newFixedThreadPool"
+            android:textAllCaps="false"/>
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="newCachedThreadPool"
+            android:text="newCachedThreadPool"
+            android:textAllCaps="false"/>
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="newScheduledThreadPool"
+            android:text="newScheduledThreadPool"
+            android:textAllCaps="false"/>
     </LinearLayout>
 </ScrollView>
