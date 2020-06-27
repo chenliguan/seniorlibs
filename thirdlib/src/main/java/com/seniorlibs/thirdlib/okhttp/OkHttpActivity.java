@@ -169,7 +169,7 @@ public class OkHttpActivity extends AppCompatActivity {
      * @param view
      */
     public void getExecute(View view) {
-        ThreadPoolManager.getInstance().execute(new Runnable() {
+        ThreadPoolManager.getInstance().executeIo(new Runnable() {
             @Override
             public void run() {
                 // 2、创建一个Request对象

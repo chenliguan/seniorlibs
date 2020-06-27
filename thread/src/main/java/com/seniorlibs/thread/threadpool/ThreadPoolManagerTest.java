@@ -24,11 +24,6 @@ public class ThreadPoolManagerTest {
      * 为什么线程池容量不够抛出异常rejectedExecution?
      */
     public static void textRejectedExecution() {
-//        int CPU_COUNT = Runtime.getRuntime().availableProcessors(); // 可用的CPU个数
-//        int CORE_POOL_SIZE = CPU_COUNT + 1; // 核心线程数:5
-//        int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1; // 最大线程数量:10
-//        int KEEP_ALIVE = 1;// 闲置回收:1
-
         int CORE_POOL_SIZE = 1; // 核心线程数:5
         int MAXIMUM_POOL_SIZE = 1; // 最大线程数量:10
         int KEEP_ALIVE = 1;// 闲置回收:1
