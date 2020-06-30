@@ -126,7 +126,7 @@ public class OkHttpActivity extends AppCompatActivity {
 //        OkHttpClient mOkHttpClient = new OkHttpClient();
         // 2、创建一个Request对象
         final Request request = new Request.Builder()
-                .url("http://publicobject.com/helloworld.txt")
+                .url("https://m.so.com/jump?u=http://m.msxf.net/book/70789/index.html&m=edd316&from=m.so.com")
                 .tag(this)
                 .build();
         // 3、通过request的对象去构造一个Call对象，将你的请求封装成了任务，有execute()和cancel()等方法
@@ -141,6 +141,7 @@ public class OkHttpActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                // 最终的url：response.request().url()：https://m.msxf.cn/book/70789/index.html（意味着url进行了跳转）
                 LogUtils.d(TAG, "response.request().url()：" + response.request().url());
                 // onResponse执行的线程并不是UI线程
                 runOnUiThread(new Runnable() {
@@ -154,6 +155,8 @@ public class OkHttpActivity extends AppCompatActivity {
                             LogUtils.d(TAG, "response：" + response.body().string());
                             LogUtils.d(TAG, "cacheResponse：" + response.cacheResponse());
                             LogUtils.d(TAG, "networkResponse：" + response.networkResponse());
+                            // response.networkResponse().request().url()：https://m.msxf.cn/book/70789/index.html
+                            LogUtils.d(TAG, "response.networkResponse().request().url()：" + response.networkResponse().request().url());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
