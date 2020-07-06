@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.seniorlibs.thread.aqs.SemaphoreTest;
+import com.seniorlibs.thread.asynctask.AsyncTaskTest;
 import com.seniorlibs.thread.atomic.AtomicIntegerTest;
 import com.seniorlibs.thread.collection.ArrayListTest;
 import com.seniorlibs.thread.collection.HashSetTest;
@@ -85,5 +86,23 @@ public class MainActivity extends AppCompatActivity {
      */
     public void textRejectedExecution(View view) {
         ThreadPoolManagerActivity.actionStart(this);
+    }
+
+    /**
+     * 测试AsyncTask的execute()
+     *
+     * @param view
+     */
+    public void testExecute(View view) {
+        AsyncTaskTest.testExecute();
+    }
+
+    /**
+     * 测试AsyncTask的executeOnExecutor()
+     *
+     * @param view
+     */
+    public void testExecuteOnExecutor(View view) {
+        AsyncTaskTest.testExecuteOnExecutor();
     }
 }

@@ -50,5 +50,17 @@
             android:onClick="textRejectedExecution"
             android:text="测试线程池"
             android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testExecute"
+            android:text="测试AsyncTask的execute()"
+            android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testExecuteOnExecutor"
+            android:text="测试AsyncTask的executeOnExecutor()"
+            android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>
