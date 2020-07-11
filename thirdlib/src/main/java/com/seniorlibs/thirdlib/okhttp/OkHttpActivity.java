@@ -156,7 +156,9 @@ public class OkHttpActivity extends AppCompatActivity {
                             LogUtils.d(TAG, "cacheResponse：" + response.cacheResponse());
                             LogUtils.d(TAG, "networkResponse：" + response.networkResponse());
                             // response.networkResponse().request().url()：https://m.msxf.cn/book/70789/index.html
-                            LogUtils.d(TAG, "response.networkResponse().request().url()：" + response.networkResponse().request().url());
+                            if (response.networkResponse() != null && response.networkResponse().request() != null) {
+                                LogUtils.d(TAG, "response.networkResponse().request().url()：" + response.networkResponse().request().url());
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
