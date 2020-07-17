@@ -1,4 +1,4 @@
-package study.variable
+package com.seniorlibs.study.variable
 
 /*************************************** 类型 ******************************************/
 int x = 10
@@ -43,11 +43,13 @@ println str5.class  // class org.codehaus.groovy.runtime.GStringImpl
 def str6 = "str6：2 + 3 = ${2 + 3}"  // 可扩展做任意的表达式
 println str6   // str6：2 + 3 = 5
 
+// 返回值是方法最后一条语句的值（默认返回null）
+String echo(String msg) {
+    return msg    // 等同于： msg
+}
 def result = echo(str6)
 println "result：" + result + "， result.class：" + result.class // result：str6：2 + 3 = 5， result.class：class java.lang.String
-String echo(String msg) {
-    return msg;
-}
+
 
 /************************************* 字符串的方法 **************************************/
 def str7 = "groovy"
@@ -106,44 +108,140 @@ for (i in ['aa': 1, "bb": 2, "cc": 3]) {
 println "对map的循环：" + result3   // 对map的循环：45
 
 /************************************* 闭包（最重要） **************************************/
-// 闭包定义
-def clouser = { println "Hello groovy" }
+// 闭包定义：闭包实质上是一个groovy.lang.Closure类对象
+// 闭包的参数声明写在‘->’符号前，调用闭包的的标准写法是：闭包名.call(闭包参数)（为了和方法区分，建议），也可以用：闭包名(闭包参数)
+def clouser = {
+    println "Hello groovy"
+}
 clouser()       // Hello groovy
 clouser.call()  // Hello groovy
 
 // 闭包传参
-def clouser1 = { String name -> println "Hello ${name}" }
-clouser1('groovy1')  // Hello groovy1
+def clouser1 = { String name -> // 等同于：name ->
+    println "Hello ${name}"
+}
+clouser1.call('groovy1')  // Hello groovy1
 
 // 闭包传多个参
-def clouser2 = { String name, int age -> println "Hello ${name}, age ${age}" }
-clouser2('groovy2', 12)  // Hello groovy2, age 12
-
-// 闭包默认参数it（隐藏）
-def clouser3 = { println "Hello ${it}" }
-clouser3('groovy3')  // Hello groovy3
-
-// 闭包返回值（默认返回null）
-def clouser4 = { String name ->
-//    println "Hello ${name}" // 闭包返回值：null
-    return "Hello ${name}"   // 闭包返回值：Hello groovy4
+def clouser2 = { name, age ->
+    println "Hello ${name}, age ${age}"
 }
-def result5 = clouser4('groovy4')
+clouser2.call('groovy2', 12)  // Hello groovy2, age 12
+
+// 闭包对于单一存在的参数it默认隐藏，直接使用it
+def clouser3 = {    // 等同于： it ->
+    println "Hello ${it}"
+}
+clouser3.call('groovy3')  // Hello groovy3
+
+// 闭包总会返回一个值，返回值是闭包的最后一条语句的值（默认返回null）
+def clouser4 = { name ->
+//    println "Hello ${name}"
+    "Hello ${name}"  // 等同于：return "Hello ${name}"
+}
+def result5 = clouser4.call('groovy4') // 闭包返回值：null ； Hello groovy4
 println "闭包返回值：" + result5
 
+// 当闭包有多个参数
+def clouser5 = { name, age ->
+    "Hello $name, $age"
+}
+println clouser5.call('groovy5', 20)   // Hello groovy5, 20
 
-def calculate(int number) {
+// 如果闭包是唯一的一个参数，则闭包或方法参数所在的圆括号也可以省略
+def clouser7 = { age ->
+    age.call() + age.call()
+}
+println clouser7.call({ 'groovy7' })   // groovy7groovy7
+println clouser7.call() { 'groovy7' }             // groovy7groovy7
+println clouser7.call { 'groovy7' }               // groovy7groovy7 , 类同：repositories { mavenCentral() }
+
+println clouser7 {                                // groovy7groovy7 , 类同：repositories { mavenCentral() }
+    def name = "name"  // 等同于：name = "name"
+    age = "age"
+    str = "str"
+    'groovy6 ${name}'  // 必须在""里面
+    getEnv("yes") + " groovy6 ${name} ${age} ${str}  " // getEnv yes groovy6 name age str  getEnv yes groovy6 name age str
+}
+
+// 方法
+def getEnv(def params) {
+    def value = "getEnv ${params}"
+    return value
+}
+println getEnv("yes")    // getEnv yes
+
+
+// 当闭包作为闭包或方法的最后一个参数，可以将闭包从参数圆括号中提取出来接在最后
+def clouser8 = { name, age ->
+    age.call(name)
+}
+println clouser8.call('groovy8', { name -> name * 2 })   // groovy8groovy8
+println clouser8.call('groovy8') { name -> name * 2 }    // groovy8groovy8
+
+// 计算number的阶乘 1-->number
+def calculate1(int number) {
     def result = 1
     1.upto(number, { num ->
         result *= num
     })
+    return result
+}
+println "calculate1：" + calculate1(5)  // 120
 
-    1.upto(number) { num ->
+// 计算number的阶乘 number-->1
+def calculate2(int number) {
+    def result = 1
+    number.downto(1, { num ->
         result *= num
+    })
+//    number.downto(1) { num ->
+//        result *= num
+//    }
+    return result
+}
+println "calculate2：" + calculate2(5)  // 120
+
+// 累计求和（n - 1）
+def calculate3(int number) {
+    def result = 0
+    number.times { num ->
+        result += num
     }
     return result
 }
-println "calculate：" + calculate(8)
+println "calculate2：" + calculate3(5)  // 0 + 1 + 2 + 3 + 4 = 10
+
+// 字符串与闭包结合使用
+String str = "the 23"
+// each的遍历
+str.each { temp ->
+    println temp                 // t h e  2 3
+}
+println str.each {               // the 23
+
+}
+// find来查找符合条件的第一个
+println str.find { temp ->       // 2
+    temp.isNumber()
+}
+// findAll来查找符合条件的所有值，放在集合里
+println str.findAll { temp ->   // [2, 3]
+    temp.isNumber()
+}
+// any来查找只要符合就返回true
+println str.any { temp ->       // true
+    temp.isNumber()
+}
+// every来查找每一项符合才返回true
+println str.every() { temp ->  // false
+    temp.isNumber()
+}
+// collect遍历并放在集合里
+println str.collect() { temp ->  // [T, H, E,  , 2, 3]
+    temp.toUpperCase()
+}
+
 
 /***************************************** 类型 ********************************************/
 
