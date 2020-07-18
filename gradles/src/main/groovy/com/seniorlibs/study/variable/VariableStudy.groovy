@@ -378,7 +378,7 @@ class Teacher {
 
 // 定义了构造函数，直接赋值
 // def student = new Student("委托")
-// 没定义构造函数，指定属性和赋值
+// 没定义构造函数，必须指定属性:赋值
 def student = new Student(name: "委托1")
 def teacher = new Teacher(name: "委托2")
 println student.toString()   // My name is 委托1
@@ -387,24 +387,6 @@ println student.toString()   // My name is 委托1
 student.pretty.delegate = teacher
 student.pretty.resolveStrategy = Closure.DELEGATE_FIRST
 println student.toString()   // My name is 委托2
-
-
-/***************************************** 类 ********************************************/
-class People {
-    // 默认所有的类和方法都是public的，所有类的字段都是private的
-    List hobby = ['swim', 'play', 'watch TV']
-    String name = "Jerry"
-
-    int getAge() {
-        return 20
-    }
-}
-
-// 使用def接受类对象的引用：def people = new People()
-def people = new People()
-// 在类中声明的字段都默认会生成对应的setter,getter方法
-println "people.getHobby().get(0)：" + people.getHobby().get(0) // people.getHobby().get(0)：swim
-println "people.getName()：" + people.getName()  // people.getName()：Jerry
 
 
 /***************************************** 列表和数组 ********************************************/
@@ -593,4 +575,47 @@ def getRange(def num) {
 println getRange(5)  // 5-6
 
 
-/***************************************** 面向对象 ********************************************/
+/*************************************** 面向对象 ******************************************/
+
+/***************************************** 接口 ********************************************/
+// 接口不允许定义非public的方法
+interface Action {
+    int getAge()
+}
+
+/***************************************** 类 ********************************************/
+// 默认所有的类和方法都是public的，所有类的字段都是private的
+class People implements Action {
+    List hobby = ['swim', 'play', 'watch TV']
+    String name = "Jerry"
+
+    @Override
+    int getAge() {
+        return 20
+    }
+}
+
+// 使用def接受类对象的引用：def people = new People()
+def people = new People()
+// 在类中声明的字段都默认会生成对应的setter,getter方法，调用.属性实际是调用setter,getter方法
+println "people.hobby.get(0)：${people.hobby.get(0)}"  // people.hobby.get(0)：swim
+println "people.age：${people.age} people.name：${people.name} people.getName()：${people.getName()}"  // people.age：20 people.name：Jerry people.getName()：Jerry
+
+// 为类动态的添加一个属性，添加后重新new一个对象
+People.metaClass.sex = "male"
+def peopleMeta = new People()
+println peopleMeta.sex    // male
+peopleMeta.sex = "female"
+println peopleMeta.sex    // female
+
+// 为类动态的添加一个方法，添加后重新new一个对象
+People.metaClass.sexUpperCase = { sex.toUpperCase() }
+def peopleMeta1 = new People()
+println peopleMeta1.sexUpperCase()  // MALE
+
+// 为类动态的添加一个静态方法，添加后重新new一个对象（没定义构造函数，必须指定属性:赋值）
+People.metaClass.static.createPeople = { def hobby, def name ->
+    new People(hobby: hobby, name: name)
+}
+def peopleMeta2 = People.createPeople(['play'], 1)
+println peopleMeta2.hobby + peopleMeta2.name // [play, 1]
