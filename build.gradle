@@ -1,4 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: "common.gradle"
 
 buildscript {
     repositories {
@@ -37,3 +38,200 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+
+
+/************************************ project相关api ***************************************/
+
+/**
+ * 配置阶段开始前的监听回调
+ */
+this.beforeEvaluate {
+    println '配置阶段开始...beforeEvaluate'
+}
+// 等同于 beforeEvaluate
+this.gradle.beforeProject {
+    println '配置阶段开始...beforeEvaluate'
+}
+
+/**
+ * 配置阶段后的监听回调
+ */
+this.afterEvaluate {
+    println '配置阶段执行完毕...afterEvaluate'
+}
+// 等同于 afterEvaluate
+this.gradle.afterProject {
+    println '配置阶段执行完毕...afterProject'
+}
+// gradle执行完毕后的回调
+this.gradle.buildFinished {
+    println '执行阶段执行结束...buildFinished'
+}
+/**
+ > Configure project :gradles
+ 配置阶段开始...beforeEvaluate
+ 配置阶段执行完毕...afterProject
+
+ 执行阶段执行结束...buildFinished
+*/
+
+
+// 执行gradlew projects查看所有的project
+// 在android工程中，project就好像是android中的activity类一样，所有的lib、module都是一个project
+// 其中有一个根project，剩下的都是子project，每个project都有一个build.gradle文件，build.gradle文件也是project的标识
+/**
+ ------------------------------------------------------------
+ Root project
+ ------------------------------------------------------------
+
+ Root project 'seniorlibs'
+ +--- Project ':algorithm'
+ +--- Project ':app'
+ +--- Project ':aspectj'
+ +--- Project ':baselib'
+ +--- Project ':binder'
+ +--- Project ':event'
+ +--- Project ':gradles'
+ +--- Project ':ipc'
+ +--- Project ':javalib'
+ +--- Project ':lifecycle'
+ +--- Project ':systrace'
+ +--- Project ':thirdlib'
+ +--- Project ':thread'
+ \--- Project ':view'
+ */
+
+
+// 获取所有的project
+def getProjects() {
+    println '------------'
+    println 'Root Project'
+    println '------------'
+
+    // 在根project下的build.gradle中执行gradlew projects获取所有的project，实际调用的是this.getAllprojects()
+    // getAllprojects()返回所有的Project的set集合
+    this.getAllprojects().eachWithIndex { Project project, int index ->
+        if (index == 0) {
+            println "Root protject :'${project.name}'"
+        } else {
+            println "+--- project '${project.name}'"
+        }
+    }
+}
+// 调用方法
+getProjects()
+/**
+ ------------
+ Root Project
+ ------------
+ Root protject :'seniorlibs'
+ +--- project 'algorithm'
+ +--- project 'app'
+ +--- project 'aspectj'
+ +--- project 'baselib'
+ +--- project 'binder'
+ +--- project 'event'
+ +--- project 'gradles'
+ +--- project 'ipc'
+ +--- project 'javalib'
+ +--- project 'lifecycle'
+ +--- project 'systrace'
+ +--- project 'thirdlib'
+ +--- project 'thread'
+ +--- project 'view'
+*/
+
+// 打印所有的子project
+def getAllSubprojects() {
+    getSubprojects().each { project ->
+        println "---- ${project.name}"
+    }
+}
+// 调用方法
+getAllSubprojects()
+
+// 获取根project的名字，在根project中调用返回null。在子project下调用打印出父project的名字
+def getParentProjectName() {
+    def project = getParent()
+    if (project != null) {
+        println "父project的名字是: " + project.name
+    } else {
+        println '没有父project'
+    }
+}
+// 调用方法
+getParentProjectName()  // 没有父project
+
+// 获取根project的名字
+def getRootPro() {
+    println "根project的名字是：" + getRootProject().name
+}
+getRootPro()  // 根project的名字是：seniorlibs
+
+
+// 在根project对子project进行配置
+project("gradles") { Project project ->
+//    apply plugin: 'com.android.application'
+//    group 'com.seniorlibs.app'
+//    version '1.0.0'
+    dependencies {
+
+    }
+}
+
+project('gradles') { Project project ->
+    dependencies {
+
+    }
+}
+
+// 为所有的project进行统一的配置
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    group 'com.seniorlibs.gradles'
+    version '1.0.1'
+}
+println "gradles工程的group是： ${project('gradles').group}"  // gradles工程的group是： com.seniorlibs.gradles
+
+// 只对子project进行配置
+subprojects { Project project ->
+    group 'com.seniorlibs.subgradles'
+}
+println "gradles工程的group是： ${project('gradles').group}"  // gradles工程的group是： com.seniorlibs.subgradles
+
+
+/************************************ 属性相关api ***************************************/
+
+// common.gradle
+
+// 在gradle.properties中定义
+if (hasProperty('isLoadGradles') ? isLoadGradles.toBoolean() : false) {
+    println "gradle.properties定义的isLoadGradles：${isLoadGradles.toBoolean()}"  // gradle.properties定义的isLoadGradles：true
+}
+
+
+/************************************ 文件相关api ***************************************/
+// 打印文件路径
+println "the root file path is：" + getRootDir().absolute     // the root file path is：true
+println "the build file path is：" + getRootDir().absoluteFile   // the build file path is：D:\project\seniorlibs
+println "the project file path is：" + getRootDir().absolutePath // the project file path is：D:\project\seniorlibs
+
+// 获取文件内容
+//apply from: "common.gradle"
+println getContent("common.gradle")
+
+def getContent(String path) {
+    // 相对当前的project工程开始查找，如果是new file()需要传入绝对路径
+    def file = file(path)
+    return file.text
+}
+
+// 文件拷贝
+//copy {
+//    from file("build/outputs/apk/")
+//    into getRootProject().getBuildDir().path + "/apk/"
+//}

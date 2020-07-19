@@ -3,14 +3,17 @@ println "ipc.gradle start"
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner rootProject.ext.dependence.testRunner
     }
 
     buildTypes {

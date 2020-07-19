@@ -14,23 +14,32 @@ def y_1 = 3.1415
 println y_1.class // class java.math.BigDecimal
 
 /***************************************** 方法 ********************************************/
-// 无类型的函数定义，必须使用def关键字，方法如果不指定返回值，默认返回最后一行代码的值。
+// 无类型的函数定义，必须使用def关键字
 // java 如果指定了函数返回类型，则可不必加def关键字来定义函数
 int getNum(def num) {
+    // 方法如果不指定返回值，省略return默认返回最后一行代码的值
     num * num
 }
+
 def getNum1(def num) {
     num * num
 }
+
 def getNum2(num) {
     num * num
 }
 
-// Groovy中函数调用的时可以不加括号：println() --> println，println("text") --> println "text"
 println getNum(2)  // 4
 println getNum1(2) // 4
 println getNum2(2) // 4
-getNum2 2   // Result: 4
+
+// Groovy中方法调用时可省略括号：println() : println，println("text") --> println "text"
+println("text")          // text，等于：println "text"
+println "text"           // text
+
+getNum 2           // Result: 4，等于：getNum(4)
+println getNum(2)  // 4，等于：println(getNum(2))
+println(getNum(2)) // 4
 
 
 /*********************************** 字符串基础用法 **************************************/
@@ -476,7 +485,7 @@ def color = [red: 'ff0000', green: '00ff00', blue: '0000ff']
 // 类型
 println color.getClass() // class java.util.LinkedHashMap
 
-// 索引
+// 获取值，通过：索引或.
 println color['red']  // ff0000
 println color.red     // ff0000
 

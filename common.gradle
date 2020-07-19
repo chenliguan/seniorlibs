@@ -1,0 +1,25 @@
+// 用来存放应用中的所有配置变量，统一管理，而不再是每个moudle里都自己写一份，修改起来更加的方便
+
+ext {
+
+    android = [compileSdkVersion   : 28,
+               buildToolsVersion   : "28.0.3",
+               applicationId       : "com.seniorlibs.app",
+               minSdkVersion       : 15,
+               targetSdkVersion    : 28,
+               versionCode         : 1,
+               versionName         : "1.0.0",
+               multiDexEnabled     : true,
+               manifestPlaceholders: [UMENG_CHANNEL_VALUE: 'channel'],
+    ]
+
+    java = ['javaVersion': JavaVersion.VERSION_1_8,]
+
+    dependence = ['libSupportV7'  : 'com.android.support:appcompat-v7:28.0.0',
+                  'libSupportV4'  : 'com.android.support:support-v4:28.0.0',
+                  'recyclerviewV7': 'com.android.support:recyclerview-v7:28.0.0',
+                  'designV7'      : 'com.android.support:design:28.0.0',
+                  'libOkhttp'     : 'com.squareup.okhttp3:okhttp:3.12.1',
+                  'testRunner'    : 'android.support.test.runner.AndroidJUnitRunner',
+    ]
+}

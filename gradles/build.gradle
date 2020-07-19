@@ -7,6 +7,7 @@ dependencies {
     //gradle sdk
     compile gradleApi()
     //groovy sdk
+
     compile localGroovy()
 
     compile 'com.android.tools.build:gradle:3.2.0'
@@ -34,3 +35,16 @@ uploadArchives {
         }
     }
 }
+
+
+// 获取根project的名字，在根project中调用返回null,在子project下调用打印出父project的名字
+def getParentProjectName() {
+    def project = getParent()
+    if (project != null) {
+        println "父project的名字是: " + project.name
+    } else {
+        println '没有父project'
+    }
+}
+// 调用方法
+getParentProjectName()  // 父project的名字是: seniorlibs

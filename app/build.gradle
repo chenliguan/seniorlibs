@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.seniorlibs.app"
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner rootProject.ext.dependence.testRunner
     }
 
     signingConfigs {
@@ -78,8 +79,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility = rootProject.ext.java.javaVersion
+        targetCompatibility = rootProject.ext.java.javaVersion
     }
 
     repositories{flatDir{dirs 'libs'}}
@@ -104,3 +105,9 @@ def static releaseTime() {
 //    baseMethodMapFile = "${project.buildDir}/systrace_output/Debug.methodmap"
 //    blackListFile = "${project.projectDir}/blacklist/blackMethodList.txt"
 //}
+
+// 文件拷贝
+copy {
+    from file("build/outputs/apk/")
+    into getRootProject().getBuildDir().path + "/apk/"
+}
