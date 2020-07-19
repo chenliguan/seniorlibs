@@ -1,4 +1,4 @@
-package com.seniorlibs.study.variable
+package com.seniorlibs.study.basic
 
 /*************************************** 变量+类型 ******************************************/
 int x = 10
@@ -585,7 +585,7 @@ interface Action {
 
 /***************************************** 类 ********************************************/
 // 默认所有的类和方法都是public的，所有类的字段都是private的
-class People implements Action {
+class Peoples implements Action {
     List hobby = ['swim', 'play', 'watch TV']
     String name = "Jerry"
 
@@ -596,26 +596,28 @@ class People implements Action {
 }
 
 // 使用def接受类对象的引用：def people = new People()
-def people = new People()
+def people = new Peoples()
 // 在类中声明的字段都默认会生成对应的setter,getter方法，调用.属性实际是调用setter,getter方法
 println "people.hobby.get(0)：${people.hobby.get(0)}"  // people.hobby.get(0)：swim
 println "people.age：${people.age} people.name：${people.name} people.getName()：${people.getName()}"  // people.age：20 people.name：Jerry people.getName()：Jerry
 
 // 为类动态的添加一个属性，添加后重新new一个对象
-People.metaClass.sex = "male"
-def peopleMeta = new People()
+Peoples.metaClass.sex = "male"
+def peopleMeta = new Peoples()
 println peopleMeta.sex    // male
 peopleMeta.sex = "female"
 println peopleMeta.sex    // female
 
 // 为类动态的添加一个方法，添加后重新new一个对象
-People.metaClass.sexUpperCase = { sex.toUpperCase() }
-def peopleMeta1 = new People()
+Peoples.metaClass.sexUpperCase = {
+    sex.toUpperCase()
+}
+def peopleMeta1 = new Peoples()
 println peopleMeta1.sexUpperCase()  // MALE
 
 // 为类动态的添加一个静态方法，添加后重新new一个对象（没定义构造函数，必须指定属性:赋值）
-People.metaClass.static.createPeople = { def hobby, def name ->
-    new People(hobby: hobby, name: name)
+Peoples.metaClass.static.createPeople = { def hobby, def name ->
+    new Peoples(hobby: hobby, name: name)
 }
-def peopleMeta2 = People.createPeople(['play'], 1)
+def peopleMeta2 = Peoples.createPeople(['play'], 1)
 println peopleMeta2.hobby + peopleMeta2.name // [play, 1]
