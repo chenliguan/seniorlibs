@@ -203,7 +203,7 @@ println "闭包返回值：" + result5
 
 // 当闭包有多个参数
 def clouser5 = { name, age ->
-    "Hello $name, $age"
+    "Hello ${name}, ${age}"
 }
 println clouser5.call('groovy5', 20)   // Hello groovy5, 20
 

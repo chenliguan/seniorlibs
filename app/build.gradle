@@ -86,6 +86,7 @@ android {
     repositories{flatDir{dirs 'libs'}}
 }
 
+// 为应用程序添加第三方依赖
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 

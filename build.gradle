@@ -39,7 +39,6 @@ task clean(type: Delete) {
 }
 
 
-
 /************************************ project相关api ***************************************/
 
 /**
@@ -73,7 +72,7 @@ this.gradle.buildFinished {
  配置阶段执行完毕...afterProject
 
  执行阶段执行结束...buildFinished
-*/
+ */
 
 
 // 执行gradlew projects查看所有的project
@@ -139,7 +138,7 @@ getProjects()
  +--- project 'thirdlib'
  +--- project 'thread'
  +--- project 'view'
-*/
+ */
 
 // 打印所有的子project
 def getAllSubprojects() {
@@ -166,6 +165,7 @@ getParentProjectName()  // 没有父project
 def getRootPro() {
     println "根project的名字是：" + getRootProject().name
 }
+
 getRootPro()  // 根project的名字是：seniorlibs
 
 
@@ -210,7 +210,8 @@ println "gradles工程的group是： ${project('gradles').group}"  // gradles工
 
 // 在gradle.properties中定义
 if (hasProperty('isLoadGradles') ? isLoadGradles.toBoolean() : false) {
-    println "gradle.properties定义的isLoadGradles：${isLoadGradles.toBoolean()}"  // gradle.properties定义的isLoadGradles：true
+    println "gradle.properties定义的isLoadGradles：${isLoadGradles.toBoolean()}"
+    // gradle.properties定义的isLoadGradles：true
 }
 
 
@@ -256,14 +257,69 @@ buildscript { ScriptHandler scriptHandler ->
                 password = "amdin123"
             }
         }
-        // 配置多个
-        maven {
 
-        }
+        // 配置多个maven
+//        maven {
+//
+//        }
     }
 
     // 配置工程的插件依赖地址，等于：dependencies{}
     scriptHandler.dependencies {
 
+        classpath 'com.android.tools.build:gradle:3.2.0'
     }
+}
+
+/************************************ Task ***************************************/
+// Task创建方式一：直接通过task方法去创建
+// Task方法2个参数，第2个闭包：Task task(String name, Closure configureClosure);
+task helloTask {
+    println 'i am helloTask'  // i am helloTask
+}
+// 等于
+task(helloTask1 {
+    println 'i am helloTask1' // i am helloTask1
+})
+task(helloTask2, {
+    println 'i am helloTask2' // i am helloTask2
+})
+task(helloTask3) { it ->
+    println 'i am helloTask3' // i am helloTask3
+}
+
+// 以下是对比：1个参数为闭包
+// 1个参数：闭包，传入闭包
+def clouser = { name ->
+    "clouser " + name.call()
+}
+println clouser { '一个参数' }   // clouser 一个参数
+println clouser() { "一个参数" }  // clouser 一个参数
+println clouser({ it -> "一个参数" })  // clouser 一个参数
+println clouser.call({ it -> "一个参数" })  // clouser 一个参数
+
+// 1个参数：闭包，传入值
+def clouserValue = { name ->
+    "clouserValue ${name}"
+}
+println clouserValue('1个参数：闭包，传入值')  // louserValue 1个参数：闭包，传入值
+println clouserValue.call('1个参数：闭包，传入值')  // louserValue 1个参数：闭包，传入值
+
+// Task创建方式二： 通过TaskContainer创建Task
+this.tasks.create(name: "helloTaskCreate") {
+    println 'i am helloTaskCreate' // i am helloTaskCreate
+}
+
+
+// 配置Task：配置分组和描述信息
+// 推荐
+task helloTaskConfig(group: 'TestTask', description: 'task study') {
+    println 'is MyTask'
+}
+
+// 通过TaskContainer的create方法
+this.tasks.create(name: 'helloTaskConfig2') {
+    setGroup('TestTask')
+    setDescription('task study')
+    println 'is MyTask'
 }
