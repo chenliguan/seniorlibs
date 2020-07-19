@@ -235,3 +235,35 @@ def getContent(String path) {
 //    from file("build/outputs/apk/")
 //    into getRootProject().getBuildDir().path + "/apk/"
 //}
+
+/************************************ 依赖相关api ***************************************/
+// Project的方法，接收一个闭包，类型是ScriptHandler
+buildscript { ScriptHandler scriptHandler ->
+
+    // 配置工程的仓库地址，接收一个闭包，类型是RepositoryHandler。等于：repositories{}
+    scriptHandler.repositories { RepositoryHandler repositoryHandler ->
+        // 只是方法
+        repositoryHandler.jcenter()
+        repositoryHandler.mavenCentral()
+        repositoryHandler.mavenLocal()
+
+        // 配置工程的maven仓库地址，接收一个闭包，类型是MavenArtifactRepository
+        repositoryHandler.maven { MavenArtifactRepository mavenArtifactRepository ->
+            mavenArtifactRepository.name "youku"  // 等于：name("youku")，name "youku"
+            mavenArtifactRepository.url "https://localhost:8080/nexus/repositories"
+            mavenArtifactRepository.credentials {
+                username = "amdin"
+                password = "amdin123"
+            }
+        }
+        // 配置多个
+        maven {
+
+        }
+    }
+
+    // 配置工程的插件依赖地址，等于：dependencies{}
+    scriptHandler.dependencies {
+
+    }
+}
