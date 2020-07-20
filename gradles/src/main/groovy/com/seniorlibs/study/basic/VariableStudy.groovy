@@ -468,7 +468,7 @@ sortList.sort { def a, def b ->
 }
 println sortList  // [9, 8, 8, 6, 5, 3, 1, 0]
 
-// 遍历
+// 遍历-each闭包
 list.each { def element ->
     println("the element is ${element}")  // the element is 1  the element is 100
 }
@@ -476,6 +476,13 @@ list.eachWithIndex { def element, def index ->
     println("${index}:the element is ${element}") // 0:the element is 1  0:the element is 1
 }
 
+// 遍历-for
+for (item in list) {
+    println(item)  // 1 2 3 4 5
+}
+for (index in list.indices) {
+    println("item at $index is ${list[index]}")  // item at 0 is 1 ......
+}
 
 /***************************************** Map ********************************************/
 // Map：键-值表，其底层对应Java中的LinkedHashMap

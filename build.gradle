@@ -272,6 +272,8 @@ buildscript { ScriptHandler scriptHandler ->
 }
 
 /************************************ Task ***************************************/
+
+/******************************* Task创建和方法执行 *******************************/
 // Task创建方式一：直接通过task方法去创建
 // Task方法2个参数，第2个闭包：Task task(String name, Closure configureClosure);
 task helloTask {
@@ -323,3 +325,135 @@ this.tasks.create(name: 'helloTaskConfig2') {
     setDescription('task study')
     println 'is MyTask'
 }
+
+
+// 闭包中执行方法
+task helloTasks(group: 'TestTask', description: 'task study') {
+    println 'i am helloTasks'  // i am helloTasks
+    // 执行的最开始和最后做了一些事情
+    doFirst {
+        println "doFirst group is：" + description
+    }
+    doLast {
+        println "doLast group is：" + description
+    }
+}
+// 等于
+helloTasks.doFirst {
+    println "doFirst group is：" + description
+}
+helloTasks.doLast {
+    println "doLast group is：" + description
+}
+//doFirst group is：task study
+//doFirst group is：task study
+//doLast group is：task study
+//doLast group is：task study
+
+// 计算build执行时长
+//def startBuildTime, endBuildTime
+// afterEvaluate保证要找的task已经执行完毕
+//this.afterEvaluate { Project project ->
+//    def preBuildTask = project.tasks.getByName('preBuild')
+//    preBuildTask.doFirst {
+//        startBuildTime = System.currentTimeMillis()
+//        println "startBuildTime: ${startBuildTime}"
+//    }
+//
+//    def buildTask = project.tasks.getByName('build')
+//    buildTask.doLast {
+//        endBuildTime = System.currentTimeMillis()
+//        println "build time is: ${endBuildTime - startBuildTime}"
+//    }
+//}
+
+
+/******************************* Task添加依赖 *******************************/
+
+task taskX {
+    doLast {
+        println "taskX"
+    }
+}
+
+task taskY {
+    doLast {
+        println "taskY"
+    }
+}
+
+// 静态添加依赖：dependsOn依赖taskX和taskY，执行taskZ会同时执行taskX和taskY
+task taskZ(dependsOn: [taskX, taskY]) {
+    doLast {
+        println "taskZ"
+    }
+}
+// 等于
+//taskZ.dependsOn(taskX, taskY)
+
+
+// doLast还有一个等价的操作leftShift，leftShift还可以缩写为<<，下面的三种实现效果等价：
+task lib1 {
+    doLast {
+        println "lib1"
+    }
+}
+task lib2 << {
+    println "lib2"
+}
+task nolib << {
+    println "nolib"
+}
+// 动态添加依赖：dependsOn依赖lib1和lib2，执行tasklib会同时执行lib1和lib2
+task tasklib {
+    dependsOn this.tasks.findAll {
+        task -> return task.name.startsWith('lib')
+    }
+    doLast {
+        println "tasklib"
+    }
+}
+
+// 解析xml并把内容写到文件中
+task handleReleaseFile {
+    def srcFile = file("releases.xml")
+//    def destDir = new File(this.buildDir, "generated/release")
+    def destDir = new File("D:/project/seniorlibs/", "")
+    doLast {
+        println "开始解析对应的xml文件"
+        destDir.mkdir()
+        def releases = new XmlParser().parse(srcFile)
+        releases.release.each { releaseNode ->
+            // 解析每个release节点的内容
+            def name = releaseNode.versionName.text()
+            def versionCode = releaseNode.versionCode.text()
+            def versionInfo = releaseNode.versionInfo.text()
+            // 创建文件并写入节点数据
+            def destFile = new File(destDir, "release-${name}.text")
+            destFile.withWriter { writer ->
+                writer.write("${name} -> ${versionCode} -> ${versionInfo}")
+            }
+        }
+    }
+}
+// 测试依赖
+task handleReleaseFileTest(dependsOn: handleReleaseFile) {
+//    def dir = fileTree(this.buildDir.path + "generated/release/")
+    def dir = fileTree("D:/project/seniorlibs/" + "")
+    doLast {
+        dir.each {
+            println "file name is：" + it
+        }
+        println "输出完毕"
+    }
+}
+// 1.1.0 -> 110 -> App的第2个版本，上线了一些最基础核心的功能.
+
+
+
+
+
+
+
+
+
