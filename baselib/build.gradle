@@ -78,11 +78,6 @@ dependencies {
     // liveData
     api rootProject.ext.dependence.lifecycle_livedata
     api rootProject.ext.dependence.fragment
-
-    // test
-    testApi rootProject.ext.dependence.test_junit
-    androidTestApi rootProject.ext.dependence.test_runner
-    androidTestApi rootProject.ext.dependence.test_espresso
 }
 
 

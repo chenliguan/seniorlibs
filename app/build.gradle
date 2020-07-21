@@ -95,6 +95,11 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation project(':baselib')
+
+    // test
+    testImplementation rootProject.ext.dependence.test_junit
+    androidTestImplementation rootProject.ext.dependence.test_runner
+    androidTestImplementation rootProject.ext.dependence.test_espresso
 }
 
 def static releaseTime() {

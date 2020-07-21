@@ -39,4 +39,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':baselib')
+
+    // test
+    testImplementation rootProject.ext.dependence.test_junit
+    androidTestImplementation rootProject.ext.dependence.test_runner
+    androidTestImplementation rootProject.ext.dependence.test_espresso
 }
