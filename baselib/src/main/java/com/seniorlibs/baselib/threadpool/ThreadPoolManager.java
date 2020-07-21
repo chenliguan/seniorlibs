@@ -1,6 +1,6 @@
 package com.seniorlibs.baselib.threadpool;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.seniorlibs.baselib.utils.LogUtils;
 

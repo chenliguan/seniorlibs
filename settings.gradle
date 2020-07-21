@@ -1,2 +1,3 @@
-include ':app', ':lifecycle', ':event', ':baselib', ':thirdlib', ':view', ':gradles', ':systrace', ':aspectj', ':thread', ':algorithm', ':binder'
-include ':ipc',':javalib'
+include ':baselib'
+include ':aspectj', ':thread', ':algorithm', ':binder', ':app', ':lifecycle', ':event',  ':thirdlib', ':view', ':ipc', ':kotlinlib'
+include ':gradles', ':systrace'

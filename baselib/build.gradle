@@ -12,7 +12,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
-        testInstrumentationRunner rootProject.ext.dependence.testRunner
+        testInstrumentationRunner rootProject.ext.dependence.test_android_runner
     }
 
     buildTypes {
@@ -33,32 +33,56 @@ android {
             maven { url "https://jitpack.io" }
         }
     }
+
+    compileOptions {
+        sourceCompatibility = rootProject.ext.java.javaVersion
+        targetCompatibility = rootProject.ext.java.javaVersion
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api rootProject.ext.dependence.libSupportV7
-    api rootProject.ext.dependence.libSupportV4
-    api rootProject.ext.dependence.recyclerviewV7
-    api rootProject.ext.dependence.designV7
-    api 'com.android.support:support-annotations:28.0.0'
+    // appcompat
+    api rootProject.ext.dependence.appcompat_v7
+    api rootProject.ext.dependence.support_v4
+    api rootProject.ext.dependence.support_v13
+    api rootProject.ext.dependence.recyclerview_v7
+    api rootProject.ext.dependence.constraintlayout
+    api rootProject.ext.dependence.palette
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // glide
+    api rootProject.ext.dependence.glide
+    annotationProcessor rootProject.ext.dependence.glide_annotation
+    api rootProject.ext.dependence.imageloader
 
-    api rootProject.ext.dependence.libOkhttp
-    api 'com.squareup.okio:okio:2.2.2'
-    api 'com.squareup.retrofit2:retrofit:2.5.0'
-    api 'com.squareup.retrofit2:converter-gson:2.3.0'
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    api 'io.reactivex.rxjava2:rxjava:2.2.8'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+    // okhttp
+    api rootProject.ext.dependence.okhttp
+    api rootProject.ext.dependence.okio
+    // retrofit
+    api rootProject.ext.dependence.retrofit2
+    api rootProject.ext.dependence.retrofit2_gson
+    api rootProject.ext.dependence.retrofit2_rxjava2
+    // rxJava
+    api rootProject.ext.dependence.rxandroid2
+    api rootProject.ext.dependence.rxjava2
+    // fastJson
+    api rootProject.ext.dependence.fastjson
 
-    api 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    // lifecycle
+    api rootProject.ext.dependence.lifecycle_runtime
+    api rootProject.ext.dependence.lifecycle_common
+    api rootProject.ext.dependence.lifecycle_extensions
+    // viewModel
+    api rootProject.ext.dependence.lifecycle_viewmodel
+    // liveData
+    api rootProject.ext.dependence.lifecycle_livedata
+    api rootProject.ext.dependence.fragment
 
-    api 'com.alibaba:fastjson:1.1.71.android'
+    // test
+    testApi rootProject.ext.dependence.test_junit
+    androidTestApi rootProject.ext.dependence.test_runner
+    androidTestApi rootProject.ext.dependence.test_espresso
 }
 
 

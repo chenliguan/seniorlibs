@@ -13,7 +13,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
-        testInstrumentationRunner rootProject.ext.dependence.testRunner
+        testInstrumentationRunner rootProject.ext.dependence.test_android_runner
     }
 
     buildTypes {

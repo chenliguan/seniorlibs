@@ -11,7 +11,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
-        testInstrumentationRunner rootProject.ext.dependence.testRunner
+        testInstrumentationRunner rootProject.ext.dependence.test_android_runner
     }
 
     signingConfigs {
@@ -84,6 +84,10 @@ android {
     }
 
     repositories{flatDir{dirs 'libs'}}
+
+    packagingOptions {
+        exclude 'META-INF/proguard/coroutines.pro'
+    }
 }
 
 // 为应用程序添加第三方依赖

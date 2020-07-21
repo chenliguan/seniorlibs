@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+// kotlin
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -11,7 +14,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
-        testInstrumentationRunner rootProject.ext.dependence.testRunner
+        testInstrumentationRunner rootProject.ext.dependence.test_android_runner
         consumerProguardFiles 'consumer-rules.pro'
     }
 
@@ -22,14 +25,18 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = rootProject.ext.java.javaVersion
+        targetCompatibility = rootProject.ext.java.javaVersion
+    }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/coroutines.pro'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':baselib')
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

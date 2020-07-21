@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 import android.telephony.TelephonyManager;
 
 import java.lang.annotation.Retention;

@@ -1,6 +1,6 @@
 package com.seniorlibs.baselib.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;

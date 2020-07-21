@@ -19,7 +19,7 @@
             <option value="$PROJECT_DIR$/event" />
             <option value="$PROJECT_DIR$/gradles" />
             <option value="$PROJECT_DIR$/ipc" />
-            <option value="$PROJECT_DIR$/javalib" />
+            <option value="$PROJECT_DIR$/kotlinlib" />
             <option value="$PROJECT_DIR$/lifecycle" />
             <option value="$PROJECT_DIR$/systrace" />
             <option value="$PROJECT_DIR$/thirdlib" />

@@ -1,6 +1,6 @@
 package com.seniorlibs.aspectj;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import org.aspectj.lang.JoinPoint;
