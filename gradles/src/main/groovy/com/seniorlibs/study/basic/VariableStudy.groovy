@@ -625,7 +625,7 @@ peopleMeta.sex = "female"
 println peopleMeta.sex    // female
 
 // 为类动态的添加一个方法，添加后重新new一个对象
-Peoples.metaClass.sexUpperCase = {
+Peoples.metaClass.sexUpperCase = { def sex ->
     sex.toUpperCase()
 }
 def peopleMeta1 = new Peoples()

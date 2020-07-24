@@ -3,7 +3,10 @@ package com.read.javalib
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View
+import com.read.javalib.basic.BasicActivity
+import com.read.javalib.basic.CoroutineActivity
 import com.read.javalib.generic.GenericTest
+import com.seniorlibs.baselib.utils.LogUtils
 
 /**
  * Author: 陈李冠
@@ -16,7 +19,35 @@ import com.read.javalib.generic.GenericTest
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private const val TAG = "javalib + MainActivity"
+        const val TAG = "kotlin + MainActivity : "
+
+        fun companionFun(): String {
+            return "companionFun"
+        }
+
+        @JvmStatic
+        fun jvm() {
+
+        }
+    }
+
+    // 单例：静态内部类式
+    class Single private constructor() {
+        companion object {
+            fun get(): Single {
+                return Holder.instance
+            }
+        }
+
+        private object Holder {
+            val instance = Single()
+        }
+    }
+
+    object DemoManager {
+        fun a() {
+            LogUtils.d(TAG, "此时 object 表示 声明静态内部类")
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +60,26 @@ class MainActivity : AppCompatActivity() {
      *
      * @param view
      */
-    fun textGeneric(view: View?) {
+    fun testGeneric(view: View?) {
         val genericTest = GenericTest()
         genericTest.genericErasure()
+    }
+
+    /**
+     * kotlin简单测试
+     *
+     * @param view
+     */
+    fun testKotlin(view: View?) {
+        BasicActivity.actionStart(this)
+    }
+
+    /**
+     * 协程
+     *
+     * @param view
+     */
+    fun testCoroutine(view: View?) {
+        CoroutineActivity.actionStart(this)
     }
 }

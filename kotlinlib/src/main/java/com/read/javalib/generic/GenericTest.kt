@@ -1,5 +1,6 @@
 package com.read.javalib.generic
 
+import com.read.javalib.MainActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -12,6 +13,11 @@ import java.util.*
  * Description: 泛型测试类
  */
 class GenericTest {
+
+    companion object {
+        const val TAG = "javalib + GenericTest"
+    }
+
     /**
      * 泛型擦除
      */
@@ -93,22 +99,6 @@ class GenericTest {
 //    }
 
     /**
-     * 承载者
-     *
-     * @param <T>
-    </T> */
-    internal inner class Plate<T>(private var item: T) {
-        fun set(t: T) {
-            item = t
-        }
-
-        fun get(): T {
-            return item
-        }
-
-    }
-
-    /**
      * Lev 1
      */
     internal open inner class Food
@@ -132,7 +122,4 @@ class GenericTest {
      */
     internal inner class RedApple : Apple()
     internal inner class GreenApple : Apple()
-    companion object {
-        private const val TAG = "javalib + GenericTest"
-    }
 }

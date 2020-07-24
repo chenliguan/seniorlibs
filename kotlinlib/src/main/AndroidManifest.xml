@@ -18,6 +18,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".basic.BasicActivity" />
+
+        <activity
+            android:name=".basic.CoroutineActivity" />
     </application>
 
 </manifest>
