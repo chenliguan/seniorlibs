@@ -123,6 +123,7 @@ void printHello() {
         println("Java中的遍历");
     }
 }
+
 printHello()
 
 // Groovy中的遍历1
@@ -445,7 +446,9 @@ println "查 list.findAll { it > 0 }：" + list.findAll { it > 0 } // 查 list.f
 // any来查找只要符合就返回true
 println "查 list.any { it == 1 }：" + list.any { it == 1 } // 查 list.any { it == 1 }：true
 // every来查找每一项符合才返回true
-println "查 list.every { it == 1 }：" + list.every { it % 2 == 0 } // 查 list.every { it % 2 == 0 }：false
+println "查 list.every { it == 1 }：" + list.every {
+    it % 2 == 0
+} // 查 list.every { it % 2 == 0 }：false
 
 /**
  * 列表的排序
@@ -514,7 +517,8 @@ println colorResult  // isColor=true
 def colorResults = color.findAll { def entry ->
     entry.key instanceof String
 }.collect {
-    it.key.getClass() // [class java.lang.String, class java.lang.String, class java.lang.String, class java.lang.String, class java.lang.String, class java.lang.String]
+    it.key.getClass()
+    // [class java.lang.String, class java.lang.String, class java.lang.String, class java.lang.String, class java.lang.String, class java.lang.String]
 }
 println colorResults // [red:ff0000, green:00ff00, blue:0000ff, isColor:true, complex:[a:1, b:2]]
 
@@ -525,7 +529,7 @@ def group = color.groupBy { def entry ->
 println group  // [其他:[red:ff0000, green:00ff00, blue:0000ff, complex:[a:1, b:2], pink:ff00ff], 值非字符串:[isColor:true]]
 
 // 排序
-def sort = color.sort{ color1, color2 ->
+def sort = color.sort { color1, color2 ->
     color1.value == color2.value ? 0 : color1.value != color1.value ? 1 : -1
 }
 println sort.toMapString()  // [pink:ff00ff, complex:[a:1, b:2], isColor:true, blue:0000ff, green:00ff00, red:ff0000]
@@ -552,6 +556,17 @@ color.eachWithIndex { def key, def value, def index ->
 //4:the key is complex, the value is [a:1, b:2]
 //5:the key is pink, the value is ff00ff
 
+// map的key在：没加引号 == 加单引号 == 加双引号，都指字符串
+// 输出的是[a:b]而不是[b:b]，这是因为Groovy把Map的key都当作字符串处理了，即使没有加上单引号或者双引号。所以这里Map的key“a”并不是看作变量a，而是字符串"a"。
+def a = 'b'
+def m = [a: a]
+println m // 输出：[a:b]
+
+// 要让这里的a被看作变量，需要加上圆括号或者使用GString，如下所示：
+m = [(a):'a']
+println m // 输出：[b:a]
+m = ["$a":a]
+println m // 输出：[b:b]
 
 /***************************************** Range ********************************************/
 // Range：范围，它其实是List的一种拓展
@@ -566,14 +581,14 @@ println range.to // 8
 range.each { // 建议
     println it  // 5 6 7 8
 }
-for(i in range) {
+for (i in range) {
     println i  // 5 6 7 8
 }
 
 // switch
 def getRange(def num) {
     def result = "";
-    switch(num) {
+    switch (num) {
         case 3..<5:
             result = "3-5，不包含5"
             break
@@ -588,6 +603,7 @@ def getRange(def num) {
     }
     result
 }
+
 println getRange(5)  // 5-6
 
 
