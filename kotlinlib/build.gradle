@@ -18,6 +18,10 @@ android {
         consumerProguardFiles 'consumer-rules.pro'
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,6 +32,10 @@ android {
     compileOptions {
         sourceCompatibility = rootProject.ext.java.javaVersion
         targetCompatibility = rootProject.ext.java.javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = rootProject.ext.java.javaVersion
     }
 
     packagingOptions {

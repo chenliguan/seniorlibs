@@ -1,4 +1,4 @@
-package com.read.javalib.basic
+package com.read.kotlinlib.basic
 
 /**
  * Author: 陈李冠
@@ -18,7 +18,7 @@ inline class InlineName (val str : String) {
         get() = str.length
 
     fun greet() {
-        println("${TAG} InlineName, $str")
+        println("$TAG InlineName, $str")
         return
     }
 }

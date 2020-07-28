@@ -1,4 +1,4 @@
-package com.read.javalib;
+package com.read.kotlinlib;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.read.javalib.test", appContext.getPackageName());
+        assertEquals("com.read.kotlinlib.test", appContext.getPackageName());
     }
 }

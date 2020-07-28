@@ -1,11 +1,11 @@
-package com.read.javalib
+package com.read.kotlinlib
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View
-import com.read.javalib.basic.BasicActivity
-import com.read.javalib.basic.CoroutineActivity
-import com.read.javalib.generic.GenericTest
+import com.read.kotlinlib.basic.BasicActivity
+import com.read.kotlinlib.basic.CoroutineActivity
+import com.read.kotlinlib.generic.GenericTest
 import com.seniorlibs.baselib.utils.LogUtils
 
 /**
@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        BasicActivity.companionFun()
     }
 
     /**

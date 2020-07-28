@@ -1,13 +1,18 @@
-package com.read.javalib.basic
+package com.read.kotlinlib.basic
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
-import com.read.javalib.R
+import androidx.core.content.edit
+import androidx.core.view.doOnPreDraw
+import com.read.kotlinlib.R
 import com.seniorlibs.baselib.utils.LogUtils
 import kotlinx.coroutines.*
+import androidx.core.net.toUri as toUri
 
 /**
  * Author: 陈李冠
@@ -53,11 +58,18 @@ class CoroutineActivity : AppCompatActivity() {
         }
     }
 
+    lateinit var mRoot : View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine)
 
+        initView()
         testCoroutine()
+    }
+
+    private fun initView() {
+        mRoot = findViewById<View>(R.id.ll_coroutine)
     }
 
     /**
@@ -76,11 +88,10 @@ class CoroutineActivity : AppCompatActivity() {
 //        launch()
 //        launchRunBlocking()
 //        runBlockings()
-//        runBlockingJoin()
+        runBlockingJoin()
         coroutineScopes()
         suspendLaunch()
-
-
+        ktx()
     }
 
     /**
@@ -169,9 +180,11 @@ class CoroutineActivity : AppCompatActivity() {
             }
             LogUtils.d(TAG,"runBlocking Hello,")
         }
+        LogUtils.d(TAG,"runBlocking scope is over") // 这一行在内嵌 launch 执行完毕后才输出
 
 //        07-24 11:32:32.605 6189-6189/? D/kotlin + CoroutineActivity :: runBlocking Hello,
 //        07-24 11:32:33.606 6189-6189/? D/kotlin + CoroutineActivity :: runBlocking World!
+//        07-24 11:32:33.606 6189-6189/? D/kotlin + CoroutineActivity :: runBlocking scope is over
     }
 
     /**
@@ -235,12 +248,56 @@ class CoroutineActivity : AppCompatActivity() {
             }
             LogUtils.d(TAG,"suspendLaunch Hello,") // 这一行会在内嵌 launch 之前输出
         }
+
+        // 启动了 10 万个协程，并且在 5 秒钟后，每个协程都输出一个点
+//        runBlocking {
+//            repeat(100_000) { // 启动大量的协程
+//                launch {
+//                    delay(5000L)
+//                    LogUtils.d(TAG,".") // 这一行会在内嵌 launch 之前输出
+//                }
+//            }
+//        }
     }
 
-    // suspend 修饰的挂起函数
+    // suspend 修饰的挂起函数。挂起的含义就是：暂时切走，稍后在切回来；就是切换线程，不过在执行完毕会切换回来。
+    // 什么时候需要自定义挂起函数：耗时(特殊：等待)
+    // 怎么写挂起函数：添加关键字 suspend，内部代码使用 withContext 获取他挂起函数包裹
     private suspend fun doWord() {
-        delay(500L)
-        LogUtils.d(TAG, "suspendLaunch World!")
+        withContext(Dispatchers.IO){
+            delay(500L)
+            LogUtils.d(TAG, "suspendLaunch World!")
+        }
+    }
+
+    /**
+     * kotlin的core-ktx库
+     */
+    private fun ktx() {
+        // Kotlin创建一个Uri对象
+        var s = "https://www.google.com"
+        var uri = Uri.parse(s)
+        // 使用Android KTX + Kotlin之后
+        var ktx_uri = "https://www.google.com".toUri()
+
+        // Kotlin
+        getSharedPreferences("", Context.MODE_PRIVATE).edit().putString("", "").apply()
+        // Kotlin + Android KTX
+        getSharedPreferences("", Context.MODE_PRIVATE).edit {
+            putString("", "")
+        }
+
+        mRoot.viewTreeObserver.addOnPreDrawListener(
+                object : ViewTreeObserver.OnPreDrawListener {
+                    override fun onPreDraw(): Boolean {
+                        // ...
+                        return true
+                    }
+                })
+
+        mRoot.doOnPreDraw {
+            // ...
+        }
     }
 
 }

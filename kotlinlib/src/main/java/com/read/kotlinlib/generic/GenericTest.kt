@@ -1,6 +1,6 @@
-package com.read.javalib.generic
+package com.read.kotlinlib.generic
 
-import com.read.javalib.MainActivity
+import com.read.kotlinlib.MainActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -15,7 +15,7 @@ import java.util.*
 class GenericTest {
 
     companion object {
-        const val TAG = "javalib + GenericTest"
+        const val TAG = "kotlinlib + GenericTest"
     }
 
     /**
@@ -39,9 +39,9 @@ class GenericTest {
         LogUtils.d(TAG, "listString size:" + listString.size)
         LogUtils.d(TAG, "listInteger size:" + listInteger.size)
         /**
-         * 04-01 21:11:58.404 31723-31723/com.read.javalib D/javalib + GenericTest: list size:1
-         * 04-01 21:11:58.405 31723-31723/com.read.javalib D/javalib + GenericTest: listString size:1
-         * 04-01 21:11:58.405 31723-31723/com.read.javalib D/javalib + GenericTest: listInteger size:2
+         * 04-01 21:11:58.404 31723-31723/com.read.kotlinlib D/kotlinlib + GenericTest: list size:1
+         * 04-01 21:11:58.405 31723-31723/com.read.kotlinlib D/kotlinlib + GenericTest: listString size:1
+         * 04-01 21:11:58.405 31723-31723/com.read.kotlinlib D/kotlinlib + GenericTest: listInteger size:2
          */
     }
 

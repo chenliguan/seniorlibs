@@ -1,4 +1,4 @@
-package com.read.javalib;
+package com.read.kotlinlib;
 
 import org.junit.Test;
 
