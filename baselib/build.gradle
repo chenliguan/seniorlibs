@@ -51,6 +51,10 @@ dependencies {
     api rootProject.ext.dependence.constraintlayout
     api rootProject.ext.dependence.palette
 
+    // kotlin
+    api rootProject.dependence.kotlin_stdlib_jdk7
+    api rootProject.dependence.kotlin_core
+
     // glide
     api rootProject.ext.dependence.glide
     annotationProcessor rootProject.ext.dependence.glide_annotation

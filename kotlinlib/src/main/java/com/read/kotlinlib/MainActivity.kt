@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View
 import com.read.kotlinlib.basic.BasicActivity
 import com.read.kotlinlib.basic.CoroutineActivity
+import com.read.kotlinlib.basic.FlowFunActivity
 import com.read.kotlinlib.generic.GenericTest
 import com.seniorlibs.baselib.utils.LogUtils
 
@@ -83,5 +84,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun testCoroutine(view: View?) {
         CoroutineActivity.actionStart(this)
+    }
+
+    /**
+     * 协程
+     *
+     * @param view
+     */
+    fun testFlow(view: View?) {
+        FlowFunActivity.actionStart(this)
     }
 }

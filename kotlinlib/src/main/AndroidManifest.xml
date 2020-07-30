@@ -23,6 +23,9 @@
 
         <activity
             android:name=".basic.CoroutineActivity" />
+
+        <activity
+            android:name=".basic.FlowFunActivity" />
     </application>
 
 </manifest>
