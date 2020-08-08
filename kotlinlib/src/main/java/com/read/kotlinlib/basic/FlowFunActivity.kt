@@ -9,7 +9,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.read.kotlinlib.R
-import com.read.kotlinlib.basic.FlowFunActivity.Companion.TAG
 import com.seniorlibs.baselib.utils.LogUtils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -93,10 +92,32 @@ class FlowFunActivity : AppCompatActivity() {
      * 测试高阶函数
      */
     private fun testFun() {
+        // setOnClickListener的三种写法
+//        onClick()
         // block闭包
 //        testBlock()
         // 高阶函数
-//        higherFun()
+        higherFun()
+    }
+
+    /**
+     * setOnClickListener的三种写法
+     */
+    private fun onClick() {
+        // Kotlin 设置点击
+        mRoot.setOnClickListener(fun(view: View?) {
+
+        })
+
+        mRoot.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+
+            }
+        })
+
+        mRoot.setOnClickListener {
+
+        }
     }
 
     /**
@@ -279,53 +300,87 @@ class FlowFunActivity : AppCompatActivity() {
 
         // 改进方法
         fun newInstance1(id: Int, name: String, age: Int) = Fragment().apply {
-            val fragment = Fragment()
+            val fragment = this
             fragment.toString()
             // ......
         }
 
         // 5、T.also函数：参数block(this)函数传入了自身对象this。故而这个函数的作用是用block函数调用自身对象即是it，最后在返回自身对象
-        // 实例说明其和T.apply的区别
-        "kotlin".also {
+        // 实例说明其和T.apply的区别（输出结果是相同的）
+        var alsoVar = "kotlin"
+        alsoVar.also {
+            it.plus("-java")
             LogUtils.d(TAG, "T.also 结果：${it.plus("-java")}")
+            LogUtils.d(TAG, "T.also 结果：${it}")
         }.also {
+            it.plus("-php")
             LogUtils.d(TAG, "T.also 结果：${it.plus("-php")}")
+            LogUtils.d(TAG, "T.also 结果：${this}")
+            alsoVar = it.plus("-赋值")
         }
-        "kotlin".apply {
-            LogUtils.d(TAG, "T.apply 结果：${this.plus("-java")}")
-        }.apply {
-            LogUtils.d(TAG, "T.apply 结果：${this.plus("-php")}")
-        }
-//        kotlin + FlowActivity :: T.also 结果：kotlin-java  // 输出结果是相同的
-//        kotlin + FlowActivity :: T.also 结果：kotlin-php
+        LogUtils.d(TAG, "T.also 结果：${alsoVar}")
 //        kotlin + FlowActivity :: T.apply 结果：kotlin-java
+//        kotlin + FlowActivity :: T.apply 结果：kotlin
 //        kotlin + FlowActivity :: T.apply 结果：kotlin-php
+//        kotlin + FlowActivity :: T.apply 结果：kotlin
+//        kotlin + FlowActivity :: T.apply 结果：kotlin-赋值
 
-        // 6、T.let函数：和T.also一样，函数中的参数block函数传入了自身对象；但是该函数返回了转换后的自身对象
+        var applyVar = "kotlin"
+        applyVar.apply {
+            this.plus("-java")
+            LogUtils.d(TAG, "T.apply 结果：${this.plus("-java")}")
+            LogUtils.d(TAG, "T.apply 结果：${this}")
+        }.apply {
+            this.plus("-php")
+            LogUtils.d(TAG, "T.apply 结果：${this.plus("-php")}")
+            LogUtils.d(TAG, "T.apply 结果：${this}")
+            applyVar = this.plus("-赋值")
+        }
+        LogUtils.d(TAG, "T.apply 结果：${applyVar}")
+//        kotlin + FlowActivity :: T.apply 结果：kotlin-java
+//        kotlin + FlowActivity :: T.apply 结果：kotlin
+//        kotlin + FlowActivity :: T.apply 结果：kotlin-php
+//        kotlin + FlowActivity :: T.apply 结果：kotlin
+//        kotlin + FlowActivity :: T.apply 结果：kotlin-赋值
+
+        // 6、T.let和T.also一样，函数中的参数是用block(this)函数传入了自身对象；但是该函数返回了转换后的自身对象block(this)
         "kotlin".let {
-            LogUtils.d(TAG, "T.apply 原字符串：$it")            // kotlin
+            LogUtils.d(TAG, "T.apply 原字符串：$it")
             it.reversed()
         }.let {
-            LogUtils.d(TAG, "T.apply 反转字符串后的值：$it")    // niltok
+            LogUtils.d(TAG, "T.apply 反转字符串后的值：$it")
             it.plus("-java")
         }.let {
-            LogUtils.d(TAG, "T.apply 新的字符串：$it")          // niltok-java
+            LogUtils.d(TAG, "T.apply 新的字符串：$it")
         }
 //        kotlin + FlowActivity :: T.apply 原字符串：kotlin
 //        kotlin + FlowActivity :: T.apply 反转字符串后的值：niltok
 //        kotlin + FlowActivity :: T.apply 新的字符串：niltok-java
         "kotlin".also {
-            LogUtils.d(TAG, "T.also 原字符串：$it")             // kotlin
+            LogUtils.d(TAG, "T.also 原字符串：$it")
             it.reversed()
         }.also {
-            LogUtils.d(TAG, "T.also 反转字符串后的值：$it")     // kotlin
+            LogUtils.d(TAG, "T.also 反转字符串后的值：$it")
             it.plus("-java")
         }.also {
-            LogUtils.d(TAG, "T.also 新的字符串：$it")          // kotlin
+            LogUtils.d(TAG, "T.also 新的字符串：$it")
         }
 //        kotlin + FlowActivity :: T.also 原字符串：kotlin
 //        kotlin + FlowActivity :: T.also 反转字符串后的值：kotlin
 //        kotlin + FlowActivity :: T.also 新的字符串：kotlin
+        "kotlin".apply {
+            LogUtils.d(TAG, "T.apply 原字符串：$this")
+            this.reversed()
+        }.apply {
+            LogUtils.d(TAG, "T.apply 反转字符串后的值：$this")
+            this.plus("-java")
+        }.apply {
+            LogUtils.d(TAG, "T.apply 新的字符串：$this")
+        }
+//        kotlin + FlowActivity :: T.apply 原字符串：kotlin
+//        kotlin + FlowActivity :: T.apply 反转字符串后的值：kotlin
+//        kotlin + FlowActivity :: T.apply 新的字符串：kotlin
+
 
         // 7、T.takeIf()函数：传入一个你希望的一个条件，如果对象符合你的条件则返回自身，反之则返回null
         val str7 = "kotlin"
@@ -356,9 +411,10 @@ class FlowFunActivity : AppCompatActivity() {
 
     /**
      * 1、将函数用作函数参数的情况的高阶函数（sumBy函数的源码）
-     * 函数返回一个Int类型的值。并且接受了一个block()函数作为该函数的参数。其中block()接受一个Char类型的参数，并且返回一个Int类型的值
+     * 函数返回一个Int类型的值。并且接受了一个block()函数作为该函数的参数。
+     * 其中block()接受一个Char类型的参数，并且返回一个Int类型的值，默认值是一个返回值为1的代码块：{1}
      */
-    fun CharSequence.sumBy(block: (char: Char) -> Int): Int {  // == CharSequence.sumBy(selector: (Char) -> Int): Int {
+    fun CharSequence.sumBy(block: (char: Char) -> Int = {1}): Int {  // == CharSequence.sumBy(selector: (Char) -> Int): Int {
         // 定义一个sum变量，并且循环这个字符串，循环一次调用一次selector()函数并加上sum。其中this关键字代表字符串本身
         var sum: Int = 0
         for (element in this) {
@@ -400,7 +456,7 @@ class FlowFunActivity : AppCompatActivity() {
         return this
     }
 
-    // 6、T.let和T.also一样，函数中的参数block函数传入了自身对象；但是该函数返回了转换后的自身对象
+    // 6、T.let和T.also一样，函数中的参数是用block(this)函数传入了自身对象；但是该函数返回了转换后的自身对象block(this)
     fun <T, R> T.let(block: (T) -> R): R {
         return block(this)
     }
@@ -433,7 +489,7 @@ class FlowFunActivity : AppCompatActivity() {
         // 表示多个值
 //        multiValue()
         // sequence：序列
-//        sequence()
+        sequence()
         // 挂起函数 suspend
 //        suspend()
         // 流
@@ -469,15 +525,15 @@ class FlowFunActivity : AppCompatActivity() {
         fun simple(): Sequence<Int> = sequence { // 序列构建器
             for (i in 1..3) {
                 Thread.sleep(100) // 假装我们正在计算
-                yield(i) // 向正在构建的[Iterator]生成一个值，并挂起，直到产生下一个值
+                yield(i + 10) // 向正在构建的[Iterator]生成一个值，并挂起，直到产生下一个值
             }
         }
         simple().forEach { value ->
             LogUtils.d(TAG, "sequence：${value}")
         }
-//        kotlin + FlowActivity :: sequence：1
-//        kotlin + FlowActivity :: sequence：2
-//        kotlin + FlowActivity :: sequence：3
+//        kotlin + FlowActivity :: sequence：11
+//        kotlin + FlowActivity :: sequence：12
+//        kotlin + FlowActivity :: sequence：13
     }
 
     /**
@@ -616,7 +672,10 @@ class FlowFunActivity : AppCompatActivity() {
             val handler = CoroutineExceptionHandler { _, exception ->
                 LogUtils.d(TAG, "CoroutineExceptionHandler got $exception with suppressed ${exception.suppressed.contentToString()}")
             }
-            val job = GlobalScope.launch(handler) {
+            val job = GlobalScope.launch(CoroutineExceptionHandler { _, exception ->
+                LogUtils.d(TAG, "CoroutineExceptionHandler got $exception with suppressed ${exception.suppressed.contentToString()}")
+            }) {
+//            val job = GlobalScope.launch(handler) {
                 launch {
                     try {
                         delay(Long.MAX_VALUE) // 当另一个同级的协程因 IOException  失败时，它将被取消
@@ -706,8 +765,9 @@ class FlowFunActivity : AppCompatActivity() {
     }
 
     /**
-     * 构建通道生产者：将生产者抽象成一个函数，并且使通道作为它的参数
+     * 构建通道生产者：将生产者抽象成一个函数，并且使通道作为它的参数（常用produce）
      */
+    @ExperimentalCoroutinesApi
     private fun channelProduce() {
         fun CoroutineScope.produceSquares(): ReceiveChannel<Int> = produce {
             for (x in 1..5) {
@@ -716,7 +776,9 @@ class FlowFunActivity : AppCompatActivity() {
         }
         GlobalScope.launch(Dispatchers.IO) {
             val squares = produceSquares()
-            squares.consumeEach { LogUtils.d(TAG, "it：${it}") }
+            squares.consumeEach {
+                LogUtils.d(TAG, "it：${it}")
+            }
         }
 //        07-30 17:21:21.793 8346-8425/? D/kotlin + FlowActivity :: it：1
 //        07-30 17:21:21.793 8346-8425/? D/kotlin + FlowActivity :: it：4

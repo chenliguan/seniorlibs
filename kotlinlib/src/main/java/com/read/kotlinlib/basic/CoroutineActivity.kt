@@ -93,7 +93,7 @@ class CoroutineActivity : AppCompatActivity() {
      */
     private fun testCoroutine() {
         // 协程程序
-        launch()
+//        launch()
         // 桥接阻塞与非阻塞的世界
 //        launchRunBlocking()
         // runBlocking包装函数的执行
@@ -109,7 +109,7 @@ class CoroutineActivity : AppCompatActivity() {
         // 取消和超时
 //        cancelTimeOut()
         // 组合挂起函数
-//        testAsync()
+        testAsync()
         // 协程上下文与调度器
 //        coroutineDispatcher()
         // 通过协程作用域，管理协程的生命周期
@@ -478,7 +478,7 @@ class CoroutineActivity : AppCompatActivity() {
             }
             delay(1300L) // 延迟一段时间
             LogUtils.d(TAG, "main: I'm tired of waiting!")
-            job.cancelAndJoin() // 取消该作业并等待它结束
+//            job.cancelAndJoin() // 取消该作业并等待它结束
             LogUtils.d(TAG, "main: Now I can quit.")
         }
 //        07-29 10:19:02.789 18347-18347/com.seniorlibs.app D/kotlin + CoroutineActivity :: job: I'm sleeping 0 ...
@@ -531,14 +531,15 @@ class CoroutineActivity : AppCompatActivity() {
             val time = measureTimeMillis {
                 val jobOne = doSomethingUsefulOne()
                 val jobTwo = doSomethingUsefulTwo()
-                LogUtils.d(TAG, "The answer is ${jobOne + jobTwo}")
+                LogUtils.d(TAG, "testAsync1 The answer is ${jobOne + jobTwo}")
             }
-            LogUtils.d(TAG, "Completed in $time ms")
+            LogUtils.d(TAG, "testAsync1 Completed in $time ms")
         }
 //        07-29 11:33:05.265 28695-28695/com.seniorlibs.app D/kotlin + CoroutineActivity :: The answer is 42
 //        07-29 11:33:05.265 28695-28695/com.seniorlibs.app D/kotlin + CoroutineActivity :: Completed in 2004 ms
 
         // 使用 async 并发：快了两倍
+        // async 并发的原理：CoroutineStart.LAZY参数之后，协程不会立马执行，直到调用了start()或await()才会触发协程的调度
         runBlocking<Unit> {
             val time = measureTimeMillis {
                 val jobOne = async {
@@ -548,14 +549,35 @@ class CoroutineActivity : AppCompatActivity() {
                     doSomethingUsefulTwo()
                 }
                 // 使用.await()在一个延期的值上得到它的最终结果，但是Deferred也是一个Job，所以如果需要的话，你可以取消它
-                LogUtils.d(TAG, "async 并发 The answer is ${jobOne.await() + jobTwo.await()}")
+                LogUtils.d(TAG, "testAsync2 async 并发 The answer is ${jobOne.await() + jobTwo.await()}")
             }
-            LogUtils.d(TAG, "async 并发 Completed in $time ms")
+            LogUtils.d(TAG, "testAsync2 async 并发 Completed in $time ms")
         }
 //        07-29 15:01:58.925 18529-18529/? D/kotlin + CoroutineActivity :: async 并发 The answer is 42
 //        07-29 15:01:58.925 18529-18529/? D/kotlin + CoroutineActivity :: async 并发 Completed in 1010 ms
 
-        // 惰性启动的 async：只有结果通过 await 获取的时候协程才会启动
+        // （惰性启动的 async）CoroutineStart.LAZY使async的并发失效了，async启动的两个协程并没有立即执行。
+        // 而是直到调用jobOne.await()方法之后才开始执行，而await又会去等待结果，需要等待jobOne协程执行完毕后，
+        // 遇到jobTwo.await()，才会触发jobTwo协程的执行，又要去等待。
+        runBlocking {
+            val time = measureTimeMillis {
+                val jobOne = async(start = CoroutineStart.LAZY) {
+                    doSomethingUsefulOne()
+                }
+                val jobTwo = async(start = CoroutineStart.LAZY) {
+                    doSomethingUsefulTwo()
+                }
+                // 执行一些计算
+//                jobOne.start() // 启动第一个
+//                jobTwo.start() // 启动第二个
+                LogUtils.d(TAG, "testAsync3 The answer is ${jobOne.await() + jobTwo.await()}") // 相当于 顺序
+            }
+            LogUtils.d(TAG, "testAsync3 Completed in $time ms")
+        }
+//        07-29 15:06:25.513 19451-19451/? D/kotlin + CoroutineActivity :: The answer is 42
+//        07-29 15:06:25.513 19451-19451/? D/kotlin + CoroutineActivity :: Completed in 2004 ms
+
+        // （惰性启动的 async）可以通过start方法，手动触发协程的立即执行，相当于 并发
         runBlocking {
             val time = measureTimeMillis {
                 val jobOne = async(start = CoroutineStart.LAZY) {
@@ -567,9 +589,9 @@ class CoroutineActivity : AppCompatActivity() {
                 // 执行一些计算
                 jobOne.start() // 启动第一个
                 jobTwo.start() // 启动第二个
-                LogUtils.d(TAG, "The answer is ${jobOne.await() + jobTwo.await()}")
+                LogUtils.d(TAG, "testAsync4 The answer is ${jobOne.await() + jobTwo.await()}")
             }
-            LogUtils.d(TAG, "Completed in $time ms")
+            LogUtils.d(TAG, "testAsync4 Completed in $time ms")
         }
 //        07-29 15:06:25.513 19451-19451/? D/kotlin + CoroutineActivity :: The answer is 42
 //        07-29 15:06:25.513 19451-19451/? D/kotlin + CoroutineActivity :: Completed in 1004 ms
@@ -577,9 +599,9 @@ class CoroutineActivity : AppCompatActivity() {
         // 使用 async 的结构化并发
         runBlocking<Unit> {
             val time = measureTimeMillis {
-                LogUtils.d(TAG, "The answer is ${concurrentSum()}")
+                LogUtils.d(TAG, "testAsync5 The answer is ${concurrentSum()}")
             }
-            LogUtils.d(TAG, "Completed in $time ms")
+            LogUtils.d(TAG, "testAsync5 Completed in $time ms")
         }
 //        07-29 15:13:26.491 20127-20127/? D/kotlin + CoroutineActivity :: The answer is 42
 //        07-29 15:13:26.491 20127-20127/? D/kotlin + CoroutineActivity :: Completed in 1004 ms
