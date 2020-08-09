@@ -13,7 +13,7 @@
         android:background="#ff0000"
         android:text="MovingButton" />
 
-    <com.g.event.ui.TestButton
+    <com.seniorlibs.event.ui.TestButton
         android:id="@+id/button2"
         android:layout_width="100dp"
         android:layout_height="100dp"

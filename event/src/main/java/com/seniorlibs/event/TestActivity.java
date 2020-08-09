@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.seniorlibs.baselib.utils.LogUtils;
+
+import java.util.LinkedList;
+
 public class TestActivity extends Activity implements OnClickListener,
         OnLongClickListener {
 
@@ -31,23 +35,24 @@ public class TestActivity extends Activity implements OnClickListener,
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case MESSAGE_SCROLL_TO: {
-                mCount++;
-                if (mCount <= FRAME_COUNT) {
-                    float fraction = mCount / (float) FRAME_COUNT;
-                    int scrollX = (int) (fraction * 100);
-                    mButton1.scrollTo(scrollX, 0);
-                    mHandler.sendEmptyMessageDelayed(MESSAGE_SCROLL_TO, DELAYED_TIME);
+                case MESSAGE_SCROLL_TO: {
+                    mCount++;
+                    if (mCount <= FRAME_COUNT) {
+                        float fraction = mCount / (float) FRAME_COUNT;
+                        int scrollX = (int) (fraction * 100);
+                        mButton1.scrollTo(scrollX, 0);
+                        mHandler.sendEmptyMessageDelayed(MESSAGE_SCROLL_TO, DELAYED_TIME);
+                    }
+                    break;
                 }
-                break;
-            }
 
-            default:
-                break;
+                default:
+                    break;
             }
-        };
+        }
     };
 
     @Override
@@ -55,7 +60,42 @@ public class TestActivity extends Activity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         initView();
+
+        Msg msg = new Msg();
+        msg.sPool = msg;
+        msg.next = new Msg();
+
+        Msg m = msg.sPool;
+        LogUtils.d(TAG, "1m：" + m);
+        LogUtils.d(TAG, "1sPool：" + msg.sPool);
+        LogUtils.d(TAG, "1m.next：" + m.next);
+
+        msg.sPool = m.next;
+        LogUtils.e(TAG, "2m：" + m);
+        LogUtils.e(TAG, "2sPool：" + msg.sPool);
+        LogUtils.e(TAG, "2m.next：" + m.next);
+
+        m.next = null;
+        LogUtils.d(TAG, "3m：" + m);
+        LogUtils.d(TAG, "3sPool：" + msg.sPool);
+        LogUtils.d(TAG, "3m.next：" + m.next);
+
+        m.next = msg.sPool;
+        LogUtils.e(TAG, "4m：" + m);
+        LogUtils.e(TAG, "4sPool：" + msg.sPool);
+        LogUtils.e(TAG, "4m.next：" + m.next);
+
+        msg.sPool = m;
+        LogUtils.d(TAG, "5m：" + m);
+        LogUtils.d(TAG, "5sPool：" + msg.sPool);
+        LogUtils.d(TAG, "5m.next：" + m.next);
     }
+
+    public class Msg {
+        public Msg next;
+        public Msg sPool;
+    }
+
 
     private void initView() {
         mButton1 = (Button) findViewById(R.id.button1);
@@ -116,6 +156,6 @@ public class TestActivity extends Activity implements OnClickListener,
     @Override
     protected void onResume() {
         Log.d(TAG, "onResume");
-        super.onStart();
+        super.onResume();
     }
 }

@@ -22,10 +22,19 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = rootProject.ext.java.javaVersion
+        targetCompatibility = rootProject.ext.java.javaVersion
+    }
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/coroutines.pro'
     }
 }
 

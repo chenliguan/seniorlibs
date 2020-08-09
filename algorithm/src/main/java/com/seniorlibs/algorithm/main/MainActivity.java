@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seniorlibs.algorithm.R;
+import com.seniorlibs.algorithm.linked.LinkedActivity;
 import com.seniorlibs.algorithm.stack.getmin.IStackGetMin;
 import com.seniorlibs.algorithm.stack.getmin.StackGetMinOfficialA;
 import com.seniorlibs.algorithm.stack.getmin.StackGetMinOfficialB;
@@ -18,7 +21,7 @@ import com.seniorlibs.algorithm.string.anagram.AnagramMy;
 /**
  * 主页
  */
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public final static String TAG = "main_activity_tag";
 
@@ -34,6 +37,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.btn_stack_get_min).setOnClickListener(this);
         findViewById(R.id.two_stack_queue).setOnClickListener(this);
         findViewById(R.id.anagram_my).setOnClickListener(this);
+        findViewById(R.id.btn_linked).setOnClickListener(this);
     }
 
     @Override
@@ -59,6 +63,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy3：" + anagramMy.isAnagram("abcd", "abbd"));
                 Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy4：" + anagramMy.isAnagram("abcd", "axcd"));
                 Log.d(TAG, "判断两个字符串是否互为变形词 anagramMy5：" + anagramMy.isAnagram("aaa", "aaaa"));
+                break;
+            case R.id.btn_linked:
+                LinkedActivity.actionStart(MainActivity.this);
                 break;
             default:
                 break;

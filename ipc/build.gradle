@@ -28,6 +28,15 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    compileOptions {
+        sourceCompatibility = rootProject.ext.java.javaVersion
+        targetCompatibility = rootProject.ext.java.javaVersion
+    }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/coroutines.pro'
+    }
 }
 
 dependencies {

@@ -9,26 +9,9 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_stack_get_min"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="@string/stack_get_min" />
-
-    <Button
-        android:id="@+id/two_stack_queue"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="@string/two_stack_queue" />
-
-    <Button
-        android:id="@+id/anagram_my"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="@string/anagram_my" />
-
-    <Button
         android:id="@+id/btn_linked"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="链表测试" />
+
 </LinearLayout>
