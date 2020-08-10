@@ -9,6 +9,10 @@
         style="@style/BaseMatchWrap"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tvUiTest"
+            style="@style/BaseMatchWrap" />
+
         <Button
             style="@style/BaseMatchWrap"
             android:onClick="synchronizedTest"
