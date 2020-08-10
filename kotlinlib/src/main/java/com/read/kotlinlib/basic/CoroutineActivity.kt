@@ -103,13 +103,13 @@ class CoroutineActivity : AppCompatActivity() {
         // 作用域构建器:coroutineScope
 //        coroutineScopes()
         // 提取函数重构：挂起函数
-//        suspendLaunch()
+        suspendLaunch()
         // kotlin的core-ktx库
 //        ktx()
         // 取消和超时
 //        cancelTimeOut()
         // 组合挂起函数
-        testAsync()
+//        testAsync()
         // 协程上下文与调度器
 //        coroutineDispatcher()
         // 通过协程作用域，管理协程的生命周期
@@ -291,6 +291,7 @@ class CoroutineActivity : AppCompatActivity() {
      * 提取函数重构：挂起函数
      */
     private fun suspendLaunch() {
+        // 调用了 runBlocking 的主线程会一直 阻塞 直到 runBlocking 内部的协程执行完毕，内部协程也运行在主线程（除非切换到其他线程）
         runBlocking { // 创建一个协程作用域
             launch {
                 LogUtils.d(TAG, "suspendLaunch before doWord, ${Thread.currentThread()}")
@@ -302,15 +303,35 @@ class CoroutineActivity : AppCompatActivity() {
 //        kotlin + CoroutineActivity :: suspendLaunch before doWord, Thread[main,5,main]
 //        kotlin + CoroutineActivity :: suspendLaunch World! Thread[DefaultDispatcher-worker-1,5,main]
 
-        // 启动了 10 万个协程，并且在 5 秒钟后，每个协程都输出一个点
-//        runBlocking {
-//            repeat(100_000) { // 启动大量的协程
-//                launch {
-//                    delay(5000L)
-//                    LogUtils.d(TAG,".") // 这一行会在内嵌 launch 之前输出
-//                }
-//            }
-//        }
+        // 重试 20 次
+        repeat(20) {
+            GlobalScope.launch {
+                // 开启协程后，先打印一下进程名称和进程id
+                // 这一行会在内嵌 launch 之前输出
+                LogUtils.d(TAG, "threadName = " + Thread.currentThread().name + " threadId = " + Thread.currentThread().id)
+                delay(1000L)
+            }
+        }
+        // 本质上还是一套基于原生Java Thread API 的封装。只要没有魔改JVM，start了几个线程，操作系统就会创建几个线程；
+        // Kotlin协程只是做了一个类似线程池的封装，根本谈不上什么性能更好
+//        threadName = DefaultDispatcher-worker-3 threadId = 2627
+//        threadName = DefaultDispatcher-worker-1 threadId = 2625
+//        threadName = DefaultDispatcher-worker-1 threadId = 2625
+//        threadName = DefaultDispatcher-worker-3 threadId = 2627
+//        threadName = DefaultDispatcher-worker-3 threadId = 2627
+//        threadName = DefaultDispatcher-worker-2 threadId = 2626
+//        threadName = DefaultDispatcher-worker-1 threadId = 2625
+//        threadName = DefaultDispatcher-worker-1 threadId = 2625
+//        threadName = DefaultDispatcher-worker-2 threadId = 2626
+//        threadName = DefaultDispatcher-worker-3 threadId = 2627
+//        threadName = DefaultDispatcher-worker-2 threadId = 2626
+//        threadName = DefaultDispatcher-worker-3 threadId = 2627
+//        threadName = DefaultDispatcher-worker-2 threadId = 2626
+//        threadName = DefaultDispatcher-worker-3 threadId = 2627
+//        threadName = DefaultDispatcher-worker-2 threadId = 2626
+//        threadName = DefaultDispatcher-worker-3 threadId = 2627
+//        threadName = DefaultDispatcher-worker-1 threadId = 2625
+//        ...............
     }
 
     // suspend 修饰的挂起函数。挂起的含义就是：暂时切走，稍后在切回来；就是切换线程，不过在执行完毕会切换回来。

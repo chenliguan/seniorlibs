@@ -8,6 +8,9 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import com.read.kotlinlib.R
 import com.seniorlibs.baselib.utils.LogUtils
 import kotlinx.coroutines.*
@@ -15,9 +18,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import java.io.IOException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Author: 陈李冠
@@ -414,7 +418,7 @@ class FlowFunActivity : AppCompatActivity() {
      * 函数返回一个Int类型的值。并且接受了一个block()函数作为该函数的参数。
      * 其中block()接受一个Char类型的参数，并且返回一个Int类型的值，默认值是一个返回值为1的代码块：{1}
      */
-    fun CharSequence.sumBy(block: (char: Char) -> Int = {1}): Int {  // == CharSequence.sumBy(selector: (Char) -> Int): Int {
+    fun CharSequence.sumBy(block: (char: Char) -> Int = { 1 }): Int {  // == CharSequence.sumBy(selector: (Char) -> Int): Int {
         // 定义一个sum变量，并且循环这个字符串，循环一次调用一次selector()函数并加上sum。其中this关键字代表字符串本身
         var sum: Int = 0
         for (element in this) {
@@ -494,6 +498,10 @@ class FlowFunActivity : AppCompatActivity() {
 //        suspend()
         // 流
 //        flowCollect()
+        // 构造流
+        flowOfAsFlow()
+        // LiveData与Flow
+        liveDataFlow()
     }
 
     /**
@@ -590,6 +598,84 @@ class FlowFunActivity : AppCompatActivity() {
 //            }
         }
     }
+
+    /**
+     * 构造流
+     */
+    private fun flowOfAsFlow() {
+        runBlocking<Unit> {
+            // 将一个整数区间转化为流
+            fun flow(): Flow<Int> = flow {
+                for (i in 1..3) {
+                    emit(i) // 调用 LiveData 中的 emit() 方法发送下一个值，更新 LiveData 的数据
+                }
+            }
+
+            fun flowOf(): Flow<Int> = flowOf(1, 2, 3)
+            fun asFlow(): Flow<Int> = (1..3).asFlow()
+
+            // collect终端操作符，收集Flow在Repositories层发射出来的数据
+            flow().collect {
+                LogUtils.d(TAG, "flow $it")
+            }
+            flowOf().collect {
+                LogUtils.d(TAG, "flowOf $it")
+            }
+            asFlow().collect {
+                LogUtils.d(TAG, "asFlow $it")
+            }
+        }
+    }
+
+    /**
+     * LiveData与Flow
+     */
+    private fun liveDataFlow() {
+        // LiveData
+
+        // LiveData + Flow
+        val liveDataFlow: LiveData<String> = liveData {
+            this.emit("1")
+            // asLiveData(0创建一个包含从原始[流]收集的值的LiveData
+            emitSource(
+                    fetchWeatherFlow().asLiveData()
+            )
+        }
+    }
+
+    private fun fetchWeatherFlow(): Flow<String> = flow {
+        var counter = 0
+        while (true) {
+            counter++
+            delay(200)
+            emit("$counter")
+        }
+    }
+
+    // Flow 的扩展函数，返回值是一个 LiveData
+    private fun <T> Flow<T>.asLiveData(
+            context: CoroutineContext = EmptyCoroutineContext,
+            timeoutInMs: Long = 5000L
+    ): LiveData<T> {
+        val liveData: LiveData<T> = liveData(context, timeoutInMs) {
+            // collect{}属于Flow的方法
+            collect {
+                // 调用 LiveData 中的 emit() 方法发送下一个值，更新 LiveData 的数据
+                this.emit(it)
+            }
+        }
+        return liveData
+    }
+
+    // 等价于
+//    fun <T> Flow<T>.asLiveData(
+//            context: CoroutineContext = EmptyCoroutineContext,
+//            timeoutInMs: Long = DEFAULT_TIMEOUT
+//    ): LiveData<T> = liveData(context, timeoutInMs) {
+//        collect {
+//            emit(it)
+//        }
+//    }
 
 
     /**
