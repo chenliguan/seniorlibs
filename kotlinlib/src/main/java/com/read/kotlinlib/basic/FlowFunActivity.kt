@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.liveData
 import com.read.kotlinlib.R
 import com.seniorlibs.baselib.utils.LogUtils
@@ -31,6 +31,17 @@ import kotlin.coroutines.EmptyCoroutineContext
  * Modify:
  * Description: 测试异步流
  */
+
+/*
+LiveData 是一个生命周期感知组件，最好在 View 和 ViewModel 层中使用它，如果在 Repositories 或者 DataSource 中使用会有几个问题：
+（1）它不支持线程切换，其次不支持背压，也就是在一段时间内发送数据的速度 > 接受数据的速度，LiveData 无法正确的处理这些请求；
+（2）使用 LiveData 的最大问题是所有数据转换都将在主线程上完成
+
+RxJava 虽然支持线程切换和背压，但是RxJava那么多傻傻分不清楚的操作符，如 Observable、Flowable、Single等等，如果不去了解背后的原理，造成内存泄露是很正常的事；
+
+Flow 有以下优点：（1）Flow支持线程切换、背压；（2）Flow入门的门槛很低，没有那么多傻傻分不清楚的操作符；（3）简单的数据转换与操作符，如map等等；
+ */
+
 class FlowFunActivity : AppCompatActivity() {
 
     companion object {
@@ -493,7 +504,7 @@ class FlowFunActivity : AppCompatActivity() {
         // 表示多个值
 //        multiValue()
         // sequence：序列
-        sequence()
+//        sequence()
         // 挂起函数 suspend
 //        suspend()
         // 流
@@ -604,10 +615,19 @@ class FlowFunActivity : AppCompatActivity() {
      */
     private fun flowOfAsFlow() {
         runBlocking<Unit> {
+            // Flow是冷数据, 要求调用函数collect收集数据时才会进行数据的发射; 该系列函数也成为末端操作符;
+            // emit实际上就是执行collect的参数函数;
+            flow {
+                emit(23)
+            }.collect {
+                LogUtils.d(TAG, "flow{} collect{} $it")
+            }
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: flow{} collect{} 23
+
             // 将一个整数区间转化为流
             fun flow(): Flow<Int> = flow {
                 for (i in 1..3) {
-                    emit(i) // 调用 LiveData 中的 emit() 方法发送下一个值，更新 LiveData 的数据
+                    emit(i) // 调用 Flow 中的 emit() 方法发送下一个值，更新 Flow.collect 的数据
                 }
             }
 
@@ -624,6 +644,15 @@ class FlowFunActivity : AppCompatActivity() {
             asFlow().collect {
                 LogUtils.d(TAG, "asFlow $it")
             }
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: flow 1
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: flow 2
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: flow 3
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: flowOf 1
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: flowOf 2
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: flowOf 3
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: asFlow 1
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: asFlow 2
+//            08-10 20:10:08.910 12879-12879/? D/kotlin + FlowActivity :: asFlow 3
         }
     }
 
@@ -634,25 +663,50 @@ class FlowFunActivity : AppCompatActivity() {
         // LiveData
 
         // LiveData + Flow
-        val liveDataFlow: LiveData<String> = liveData {
+        val flowToLiveData: LiveData<String> = liveData {
+            // Flow发射函数emit不是线程安全的不允许其他线程调用, 如果需要线程安全请使用channelFlow而不是flow。等同于：RxJava的next("1")
             this.emit("1")
             // asLiveData(0创建一个包含从原始[流]收集的值的LiveData
             emitSource(
                     fetchWeatherFlow().asLiveData()
             )
         }
+        flowToLiveData.observe(this, Observer {
+            LogUtils.d(TAG, "LiveData + Flow ：observe数据 $it")
+        })
+//        08-10 20:14:41.059 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 1
+//        08-10 20:14:41.260 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 2
+//        08-10 20:14:41.460 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 3
+//        08-10 20:14:41.661 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 4
+//        08-10 20:14:41.861 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 5
+//        08-10 20:14:42.062 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 6
+//        08-10 20:14:42.263 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 7
+//        08-10 20:14:42.463 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 8
+//        08-10 20:14:42.664 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 9
+//        08-10 20:14:42.864 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 10
+//        08-10 20:14:43.065 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 11
+//        08-10 20:14:43.265 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 12
+//        08-10 20:14:43.466 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 13
+//        08-10 20:14:43.667 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 14
+//        08-10 20:14:43.867 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 15
+//        08-10 20:14:44.068 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 16
+//        08-10 20:14:44.269 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 17
+//        08-10 20:14:44.469 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 18
+//        08-10 20:14:44.669 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 19
+//        08-10 20:14:44.869 13370-13370/? D/kotlin + FlowActivity :: LiveData + Flow ：observe数据 20
     }
 
     private fun fetchWeatherFlow(): Flow<String> = flow {
         var counter = 0
-        while (true) {
+        while (counter < 20) {
             counter++
             delay(200)
-            emit("$counter")
+            // 调用 Flow 中的 emit() 方法发送下一个值，更新 Flow.collect 的数据
+            this.emit("$counter")
         }
     }
 
-    // Flow 的扩展函数，返回值是一个 LiveData
+    // Flow 的扩展函数，内部创建一个LiveData对象，转发射Flow发射的数据，最终返回值是一个 不可变的LiveData
     private fun <T> Flow<T>.asLiveData(
             context: CoroutineContext = EmptyCoroutineContext,
             timeoutInMs: Long = 5000L
@@ -676,6 +730,7 @@ class FlowFunActivity : AppCompatActivity() {
 //            emit(it)
 //        }
 //    }
+
 
 
     /**

@@ -24,6 +24,32 @@ import androidx.core.net.toUri as toUri
  * Modify:
  * Description: 测试协程
  */
+
+/*
+GlobalScope.launch(Dispatchers.Main) {
+    suspendSimpleDelay()
+}
+suspend fun suspendSimpleDelay(): Unit {
+    withContext(Dispatchers.IO) {
+        delay(10000)
+    }
+}
+1.Kotlin协程中挂起的是什么？协程。
+2.什么是协程？kotlin协程为launch()、async() 等中的代码，协同多个程序之间进行合作，帮助我们轻松的写出复杂的并发代码。
+launch在创建的一个协程，在执行到某一个suspend函数(挂起函数)时，这个协程会被 suspend(被挂起)。
+3.协程是执行在单线程中的吗？协程本质上还是一套基于原生Java Thread API 的封装。只要没有魔改JVM，start了几个线程，操作系统就会创建几个线程；
+Kotlin协程只是做了一个类似线程池的封装，根本谈不上什么性能更好。协程是协作式任务, 线程是抢占式任务, 本质上两者都属于并发。
+4.什么时候要用到协程的？需要切换线程的时候要用到协程;
+5.协程有什么好用？Kotlin协程同多个程序之间进行合作，让我们更方便的来进行多线程开发，帮助我们轻松的写出复杂的并发代码，甚至还能用非常简单的方式实现原本不可能实现的并发任务。
+
+1.挂起是怎么做到的？在suspend修饰的挂起函数中，调用另外一个协程自带的、内部实现了协程挂起代码的挂起函数withContext()，让它来做真正的挂起，实现线程切换的工作。
+2.既然suspend不能真正的做到挂起函数，那么suspend的作用是什么呢? 作用：是提醒，提醒调用者该函数为耗时操作，
+避免主线程调用了一个耗时操作。因此创建一个挂起函数，一定要在内部调用别的挂起函数，否则这个挂起函数就是没有必要的
+
+1.从哪挂起？从当前正在执行它的线程挂起(脱离)，将协程挂到自己指定的线程中去执行，在执行完毕会切换回来；分离后当前的线程不会卡住，该干嘛干嘛去。
+2.为什么挂起函数只能在协程里或者另一个挂起函数中调用？挂起之后是需要恢复的，也就是把线程给切回来，而恢复这个动作必须由协程实现。
+ */
+
 class CoroutineActivity : AppCompatActivity() {
 
     companion object {
