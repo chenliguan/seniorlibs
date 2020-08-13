@@ -26,6 +26,9 @@
 
         <activity
             android:name=".basic.FlowFunActivity" />
+
+        <activity
+            android:name=".basic.AdvanceActivity" />
     </application>
 
 </manifest>

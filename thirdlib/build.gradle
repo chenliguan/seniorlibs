@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+// kotlin
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -12,33 +15,26 @@ android {
         versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner rootProject.ext.dependence.test_android_runner
+    }
 
-        // EventBus processor
-        javaCompileOptions {
-            // 注解处理器参数配置
-            annotationProcessorOptions {
-                // 配置参数名和值
-                arguments = [eventBusIndex: 'com.seniorlibs.thirdlib.MyEventBusIndex']
-            }
-        }
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
         sourceCompatibility = rootProject.ext.java.javaVersion
         targetCompatibility = rootProject.ext.java.javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = rootProject.ext.java.javaVersion
     }
 
     packagingOptions {
@@ -50,15 +46,13 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':baselib')
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     // openjdk-可以查看内存布局
     implementation 'org.openjdk.jol:jol-core:0.9'
     implementation 'androidx.appcompat:appcompat:1.0.0'
 
-    // EventBus
-    api 'org.greenrobot:eventbus:3.2.0'
-    // EventBus processor
-    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.2.0'
+    // test
+    testImplementation rootProject.ext.dependence.test_junit
+    androidTestImplementation rootProject.ext.dependence.test_runner
+    androidTestImplementation rootProject.ext.dependence.test_espresso
 }
-

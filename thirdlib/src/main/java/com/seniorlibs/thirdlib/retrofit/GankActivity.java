@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.RecyclerView;
-import androidx.appcompat.widget.StaggeredGridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.util.Log;
 import android.view.View;
 

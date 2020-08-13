@@ -3,6 +3,7 @@ package com.read.kotlinlib
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View
+import com.read.kotlinlib.basic.AdvanceActivity
 import com.read.kotlinlib.basic.BasicActivity
 import com.read.kotlinlib.basic.CoroutineActivity
 import com.read.kotlinlib.basic.FlowFunActivity
@@ -93,5 +94,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun testFlow(view: View?) {
         FlowFunActivity.actionStart(this)
+    }
+
+    /**
+     * 进阶总结
+     *
+     * @param view
+     */
+    fun testAdvance(view: View?) {
+        AdvanceActivity.actionStart(this)
     }
 }

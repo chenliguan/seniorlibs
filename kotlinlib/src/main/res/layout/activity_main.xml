@@ -31,4 +31,11 @@
         android:onClick="testFlow"
         android:text="Flow+高阶函数+异常"
         android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testAdvance"
+        android:text="进阶总结"
+        android:textAllCaps="false"/>
 </LinearLayout>

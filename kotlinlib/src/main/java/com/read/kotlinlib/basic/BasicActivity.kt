@@ -173,7 +173,11 @@ class BasicActivity : AppCompatActivity() {
         }
     }
 
-    // 密闭类
+    /**
+     * 密闭类
+     * 密闭类其构造函数默认为private，它是不能被实例化的，val mOp = Operation()  // 这段代码是错误的，编译器直接会报错不能编译通过。
+     * 好处：使用when表达式的时候，如果能够验证语句覆盖了所有情况，就不需要为该语句再添加一个else子句了。当然，这只有当你用when作为表达式（使用结果）而不是作为语句时才有用。
+     */
     sealed class Operation {
         class Add(val value: Int) : Operation()
         class Substract(val value: Int) : Operation()

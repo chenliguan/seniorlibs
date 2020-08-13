@@ -56,6 +56,9 @@ class FlowFunActivity : AppCompatActivity() {
 
         }
 
+        // 单例：静态内部类式
+        fun getInstance() = SingletonHolder.INSTANCE
+
         fun actionStart(context: Context?) {
             if (context == null) {
                 return
@@ -65,16 +68,9 @@ class FlowFunActivity : AppCompatActivity() {
         }
     }
 
-    // 单例：静态内部类式
-    class Single private constructor() {
-        companion object {
-            fun get(): Single {
-                return Holder.instance
-            }
-        }
+    private object SingletonHolder {
+        val INSTANCE = {
 
-        private object Holder {
-            val instance = Single()
         }
     }
 
@@ -426,10 +422,10 @@ class FlowFunActivity : AppCompatActivity() {
 
     /**
      * 1、将函数用作函数参数的情况的高阶函数（sumBy函数的源码）
-     * 函数返回一个Int类型的值。并且接受了一个block()函数作为该函数的参数。
-     * 其中block()接受一个Char类型的参数，并且返回一个Int类型的值，默认值是一个返回值为1的代码块：{1}
+     * （1）函数返回一个Int类型的值。并且接受了一个block()函数作为该函数的参数。其中block()接受一个Char类型的参数，并且返回一个Int类型的值，默认值是一个返回值为1的代码块：{1}
+     *      sumBy函数参数是一个扩展在CharSequence类型下的函数，同理block()函数参数也是一个扩展在CharSequence类型下的函数，可以缩写；
      */
-    fun CharSequence.sumBy(block: (char: Char) -> Int = { 1 }): Int {  // == CharSequence.sumBy(selector: (Char) -> Int): Int {
+    fun CharSequence.sumBy(block: CharSequence.(char: Char) -> Int = { 1 }): Int {  // == CharSequence.sumBy(block: (Char) -> Int): Int {
         // 定义一个sum变量，并且循环这个字符串，循环一次调用一次selector()函数并加上sum。其中this关键字代表字符串本身
         var sum: Int = 0
         for (element in this) {
@@ -447,8 +443,8 @@ class FlowFunActivity : AppCompatActivity() {
     }
 
     /**
-     *（2）T.run(block: T.() -> R): R
-     * block()这个函数参数是一个扩展在T类型下的函数。this代表的是自身实例，所以block()函数可以使用当前对象本身。就不能像上面run()函数那样当做单独的一个代码块来使用。
+     *（2）T.run(block: T.() -> R): R：run函数参数是一个扩展在T类型下的函数，同理block()函数参数也是一个扩展在T类型下的函数，可以缩写；
+     *     this代表的是自身实例，所以block()函数可以使用当前对象本身。就不能像上面run()函数那样当做单独的一个代码块来使用。
      */
     fun <T, R> T.run(block: T.() -> R): R {
         return block()
