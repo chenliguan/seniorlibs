@@ -9,10 +9,6 @@
         style="@style/BaseMatchWrap"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvUiTest"
-            style="@style/BaseMatchWrap" />
-
         <Button
             style="@style/BaseMatchWrap"
             android:onClick="synchronizedTest"
@@ -51,7 +47,7 @@
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="textRejectedExecution"
+            android:onClick="testRejectedExecution"
             android:text="测试线程池"
             android:textAllCaps="false" />
 
@@ -66,5 +62,10 @@
             android:onClick="testExecuteOnExecutor"
             android:text="测试AsyncTask的executeOnExecutor()"
             android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/test_handler"
+            style="@style/BaseMatchWrap"
+            android:text="测试Handler" />
     </LinearLayout>
 </ScrollView>

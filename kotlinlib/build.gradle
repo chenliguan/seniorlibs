@@ -53,3 +53,4 @@ dependencies {
     androidTestImplementation rootProject.ext.dependence.test_runner
     androidTestImplementation rootProject.ext.dependence.test_espresso
 }
+

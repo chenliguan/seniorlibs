@@ -20,6 +20,8 @@
         </activity>
 
         <activity android:name=".threadpool.ThreadPoolManagerActivity" />
+
+        <activity android:name=".handler.HandlerActivity" />
     </application>
 
 </manifest>

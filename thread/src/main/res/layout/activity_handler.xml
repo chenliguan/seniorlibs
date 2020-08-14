@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BaseMatchParent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        style="@style/BaseMatchWrap"
+        android:orientation="vertical">
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testUiUpdate"
+            android:text="测试子线程更新UI" />
+
+        <TextView
+            android:id="@+id/tvUiTest"
+            style="@style/BaseMatchWrap" />
+
+        <Button
+            android:id="@+id/main_send_msg_thread"
+            style="@style/BaseMatchWrap"
+            android:onClick="mainSendMessageToThread"
+            android:text="在主线程中给子线程的Handler发送信息" />
+
+    </LinearLayout>
+</ScrollView>
