@@ -29,5 +29,9 @@
             android:onClick="postSyncBarrier"
             android:text="开启同步屏障，优先处理异步消息" />
 
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="idleHandler"
+            android:text="IdleHandler的原理" />
     </LinearLayout>
 </ScrollView>

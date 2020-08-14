@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.*
+import android.os.MessageQueue.IdleHandler
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import com.seniorlibs.thread.R
 import kotlin.concurrent.thread
+import kotlin.math.max
 
 /**
  * Author: 陈李冠
@@ -107,7 +109,6 @@ class HandlerActivity : AppCompatActivity() {
     }
 
 
-
     /**
      * 在主线程中给子线程的Handler发送信息
      */
@@ -159,13 +160,12 @@ class HandlerActivity : AppCompatActivity() {
     }
 
     // 同步消息
-    private fun obtainSyncMessage(what : Int, str : String) : Message {
+    private fun obtainSyncMessage(what: Int, str: String): Message {
         val msg = Message.obtain()
         msg.what = what //消息的标识
         msg.obj = str // 消息的存放
         return msg
     }
-
 
 
     /**
@@ -178,21 +178,16 @@ class HandlerActivity : AppCompatActivity() {
         val handler = MyHandler(Looper.getMainLooper())
 
         // 发送同步消息
-        val syncMsg1 = obtainSyncMessage(0x140, "同步消息1")
-        handler.sendMessageDelayed(syncMsg1, 1000)
-        val syncMsg2 = obtainSyncMessage(0x140, "同步消息2")
-        handler.sendMessageDelayed(syncMsg2, 2000)
-        val syncMsg3 = obtainSyncMessage(0x140, "同步消息3")
-        handler.sendMessageDelayed(syncMsg3, 3000)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "同步消息1"), 1000)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "同步消息2"), 2000)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "同步消息3"), 3000)
 
         // 插入同步屏障
         sendSyncBarrier(handler)
 
         // 发送异步消息
-        val asyncMsg1 = obtainAsyncMessage(0x130, "异步信息1")
-        handler.sendMessageDelayed(asyncMsg1, 1000)
-        val asyncMsg2 = obtainAsyncMessage(0x130, "异步信息2")
-        handler.sendMessageDelayed(asyncMsg2, 2000)
+        handler.sendMessageDelayed(obtainAsyncMessage(0x130, "异步信息1"), 1000)
+        handler.sendMessageDelayed(obtainAsyncMessage(0x130, "异步信息2"), 2000)
 
         // 移除屏障
         removeSyncBarrier(handler)
@@ -201,12 +196,12 @@ class HandlerActivity : AppCompatActivity() {
     }
 
     // 屏障token
-    var mToken : Int = 0
+    var mToken: Int = 0
 
     // 反射：往消息队列插入同步屏障
     @SuppressLint("DiscouragedPrivateApi")
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private fun sendSyncBarrier(handler : Handler) {
+    private fun sendSyncBarrier(handler: Handler) {
         try {
             val method = MessageQueue::class.java.getDeclaredMethod("postSyncBarrier", Long::class.java)
             method.isAccessible = true
@@ -220,7 +215,7 @@ class HandlerActivity : AppCompatActivity() {
     // 反射：移除屏障
     @SuppressLint("DiscouragedPrivateApi")
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private fun removeSyncBarrier(handler : Handler) {
+    private fun removeSyncBarrier(handler: Handler) {
         try {
             val method = MessageQueue::class.java.getDeclaredMethod("removeSyncBarrier", Int::class.javaPrimitiveType)
             method.isAccessible = true
@@ -233,7 +228,7 @@ class HandlerActivity : AppCompatActivity() {
 
     // 异步消息
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-    private fun obtainAsyncMessage(what : Int, str : String) : Message {
+    private fun obtainAsyncMessage(what: Int, str: String): Message {
         val msg = Message.obtain()
         msg.what = what
         msg.obj = str
@@ -242,4 +237,42 @@ class HandlerActivity : AppCompatActivity() {
     }
 
 
+
+    /**
+     * IdleHandler的原理
+     */
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun idleHandler(view: View) {
+        val handler = MyHandler(Looper.getMainLooper())
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "同步消息1"), 1000)
+        handler.looper.queue.addIdleHandler(mIdleHandler)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "同步消息2"), 0)
+        handler.looper.queue.addIdleHandler(mIdleHandler)
+        handler.looper.queue.addIdleHandler(mIdleHandler)
+
+//        接收同步信息：同步消息2
+//        空闲时做一些骚操作 0
+//        空闲时做一些骚操作 1
+//        空闲时做一些骚操作 2
+//        接收同步信息：同步消息1
+//        空闲时做一些骚操作 3
+//        空闲时做一些骚操作 4
+//        空闲时做一些骚操作 5
+//        空闲时做一些骚操作 6
+//        空闲时做一些骚操作 7
+//        空闲时做一些骚操作 8
+    }
+
+    var num: Int = 0
+
+    /**
+     * 由于onResume()和performTraversals()本身都是在Looper的事件循环中执行，所以IdleHandler的queueIdle()方法一定会在ui绘制完毕且MessageQueue无消息处理时执行。
+     * 因此，把一些ui线程执行的耗时逻辑放在IdleHandler中执行，以此来优化页面的启动时间
+     */
+    private var mIdleHandler: IdleHandler = IdleHandler {
+        Thread.sleep(1000)
+        LogUtils.e(TAG, "空闲时做一些骚操作 ${num++}")
+        // true会保留，每到空闲都会执行；false执行一次后会remove
+        true
+    }
 }
