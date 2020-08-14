@@ -24,5 +24,10 @@
             android:onClick="mainSendMessageToThread"
             android:text="在主线程中给子线程的Handler发送信息" />
 
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="postSyncBarrier"
+            android:text="开启同步屏障，优先处理异步消息" />
+
     </LinearLayout>
 </ScrollView>

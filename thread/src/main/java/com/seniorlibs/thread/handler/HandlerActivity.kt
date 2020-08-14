@@ -1,11 +1,13 @@
 package com.seniorlibs.thread.handler
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.*
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.baselib.utils.LogUtils
@@ -105,6 +107,7 @@ class HandlerActivity : AppCompatActivity() {
     }
 
 
+
     /**
      * 在主线程中给子线程的Handler发送信息
      */
@@ -116,17 +119,18 @@ class HandlerActivity : AppCompatActivity() {
 //        thread.mHandler!!.sendEmptyMessage(0x123)
         // 2.解决方法是：主线程延时给子线程发消息，等待子线程的Handler完成初始化
         Handler().postDelayed(Runnable {
-            thread.mHandler!!.sendMessage(obtainMessage())
+            thread.mHandler!!.sendMessage(obtainSyncMessage(0x123, "同步消息"))
         }, 1000)
         // 3.更优解决方法是：通过HandlerThread获取子线程的Looper，再在主线程初始化Handler，并传入子线程的Looper
         initHandlerThread()
     }
 
+    // 通过HandlerThread获取子线程的Looper，再在主线程初始化Handler，并传入子线程的Looper
     private fun initHandlerThread() {
         val handlerThread = HandlerThread("Thread-1")
         handlerThread.start()
         val handler = MyHandler(handlerThread.looper)
-        handler.sendMessage(obtainMessage())
+        handler.sendMessage(obtainSyncMessage(0x123, "同步消息"))
     }
 
     /**
@@ -142,19 +146,98 @@ class HandlerActivity : AppCompatActivity() {
         }
     }
 
-    class MyHandler(looper: Looper?) : Handler(looper) {
+    private class MyHandler(looper: Looper?) : Handler(looper) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
-                0x123 -> LogUtils.e(TAG, "子线程的MyHandler接收信息：${msg.obj}")
+                0x123 -> LogUtils.d(TAG, "子线程的MyHandler接收信息：${msg.obj}")
+
+                0x140 -> LogUtils.d(TAG, "接收同步信息：${msg.obj}")
+                0x130 -> LogUtils.d(TAG, "开启同步屏障，优先处理异步消息，MyHandler接收的异步信息：${msg.obj}")
             }
         }
     }
 
-    private fun obtainMessage() : Message {
+    // 同步消息
+    private fun obtainSyncMessage(what : Int, str : String) : Message {
         val msg = Message.obtain()
-        msg.what = 0x123 //消息的标识
-        msg.obj = "B" // 消息的存放
+        msg.what = what //消息的标识
+        msg.obj = str // 消息的存放
+        return msg
+    }
+
+
+
+    /**
+     * 开启同步屏障，优先处理异步消息
+     * https://juejin.im/post/6844903910113705998
+     * https://blog.csdn.net/start_mao/article/details/98963744
+     */
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun postSyncBarrier(view: View) {
+        val handler = MyHandler(Looper.getMainLooper())
+
+        // 发送同步消息
+        val syncMsg1 = obtainSyncMessage(0x140, "同步消息1")
+        handler.sendMessageDelayed(syncMsg1, 1000)
+        val syncMsg2 = obtainSyncMessage(0x140, "同步消息2")
+        handler.sendMessageDelayed(syncMsg2, 2000)
+        val syncMsg3 = obtainSyncMessage(0x140, "同步消息3")
+        handler.sendMessageDelayed(syncMsg3, 3000)
+
+        // 插入同步屏障
+        sendSyncBarrier(handler)
+
+        // 发送异步消息
+        val asyncMsg1 = obtainAsyncMessage(0x130, "异步信息1")
+        handler.sendMessageDelayed(asyncMsg1, 1000)
+        val asyncMsg2 = obtainAsyncMessage(0x130, "异步信息2")
+        handler.sendMessageDelayed(asyncMsg2, 2000)
+
+        // 移除屏障
+        removeSyncBarrier(handler)
+        val asyncMsg3 = obtainAsyncMessage(0x130, "异步信息3")
+        handler.sendMessage(asyncMsg3)
+    }
+
+    // 屏障token
+    var mToken : Int = 0
+
+    // 反射：往消息队列插入同步屏障
+    @SuppressLint("DiscouragedPrivateApi")
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private fun sendSyncBarrier(handler : Handler) {
+        try {
+            val method = MessageQueue::class.java.getDeclaredMethod("postSyncBarrier", Long::class.java)
+            method.isAccessible = true
+            mToken = method.invoke(handler.looper.queue) as Int
+        } catch (e: Exception) {
+            e.printStackTrace()
+            LogUtils.e(TAG, "sendSyncBarrier：${e.printStackTrace()}")
+        }
+    }
+
+    // 反射：移除屏障
+    @SuppressLint("DiscouragedPrivateApi")
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private fun removeSyncBarrier(handler : Handler) {
+        try {
+            val method = MessageQueue::class.java.getDeclaredMethod("removeSyncBarrier", Int::class.javaPrimitiveType)
+            method.isAccessible = true
+            method.invoke(handler.looper.queue, mToken)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            LogUtils.e(TAG, "removeSyncBarrier：${e.printStackTrace()}")
+        }
+    }
+
+    // 异步消息
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+    private fun obtainAsyncMessage(what : Int, str : String) : Message {
+        val msg = Message.obtain()
+        msg.what = what
+        msg.obj = str
+        msg.isAsynchronous = true  // 直接设置消息为异步
         return msg
     }
 
