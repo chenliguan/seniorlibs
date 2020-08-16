@@ -91,7 +91,7 @@ class HandlerActivity : AppCompatActivity() {
                         setCancelable(true)
                         setNegativeButton("子线程更新 主线程创建的UI", object : DialogInterface.OnClickListener {
                             override fun onClick(dialog: DialogInterface?, which: Int) {
-                                // android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+                                // 抛出异常：android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
                                 // 翻译后是：只有创建这个view的线程才能操作这个view；
                                 textView.text = "子线程更新 主线程创建的UI ${Thread.currentThread().name}"
                             }
@@ -113,7 +113,7 @@ class HandlerActivity : AppCompatActivity() {
      * 在主线程中给子线程的Handler发送信息
      */
     fun mainSendMessageToThread(view: View) {
-        val thread = SubThread()
+        val thread = LooperThread()
         thread.start()
 
         // 1.报空指针，因为：多线程并发的问题，当主线程执行到sendEmptyMessage时，子线程的Handler还没有初始化
@@ -137,14 +137,36 @@ class HandlerActivity : AppCompatActivity() {
     /**
      * 子线程的Handler接收信息
      */
-    private inner class SubThread : Thread() {
+    private inner class LooperThread : Thread() {
         var mHandler: Handler? = null
 
         override fun run() {
             Looper.prepare()
+
+            // 存在报空指针风险，因为：多线程并发的问题，当主线程执行到sendEmptyMessage时，子线程的Handler还没有初始化
             mHandler = MyHandler(Looper.myLooper())
+
             Looper.loop()
         }
+
+        /**
+         * // 官方最基础案例：在主线程中给子线程的Handler发送信息
+         *  class LooperThread extends Thread {
+         *      public Handler mHandler;
+         *
+         *      public void run() {
+         *          Looper.prepare();
+         *
+         *          mHandler = new Handler() {
+         *              public void handleMessage(Message msg) {
+         *                  // process incoming messages here
+         *              }
+         *          };
+         *
+         *          Looper.loop();
+         *      }
+         *  }
+         */
     }
 
     private class MyHandler(looper: Looper?) : Handler(looper) {
