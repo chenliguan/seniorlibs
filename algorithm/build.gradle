@@ -1,22 +1,31 @@
 apply plugin: 'com.android.application'
+// kotlin
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
+        applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner rootProject.ext.dependence.test_android_runner
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -25,10 +34,8 @@ android {
         targetCompatibility = rootProject.ext.java.javaVersion
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
+    kotlinOptions {
+        jvmTarget = rootProject.ext.java.javaVersion
     }
 
     packagingOptions {
@@ -40,5 +47,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':baselib')
-}
 
+    // test
+    testImplementation rootProject.ext.dependence.test_junit
+    androidTestImplementation rootProject.ext.dependence.test_runner
+    androidTestImplementation rootProject.ext.dependence.test_espresso
+}

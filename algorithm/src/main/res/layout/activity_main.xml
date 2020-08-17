@@ -31,4 +31,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="链表测试" />
+
+    <Button
+        android:id="@+id/btn_remove_duplicates"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="删除排序数组中的重复项" />
 </LinearLayout>
