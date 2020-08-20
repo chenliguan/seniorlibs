@@ -73,22 +73,63 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 删除排序数组中的重复项
      */
-    private fun removeDuplicates(nums: IntArray) {
+    fun removeDuplicates(nums: IntArray): Int {
         return nums?.let {
             var p = 0
             var q = 1
 
             while (q < nums.size) {
                 if (nums[p] != nums[q]) {
-                    if (q - p > 1) { // 避免：如果没有重复数据，q指向的元素原地复制了一遍
-                        nums[p + 1] = nums[q]
-                    }
+                    // 优化避免：如果没有重复数据，q指向的元素原地复制了一遍
                     p++
+                    if (p != q) {
+                        nums[p] = nums[q]
+                    }
                 }
                 q++
             }
 
             p + 1
+        }
+    }
+
+
+    /**
+     * N叉数的遍历
+     */
+    class Node(var `val`: Int) {
+        var children: List<Node?> = listOf()
+    }
+
+    private val list = ArrayList<Int>()
+
+    fun preorder(root: Node?): List<Int>? {
+        if (root == null) {
+            return list
+        }
+
+        list.add(root.`val`)
+        root.children.forEach {
+            preorder(it)
+        }
+        return list
+    }
+
+    /**
+     *  二叉树的最大深度
+     */
+    class TreeNode(var `val`: Int) {
+        var left: TreeNode? = null
+        var right: TreeNode? = null
+    }
+
+    fun maxDepth(root: TreeNode?): Int {
+        return if(root == null) {
+            0
+        } else {
+            val left = maxDepth(root.left)
+            val right = maxDepth(root.right)
+            Math.max(left, right) + 1
         }
     }
 }
