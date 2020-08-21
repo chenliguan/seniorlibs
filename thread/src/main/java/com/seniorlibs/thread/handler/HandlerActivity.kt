@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import com.seniorlibs.thread.R
 import kotlin.concurrent.thread
-import kotlin.math.max
 
 /**
  * Author: 陈李冠

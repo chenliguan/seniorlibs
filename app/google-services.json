@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "466544419246",
+    "firebase_url": "https://seniorlibs.firebaseio.com",
+    "project_id": "seniorlibs",
+    "storage_bucket": "seniorlibs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466544419246:android:32fe1ff08c2d4d1c2da83f",
+        "android_client_info": {
+          "package_name": "com.seniorlibs.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466544419246-omv3t24qjbmrjb689tgicae3b9ljfsgd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seniorlibs.app",
+            "certificate_hash": "aff5b968374253005587f4fba4216589481a8cb2"
+          }
+        },
+        {
+          "client_id": "466544419246-1plg9g88ak2gflbscc810fpdub8nl94o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3fcFjWWd_nA-eGm9eqgrKTDvNDoRKJDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466544419246-1plg9g88ak2gflbscc810fpdub8nl94o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
