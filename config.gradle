@@ -5,7 +5,7 @@ ext {
     android = [compileSdkVersion   : 29,
                buildToolsVersion   : "28.0.3",
                applicationId       : "com.seniorlibs.app",
-               minSdkVersion       : 15,
+               minSdkVersion       : 16,
                targetSdkVersion    : 29,
                versionCode         : 1,
                versionName         : "1.0.0",
@@ -64,6 +64,9 @@ ext {
             'fragment'            : 'androidx.fragment:fragment-ktx:1.2.5',
             // liveData
             'lifecycle_livedata'  : "androidx.lifecycle:lifecycle-livedata-ktx:${version.lifecycle_version}",
+
+            // 功能
+            mmkv                 : "com.tencent:mmkv-static:1.2.2",
 
             // test
             'test_junit'          : 'androidx.test.ext:junit:1.1.0',

@@ -89,6 +89,9 @@ dependencies {
     // liveData
     api rootProject.ext.dependence.lifecycle_livedata
     api rootProject.ext.dependence.fragment
+
+    // 功能
+    api rootProject.ext.dependence.mmkv
 }
 
 

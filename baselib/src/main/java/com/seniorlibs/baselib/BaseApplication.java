@@ -19,6 +19,10 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        init();
+    }
+
+    private void init() {
         // 初始化 Image-Loader
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)

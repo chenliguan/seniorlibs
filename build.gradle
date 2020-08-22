@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from: "common.gradle"
+apply from: "config.gradle"
 
 buildscript {
     repositories {
@@ -210,7 +210,7 @@ println "gradles工程的group是： ${project('gradles').group}"  // gradles工
 
 /************************************ 属性相关api ***************************************/
 
-// common.gradle
+// config.gradle
 
 // 在gradle.properties中定义
 if (hasProperty('isLoadGradles') ? isLoadGradles.toBoolean() : false) {
@@ -226,8 +226,8 @@ println "the build file path is：" + getRootDir().absoluteFile   // the build f
 println "the project file path is：" + getRootDir().absolutePath // the project file path is：D:\project\seniorlibs
 
 // 获取文件内容
-//apply from: "common.gradle"
-println getContent("common.gradle")
+//apply from: "config.gradle"
+println getContent("config.gradle")
 
 def getContent(String path) {
     // 相对当前的project工程开始查找，如果是new file()需要传入绝对路径

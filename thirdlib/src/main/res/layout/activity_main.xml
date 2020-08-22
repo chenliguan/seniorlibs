@@ -38,4 +38,11 @@
         android:onClick="testEventBus"
         android:text="EventBus测试"
         android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testMmkv"
+        android:text="MMKV测试"
+        android:textAllCaps="false"/>
 </LinearLayout>

@@ -2,14 +2,26 @@ package com.seniorlibs.thirdlib;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Looper;
+import android.os.Message;
+import android.os.MessageQueue;
+import android.os.Process;
+import android.os.SystemClock;
+import android.os.Trace;
+import android.util.Log;
+import android.util.Printer;
 import android.view.View;
 
+import com.seniorlibs.baselib.utils.LogUtils;
 import com.seniorlibs.thirdlib.eventbus.EventBusActivity;
+import com.seniorlibs.thirdlib.mmkv.SpUtils;
 import com.seniorlibs.thirdlib.okhttp.OkHttpActivity;
 import com.seniorlibs.thirdlib.retrofit.GankActivity;
 import com.seniorlibs.thirdlib.rxjava.RxTestActivity;
@@ -126,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(ClassLayout.parseInstance(lock).toPrintable());
     }
 
-
     /**
      * 测试EventBus
      *
@@ -134,5 +145,30 @@ public class MainActivity extends AppCompatActivity {
      */
     public void testEventBus(View view) {
         EventBusActivity.actionStart(this);
+    }
+
+    /**
+     * 测试Mmkv
+     *
+     * @param view
+     */
+    public void testMmkv(View view) {
+        SpUtils.getInstance().write("int-key1", 1000000);
+        SpUtils.getInstance().write("int-key11", 10000001);
+        LogUtils.d("testMmkv", "MMKV + int-key1：" + SpUtils.getInstance().readInt("int-key1"));
+        LogUtils.d("testMmkv", "MMKV + int-key11：" + SpUtils.getInstance().readInt("int-key11"));
+
+        // 添加/更新数据
+        SpUtils.getInstance().getMKv().encode("String-key1", "value");
+        SpUtils.Companion.getBaseKv().encode("String-key11", "value11");
+        // 获取数据
+        LogUtils.d("testMmkv", "MMKV + decodeString1：" + SpUtils.getInstance().getMKv().decodeString("String-key1"));
+        LogUtils.d("testMmkv", "MMKV + decodeString11：" + SpUtils.Companion.getBaseKv().decodeString("String-key11"));
+        // 删除数据
+        SpUtils.getInstance().getMKv().removeValueForKey("String-key1");
+        SpUtils.Companion.getBaseKv().removeValueForKey("String-key11");
+        // 获取数据
+        LogUtils.d("testMmkv", "MMKV + decodeString2：" + SpUtils.getInstance().getMKv().decodeString("String-key1"));
+        LogUtils.d("testMmkv", "MMKV + decodeString22：" + SpUtils.Companion.getBaseKv().decodeString("String-key11"));
     }
 }

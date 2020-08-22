@@ -265,23 +265,20 @@ class HandlerActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     fun idleHandler(view: View) {
         val handler = MyHandler(Looper.getMainLooper())
-        handler.sendMessageDelayed(obtainSyncMessage(0x140, "同步消息1"), 1000)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "延迟一秒处理的消息1"), 1000)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "延迟一秒处理的消息2"), 1000)
+        // 发送3个空闲消息，每个消息耗时1000ms，总3000ms；进入空闲消息处理后，上面的2个延时1000ms的消息必须在3个空闲消息处理完后才被执行
         handler.looper.queue.addIdleHandler(mIdleHandler)
-        handler.sendMessageDelayed(obtainSyncMessage(0x140, "同步消息2"), 0)
+        handler.sendMessage(obtainSyncMessage(0x140, "立即执行的同步消息"))  // 优先在空闲消息前处理了
         handler.looper.queue.addIdleHandler(mIdleHandler)
         handler.looper.queue.addIdleHandler(mIdleHandler)
 
-//        接收同步信息：同步消息2
-//        空闲时做一些骚操作 0
-//        空闲时做一些骚操作 1
-//        空闲时做一些骚操作 2
-//        接收同步信息：同步消息1
-//        空闲时做一些骚操作 3
-//        空闲时做一些骚操作 4
-//        空闲时做一些骚操作 5
-//        空闲时做一些骚操作 6
-//        空闲时做一些骚操作 7
-//        空闲时做一些骚操作 8
+//        15:43:28.721 : 接收同步信息：立即执行的同步消息
+//        15:43:29.722 : 空闲时做一些骚操作 0
+//        15:43:30.722 : 空闲时做一些骚操作 1
+//        15:43:31.723 : 空闲时做一些骚操作 2
+//        15:43:31.728 : 接收同步信息：延迟一秒处理的消息1
+//        15:43:31.728 : 接收同步信息：延迟一秒处理的消息2
     }
 
     var num: Int = 0
@@ -294,6 +291,6 @@ class HandlerActivity : AppCompatActivity() {
         Thread.sleep(1000)
         LogUtils.e(TAG, "空闲时做一些骚操作 ${num++}")
         // true会保留，每到空闲都会执行；false执行一次后会remove
-        true
+        false
     }
 }
