@@ -2,39 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/BaseMatchParent"
     android:orientation="vertical"
     tools:context=".main.MainActivity"
     tools:ignore="MissingDefaultResource">
 
     <Button
         android:id="@+id/btn_stack_get_min"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        style="@style/BtnStyles"
         android:text="@string/stack_get_min" />
 
     <Button
         android:id="@+id/two_stack_queue"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        style="@style/BtnStyles"
         android:text="@string/two_stack_queue" />
 
     <Button
         android:id="@+id/anagram_my"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        style="@style/BtnStyles"
         android:text="@string/anagram_my" />
 
     <Button
-        android:id="@+id/btn_linked"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:id="@+id/btn_linked_list"
+        style="@style/BtnStyles"
         android:text="链表测试" />
 
     <Button
-        android:id="@+id/btn_remove_duplicates"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="删除排序数组中的重复项" />
+        android:id="@+id/btn_array"
+        style="@style/BtnStyles"
+        android:text="数组测试" />
+
+    <Button
+        android:id="@+id/btn_binary_tree"
+        style="@style/BtnStyles"
+        android:text="二叉树" />
 </LinearLayout>

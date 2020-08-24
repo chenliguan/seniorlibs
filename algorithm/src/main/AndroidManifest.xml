@@ -18,8 +18,11 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".linked.LinkedActivity" />
+        <activity android:name=".linkedlist.LinkedActivity" />
+
+        <activity android:name=".array.ArrayActivity" />
+
+        <activity android:name=".binarytree.BinaryTreeActivity" />
     </application>
 
 </manifest>

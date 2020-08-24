@@ -1,4 +1,4 @@
-package com.seniorlibs.algorithm.linked;
+package com.seniorlibs.algorithm.linkedlist;
 
 import android.content.Context;
 import android.content.Intent;
