@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
     /**
      * N叉数的遍历
      */
@@ -130,6 +129,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val left = maxDepth(root.left)
             val right = maxDepth(root.right)
             Math.max(left, right) + 1
+        }
+    }
+
+    /**
+     * 移动零
+     */
+    fun moveZeroes(nums: IntArray): Unit {
+        // 非零指针-慢指针
+        var j = 0
+        // 快指针
+        for (i in nums.indices) {
+            // 非零项才需要操作
+            if (nums[i] != 0) {
+                // 1.把当前的值赋予非零指针
+                nums[j] = nums[i]
+                // 2.判断当前指针和非零指针的差异，如果不等，说明非零指针和快指针之间都是零
+                //（否则，当前项是没移动过的，不能清空）
+                if (i != j) {
+                    nums[i] = 0
+                }
+                // 3.移动非零指针指向下一个待填充位置
+                j++
+            }
         }
     }
 }
