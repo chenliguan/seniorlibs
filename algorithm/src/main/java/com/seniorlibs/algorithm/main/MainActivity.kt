@@ -69,28 +69,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_linked_list -> LinkedActivity.actionStart(this)
             R.id.btn_array -> ArrayActivity.actionStart(this)
             R.id.btn_binary_tree -> BinaryTreeActivity.actionStart(this)
-//            R.id.btn_map -> { MapActivity.actionStart(this) }
-            R.id.btn_map -> {
-
-            }
+            R.id.btn_map -> { MapActivity.actionStart(this) }
 
             else -> {
             }
         }
-    }
-
-    class TreeNode(var `val`: Int) {
-        var left: TreeNode? = null
-        var right: TreeNode? = null
-    }
-
-    fun maxDepth(root: TreeNode?): Int {
-        if (root == null) {
-            return 0
-        }
-
-        val left = maxDepth(root.left) + 1
-        val right = maxDepth(root.right) + 1
-        return Math.max(left, right)
     }
 }

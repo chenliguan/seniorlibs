@@ -16,4 +16,9 @@
         android:id="@+id/btn_move_zeroes"
         style="@style/BtnStyles"
         android:text="移动零" />
+
+    <Button
+        android:id="@+id/btn_max_area"
+        style="@style/BtnStyles"
+        android:text="盛最多水的容器" />
 </LinearLayout>

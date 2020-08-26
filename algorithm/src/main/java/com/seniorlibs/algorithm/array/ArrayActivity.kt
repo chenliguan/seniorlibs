@@ -34,6 +34,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_remove_duplicates).setOnClickListener(this)
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_area).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -48,6 +49,11 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             // 移动零
             moveZeroes(nums)
             LogUtils.d(TAG, "移动零：${nums.asList().toString()}")
+        }
+        R.id.btn_max_area -> {
+            val nums: IntArray = intArrayOf(1,8,6,2,5,4,8,3,7)
+            // 11. 盛最多水的容器
+            LogUtils.d(TAG, "盛最多水的容器：${maxArea(nums)}")
         }
         else -> {
         }
@@ -125,13 +131,16 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         var j = a.size - 1
 
         while (i < j) {
-            // 1.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
+            // 1.计算宽
+            val width = j - i
+
+            // 2.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
             val minHeight = if (a[i] < a[j]) a[i++] else a[j--]
 
-            // 2.计算区域面积
-            val area = (j - i + 1) * minHeight
+            // 3.计算区域面积
+            val area = width * minHeight
 
-            // 3.更新最大面积
+            // 4.更新最大面积
             max = Math.max(max, area)
         }
 
