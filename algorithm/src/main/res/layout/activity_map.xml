@@ -8,12 +8,7 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_remove_duplicates"
+        android:id="@+id/btn_two_sums"
         style="@style/BtnStyles"
-        android:text="删除排序数组中的重复项" />
-
-    <Button
-        android:id="@+id/btn_move_zeroes"
-        style="@style/BtnStyles"
-        android:text="移动零" />
+        android:text="两数之和" />
 </LinearLayout>

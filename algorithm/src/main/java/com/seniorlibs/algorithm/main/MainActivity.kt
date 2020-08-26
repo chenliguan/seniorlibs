@@ -8,11 +8,13 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
+import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.algorithm.stack.getmin.IStackGetMin
 import com.seniorlibs.algorithm.stack.getmin.StackGetMinOfficialA
 import com.seniorlibs.algorithm.stack.twostacksqueue.ITwoStackQueue
 import com.seniorlibs.algorithm.stack.twostacksqueue.TwoStackQueueOfficial
 import com.seniorlibs.algorithm.string.anagram.AnagramMy
+import com.seniorlibs.baselib.utils.LogUtils
 
 /**
  * 主页
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_linked_list).setOnClickListener(this)
         findViewById<View>(R.id.btn_array).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_tree).setOnClickListener(this)
+        findViewById<View>(R.id.btn_map).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -66,9 +69,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_linked_list -> LinkedActivity.actionStart(this)
             R.id.btn_array -> ArrayActivity.actionStart(this)
             R.id.btn_binary_tree -> BinaryTreeActivity.actionStart(this)
+//            R.id.btn_map -> { MapActivity.actionStart(this) }
+            R.id.btn_map -> {
+
+            }
 
             else -> {
             }
         }
+    }
+
+    class TreeNode(var `val`: Int) {
+        var left: TreeNode? = null
+        var right: TreeNode? = null
+    }
+
+    fun maxDepth(root: TreeNode?): Int {
+        if (root == null) {
+            return 0
+        }
+
+        val left = maxDepth(root.left) + 1
+        val right = maxDepth(root.right) + 1
+        return Math.max(left, right)
     }
 }

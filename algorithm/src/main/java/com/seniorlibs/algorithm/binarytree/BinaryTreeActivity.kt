@@ -7,6 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
+import com.seniorlibs.algorithm.main.MainActivity
+import com.seniorlibs.baselib.utils.LogUtils
 
 /**
  * 二叉树
@@ -34,41 +36,66 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_binary_tree).setOnClickListener(this)
     }
 
+    private fun initData() {
+
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_binary_tree -> {
+            R.id.btn_preorder -> {
+                val node = Node(1)
+                node.children.add(Node(2))
+                node.children.add(Node(4))
+                node.children.add(Node(5))
 
+                val node1 = Node(5)
+                node.children.add(node1)
+                node1.children.add(Node(6))
+                preorder(node)
+
+//                E/MainActivity: nums：[1, 2]
+//                E/MainActivity: nums：[1, 2, 4]
+//                E/MainActivity: nums：[1, 2, 4, 5]
+//                E/MainActivity: nums：[1, 2, 4, 5, 5, 6]
+//                E/MainActivity: nums：[1, 2, 4, 5, 5, 6]
             }
-
+            R.id.btn_max_depth -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "104. 二叉树的最大深度：${maxDepth(node)}") // 4
+            }
             else -> {
             }
         }
-    }
-
-    private fun initData() {
-
     }
 
     /**
      * N叉数的遍历
      */
     class Node(var `val`: Int) {
-        var children: List<Node?> = listOf()
+        var children = ArrayList<Node>()
     }
 
-    private val list = ArrayList<Int>()
+    private var nums: MutableList<Int> = arrayListOf()
 
-    fun preorder(root: Node?): List<Int>? {
-        if (root == null) {
-            return list
+    fun preorder(root: Node?) : List<Int> {
+        root?.let {
+            nums.add(root.`val`)
+            root.children.forEach {
+                preorder(it)
+            }
         }
 
-        list.add(root.`val`)
-        root.children.forEach {
-            preorder(it)
-        }
-        return list
+        LogUtils.e(TAG, "nums：${nums.toString()}")
+        return nums
     }
+
 
     /**
      *  二叉树的最大深度
@@ -82,9 +109,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return if (root == null) {
             0
         } else {
-            val left = maxDepth(root.left)
-            val right = maxDepth(root.right)
-            Math.max(left, right) + 1
+            val left = maxDepth(root.left) + 1
+            val right = maxDepth(root.right) + 1
+            Math.max(left, right)
         }
     }
 }

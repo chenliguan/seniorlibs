@@ -23,6 +23,8 @@
         <activity android:name=".array.ArrayActivity" />
 
         <activity android:name=".binarytree.BinaryTreeActivity" />
+
+        <activity android:name=".map.MapActivity" />
     </application>
 
 </manifest>

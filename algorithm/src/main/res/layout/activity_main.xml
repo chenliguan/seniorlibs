@@ -36,4 +36,9 @@
         android:id="@+id/btn_binary_tree"
         style="@style/BtnStyles"
         android:text="二叉树" />
+
+    <Button
+        android:id="@+id/btn_map"
+        style="@style/BtnStyles"
+        android:text="Map" />
 </LinearLayout>

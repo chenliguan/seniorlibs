@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
+import com.seniorlibs.baselib.utils.LogUtils
 
 /**
  * 数组
@@ -31,27 +32,29 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.btn_array).setOnClickListener(this)
+        findViewById<View>(R.id.btn_remove_duplicates).setOnClickListener(this)
+        findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.btn_array -> {
-                val nums: IntArray = intArrayOf(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)
-                removeDuplicates(nums)
-            }
-
-            else -> {
-            }
+    override fun onClick(v: View) = when (v.id) {
+        R.id.btn_remove_duplicates -> {
+            val nums: IntArray = intArrayOf(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)
+            // 删除排序数组中的重复项
+            removeDuplicates(nums)
+            LogUtils.d(TAG, "删除排序数组中的重复项：${nums.asList().toString()}")
+        }
+        R.id.btn_move_zeroes -> {
+            val nums: IntArray = intArrayOf(0, 1, 0, 3, 12, 0, 1, 12, 0, 0, 6)
+            // 移动零
+            moveZeroes(nums)
+            LogUtils.d(TAG, "移动零：${nums.asList().toString()}")
+        }
+        else -> {
         }
     }
 
     private fun initData() {
-        val nums: IntArray = intArrayOf(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)
-        // 删除排序数组中的重复项
-        removeDuplicates(nums)
-        // 移动零
-        moveZeroes(nums)
+
     }
 
     /**
@@ -89,21 +92,49 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun moveZeroes(nums: IntArray): Unit {
         // 非零指针-慢指针
-        var j = 0
+        var i = -1
         // 快指针
-        for (i in nums.indices) {
+        var j = 0
+
+        while (j < nums.size) {
             // 非零项才需要操作
-            if (nums[i] != 0) {
-                // 1.把当前的值赋予非零指针
-                nums[j] = nums[i]
-                // 2.判断当前指针和非零指针的差异，如果不等，说明非零指针和快指针之间都是零
+            if (nums[j] != 0) {
+                i++
+                // 1.判断当前指针和非零指针的差异，如果不等，说明非零指针和快指针之间都是零
                 //（否则，当前项是没移动过的，不能清空）
                 if (i != j) {
-                    nums[i] = 0
+                    // 2.把当前的值赋予非零指针，把自己赋值为0
+                    nums[i] = nums[j]
+                    nums[j] = 0
                 }
-                // 3.移动非零指针指向下一个待填充位置
-                j++
             }
+            // 3.移动非零指针指向下一个待填充位置
+            j++
         }
+    }
+
+    /**
+     * 11. 盛最多水的容器
+     *
+     * @param height
+     * @return
+     */
+    fun maxArea(a: IntArray): Int {
+        var max = 0
+        var i = 0
+        var j = a.size - 1
+
+        while (i < j) {
+            // 1.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
+            val minHeight = if (a[i] < a[j]) a[i++] else a[j--]
+
+            // 2.计算区域面积
+            val area = (j - i + 1) * minHeight
+
+            // 3.更新最大面积
+            max = Math.max(max, area)
+        }
+
+        return max
     }
 }
