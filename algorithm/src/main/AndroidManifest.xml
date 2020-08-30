@@ -25,6 +25,10 @@
         <activity android:name=".binarytree.BinaryTreeActivity" />
 
         <activity android:name=".map.MapActivity" />
+
+        <activity android:name=".stack.StackActivity" />
+
+        <activity android:name=".queue.QueueActivity" />
     </application>
 
 </manifest>

@@ -8,21 +8,6 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_stack_get_min"
-        style="@style/BtnStyles"
-        android:text="@string/stack_get_min" />
-
-    <Button
-        android:id="@+id/two_stack_queue"
-        style="@style/BtnStyles"
-        android:text="@string/two_stack_queue" />
-
-    <Button
-        android:id="@+id/anagram_my"
-        style="@style/BtnStyles"
-        android:text="@string/anagram_my" />
-
-    <Button
         android:id="@+id/btn_linked_list"
         style="@style/BtnStyles"
         android:text="链表测试" />
@@ -41,4 +26,14 @@
         android:id="@+id/btn_map"
         style="@style/BtnStyles"
         android:text="Map" />
+
+    <Button
+        android:id="@+id/btn_stack"
+        style="@style/BtnStyles"
+        android:text="栈" />
+
+    <Button
+        android:id="@+id/btn_queue"
+        style="@style/BtnStyles"
+        android:text="队列" />
 </LinearLayout>

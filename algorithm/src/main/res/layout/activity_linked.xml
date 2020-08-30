@@ -9,9 +9,15 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_linked"
+        android:id="@+id/btn_handler_reuse"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="链表测试" />
+        android:text="Handler的message复用原理" />
+
+    <Button
+        android:id="@+id/btn_has_cycle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="141. 环形链表" />
 
 </LinearLayout>

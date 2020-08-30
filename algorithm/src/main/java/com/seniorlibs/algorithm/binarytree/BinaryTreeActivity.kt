@@ -82,18 +82,19 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         var children = ArrayList<Node>()
     }
 
-    private var nums: MutableList<Int> = arrayListOf()
+    private var list: MutableList<Int> = arrayListOf()
 
-    fun preorder(root: Node?) : List<Int> {
-        root?.let {
-            nums.add(root.`val`)
-            root.children.forEach {
-                preorder(it)
-            }
+    fun preorder(root: Node?): List<Int> {
+        if (root == null) {
+            return list
         }
 
-        LogUtils.e(TAG, "nums：${nums.toString()}")
-        return nums
+        list.add(root.`val`)
+        root.children.forEach {
+            preorder(it)
+        }
+
+        return list
     }
 
 
@@ -106,12 +107,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun maxDepth(root: TreeNode?): Int {
-        return if (root == null) {
-            0
-        } else {
-            val left = maxDepth(root.left) + 1
-            val right = maxDepth(root.right) + 1
-            Math.max(left, right)
+        if (root == null) {
+            return 0
         }
+
+        val left = maxDepth(root.left) + 1
+        val right = maxDepth(root.right) + 1
+        return Math.max(left, right)
     }
 }
