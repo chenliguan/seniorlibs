@@ -104,8 +104,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             if (nums[j] != 0) {  // 非零项才需要操作
                 i++
                 if (i != j) {  // 1.判断当前指针和非零指针的差异，如果不等，说明非零指针和快指针之间都是零（否则，当前项是没移动过的，不能清空）
-                    nums[i] = nums[j]  // 2.把当前的值赋予非零指针，把自己赋值为0
-                    nums[j] = 0
+                    nums[i] = nums[j]  // 2.把 当前指针 赋值给 非零指针
+                    nums[j] = 0   // 把 当前指针 赋值为 0
                 }
             }
 

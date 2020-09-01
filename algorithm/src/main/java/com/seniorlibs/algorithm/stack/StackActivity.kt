@@ -58,7 +58,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun isValid(s: String): Boolean {
-        val stack : Stack<Char> = Stack<Char>()
+        val stack = Stack<Char>()
         for (c in s.toCharArray()) {
             if (c == '(') {
                 stack.push(')')

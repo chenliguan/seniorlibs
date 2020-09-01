@@ -38,6 +38,7 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_handler_reuse).setOnClickListener(this)
         findViewById<View>(R.id.btn_has_cycle).setOnClickListener(this)
+        findViewById<View>(R.id.btn_reverse_link).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -72,7 +73,16 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li33.next = li44
                 LogUtils.e(TAG, "141.环形链表1：${hasCycle1(li11)}")
             }
-
+            R.id.btn_reverse_link -> {
+                val li11 = ListNode(5)
+                val li22 = ListNode(4)
+                val li33 = ListNode(3)
+                val li44 = ListNode(2)
+                li11.next = li22
+                li22.next = li33
+                li33.next = li44
+                LogUtils.e(TAG, "206. 反转链表：${reverseList(li11)}")
+            }
             else -> {
             }
         }
@@ -160,27 +170,6 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 141.环形链表
      *
@@ -205,5 +194,25 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return true
+    }
+
+    /**
+     * 206. 反转链表
+     *
+     * @param head
+     * @return
+     */
+    private fun reverseList(head: ListNode?): ListNode? {
+        var cur = head
+        var pre : ListNode? = null
+
+        while (cur != null) {
+            val temp = cur.next
+            cur.next = pre
+            pre = cur
+            cur = temp
+        }
+
+        return pre
     }
 }

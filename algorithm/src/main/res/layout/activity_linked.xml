@@ -20,4 +20,10 @@
         android:layout_height="48dp"
         android:text="141. 环形链表" />
 
+    <Button
+        android:id="@+id/btn_reverse_link"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="206. 反转链表" />
+
 </LinearLayout>
