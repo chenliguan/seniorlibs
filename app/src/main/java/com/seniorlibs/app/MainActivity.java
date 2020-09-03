@@ -1,7 +1,13 @@
 package com.seniorlibs.app;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.seniorlibs.baselib.utils.LogUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 

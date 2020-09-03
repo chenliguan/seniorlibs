@@ -78,6 +78,7 @@ class BasicActivity : AppCompatActivity() {
 
     fun testBasic() {
         foo()
+        array()
         list()
         map()
         traverse()
@@ -348,6 +349,15 @@ class BasicActivity : AppCompatActivity() {
         if (isDebug) {
             block()
         }
+    }
+
+    private fun array() {
+        // arrayOfNulls<数据类型>(长度)，默认值都是null == java中的 int[] intArray = new int[6]
+        val arrayOfNulls = arrayOfNulls<Int>(26)
+        val intArray = IntArray(26)
+
+        // 注意以下不是固定长度，而是元素
+        val intArray1 = intArrayOf(26)
     }
 
     fun list() {

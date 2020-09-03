@@ -24,6 +24,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private var list: MutableList<Int> = mutableListOf()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_binary_tree)
@@ -33,7 +36,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.btn_binary_tree).setOnClickListener(this)
+        findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_depth).setOnClickListener(this)
+        findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -43,6 +48,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_preorder -> {
+                list.clear()
                 val node = Node(1)
                 node.children.add(Node(2))
                 node.children.add(Node(4))
@@ -70,6 +76,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "104. 二叉树的最大深度：${maxDepth(node)}") // 4
             }
+            R.id.btn_ineorder -> {
+                list.clear()
+                val node = TreeNode(1)
+                val node_right = TreeNode(2)
+                node.left = null
+                node.right = node_right
+                val node2 = TreeNode(3)
+                node_right.left = node2
+                LogUtils.e(TAG, "94. 二叉树的中序遍历：${inorderTraversal(node)}")
+
+            }
             else -> {
             }
         }
@@ -82,9 +99,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         var children = ArrayList<Node>()
     }
 
-    private var list: MutableList<Int> = arrayListOf()
-
-    fun preorder(root: Node?): List<Int> {
+    private fun preorder(root: Node?): List<Int> {
         if (root == null) {
             return list
         }
@@ -98,15 +113,15 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    /**
-     *  二叉树的最大深度
-     */
     class TreeNode(var `val`: Int) {
         var left: TreeNode? = null
         var right: TreeNode? = null
     }
 
-    fun maxDepth(root: TreeNode?): Int {
+    /**
+     *  二叉树的最大深度
+     */
+    private fun maxDepth(root: TreeNode?): Int {
         if (root == null) {
             return 0
         }
@@ -114,5 +129,26 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         val left = maxDepth(root.left) + 1
         val right = maxDepth(root.right) + 1
         return Math.max(left, right)
+    }
+
+
+    /**
+     * 94. 二叉树的中序遍历
+     *
+     * @param root
+     * @return
+     */
+    private fun inorderTraversal(root: TreeNode?): List<Int> {
+        if (root == null) {
+            return list
+        }
+
+        inorderTraversal(root.left)
+
+        list.add(root.`val`)
+
+        inorderTraversal(root.right)
+
+        return list
     }
 }
