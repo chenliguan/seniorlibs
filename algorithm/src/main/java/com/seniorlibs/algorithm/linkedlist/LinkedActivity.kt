@@ -62,7 +62,7 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li4.next = li5
                 li5.next = li1
                 val has = hasCycle(li1)
-                LogUtils.e(TAG, "141.环形链表：${has}")
+                LogUtils.e(TAG, "141.环形链表1：${has}")
 
                 val li11 = ListNode(5)
                 val li22 = ListNode(4)
@@ -71,7 +71,7 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li11.next = li22
                 li22.next = li33
                 li33.next = li44
-                LogUtils.e(TAG, "141.环形链表1：${hasCycle1(li11)}")
+                LogUtils.e(TAG, "141.环形链表2：${hasCycle(li11)}")
             }
             R.id.btn_reverse_link -> {
                 val li11 = ListNode(5)
@@ -155,45 +155,19 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             return false
         }
 
-        var slow = head  // 快指针
-        var fast = head.next  // 慢指针
-
-        while (fast != slow) { // 如果有环，快跑者最终一定会追上慢跑者
-            if (fast?.next == null || fast.next?.next == null) {
-                return false
-            }
-
-            slow = slow?.next
-            fast = fast.next?.next
-        }
-
-        return true
-    }
-
-    /**
-     * 141.环形链表
-     *
-     * @param head
-     * @return
-     */
-    private fun hasCycle1(head: ListNode?): Boolean {
-        if (head == null) {
-            return false
-        }
-
-        var slow = head
+        var slow = head  // 1.快慢指针
         var fast = head.next
 
-        while (slow != fast) {
-            if (fast?.next == null || fast.next?.next == null) {
+        while (fast != slow) {  // 2.如果快慢指针不等，继续往前跑
+            if (slow?.next == null || fast?.next?.next == null) {  // 3.没环的特征是：某个next为空
                 return false
             }
 
-            slow = slow?.next
+            slow = slow.next
             fast = fast.next?.next
         }
 
-        return true
+        return true // 4.如果有环，快跑者最终一定会追上慢跑者
     }
 
     /**

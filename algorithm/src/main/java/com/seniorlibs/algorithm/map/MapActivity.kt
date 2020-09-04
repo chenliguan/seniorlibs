@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
-import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,6 +36,7 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_two_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_anagram).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_anagram_groups).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_fizz_buzz).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -58,6 +58,10 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "49. 字母异位词分组：" + groupAnagrams(arrayOf("eat", "tea", "tan", "ate", "nat", "bat")))
             }
 
+            R.id.btn_is_fizz_buzz -> {
+                LogUtils.e(TAG, "412. Fizz buzz：" + fizzBuzz(15))
+            }
+
             else -> {
             }
         }
@@ -67,15 +71,20 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
      * 两数之和
      */
     private fun twoSum(nums: IntArray, target: Int): IntArray {
-        val map: MutableMap<Int, Int> = mutableMapOf()
+        val list = mutableListOf<Int>()
+        val map : MutableMap<Int, Int> = mutableMapOf()
+
         for (i in nums.indices) {
-            val other: Int = target - nums[i] // 1.采用目标值-当前值=另一个值，然后在表中查这个值
-            if (map.containsKey(other)) { // 2.回过头来检查表中是否已经存在当前元素所对应的目标元素，有就返回，没有走3
-                return intArrayOf(map[other]!!, i)
+            val key = target - nums[i] // 1.采用目标值-当前值=另一个值，然后在表中查这个值
+            if (map.containsKey(key)) { // 2.回过头来检查表中是否已经存在当前元素所对应的目标元素，有就返回，没有走3
+                list.add(map.getValue(key))
+                list.add(i)
+            } else{
+                map[nums[i]] = i // 3.将元素插入到表中：key是数值，value是下标
             }
-            map[nums[i]] = i // 3.将元素插入到表中：key是数值，value是下标
         }
-        throw IllegalArgumentException("No two sum solution")
+
+        return list.toIntArray()
     }
 
     /**
@@ -154,5 +163,33 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return ArrayList(ans.values)
+    }
+
+    /**
+     * 412. Fizz buzz
+     *
+     * @param n
+     * @return
+     */
+    private fun fizzBuzz(n: Int): List<String> {
+        val map = mapOf(3 to "Fizz", 5 to "Buzz")
+        val list = mutableListOf<String>()
+
+        for (i in 1 until n + 1) {  // 排除0 % 3 == 0
+            var value = ""
+            for (key in map.keys) {
+                if (i % key == 0) {
+                    value += map[key]
+                }
+            }
+
+            if (value.isEmpty()) {
+                value += i
+            }
+
+            list.add(value)
+        }
+
+        return list
     }
 }
