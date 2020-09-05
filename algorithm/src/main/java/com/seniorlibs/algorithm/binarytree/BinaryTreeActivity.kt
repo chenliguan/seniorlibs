@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.linkedlist.LinkedActivity
-import com.seniorlibs.algorithm.main.MainActivity
 import com.seniorlibs.baselib.utils.LogUtils
 
 /**
@@ -36,9 +34,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_n_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_depth).setOnClickListener(this)
         findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -47,7 +47,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_preorder -> {
+            R.id.btn_n_preorder -> {
                 list.clear()
                 val node = Node(1)
                 node.children.add(Node(2))
@@ -85,7 +85,26 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 val node2 = TreeNode(3)
                 node_right.left = node2
                 LogUtils.e(TAG, "94. 二叉树的中序遍历：${inorderTraversal(node)}")
-
+            }
+            R.id.btn_preorder -> {
+                list.clear()
+                val node = TreeNode(1)
+                val node_right = TreeNode(2)
+                node.left = null
+                node.right = node_right
+                val node2 = TreeNode(3)
+                node_right.left = node2
+                LogUtils.e(TAG, "144. 二叉树的前序遍历：${preorderTraversal(node)}")
+            }
+            R.id.btn_postorder -> {
+                list.clear()
+                val node = TreeNode(1)
+                val node_right = TreeNode(2)
+                node.left = null
+                node.right = node_right
+                val node2 = TreeNode(3)
+                node_right.left = node2
+                LogUtils.e(TAG, "145. 二叉树的后序遍历：${postorderTraversal(node)}")
             }
             else -> {
             }
@@ -148,6 +167,60 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         list.add(root.`val`)
 
         inorderTraversal(root.right)
+
+        return list
+    }
+
+    /**
+     * 144. 二叉树的前序遍历
+     *
+     * @param root
+     * @return
+     */
+    private fun preorderTraversal(root: TreeNode?): List<Int?>? {
+        if (root == null) {
+            return list
+        }
+
+        list.add(root.`val`)
+
+        preorderTraversal(root.left)
+
+        preorderTraversal(root.right)
+
+        return list
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    /**
+     * 145. 二叉树的后序遍历
+     *
+     * @param root
+     * @return
+     */
+    fun postorderTraversal(root: TreeNode?): List<Int> {
+        if (root == null) {
+            return list
+        }
+
+        postorderTraversal(root.left)
+
+        postorderTraversal(root.right)
+
+        list.add(root.`val`)
 
         return list
     }
