@@ -56,7 +56,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_max_area -> {
             val nums: IntArray = intArrayOf(1, 8, 6, 2, 5, 4, 8, 3, 7)
             // 11. 盛最多水的容器
-            LogUtils.d(TAG, "盛最多水的容器：${maxArea(nums)}")
+            LogUtils.d(TAG, "11. 盛最多水的容器：${maxArea(nums)}")
         }
         R.id.btn_three_sum -> {
             val nums: IntArray = intArrayOf(-4, -1, -1, -1, 0, -1, 1, 2)
@@ -120,58 +120,65 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun maxArea(a: IntArray): Int {
-        var max = 0
-        var i = 0
-        var j = a.size - 1
+        if (a.isEmpty()) return 0
 
-        while (i < j) {
-            val width = j - i  // 1.计算宽
-            val minHeight = if (a[i] < a[j]) a[i++] else a[j--] // 2.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
-            val area = width * minHeight  // 3.计算区域面积
-            max = Math.max(max, area)  // 4.更新最大面积
+        var left = 0
+        var right = a.size - 1
+        var max = 0
+
+        while (left != right) {
+            val width = right - left  // 1.计算宽
+            val minHeight = if (a[left] > a[right]) a[right--] else a[left++] // 2.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
+            val area = width * minHeight // 3.计算区域面积
+            if (area > max) { // 4.更新最大面积
+                max = area
+            }
         }
 
         return max
     }
 
     /**
-     * 15. 三数之和 -4, -1, -1, -1, 0, -1, 1, 2
+     * 15. 三数之和 -4, -1, -1, -1, 0, -1, 1, 2    a + b + c = 0  ->  a + b = -c
      *
      * @param a
      * @return
      */
     private fun threeSum(nums: IntArray): List<List<Int>> {
-        val res: MutableList<MutableList<Int>> = mutableListOf()
-        if (nums.size < 3) {
-            return res
+        val list = mutableListOf<MutableList<Int>>()
+        if (nums.size < 3) return list
+
+        Arrays.sort(nums)       // 排序，从小到大
+
+        if (nums[0] > 0 || nums[nums.size - 1] < 0) {     // 优化1: 整个数组同符号，则无解
+            return list
         }
 
-        Arrays.sort(nums) // 排序，从小到大
-        if (nums[0] > 0 || nums[nums.size - 1] < 0) { // 优化1: 整个数组同符号，则无解
-            return res
-        }
+        for (k in 0 until nums.size - 1) {        // 最左(最小)数字的指针k，最大nums.size - 2，右边有i和j
+            if (nums[k] > 0) {      // 优化2: 最左值为正数则一定无解，跳出循环
+                break
+            }
+            if (k > 0 && nums[k] == nums[k - 1]) {     // 跳过所有相同的nums[k]，已将nums[k-1]的所有组合加入到结果中
+                continue
+            }
 
-        for (k in 0 until nums.size - 1) { // C位人选，最左（最小）数字的指针k，最大nums.size - 2，右边有i和j
-            if (nums[k] > 0) break // 优化2: 最左值为正数则一定无解，跳出循环
-            if (k > 0 && nums[k] == nums[k - 1]) continue // 跳过所有相同的nums[k]，已将nums[k-1]的所有组合加入到结果中
-
-            // 通过双指针i、j交替向中间移动
-            var i = k + 1 // i 在 k
-            var j = nums.size - 1 // j 在 nums.size - 1
+            var i = k + 1            // 通过双指针i、j交替向中间移动。 i 在 k 右边；j 在 最后
+            var j = nums.size - 1
             while (i < j) {
                 val sum = nums[k] + nums[i] + nums[j]
+
                 when {
                     sum < 0 -> {
-                        while (i < j && nums[i] == nums[++i]) {
-                        } // 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]
+                        while (i < j && nums[i] == nums[++i]) {    // 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在后，因为++i会先让i+1）
+                        }
                     }
                     sum > 0 -> {
-                        while (i < j && nums[j] == nums[--j]) {
-                        } // 实力太强，把大神那边左移一位，并跳过所有相同的nums[j]
+                        while (i < j && nums[j] == nums[--j]) {    // 实力太强，把大神那边左移一位，并跳过所有相同的nums[j]
+                        }
                     }
-                    else -> {
-                        res.add(mutableListOf(nums[k], nums[i], nums[j])) // 记录组合[k, i, j]至res
-                        while (i < j && nums[i] == nums[++i]) { // 执行++i和--j并跳过所有相同复的nums[i]和nums[j]
+                    sum == 0 -> {
+                        list.add(mutableListOf(nums[k], nums[i], nums[j]))     // 记录组合[k, i, j]到list
+                        while (i < j && nums[i] == nums[++i]) {    // 执行++i和--j并跳过所有相同复的nums[i]和nums[j]
                         }
                         while (i < j && nums[j] == nums[--j]) {
                         }
@@ -179,6 +186,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-        return res
+
+        return list
     }
 }

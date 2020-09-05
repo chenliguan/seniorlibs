@@ -59,14 +59,15 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun isValid(s: String): Boolean {
         val stack = Stack<Char>()
-        for (c in s.toCharArray()) {
-            if (c == '(') {
+        val array = s.toCharArray()
+        array.forEach {
+            if (it == '(') {
                 stack.push(')')
-            } else if (c == '{') {
+            } else if (it == '{') {
                 stack.push('}')
-            } else if (c == '[') {
+            } else if (it == '[') {
                 stack.push(']')
-            } else if (stack.isEmpty() || stack.pop() != c) {
+            } else if (stack.isEmpty() || stack.pop() != it) {
                 return false
             }
         }
