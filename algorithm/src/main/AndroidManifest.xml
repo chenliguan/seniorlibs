@@ -29,6 +29,8 @@
         <activity android:name=".stack.StackActivity" />
 
         <activity android:name=".queue.QueueActivity" />
+
+        <activity android:name=".heap.HeapActivity" />
     </application>
 
 </manifest>

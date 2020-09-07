@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
+import com.seniorlibs.algorithm.heap.HeapActivity
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
 import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.algorithm.queue.QueueActivity
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_map).setOnClickListener(this)
         findViewById<View>(R.id.btn_stack).setOnClickListener(this)
         findViewById<View>(R.id.btn_queue).setOnClickListener(this)
+        findViewById<View>(R.id.btn_heap).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_map -> { MapActivity.actionStart(this) }
             R.id.btn_stack -> { StackActivity.actionStart(this) }
             R.id.btn_queue -> { QueueActivity.actionStart(this) }
+            R.id.btn_heap -> { HeapActivity.actionStart(this) }
 
             else -> {
             }

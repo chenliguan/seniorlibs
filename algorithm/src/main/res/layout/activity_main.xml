@@ -36,4 +36,9 @@
         android:id="@+id/btn_queue"
         style="@style/BtnStyles"
         android:text="队列" />
+
+    <Button
+        android:id="@+id/btn_heap"
+        style="@style/BtnStyles"
+        android:text="堆" />
 </LinearLayout>

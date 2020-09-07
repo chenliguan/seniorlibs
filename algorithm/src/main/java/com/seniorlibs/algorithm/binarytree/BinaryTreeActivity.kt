@@ -190,20 +190,6 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         return list
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     /**
      * 145. 二叉树的后序遍历
