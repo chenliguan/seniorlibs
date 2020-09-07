@@ -39,6 +39,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_n_postorder).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -57,13 +58,26 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 val node1 = Node(5)
                 node.children.add(node1)
                 node1.children.add(Node(6))
-                preorder(node)
 
+                LogUtils.e(TAG, "589. N叉数的前序遍历：${preorder(node)}")
 //                E/MainActivity: nums：[1, 2]
 //                E/MainActivity: nums：[1, 2, 4]
 //                E/MainActivity: nums：[1, 2, 4, 5]
 //                E/MainActivity: nums：[1, 2, 4, 5, 5, 6]
 //                E/MainActivity: nums：[1, 2, 4, 5, 5, 6]
+            }
+            R.id.btn_n_postorder -> {
+                list.clear()
+                val node = Node(1)
+                node.children.add(Node(2))
+                node.children.add(Node(4))
+                node.children.add(Node(5))
+
+                val node1 = Node(5)
+                node.children.add(node1)
+                node1.children.add(Node(6))
+
+                LogUtils.e(TAG, "590. N叉树的后序遍历：${postorder(node)}")
             }
             R.id.btn_max_depth -> {
                 val node = TreeNode(1)
@@ -112,7 +126,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * N叉数的遍历
+     * N叉数的前序遍历
      */
     class Node(var `val`: Int) {
         var children = ArrayList<Node>()
@@ -131,6 +145,25 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return list
     }
 
+    /**
+     * 590. N叉树的后序遍历
+     *
+     * @param root
+     * @return
+     */
+    private fun postorder(root: Node?): List<Int> {
+        if (root == null) {
+            return list
+        }
+
+        root.children.forEach {
+            postorder(it)
+        }
+
+        list.add(root.`val`)
+
+        return list
+    }
 
     class TreeNode(var `val`: Int) {
         var left: TreeNode? = null
