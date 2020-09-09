@@ -31,6 +31,8 @@
         <activity android:name=".queue.QueueActivity" />
 
         <activity android:name=".heap.HeapActivity" />
+
+        <activity android:name=".recursive.RecursiveActivity" />
     </application>
 
 </manifest>

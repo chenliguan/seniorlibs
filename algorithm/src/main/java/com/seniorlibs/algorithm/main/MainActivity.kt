@@ -10,6 +10,7 @@ import com.seniorlibs.algorithm.heap.HeapActivity
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
 import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.algorithm.queue.QueueActivity
+import com.seniorlibs.algorithm.recursive.RecursiveActivity
 import com.seniorlibs.algorithm.stack.StackActivity
 
 /**
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_stack).setOnClickListener(this)
         findViewById<View>(R.id.btn_queue).setOnClickListener(this)
         findViewById<View>(R.id.btn_heap).setOnClickListener(this)
+        findViewById<View>(R.id.btn_recursive).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_stack -> { StackActivity.actionStart(this) }
             R.id.btn_queue -> { QueueActivity.actionStart(this) }
             R.id.btn_heap -> { HeapActivity.actionStart(this) }
+            R.id.btn_recursive -> { RecursiveActivity.actionStart(this) }
 
             else -> {
             }

@@ -41,4 +41,9 @@
         android:id="@+id/btn_heap"
         style="@style/BtnStyles"
         android:text="堆" />
+
+    <Button
+        android:id="@+id/btn_recursive"
+        style="@style/BtnStyles"
+        android:text="递归" />
 </LinearLayout>

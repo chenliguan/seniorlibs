@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BaseMatchParent"
+    android:orientation="vertical"
+    tools:context=".main.MainActivity"
+    tools:ignore="MissingDefaultResource">
+
+    <Button
+        android:id="@+id/btn_climb_stairs"
+        style="@style/BtnStyles"
+        android:text="70. 爬楼梯" />
+
+    <Button
+        android:id="@+id/btn_bracket_generate"
+        style="@style/BtnStyles"
+        android:text="22. 括号生成" />
+</LinearLayout>

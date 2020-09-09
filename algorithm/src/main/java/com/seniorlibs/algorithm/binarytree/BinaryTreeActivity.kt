@@ -35,11 +35,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_n_preorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_n_postorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_depth).setOnClickListener(this)
         findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
-        findViewById<View>(R.id.btn_n_postorder).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -125,13 +125,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    /**
-     * N叉数的前序遍历
-     */
+
     class Node(var `val`: Int) {
         var children = ArrayList<Node>()
     }
 
+    /**
+     * N叉数的前序遍历
+     */
     private fun preorder(root: Node?): List<Int> {
         if (root == null) {
             return list
@@ -148,10 +149,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 590. N叉树的后序遍历
      *
+     * n为结点数，每个节点都要进栈和出栈，不过是根据那种遍历方式改变的是每个节点的进栈顺序，
+     * 所以时间复杂度为O(n)，同样空间复杂度也为O(n)。
+     * 递归：空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)，时间复杂度也是O(n)
+     *
      * @param root
      * @return
      */
-    private fun postorder(root: Node?): List<Int> {
+    fun postorder(root: Node?): List<Int> {
         if (root == null) {
             return list
         }
