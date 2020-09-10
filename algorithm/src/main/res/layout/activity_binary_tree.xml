@@ -36,4 +36,9 @@
         android:id="@+id/btn_postorder"
         style="@style/BtnStyles"
         android:text="145. 二叉树的后序遍历" />
+
+    <Button
+        android:id="@+id/btn_is_valid_BST"
+        style="@style/BtnStyles"
+        android:text="98. 验证二叉搜索树" />
 </LinearLayout>

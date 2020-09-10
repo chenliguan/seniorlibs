@@ -40,6 +40,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_valid_BST).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -119,6 +120,24 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 val node2 = TreeNode(3)
                 node_right.left = node2
                 LogUtils.e(TAG, "145. 二叉树的后序遍历：${postorderTraversal(node)}")
+            }
+            R.id.btn_is_valid_BST -> {
+                pre = Long.MIN_VALUE
+
+                val node = TreeNode(4)
+                val node_right = TreeNode(5)
+                node.right = node_right
+                val node_right2 = TreeNode(6)
+                node_right.right = node_right2
+
+                val node_left = TreeNode(2)
+                node.left = node_left
+                val node_left2 = TreeNode(1)
+                node_left.left = node_left2
+                val node_left_right = TreeNode(3)
+                node_left.right = node_left_right
+
+                LogUtils.e(TAG, "98. 验证二叉搜索树：${isValidBST(node)}")
             }
             else -> {
             }
@@ -228,7 +247,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         return list
     }
-    
+
     /**
      * 145. 二叉树的后序遍历
      *
@@ -247,5 +266,54 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         list.add(root.`val`)
 
         return list
+    }
+
+
+    /**
+     * 98. 验证二叉搜索树
+     *
+     * 方法二：中序遍历
+     * 思路：二叉搜索树「中序遍历」得到的值构成的序列一定是升序的，如果当前节点小于等于中序遍历的前一个节点，说明不满足BST，返回false；否则满足
+     *
+     * @param root
+     * @return
+     */
+    var pre = Long.MIN_VALUE
+    var flag: Boolean = true  // 当前节点小于是否大于前一个节点标记
+
+    fun isValidBST(root: TreeNode?): Boolean {
+        if (root == null) return true
+
+        if (flag) isValidBST(root.left)       // 遍历左子树
+
+        if (root.`val` <= pre) flag = false   // 如果当前节点小于等于中序遍历的前一个节点，说明不是BST，flag = false
+
+        pre = root.`val`.toLong()             // 记录前一个节点
+
+        if (flag) isValidBST(root.right)      // 遍历右子树
+
+        return flag
+    }
+
+    /**
+     * 98. 验证二叉搜索树
+     *
+     * 方法一：递归
+     * 如果该二叉树的左子树不为空，则左子树上所有节点均小于它的根节点；若它的右子树不空，则右子树上所有节点均大于它的根节点；则满足BST
+     *
+     * @param root
+     * @return
+     */
+    fun isValidBST1(root: TreeNode?): Boolean {
+        return solution(root, Long.MIN_VALUE, Long.MAX_VALUE)
+    }
+
+    private fun solution(root: TreeNode?, minValue: Long, maxValue: Long): Boolean {
+        if (root == null) return true
+
+        if (root.`val` <= minValue || root.`val` >= maxValue) return false  // 左子树节点小于它的根节点
+
+        return solution(root.left, minValue, root.`val`.toLong())
+                && solution(root.right, root.`val`.toLong(), maxValue)
     }
 }

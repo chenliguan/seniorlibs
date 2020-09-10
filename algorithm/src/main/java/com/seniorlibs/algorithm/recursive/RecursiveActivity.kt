@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.scaleMatrix
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
@@ -69,7 +70,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun climbStairs(n: Int): Int {
-        if (n <= 1) return 1
+        if (n <= 2) return 2
 
         val array = IntArray(n + 1)
 
@@ -119,7 +120,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs3(n : Int) : Int {
+    fun climbStairs3(n: Int): Int {
         if (n <= 2) return n
 
         return climbStairs3(n - 1) + climbStairs3(n - 2)
@@ -135,7 +136,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs4(n : Int, first : Int, second : Int) : Int {
+    fun climbStairs4(n: Int, first: Int, second: Int): Int {
         if (n <= 1) return second
 
         return climbStairs4(n - 1, second, first + second)
@@ -150,17 +151,20 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
      * 22. 括号生成
      * 思路：left随时可以加，只要别用完(n) ; right必须之前有左括号，左个数>右个数
      *
+     * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
+     * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
+     *
      * @param n
      * @return
      */
     fun generateParenthesis(n: Int): List<String> {
-        generate(0 ,0,  n, "")
+        generate(0, 0, n, "")
         return list
     }
 
-    val list : MutableList<String> = mutableListOf()
+    val list: MutableList<String> = mutableListOf()
 
-    private fun generate(left : Int, right : Int, n : Int, s : String) {
+    private fun generate(left: Int, right: Int, n: Int, s: String) {
         // 1.递归终结条件（最先写）
         if (left > n || left < right) { // 肯定不合法，提前结束，即“剪枝”
             return
