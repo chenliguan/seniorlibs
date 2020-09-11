@@ -37,6 +37,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_n_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_n_postorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_depth).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_depth).setOnClickListener(this)
         findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
@@ -90,6 +91,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node2.left = node3
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "104. 二叉树的最大深度：${maxDepth(node)}") // 4
+            }
+            R.id.btn_min_depth -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "111. 二叉树的最小深度：${minDepth(node)}") // 3
             }
             R.id.btn_ineorder -> {
                 list.clear()
@@ -195,7 +207,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     *  二叉树的最大深度
+     *  104.二叉树的最大深度
      */
     private fun maxDepth(root: TreeNode?): Int {
         if (root == null) {
@@ -205,6 +217,23 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         val left = maxDepth(root.left) + 1
         val right = maxDepth(root.right) + 1
         return Math.max(left, right)
+    }
+
+    /**
+     *  111.二叉树的最小深度
+     */
+    private fun minDepth(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        // 左子树的最小深度
+        val left = minDepth(root.left)
+        // 右子树的最小深度
+        val right = minDepth(root.right)
+
+        // 如果left和right都为0，返回1即可;
+        // 如果left和right只有一个为0，说明他只有一个子结点，只需要返回它另一个子节点的最小深度+1即可;
+        // 如果left和right都不为0，说明他有两个子节点，只需要返回最小深度的+1即可。
+        return if ((left == 0 || right == 0)) left + right + 1 else Math.min(left, right) + 1
     }
 
 
@@ -274,6 +303,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      *
      * 方法二：中序遍历
      * 思路：二叉搜索树「中序遍历」得到的值构成的序列一定是升序的，如果当前节点小于等于中序遍历的前一个节点，说明不满足BST，返回false；否则满足
+     *
+     * 时间复杂度 : O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度 : O(n)，递归函数在递归过程中需要为每一层递归函数分配栈空间，取决于递归的深度；
+     *           最坏情况下二叉树为一条链，树的高度为n ，递归最深达到n层，故最坏情况下空间复杂度为O(n)。
      *
      * @param root
      * @return

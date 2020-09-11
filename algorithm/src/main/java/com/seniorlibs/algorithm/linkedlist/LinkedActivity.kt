@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.baselib.utils.LogUtils
+
 
 /**
  * 链表测试
@@ -171,22 +171,58 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 206. 反转链表
+     * 206. 反转链表。方法一：双指针迭代
+     *
+     * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。
+     * 空间复杂度：O(1)，使用常量空间。
      *
      * @param head
      * @return
      */
-    private fun reverseList(head: ListNode?): ListNode? {
-        var cur = head
+    private fun reverseList1(head: ListNode?): ListNode? {
+        if (head == null) return null
+
         var pre : ListNode? = null
+        var cur = head
+        var temp : ListNode? = null
 
         while (cur != null) {
-            val temp = cur.next
-            cur.next = pre
-            pre = cur
+            temp = cur.next  // 缓存当前节点的下一个节点
+
+            cur.next = pre   // 然后将当前节点指向pre
+
+            pre = cur      // pre和cur节点都往后前进一位
             cur = temp
         }
 
-        return pre
+        return pre    // pre最终成了新的表头
+    }
+
+
+    var pre : ListNode? = null
+    var temp : ListNode? = null
+
+    /**
+     * 206. 反转链表。方法二：递归
+     *
+     * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * @param head
+     * @return
+     */
+    fun reverseList(h : ListNode?): ListNode? {
+        if (h == null) return pre
+
+        var head = h
+
+        temp = head.next   // 缓存当前节点的下一个节点
+
+        head.next = pre    // 然后将当前节点指向pre
+
+        pre = head         // pre和cur节点都往后前进一位
+        head = temp
+
+        return reverseList(head)
     }
 }
