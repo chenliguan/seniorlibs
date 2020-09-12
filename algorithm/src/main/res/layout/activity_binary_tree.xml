@@ -28,14 +28,14 @@
         android:text="104.二叉树的最小深度" />
 
     <Button
-        android:id="@+id/btn_ineorder"
-        style="@style/BtnStyles"
-        android:text="94. 二叉树的中序遍历" />
-
-    <Button
         android:id="@+id/btn_preorder"
         style="@style/BtnStyles"
         android:text="144. 二叉树的前序遍历" />
+
+    <Button
+        android:id="@+id/btn_ineorder"
+        style="@style/BtnStyles"
+        android:text="94. 二叉树的中序遍历" />
 
     <Button
         android:id="@+id/btn_postorder"

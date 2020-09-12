@@ -7,6 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 /**
  * 二叉树
@@ -103,16 +106,6 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "111. 二叉树的最小深度：${minDepth(node)}") // 3
             }
-            R.id.btn_ineorder -> {
-                list.clear()
-                val node = TreeNode(1)
-                val node_right = TreeNode(2)
-                node.left = null
-                node.right = node_right
-                val node2 = TreeNode(3)
-                node_right.left = node2
-                LogUtils.e(TAG, "94. 二叉树的中序遍历：${inorderTraversal(node)}")
-            }
             R.id.btn_preorder -> {
                 list.clear()
                 val node = TreeNode(1)
@@ -121,7 +114,19 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node.right = node_right
                 val node2 = TreeNode(3)
                 node_right.left = node2
-                LogUtils.e(TAG, "144. 二叉树的前序遍历：${preorderTraversal(node)}")
+                LogUtils.e(TAG, "144. 二叉树的前序遍历-递归：${preorderTraversal(node)}")
+                LogUtils.e(TAG, "144. 二叉树的前序遍历-迭代：${preorderTraversal1(node)}")
+            }
+            R.id.btn_ineorder -> {
+                list.clear()
+                val node = TreeNode(1)
+                val node_right = TreeNode(2)
+                node.left = null
+                node.right = node_right
+                val node2 = TreeNode(3)
+                node_right.left = node2
+                LogUtils.e(TAG, "94. 二叉树的中序遍历-递归：${inorderTraversal(node)}")
+                LogUtils.e(TAG, "94. 二叉树的中序遍历-迭代：${inorderTraversal1(node)}")
             }
             R.id.btn_postorder -> {
                 list.clear()
@@ -131,7 +136,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node.right = node_right
                 val node2 = TreeNode(3)
                 node_right.left = node2
-                LogUtils.e(TAG, "145. 二叉树的后序遍历：${postorderTraversal(node)}")
+                LogUtils.e(TAG, "145. 二叉树的后序遍历-递归：${postorderTraversal(node)}")
+                LogUtils.e(TAG, "145. 二叉树的后序遍历-迭代：${postorderTraversal1(node)}")
             }
             R.id.btn_is_valid_BST -> {
                 pre = Long.MIN_VALUE
@@ -161,8 +167,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         var children = ArrayList<Node>()
     }
 
+
     /**
      * N叉数的前序遍历
+     *
+     * @param root
+     * @return
      */
     private fun preorder(root: Node?): List<Int> {
         if (root == null) {
@@ -207,22 +217,34 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     *  104.二叉树的最大深度
+     * 104.二叉树的最大深度
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * @param root
+     * @return
      */
-    private fun maxDepth(root: TreeNode?): Int {
-        if (root == null) {
-            return 0
-        }
+    fun maxDepth(root: TreeNode?): Int {
+        if (root == null) return 0
 
         val left = maxDepth(root.left) + 1
+
         val right = maxDepth(root.right) + 1
+
         return Math.max(left, right)
     }
 
     /**
-     *  111.二叉树的最小深度
+     * 111.二叉树的最小深度
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * @param root
+     * @return
      */
-    private fun minDepth(root: TreeNode?): Int {
+    fun minDepth(root: TreeNode?): Int {
         if (root == null) return 0
 
         // 左子树的最小深度
@@ -236,37 +258,18 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return if ((left == 0 || right == 0)) left + right + 1 else Math.min(left, right) + 1
     }
 
-
     /**
-     * 94. 二叉树的中序遍历
+     * 144. 二叉树的前序遍历：递归
      *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * 题解：https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/144-er-cha-shu-de-qian-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
-    private fun inorderTraversal(root: TreeNode?): List<Int> {
-        if (root == null) {
-            return list
-        }
-
-        inorderTraversal(root.left)
-
-        list.add(root.`val`)
-
-        inorderTraversal(root.right)
-
-        return list
-    }
-
-    /**
-     * 144. 二叉树的前序遍历
-     *
-     * @param root
-     * @return
-     */
-    private fun preorderTraversal(root: TreeNode?): List<Int?>? {
-        if (root == null) {
-            return list
-        }
+    fun preorderTraversal(root: TreeNode?): List<Int?>? {
+        if (root == null) return list
 
         list.add(root.`val`)
 
@@ -278,15 +281,39 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 145. 二叉树的后序遍历
+     * 94. 二叉树的中序遍历：递归
      *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * 题解：https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/94-er-cha-shu-de-zhong-xu-bian-li-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun inorderTraversal(root: TreeNode?): List<Int> {
+        if (root == null) return list
+
+        inorderTraversal(root.left)
+
+        list.add(root.`val`)
+
+        inorderTraversal(root.right)
+
+        return list
+    }
+
+    /**
+     * 145. 二叉树的后序遍历：递归
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * 题解：https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/145-er-cha-shu-de-hou-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
     fun postorderTraversal(root: TreeNode?): List<Int> {
-        if (root == null) {
-            return list
-        }
+        if (root == null) return list
 
         postorderTraversal(root.left)
 
@@ -299,15 +326,106 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 144. 二叉树的前序遍历：迭代
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
+     *
+     * 题解：https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/144-er-cha-shu-de-qian-xu-bian-li-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun preorderTraversal1(root: TreeNode?): List<Int> {
+        val res: MutableList<Int> = LinkedList()
+        val stack: Deque<TreeNode?> = LinkedList()
+
+        if (root == null) return res else stack.push(root)
+
+        while (!stack.isEmpty()) {
+            val p = stack.pop()    // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            if (p != null) {
+                if (p.right != null) stack.push(p.right)   // 添加右节点
+                if (p.left != null) stack.push(p.left)     // 添加左节点
+                stack.push(p)                  // 添加根节点
+                stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
+            } else {                           // 遇到标记，弹出栈顶元素，加入到集合中
+                res.add(stack.pop()!!.`val`)
+            }
+        }
+        return res
+    }
+
+    /**
+     * 94. 二叉树的中序遍历：迭代
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
+     *
+     * 题解：https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/94-er-cha-shu-de-zhong-xu-bian-li-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun inorderTraversal1(root: TreeNode?): List<Int> {
+        val res: MutableList<Int> = LinkedList()
+        val stack: Deque<TreeNode?> = LinkedList()
+
+        if (root == null) return res else stack.push(root)
+
+        while (!stack.isEmpty()) {
+            val p = stack.pop()     // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            if (p != null) {
+                if (p.right != null) stack.push(p.right)   // 添加右节点
+                stack.push(p)                  // 添加根节点
+                stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
+                if (p.left != null) stack.push(p.left)     // 添加左节点
+            } else {
+                res.add(stack.pop()!!.`val`)   // 遇到标记，弹出栈顶元素，加入到集合中
+            }
+        }
+        return res
+    }
+
+    /**
+     * 145. 二叉树的后序遍历：迭代
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
+     *
+     * 题解：https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/145-er-cha-shu-de-hou-xu-bian-li-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun postorderTraversal1(root: TreeNode?): List<Int> {
+        val res: MutableList<Int> = LinkedList()
+        val stack: Deque<TreeNode?> = LinkedList()
+
+        if (root == null) return res else stack.add(root)
+
+        while (!stack.isEmpty()) {
+            val p = stack.pop()    // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            if (p != null) {
+                stack.push(p)                  // 添加根节点
+                stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
+                if (p.right != null) stack.push(p.right)    // 添加右节点
+                if (p.left != null) stack.push(p.left)      // 添加左节点
+            } else {                           // 遇到标记，模拟执行方法内部操作
+                res.add(stack.pop()!!.`val`)
+            }
+        }
+        return res
+    }
+
+
+    /**
      * 98. 验证二叉搜索树
      *
      * 方法二：中序遍历
      * 思路：二叉搜索树「中序遍历」得到的值构成的序列一定是升序的，如果当前节点小于等于中序遍历的前一个节点，说明不满足BST，返回false；否则满足
      *
      * 时间复杂度 : O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
-     * 空间复杂度 : O(n)，递归函数在递归过程中需要为每一层递归函数分配栈空间，取决于递归的深度；
-     *           最坏情况下二叉树为一条链，树的高度为n ，递归最深达到n层，故最坏情况下空间复杂度为O(n)。
+     * 空间复杂度 : O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
      *
+     * 题解：
      * @param root
      * @return
      */
@@ -334,6 +452,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 方法一：递归
      * 如果该二叉树的左子树不为空，则左子树上所有节点均小于它的根节点；若它的右子树不空，则右子树上所有节点均大于它的根节点；则满足BST
      *
+     * 题解：
      * @param root
      * @return
      */
