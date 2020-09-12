@@ -56,33 +56,32 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_n_preorder -> {
                 list.clear()
                 val node = Node(1)
+
+                val node1 = Node(3)
+                node1.children.add(Node(5))
+                node1.children.add(Node(6))
+                node.children.add(node1)
+
                 node.children.add(Node(2))
                 node.children.add(Node(4))
-                node.children.add(Node(5))
 
-                val node1 = Node(5)
-                node.children.add(node1)
-                node1.children.add(Node(6))
-
-                LogUtils.e(TAG, "589. N叉数的前序遍历：${preorder(node)}")
-//                E/MainActivity: nums：[1, 2]
-//                E/MainActivity: nums：[1, 2, 4]
-//                E/MainActivity: nums：[1, 2, 4, 5]
-//                E/MainActivity: nums：[1, 2, 4, 5, 5, 6]
-//                E/MainActivity: nums：[1, 2, 4, 5, 5, 6]
+                LogUtils.e(TAG, "589. N叉数的前序遍历-递归：${preorder(node)}")   // [1, 3, 5, 6, 2, 4]
+                LogUtils.e(TAG, "589. N叉数的前序遍历-迭代：${preorder1(node)}")
             }
             R.id.btn_n_postorder -> {
                 list.clear()
                 val node = Node(1)
+
+                val node1 = Node(3)
+                node1.children.add(Node(5))
+                node1.children.add(Node(6))
+                node.children.add(node1)
+
                 node.children.add(Node(2))
                 node.children.add(Node(4))
-                node.children.add(Node(5))
 
-                val node1 = Node(5)
-                node.children.add(node1)
-                node1.children.add(Node(6))
-
-                LogUtils.e(TAG, "590. N叉树的后序遍历：${postorder(node)}")
+                LogUtils.e(TAG, "590. N叉树的后序遍历-递归：${postorder(node)}")   // [5, 6, 3, 2, 4, 1]
+                LogUtils.e(TAG, "590. N叉树的后序遍历-迭代：${postorder1(node)}")
             }
             R.id.btn_max_depth -> {
                 val node = TreeNode(1)
@@ -164,22 +163,26 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
 
     class Node(var `val`: Int) {
-        var children = ArrayList<Node>()
+        var children = mutableListOf<Node>()
     }
 
 
     /**
-     * N叉数的前序遍历
+     * 589. N叉数的前序遍历：递归
+     * 思路：（1）二叉树：根->左->右；（2）N叉树：根->子节点；
      *
+     * 时间复杂度为O(n)：N叉树的每个节点最多被访问一次，因此时间复杂度为O(n)
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * 题解：https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/solution/589-ncha-shu-de-qian-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
-    private fun preorder(root: Node?): List<Int> {
-        if (root == null) {
-            return list
-        }
+    fun preorder(root: Node?): List<Int> {
+        if (root == null) return list
 
         list.add(root.`val`)
+
         root.children.forEach {
             preorder(it)
         }
@@ -188,19 +191,46 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 590. N叉树的后序遍历
+     * 589. N叉数的前序遍历：迭代
+     * 思路：（1）二叉树：根->左->右；（2）N叉树：根->子节点；
      *
-     * n为结点数，每个节点都要进栈和出栈，不过是根据那种遍历方式改变的是每个节点的进栈顺序，
-     * 所以时间复杂度为O(n)，同样空间复杂度也为O(n)。
-     * 递归：空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)，时间复杂度也是O(n)
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
      *
+     * 题解：https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/solution/589-ncha-shu-de-qian-xu-bian-li-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun preorder1(root: Node?): List<Int> {
+        val res: MutableList<Int> = mutableListOf()
+        val stack: Deque<Node?> = LinkedList()
+
+        if (root == null) return res else stack.push(root)
+
+        while (!stack.isEmpty()) {
+            val p = stack.pop()        // 将根节点弹出
+            res.add(p!!.`val`)                 // 加入到结果集合中
+
+            for (i in p.children.size - 1 downTo 0) {  // 将该节点的子节点从右往左压入栈
+                stack.push(p.children[i])
+            }
+        }
+        return res
+    }
+
+    /**
+     * 590. N叉树的后序遍历：递归
+     * 思路：（1）二叉树：左->右->根；（2）N叉树：子节点->根；
+     *
+     * 时间复杂度为O(n)：N叉树的每个节点最多被访问一次，因此时间复杂度为O(n)
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * 题解：https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/solution/590-ncha-shu-de-hou-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
     fun postorder(root: Node?): List<Int> {
-        if (root == null) {
-            return list
-        }
+        if (root == null) return list
 
         root.children.forEach {
             postorder(it)
@@ -210,6 +240,35 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         return list
     }
+
+    /**
+     * 590. N叉树的后序遍历：迭代
+     * 思路：（1）二叉树：左->右->根；（2）N叉树：子节点->根；
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
+     *
+     * 题解：https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/solution/590-ncha-shu-de-hou-xu-bian-li-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun postorder1(root: Node?): List<Int> {
+        val res: MutableList<Int> = mutableListOf()
+        val stack: Deque<Node?> = LinkedList()
+
+        if (root == null) return res else stack.push(root)
+
+        while (!stack.isEmpty()) {
+            val p = stack.pop()        // 将根节点弹出
+            res.add(p!!.`val`)                 // 加入到结果集合中
+
+            for (i in 0 until p.children.size) {  // 将该节点的子节点从左往右压入栈
+                stack.push(p.children[i])
+            }
+        }
+        return res.reversed()  // 最后将list反转
+    }
+
 
     class TreeNode(var `val`: Int) {
         var left: TreeNode? = null
@@ -336,7 +395,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun preorderTraversal1(root: TreeNode?): List<Int> {
-        val res: MutableList<Int> = LinkedList()
+        val res: MutableList<Int> = mutableListOf()
         val stack: Deque<TreeNode?> = LinkedList()
 
         if (root == null) return res else stack.push(root)
@@ -366,7 +425,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun inorderTraversal1(root: TreeNode?): List<Int> {
-        val res: MutableList<Int> = LinkedList()
+        val res: MutableList<Int> = mutableListOf()
         val stack: Deque<TreeNode?> = LinkedList()
 
         if (root == null) return res else stack.push(root)
@@ -396,7 +455,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun postorderTraversal1(root: TreeNode?): List<Int> {
-        val res: MutableList<Int> = LinkedList()
+        val res: MutableList<Int> = mutableListOf()
         val stack: Deque<TreeNode?> = LinkedList()
 
         if (root == null) return res else stack.add(root)
