@@ -46,6 +46,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_valid_BST).setOnClickListener(this)
         findViewById<View>(R.id.btn_build_tree).setOnClickListener(this)
         findViewById<View>(R.id.btn_level_order_bottom).setOnClickListener(this)
+        findViewById<View>(R.id.btn_largest_values).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -175,6 +176,24 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代：${levelOrder(node)}")
                 LogUtils.e(TAG, "107. 二叉树的层次遍历 -- 方法二：DFS深度遍历-递归：${levelOrder1(node)}")
             }
+            R.id.btn_largest_values -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：${largestValues(node)}")
+                LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法二：DFS深度遍历-递归：${largestValues1(node)}")
+            }
             else -> {
             }
         }
@@ -278,16 +297,15 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val p = stack.pop()        // 将根节点弹出
-            res.add(p!!.`val`)                 // 加入到结果集合中
+            val node = stack.pop()        // 将根节点弹出
+            res.add(node!!.`val`)                 // 加入到结果集合中
 
-            for (i in 0 until p.children.size) {  // 将该节点的子节点从左往右压入栈
-                stack.push(p.children[i])
+            for (i in 0 until node.children.size) {  // 将该节点的子节点从左往右压入栈
+                stack.push(node.children[i])
             }
         }
         return res.reversed()  // 最后将list反转
     }
-
 
     class TreeNode(var `val`: Int) {
         var left: TreeNode? = null
@@ -420,11 +438,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val p = stack.pop()    // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
-            if (p != null) {
-                if (p.right != null) stack.push(p.right)   // 添加右节点
-                if (p.left != null) stack.push(p.left)     // 添加左节点
-                stack.push(p)                  // 添加根节点
+            val node = stack.pop()  // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            if (node != null) {
+                if (node.right != null) stack.push(node.right)   // 添加右节点
+                if (node.left != null) stack.push(node.left)     // 添加左节点
+                stack.push(node)               // 添加根节点
                 stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
             } else {                           // 遇到标记，弹出栈顶元素，加入到集合中
                 res.add(stack.pop()!!.`val`)
@@ -450,14 +468,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val p = stack.pop()     // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
-            if (p != null) {
-                if (p.right != null) stack.push(p.right)   // 添加右节点
-                stack.push(p)                  // 添加根节点
-                stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
-                if (p.left != null) stack.push(p.left)     // 添加左节点
+            val node = stack.pop()     // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            if (node != null) {
+                if (node.right != null) stack.push(node.right)   // 添加右节点
+                stack.push(node)                  // 添加根节点
+                stack.push(null)               // 根节点访问过，但还没有处理，需要做一下标记null
+                if (node.left != null) stack.push(node.left)     // 添加左节点
             } else {
-                res.add(stack.pop()!!.`val`)   // 遇到标记，弹出栈顶元素，加入到集合中
+                res.add(stack.pop()!!.`val`)      // 遇到标记，弹出栈顶元素，加入到集合中
             }
         }
         return res
@@ -477,15 +495,15 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         val res: MutableList<Int> = mutableListOf()
         val stack: Deque<TreeNode?> = LinkedList()
 
-        if (root == null) return res else stack.add(root)
+        if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val p = stack.pop()    // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
-            if (p != null) {
-                stack.push(p)                  // 添加根节点
+            val node = stack.pop()    // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            if (node != null) {
+                stack.push(node)                  // 添加根节点
                 stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
-                if (p.right != null) stack.push(p.right)    // 添加右节点
-                if (p.left != null) stack.push(p.left)      // 添加左节点
+                if (node.right != null) stack.push(node.right)    // 添加右节点
+                if (node.left != null) stack.push(node.left)      // 添加左节点
             } else {                           // 遇到标记，模拟执行方法内部操作
                 res.add(stack.pop()!!.`val`)
             }
@@ -582,7 +600,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         val leftNum = iRootIndex - iStart    // 中序数组的根节点下标 与 中序起点下标 差距
 
-        rootNode.left = buildTreeHelper(preorder, pStart + 1, pStart + 1 + leftNum ,
+        rootNode.left = buildTreeHelper(preorder, pStart + 1, pStart + 1 + leftNum,
                 inorder, iStart, iRootIndex, map)    // 递归的构造左子树
 
         rootNode.right = buildTreeHelper(preorder, pStart + 1 + leftNum, pEnd,
@@ -605,8 +623,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             return res
         }
 
-        val queue: Queue<TreeNode> = LinkedList()
-        queue.offer(root)     // 创建一个队列，将根节点放入其中
+        val queue: Queue<TreeNode> = LinkedList()   // 创建一个队列，将根节点放入其中
+        queue.offer(root)
         while (!queue.isEmpty()) {
             val level: MutableList<Int> = mutableListOf()
             val size: Int = queue.size   // 每次遍历的数量为队列的长度
@@ -645,11 +663,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             return res
         }
 
-        dfs(1, root, res)
+        dfsLevel(1, root, res)
         return res
     }
 
-    fun dfs(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
+    fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
         if (root == null) {
             return
         }
@@ -660,12 +678,90 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         res[index - 1].add(root.`val`)   // 将当前节点的值加入到res中，index代表当前层，假设index是3，节点值是6。res是[ [1],[2,5],[3,4] ]，加入后res就变为 [ [1],[2,5],[3,4,6] ]
 
-        if (root.left != null) {   // 递归的处理左子树，右子树，同时将层数index+1
-            dfs(index + 1, root.left, res)
+        if (root.left != null) {    // 递归的处理左子树，右子树，同时将层数index+1
+            dfsLevel(index + 1, root.left, res)
         }
         if (root.right != null) {
-            dfs(index + 1, root.right, res)
+            dfsLevel(index + 1, root.right, res)
         }
     }
 
+
+    /**
+     * 515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：
+     *
+     * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果 当前值 比 此位置的值 大，就用 当前值 覆盖。
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(n)，队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)。
+     *
+     * https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/solution/515-zai-mei-ge-shu-xing-zhong-zhao-zui-da-zhi-by-c/
+     *
+     * @param root
+     * @return
+     */
+    fun largestValues(root: TreeNode?): List<Int> {
+        val res: MutableList<Int> = mutableListOf()   // 存放最终结果的集合
+        if (root == null) return res
+
+        val deque: Deque<TreeNode> = LinkedList()     // 创建一个队列，将根节点放入其中
+        deque.offer(root)
+
+        while (!deque.isEmpty()) {
+            var max: Int = Int.MIN_VALUE
+            val size = deque.size         // 每次遍历的数量为队列的长度
+
+            for (i in 0 until size) {     // 将这一层的元素全部取出
+                val node = deque.poll()
+                if (node?.`val`!! > max) {    // 记录每层的最大值
+                    max = node.`val`
+                }
+
+                val left = node.left
+                val right = node.right
+                if (left != null) deque.offer(left)   // 如果节点的左右孩子不为空，放入队列
+                if (right != null) deque.offer(right)
+            }
+
+            res.add(max)
+        }
+
+        return res
+    }
+
+    /**
+     * 515. 在每个树行中找最大值 -- 方法二：DFS深度遍历-递归：
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(h)，h 是树的高度。
+     *
+     * https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/solution/515-zai-mei-ge-shu-xing-zhong-zhao-zui-da-zhi-by-c/
+     * @param root
+     * @return
+     */
+    fun largestValues1(root: TreeNode?): List<Int> {
+        val res: MutableList<Int> = mutableListOf()
+        if (root == null) return res
+
+        dfsLargest(1, root, res)
+        return res
+    }
+
+    fun dfsLargest(index: Int, root: TreeNode?, res: MutableList<Int>) {
+        if (root == null) return
+
+        if (index > res.size) {
+            res.add(index - 1, Int.MIN_VALUE)
+        }
+        if (root.`val` > res[index - 1]) {  // 如果 当前值 比 此位置的值 大，就用 当前值 覆盖。
+            res[index - 1] = root.`val`
+        }
+
+        if (root.left != null) {   // 递归的处理左子树，右子树，同时将层数index+1
+            dfsLargest(index + 1, root.left, res)
+        }
+        if (root.right != null) {
+            dfsLargest(index + 1, root.right, res)
+        }
+    }
 }

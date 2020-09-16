@@ -1,0 +1,166 @@
+
+一、递归思维要点
+1、不要人肉进行递归（最大误区），初学者可以在纸上画出递归的状态树，慢慢熟练之后一定要抛弃这样的习惯。一定要记住：直接看函数本身开始写即可。否则，永远没办法掌握、熟练使用递归。
+2、找到最近最简的方法，将其拆解成可重复解决的问题（找最近重复子问题）。原因是我们写的程序的指令，只包括 if else 、 for 和 while loop、递归调用。
+3、数学归纳法的思维，最开始最简单的条件是成立的，比如n=1,n=2的时候是成立的，且第二点你能证明当n成立的时候，可以推导出n+1也成立的。
+
+4、碰到一个题目，就会找到他的重复性：
+  （1）最优重复性：动态规划；
+  （2）最近重复性：根据重复性的构造和分解，便有分治和回溯。
+
+二、递归模板
+public void recur(int level, int param) {
+  // 1.递归终结条件（最先写）
+  if (level > MAX_LEVEL) {
+    // process result
+    return;
+  }
+
+  // 2.处理当前层逻辑
+  process(level, param);
+
+  // 3.下探到下一层
+  recur( level: level + 1, newParam);
+
+  // 4.清理恢复当前层
+  revertStates();
+}
+
+
+三、分治模板
+public void recur(int level, int param) {
+  // 1.递归终结条件（最先写）
+  if (level > MAX_LEVEL) {
+    // process result
+    return;
+  }
+
+  // 2.处理当前层逻辑
+  process(level, param);
+
+  // 3.调用函数下探到下一层，解决更细节的子问题
+  int subresult1 = recur( level: level + 1, newParam);
+  int subresult2 = recur( level: level + 1, newParam);
+  int subresult3 = recur( level: level + 1, newParam);
+
+  // 4.将子问题的解的合并，产生最终结果
+  int result = processResult(subresult1, subresult2, subresult3, …);
+
+  // 5.清理恢复当前层
+  revertStates();
+}
+
+四、BFS模板-迭代
+fun levelOrder(root: TreeNode?): List<List<Int>>? {
+    val res: MutableList<List<Int>> = mutableListOf()  // 存放最终结果的集合
+    if (root == null) {
+        return res
+    }
+
+    val queue: Queue<TreeNode> = LinkedList()   // 创建一个队列，将根节点放入其中
+    queue.offer(root)
+    while (!queue.isEmpty()) {
+        val level: MutableList<Int> = mutableListOf()
+        val size: Int = queue.size   // 每次遍历的数量为队列的长度
+
+        for (i in 0 until size) {   // 将这一层的元素全部取出，放入到结果集合
+            val node = queue.poll()
+            level.add(node.`val`)
+
+            val left = node.left
+            val right = node.right
+            if (left != null) queue.offer(left)  // 如果节点的左右孩子不为空，放入队列
+            if (right != null) queue.offer(right)
+        }
+
+        res.add(level)
+    }
+
+    return res
+}
+
+
+四、DFS模板
+1、递归
+fun levelOrder1(root: TreeNode?): List<List<Int>>? {
+    val res: MutableList<MutableList<Int>> = mutableListOf()  // 存放最终结果的集合
+    if (root == null) {
+        return res
+    }
+    dfsLevel(1, root, res)
+    return res
+}
+
+fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
+    if (root == null) {
+        return
+    }
+
+    if (res.size < index) {      // 假设res是[ [1],[2,3] ]， index是3，就再插入一个空list放到res中
+        res.add(mutableListOf())
+    }
+
+    res[index - 1].add(root.`val`)   // 将当前节点的值加入到res中，index代表当前层，假设index是3，节点值是6。res是[ [1],[2,5],[3,4] ]，加入后res就变为 [ [1],[2,5],[3,4,6] ]
+
+    if (root.left != null) {    // 递归的处理左子树，右子树，同时将层数index+1
+        dfsLevel(index + 1, root.left, res)
+    }
+    if (root.right != null) {
+        dfsLevel(index + 1, root.right, res)
+    }
+}
+
+2、迭代
+fun preorder(root: Node?): List<Int> {
+    val res: MutableList<Int> = mutableListOf()
+    val stack: Deque<Node?> = LinkedList()
+
+    if (root == null) return res else stack.push(root)
+
+    while (!stack.isEmpty()) {
+        val p = stack.pop()    // 将根节点弹出
+        res.add(p!!.`val`)     // 加入到结果集合中
+
+        for (i in p.children.size - 1 downTo 0) {   // 将该节点的子节点从右往左压入栈
+            stack.push(p.children[i])
+        }
+    }
+    return res
+}
+
+fun postorder(root: Node?): List<Int> {
+    val res: MutableList<Int> = mutableListOf()
+    val stack: Deque<Node?> = LinkedList()
+
+    if (root == null) return res else stack.push(root)
+
+    while (!stack.isEmpty()) {
+        val p = stack.pop()     // 将根节点弹出
+        res.add(p!!.`val`)      // 加入到结果集合中
+
+        for (i in 0 until p.children.size) {  // 将该节点的子节点从左往右压入栈
+            stack.push(p.children[i])
+        }
+    }
+    return res.reversed()  // 最后将list反转
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
