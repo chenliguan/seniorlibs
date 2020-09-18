@@ -47,6 +47,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_build_tree).setOnClickListener(this)
         findViewById<View>(R.id.btn_level_order_bottom).setOnClickListener(this)
         findViewById<View>(R.id.btn_largest_values).setOnClickListener(this)
+        findViewById<View>(R.id.btn_num_is_lands).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -193,6 +194,33 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
                 LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：${largestValues(node)}")
                 LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法二：DFS深度遍历-递归：${largestValues1(node)}")
+            }
+            R.id.btn_num_is_lands -> {
+                // 二维数组
+//                val result = Array(10) { i ->
+//                    Array(8) { j ->
+//                        "the String at position $i, $j" // provide some initial value based on i and j
+//                    }
+//                }
+
+                val grid: Array<CharArray> = Array(4) { i ->
+                    charArrayOf()
+                }
+                grid[0] = charArrayOf('1', '1', '1', '1', '0')
+                grid[1] = charArrayOf('1', '1', '0', '1', '0')
+                grid[2] = charArrayOf('1', '1', '0', '0', '0')
+                grid[3] = charArrayOf('0', '0', '0', '0', '0')
+
+                LogUtils.e(TAG, "200. 岛屿数量——方法一：深度优先遍历DFS：${numIslands(grid)}")
+
+                val grid1: Array<CharArray> = Array(4) { i ->
+                    charArrayOf()
+                }
+                grid1[0] = charArrayOf('1', '1', '1', '1', '0')
+                grid1[1] = charArrayOf('1', '1', '0', '1', '0')
+                grid1[2] = charArrayOf('1', '1', '0', '0', '0')
+                grid1[3] = charArrayOf('0', '0', '0', '0', '0')
+                LogUtils.e(TAG, "200. 岛屿数量——方法二：广度优先遍历BFS：${numIslands1(grid1)}")
             }
             else -> {
             }
@@ -589,14 +617,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun buildTreeHelper(preorder: IntArray, pStart: Int, pEnd: Int,
-                                inorder: IntArray, iStart: Int, iEnd: Int,
-                                map: MutableMap<Int, Int>): TreeNode? {
+                                inorder: IntArray, iStart: Int, iEnd: Int, map: MutableMap<Int, Int>): TreeNode? {
 
-        if (pStart == pEnd) return null   // 前序数组为空，直接返回null
+        if (pStart == pEnd) return null      // 前序数组为空，直接返回null
 
         val rootValue = preorder[pStart]     // 在前序数组中找到根节点值
-        val rootNode = TreeNode(rootValue)        // 构造根节点
-        val iRootIndex = map[rootValue]!!    // 在中序数组中找到根节点下标
+        val rootNode = TreeNode(rootValue)   // 构造根节点
+        val iRootIndex = map[rootValue]!!    // 在中序哈希映射中找到根节点下标
 
         val leftNum = iRootIndex - iStart    // 中序数组的根节点下标 与 中序起点下标 差距
 
@@ -619,12 +646,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun levelOrder(root: TreeNode?): List<List<Int>>? {
         val res: MutableList<List<Int>> = mutableListOf()  // 存放最终结果的集合
-        if (root == null) {
-            return res
-        }
-
         val queue: Queue<TreeNode> = LinkedList()   // 创建一个队列，将根节点放入其中
-        queue.offer(root)
+
+        if (root == null) return res else queue.offer(root)
+
         while (!queue.isEmpty()) {
             val level: MutableList<Int> = mutableListOf()
             val size: Int = queue.size   // 每次遍历的数量为队列的长度
@@ -702,10 +727,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun largestValues(root: TreeNode?): List<Int> {
         val res: MutableList<Int> = mutableListOf()   // 存放最终结果的集合
-        if (root == null) return res
-
         val deque: Deque<TreeNode> = LinkedList()     // 创建一个队列，将根节点放入其中
-        deque.offer(root)
+
+        if (root == null) return res else deque.offer(root)
 
         while (!deque.isEmpty()) {
             var max: Int = Int.MIN_VALUE
@@ -762,6 +786,95 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
         if (root.right != null) {
             dfsLargest(index + 1, root.right, res)
+        }
+    }
+
+    /**
+     * 200. 岛屿数量——方法一：深度优先遍历DFS
+     *
+     * 目标：是找到矩阵中 “岛屿的数量” ，上下左右相连的 1 都被认为是连续岛屿。
+     * 思想：遍历整个矩阵，当遇到 grid[i][j] == '1' 时，从此点开始做深度优先搜索 dfs，岛屿数 count + 1 且在深度优先搜索中删除此岛屿。
+     *
+     * 步骤：1.从岛屿中的某一点 (i, j)向此点的上下左右 (i+1,j),(i-1,j),(i,j+1),(i,j-1) 做深度搜索；
+     *      2.终止条件：(i, j) 越过矩阵边界; grid[i][j] == 0，代表此分支已越过岛屿边界；
+     *      3.搜索岛屿的同时，执行grid[i][j] = '0'，即将岛屿所有节点删除，以免之后重复搜索相同岛屿。
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
+     *
+     * https://leetcode-cn.com/problems/number-of-islands/solution/200-dao-yu-shu-liang-dfsbfs-by-chen-li-guan/
+     * @param grid
+     * @return
+     */
+    fun numIslands(grid: Array<CharArray>): Int {
+        var count = 0
+        for (i in grid.indices) {
+            for (j in grid[0].indices) {
+                if (grid[i][j] == '1') {
+                    dfs(grid, i, j)
+                    count++
+                }
+            }
+        }
+        return count
+    }
+
+    private fun dfs(grid: Array<CharArray>, i: Int, j: Int) {
+        if (i >= 0 && i < grid.size && j >= 0 && j < grid[0].size && grid[i][j] == '1') {
+            grid[i][j] = '0'
+            dfs(grid, i + 1, j)
+            dfs(grid, i, j + 1)
+            dfs(grid, i - 1, j)
+            dfs(grid, i, j - 1)
+        }
+    }
+
+    /**
+     * 200. 岛屿数量——方法二：广度优先遍历BFS
+     *
+     * 步骤：1.借用一个队列 queue，判断队列首部节点 (i, j) 是否未越界且为1：
+     *       （1）若是则置零（删除岛屿节点），并将此节点上下左右节点 (i+1,j),(i-1,j),(i,j+1),(i,j-1)加入队列；
+     *       （2）若不是则跳过此节点；
+     *      2.循环 poll 队列首节点，直到整个队列为空，此时已经遍历完此岛屿。
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数。
+     * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
+     *
+     * https://leetcode-cn.com/problems/number-of-islands/solution/200-dao-yu-shu-liang-dfsbfs-by-chen-li-guan/
+     * @param grid
+     * @return
+     */
+    fun numIslands1(grid: Array<CharArray>): Int {
+        var count = 0
+        for (i in grid.indices) {
+            for (j in grid[0].indices) {
+                if (grid[i][j] == '1') {
+                    bfs(grid, i, j)
+                    count++
+                }
+            }
+        }
+        return count
+    }
+
+    private fun bfs(grid: Array<CharArray>, i: Int, j: Int) {
+        var i = i
+        var j = j
+
+        val queue: Queue<IntArray> = LinkedList()
+        queue.offer(intArrayOf(i, j))
+        while (!queue.isEmpty()) {
+            val cur = queue.poll()
+            i = cur[0]
+            j = cur[1]
+
+            if (i >= 0 && i < grid.size && j >= 0 && j < grid[0].size && grid[i][j] == '1') {
+                grid[i][j] = '0'
+                queue.offer(intArrayOf(i + 1, j))
+                queue.offer(intArrayOf(i - 1, j))
+                queue.offer(intArrayOf(i, j + 1))
+                queue.offer(intArrayOf(i, j - 1))
+            }
         }
     }
 }

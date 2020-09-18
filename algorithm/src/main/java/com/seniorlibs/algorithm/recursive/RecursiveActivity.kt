@@ -47,7 +47,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "70. 爬楼梯1：${climbStairs(5)}")
                 LogUtils.e(TAG, "70. 爬楼梯2：${climbStairs1(5)}")
                 LogUtils.e(TAG, "70. 爬楼梯3：${climbStairs3(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯4：${climbStairs4(5, 1, 1)}")
+                LogUtils.e(TAG, "70. 爬楼梯4：${climbStairs4(5)}")
             }
             R.id.btn_bracket_generate -> {
                 list.clear()
@@ -136,11 +136,18 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs4(n: Int, first: Int, second: Int): Int {
-        if (n <= 1) return second
+    fun climbStairs4(n: Int): Int {
 
-        return climbStairs4(n - 1, second, first + second)
+        return climbStair(n, 1 , 2)
     }
+
+    fun climbStair(n: Int, first: Int, second: Int): Int {
+        if (n <= 1) return first
+        if (n == 2) return second
+
+        return climbStair(n - 1, second, first + second)  // 5 -> 4 -> 3 (2->1)
+    }
+
 
 
     /**
@@ -149,11 +156,13 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 22. 括号生成
+     *
      * 思路：left随时可以加，只要别用完(n) ; right必须之前有左括号，左个数>右个数
      *
      * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
      * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
      *
+     * https://leetcode-cn.com/problems/generate-parentheses/
      * @param n
      * @return
      */
@@ -165,16 +174,15 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     val list: MutableList<String> = mutableListOf()
 
     private fun generate(left: Int, right: Int, n: Int, s: String) {
-        // 1.递归终结条件（最先写）
-        if (left > n || left < right) { // 肯定不合法，提前结束，即“剪枝”
+        // 1.递归终结条件（最先写） // 肯定不合法，提前结束，即“剪枝”
+        if (left > n || left < right) {
             return
         }
         if (left == n && right == n) {
+            // 2.处理当前层逻辑
             list.add(s)
             return
         }
-
-        // 2.处理当前层逻辑
 
         // 3.下探到下一层
         if (left < n) {  // left随时可以加，只要别用完(n)
