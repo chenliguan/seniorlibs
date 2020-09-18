@@ -120,24 +120,24 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun largestValues(root: TreeNode?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()   // 存放最终结果的集合
-        val deque: Deque<TreeNode> = LinkedList()     // 创建一个队列，将根节点放入其中
+        val res: MutableList<Int> = mutableListOf()
+        val deque: Deque<TreeNode> = LinkedList()     // 1 创建一个队列，将根节点放入其中
 
         if (root == null) return res else deque.offer(root)
 
         while (!deque.isEmpty()) {
             var max: Int = Int.MIN_VALUE
-            val size = deque.size         // 每次遍历的数量为队列的长度
+            val size = deque.size     // 2.1 遍历每一层前，存下当前队列的长度
 
-            for (i in 0 until size) {     // 将这一层的元素全部取出
+            for (i in 0 until size) {   // 2.2 将这一层的元素全部取出，因为长度已确定，不会遍历新加入的左右节点
                 val node = deque.poll()
-                if (node?.`val`!! > max) {    // 记录每层的最大值
+                if (node?.`val`!! > max) {     // 2.3 记录每层的最大值
                     max = node.`val`
                 }
 
-                val left = node.left
+                val left = node.left   // 3 如果节点的左右孩子不为空，放入队列
                 val right = node.right
-                if (left != null) deque.offer(left)   // 如果节点的左右孩子不为空，放入队列
+                if (left != null) deque.offer(left)
                 if (right != null) deque.offer(right)
             }
 
@@ -161,7 +161,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         val res: MutableList<Int> = mutableListOf()
         if (root == null) return res
 
-        dfsLargest(1, root, res)
+        dfsLargest(1, root, res) // index指第几层，从第1层开始，传入1
         return res
     }
 
@@ -169,19 +169,62 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return
 
         if (index > res.size) {
-            res.add(index - 1, Int.MIN_VALUE)
+            res.add(index - 1, Int.MIN_VALUE)  // index-1是符合从0开始的集合；res必须先add，否则报空指针
         }
         if (root.`val` > res[index - 1]) {  // 如果 当前值 比 此位置的值 大，就用 当前值 覆盖。
             res[index - 1] = root.`val`
         }
 
-        if (root.left != null) {   // 递归的处理左子树，右子树，同时将层数index+1
+        if (root.left != null) {   // 递归的处理左子树，右子树，同时将层数：index+1
             dfsLargest(index + 1, root.left, res)
         }
         if (root.right != null) {
             dfsLargest(index + 1, root.right, res)
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    fun largestValues3(root: TreeNode?): List<Int> {
+        val res : MutableList<Int> = mutableListOf()
+        if (root == null) return res
+
+        dfsLargest1(1, root, res)
+        return res
+    }
+
+    private fun dfsLargest1(index: Int, root: TreeNode?, res: MutableList<Int>) {
+        if (root == null) return
+
+        if (index > res.size) {
+            res.add(index - 1, Int.MIN_VALUE)
+        }
+        if (root.`val` > res[index - 1]) {
+            res[index - 1] = root.`val`
+        }
+
+        if (root.left != null) {
+            dfsLargest1(index + 1, root.left, res)
+        }
+        if (root.right != null) {
+            dfsLargest1(index + 1, root.right, res)
+        }
+    }
+
 
     /**
      * 200. 岛屿数量——方法一：深度优先遍历DFS
