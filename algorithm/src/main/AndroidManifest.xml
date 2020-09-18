@@ -24,6 +24,8 @@
 
         <activity android:name=".binarytree.BinaryTreeActivity" />
 
+        <activity android:name=".dfsbfs.DfsBfsActivity" />
+
         <activity android:name=".map.MapActivity" />
 
         <activity android:name=".stack.StackActivity" />
@@ -33,6 +35,8 @@
         <activity android:name=".heap.HeapActivity" />
 
         <activity android:name=".recursive.RecursiveActivity" />
+
+        <activity android:name=".greedy.GreedyActivity" />
     </application>
 
 </manifest>
