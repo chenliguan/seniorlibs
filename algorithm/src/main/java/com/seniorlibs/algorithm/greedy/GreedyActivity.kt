@@ -68,5 +68,4 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
         }
         return profit
     }
-
 }

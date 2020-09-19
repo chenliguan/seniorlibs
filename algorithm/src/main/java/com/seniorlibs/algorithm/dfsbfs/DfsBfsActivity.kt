@@ -183,49 +183,6 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    fun largestValues3(root: TreeNode?): List<Int> {
-        val res : MutableList<Int> = mutableListOf()
-        if (root == null) return res
-
-        dfsLargest1(1, root, res)
-        return res
-    }
-
-    private fun dfsLargest1(index: Int, root: TreeNode?, res: MutableList<Int>) {
-        if (root == null) return
-
-        if (index > res.size) {
-            res.add(index - 1, Int.MIN_VALUE)
-        }
-        if (root.`val` > res[index - 1]) {
-            res[index - 1] = root.`val`
-        }
-
-        if (root.left != null) {
-            dfsLargest1(index + 1, root.left, res)
-        }
-        if (root.right != null) {
-            dfsLargest1(index + 1, root.right, res)
-        }
-    }
-
-
     /**
      * 200. 岛屿数量——方法一：深度优先遍历DFS
      *

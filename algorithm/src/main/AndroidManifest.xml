@@ -37,6 +37,8 @@
         <activity android:name=".recursive.RecursiveActivity" />
 
         <activity android:name=".greedy.GreedyActivity" />
+
+        <activity android:name=".binarysearch.BinarySearchActivity" />
     </application>
 
 </manifest>
