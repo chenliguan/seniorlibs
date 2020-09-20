@@ -178,7 +178,7 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
      */
     private fun fizzBuzz(n: Int): List<String> {
         val map = mapOf(3 to "Fizz", 5 to "Buzz")
-        val list = mutableListOf<String>()
+        val res = mutableListOf<String>()
 
         for (i in 1 until n + 1) {  // 排除0 % 3 == 0
             var value = ""
@@ -192,9 +192,9 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
                 value += i
             }
 
-            list.add(value)
+            res.add(value)
         }
 
-        return list
+        return res
     }
 }

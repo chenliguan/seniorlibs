@@ -71,9 +71,7 @@ public int binarySearch(int[] array, int target) {
 五、BFS模板-迭代
 fun levelOrder(root: TreeNode?): List<List<Int>>? {
     val res: MutableList<List<Int>> = mutableListOf()  // 存放最终结果的集合
-    if (root == null) {
-        return res
-    }
+    if (root == null) return res
 
     val queue: Queue<TreeNode> = LinkedList()   // 创建一个队列，将根节点放入其中
     queue.offer(root)
@@ -102,17 +100,14 @@ fun levelOrder(root: TreeNode?): List<List<Int>>? {
 1、递归
 fun levelOrder1(root: TreeNode?): List<List<Int>>? {
     val res: MutableList<MutableList<Int>> = mutableListOf()  // 存放最终结果的集合
-    if (root == null) {
-        return res
-    }
+    if (root == null) return res
+
     dfsLevel(1, root, res)
     return res
 }
 
 fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
-    if (root == null) {
-        return
-    }
+    if (root == null) return
 
     if (res.size < index) {      // 假设res是[ [1],[2,3] ]， index是3，就再插入一个空list放到res中
         res.add(mutableListOf())

@@ -12,4 +12,9 @@
         style="@style/BtnStyles"
         android:text="69. x 的平方根" />
 
+    <Button
+        android:id="@+id/btn_search"
+        style="@style/BtnStyles"
+        android:text="33. 搜索旋转排序数组" />
+
 </LinearLayout>

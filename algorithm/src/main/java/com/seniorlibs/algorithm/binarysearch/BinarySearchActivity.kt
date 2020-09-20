@@ -33,6 +33,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_sqrt).setOnClickListener(this)
+        findViewById<View>(R.id.btn_search).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -44,6 +45,9 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_sqrt -> {
                 LogUtils.d(TAG, "69. x 的平方根：${mySqrt(8)}")
                 LogUtils.d(TAG, "69. x 的平方根：${mySqrt1(8)}")
+            }
+            R.id.btn_search -> {
+                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search(intArrayOf(1,3), 2)}")
             }
             else -> {
             }
@@ -71,7 +75,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         while (left <= right) {
             mid = left + (right - left) / 2
 
-            if (x >= mid * mid) { // 2.82842..., 由于返回类型是整数，小数部分将被舍去，结果是2。所以结果在mid*mid<x这一边
+            if (mid * mid <= x) { // 2.82842..., 由于返回类型是整数，小数部分将被舍去，结果是2。所以结果在mid*mid<x这一边
                 result = mid
                 left = mid + 1
             } else {
@@ -97,5 +101,45 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
             v = (v + x / v) / 2
         }
         return v.toInt()
+    }
+
+
+    /**
+     * 33. 搜索旋转排序数组  5,6,7,0,1,2,3,4  6
+     *
+     * 思想：循环判断，直到排除到只剩最后一个元素时，退出循环，如果该元素和 target 相同，直接返回下标，否则返回 -1。
+     * 步骤：1.当[0,mid]升序时: nums[0] <= nums[mid]，当target > nums[mid] || target < nums[0]，target不在[0,mid]中，则向后规约条件
+     *      2.当[0,mid]发生旋转时: nums[0] > nums[mid]，当target > nums[mid] && target < nums[0]，target不在[0,mid]中，向后规约条件
+     *      3.其他其他情况就是向前规约了
+     *
+     * 时间复杂度：O(logn)，其中n为nums数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度O(logn)。
+     * 空间复杂度：O(1) 。只需要常数级别的空间存放变量。
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun search(nums: IntArray, target: Int): Int {
+        var left = 0
+        var right = nums.size - 1
+        var mid = 0
+        while (left < right) {
+            mid = (right - left) / 2 + left
+
+            if (nums[mid] == target) {
+                return mid
+            }
+            // 当[0,mid]升序时: nums[0] <= nums[mid]，当target > nums[mid] || target < nums[0]，target不在[0,mid]中，则向后规约条件
+            if (nums[0] <= nums[mid] && (target < nums[0] || target > nums[mid])) {
+                left = mid + 1
+                // 当[0,mid]发生旋转时: nums[0] > nums[mid]，当target > nums[mid] && target < nums[0]，target不在[0,mid]中，向后规约条件
+            } else if (target < nums[0] && target > nums[mid]) {
+                left = mid + 1
+                // 其他其他情况就是向前规约了
+            } else {
+                right = mid - 1
+            }
+        }
+
+        return -1
     }
 }

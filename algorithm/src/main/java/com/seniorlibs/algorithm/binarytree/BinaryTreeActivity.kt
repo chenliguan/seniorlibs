@@ -142,20 +142,19 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_is_valid_BST -> {
                 pre = Long.MIN_VALUE
 
-                val node = TreeNode(4)
-                val node_right = TreeNode(5)
+                val node = TreeNode(10)
+                val node_right = TreeNode(15)
                 node.right = node_right
-                val node_right2 = TreeNode(6)
+                val node_right2 = TreeNode(20)
                 node_right.right = node_right2
+                val node_left2 = TreeNode(6)
+                node_right.left = node_left2
 
-                val node_left = TreeNode(2)
+                val node_left = TreeNode(5)
                 node.left = node_left
-                val node_left2 = TreeNode(1)
-                node_left.left = node_left2
-                val node_left_right = TreeNode(3)
-                node_left.right = node_left_right
 
                 LogUtils.e(TAG, "98. 验证二叉搜索树：${isValidBST(node)}")
+                LogUtils.e(TAG, "98. 验证二叉搜索树：${isValidBST1(node)}")
             }
             R.id.btn_build_tree -> {
                 LogUtils.e(TAG, "105. 从前序与中序遍历序列构造二叉树：${buildTree(intArrayOf(3, 9, 20, 15, 7), intArrayOf(9, 3, 15, 20, 7))}")
@@ -542,10 +541,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         if (root.`val` <= minValue || root.`val` >= maxValue) return false  // 左子树节点小于它的根节点
 
-        return solution(root.left, minValue, root.`val`.toLong())
-                && solution(root.right, root.`val`.toLong(), maxValue)
+        return solution(root.left, minValue, root.`val`.toLong()) && solution(root.right, root.`val`.toLong(), maxValue)
     }
-
 
     /**
      * 105. 从前序与中序遍历序列构造二叉树
