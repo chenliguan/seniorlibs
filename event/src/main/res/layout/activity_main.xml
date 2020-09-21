@@ -10,30 +10,37 @@
 
         <Button
             android:id="@+id/button1"
-            style="@style/BaseMatchWrap"
+            style="@style/BtnStyles"
             android:onClick="onButtonClick"
             android:text="View基础"
             android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/button2"
-            style="@style/BaseMatchWrap"
+            style="@style/BtnStyles"
             android:onClick="onButtonClick"
             android:text="滑动冲突场景1-外部拦截"
             android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/button3"
-            style="@style/BaseMatchWrap"
+            style="@style/BtnStyles"
             android:onClick="onButtonClick"
             android:text="滑动冲突场景2-内部拦截"
             android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/onBsListenerClick"
-            style="@style/BaseMatchWrap"
+            style="@style/BtnStyles"
             android:onClick="onBsListenerClick"
             android:text="全局监听器接口处理"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn_dispatch"
+            style="@style/BtnStyles"
+            android:onClick="onDispatchClick"
+            android:text="事件分发"
             android:textAllCaps="false"/>
 
     </LinearLayout>

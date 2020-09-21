@@ -9,26 +9,6 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".TestActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
-            android:launchMode="standard" />
-        <activity
-            android:name=".DemoActivity_1"
-            android:configChanges="screenLayout"
-            android:label="@string/title_scene_1"
-            android:launchMode="standard" />
-        <activity
-            android:name=".DemoActivity_2"
-            android:configChanges="screenLayout"
-            android:label="@string/title_scene_1"
-            android:launchMode="standard" />
-        <activity
-            android:name=".ThirdActivity"
-            android:configChanges="screenLayout"
-            android:label="@string/app_name" />
-
-        <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
@@ -37,6 +17,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".TestActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="standard" />
+
+        <activity
+            android:name=".DemoActivity_1"
+            android:configChanges="screenLayout"
+            android:label="@string/title_scene_1"
+            android:launchMode="standard" />
+
+        <activity
+            android:name=".DemoActivity_2"
+            android:configChanges="screenLayout"
+            android:label="@string/title_scene_1"
+            android:launchMode="standard" />
+
+        <activity
+            android:name=".ThirdActivity"
+            android:configChanges="screenLayout"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".dispatch.DispatchActivity"
+            android:configChanges="screenLayout"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dispatch.DispatchActivity">
+
+    <com.seniorlibs.event.dispatch.MyLinearLayoutParent
+        android:id="@+id/red"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:background="@color/gray_D0D0D0"
+        tools:ignore="MissingConstraints">
+
+        <com.seniorlibs.event.dispatch.MyLinearLayout
+            android:id="@+id/green"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:background="@color/gray_999999">
+
+            <com.seniorlibs.event.dispatch.MyView
+                android:id="@+id/yellow"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@color/white_FFFFFFFF" />
+        </com.seniorlibs.event.dispatch.MyLinearLayout>
+    </com.seniorlibs.event.dispatch.MyLinearLayoutParent>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

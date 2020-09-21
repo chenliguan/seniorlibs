@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.seniorlibs.baselib.utils.LogUtils;
+import com.seniorlibs.event.dispatch.DispatchActivity;
 import com.seniorlibs.event.listener.IBrowserListener;
 import com.seniorlibs.event.listener.BrowserListenerHandle;
 
@@ -93,5 +94,15 @@ public class MainActivity extends Activity {
         } else {
             LogUtils.e(TAG, "BsListenerHandle.getBsListener()：" + BrowserListenerHandle.getBrowserListener());
         }
+    }
+
+    /**
+     * 事件分发
+     *
+     * @param v
+     */
+    public void onDispatchClick(View v) {
+        Intent intent = new Intent(this, DispatchActivity.class);
+        startActivity(intent);
     }
 }

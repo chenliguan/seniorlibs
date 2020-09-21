@@ -114,6 +114,8 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      *
      * 时间复杂度：O(logn)，其中n为nums数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度O(logn)。
      * 空间复杂度：O(1) 。只需要常数级别的空间存放变量。
+     *
+     * https://leetcode-cn.com/problems/search-in-rotated-sorted-array/solution/33-sou-suo-xuan-zhuan-pai-xu-shu-zu-by-chen-li-gua/
      * @param nums
      * @param target
      * @return
