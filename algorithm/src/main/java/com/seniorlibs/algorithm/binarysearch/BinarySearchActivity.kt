@@ -48,6 +48,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_search -> {
                 LogUtils.d(TAG, "33. 搜索旋转排序数组：${search(intArrayOf(1,3), 2)}")
+                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search1(intArrayOf(1,3), 2)}")
             }
             else -> {
             }
@@ -127,9 +128,8 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         while (left < right) {
             mid = (right - left) / 2 + left
 
-            if (nums[mid] == target) {
-                return mid
-            }
+            if (nums[mid] == target) return mid
+
             // 当[0,mid]升序时: nums[0] <= nums[mid]，当target > nums[mid] || target < nums[0]，target不在[0,mid]中，则向后规约条件
             if (nums[0] <= nums[mid] && (target < nums[0] || target > nums[mid])) {
                 left = mid + 1
@@ -137,6 +137,53 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
             } else if (target < nums[0] && target > nums[mid]) {
                 left = mid + 1
                 // 其他其他情况就是向前规约了
+            } else {
+                right = mid - 1
+            }
+        }
+
+        return -1
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    fun search1(nums: IntArray, target: Int): Int {
+        var left = 0
+        var right = nums.size - 1
+        var mid = 0
+
+        while (left <= right) {
+            mid = (right - left) / 2 + left
+            if (nums[mid] == target) return mid
+
+            if (nums[0] <= nums[mid] && (target < nums[0] || target > nums[mid])) {
+                left = mid + 1
+            } else if (target < nums[0] && target > nums[mid]) {
+                left = mid + 1
             } else {
                 right = mid - 1
             }

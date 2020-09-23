@@ -50,6 +50,12 @@ public void recur(int level, int param) {
   revertStates();
 }
 
+四、回溯
+DFS是一个劲的往某一个方向搜索，而回溯算法建立在DFS基础之上的，但不同的是在搜索过程中，达到结束条件后，恢复状态，回溯上一层，再次搜索。
+因此回溯算法与 DFS 的区别就是有无状态重置
+
+回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
+
 四、二分查找代码模板
 public int binarySearch(int[] array, int target) {
     int left = 0, right = array.length - 1, mid;

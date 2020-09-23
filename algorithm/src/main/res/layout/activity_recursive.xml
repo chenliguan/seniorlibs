@@ -16,4 +16,14 @@
         android:id="@+id/btn_bracket_generate"
         style="@style/BtnStyles"
         android:text="22. 括号生成" />
+
+    <Button
+        android:id="@+id/btn_my_pow"
+        style="@style/BtnStyles"
+        android:text="50. Pow(x, n)" />
+
+    <Button
+        android:id="@+id/btn_subsets"
+        style="@style/BtnStyles"
+        android:text="78. 子集" />
 </LinearLayout>
