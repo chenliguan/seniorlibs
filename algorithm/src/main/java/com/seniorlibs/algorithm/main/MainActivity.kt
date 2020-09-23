@@ -17,7 +17,12 @@ import com.seniorlibs.algorithm.recursive.RecursiveActivity
 import com.seniorlibs.algorithm.stack.StackActivity
 
 /**
- * 主页
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 主页
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 

@@ -11,7 +11,12 @@ import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
 /**
- * 队列
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 队列
  */
 class QueueActivity : AppCompatActivity(), View.OnClickListener {
 

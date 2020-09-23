@@ -10,7 +10,12 @@ import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
 /**
- * 栈
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 栈
  */
 class StackActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,6 +38,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_is_valid).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_stack).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -43,13 +49,26 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btn_is_valid -> {
                 val valid = isValid("]")
-                LogUtils.e(TAG, "有效的括号：${valid}")
+                LogUtils.d(TAG, "20. 有效的括号：${valid}")
+            }
+            R.id.btn_min_stack -> {
+                val obj = MinStack()
+                obj.push(1)
+                obj.push(3)
+                obj.push(1)
+                obj.push(-1)
+                obj.push(2)
+                obj.pop()
+                val param_3 = obj.top()
+                val param_4 = obj.getMin()
+                LogUtils.d(TAG, "155. 最小栈：${param_3} ${param_4}")
             }
 
             else -> {
             }
         }
     }
+
 
     /**
      * 20. 有效的括号

@@ -9,9 +9,13 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
-
 /**
- * 二叉树
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 二叉树
  */
 class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 

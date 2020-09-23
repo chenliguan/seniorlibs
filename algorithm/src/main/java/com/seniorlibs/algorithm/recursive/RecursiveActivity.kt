@@ -9,7 +9,12 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
 
 /**
- * 递归
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 递归
  */
 class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -58,7 +63,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "50. Pow(x, n)：${myPow(2.00000, 10)}")
             }
             R.id.btn_subsets -> {
-                t.clear()
+                listI.clear()
                 res.clear()
                 LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1,2,3))}")
             }

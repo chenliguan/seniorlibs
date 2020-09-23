@@ -9,9 +9,13 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
-
 /**
- * 深度优先遍历DFS、广度优先遍历BFS
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 深度优先遍历DFS、广度优先遍历BFS
  */
 class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
 

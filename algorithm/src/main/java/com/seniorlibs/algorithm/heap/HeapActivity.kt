@@ -13,7 +13,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * 堆
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 堆
  */
 class HeapActivity : AppCompatActivity(), View.OnClickListener {
 

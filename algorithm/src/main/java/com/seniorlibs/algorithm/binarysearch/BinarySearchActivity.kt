@@ -8,9 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
 
-
 /**
- * 二分查找
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 二分查找
  */
 class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 

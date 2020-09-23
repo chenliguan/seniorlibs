@@ -1,7 +1,12 @@
 package com.seniorlibs.algorithm.queue
 
 /**
- * 641. 设计循环双端队列
+ * Author: 陈李冠
+ * Version: 1.0.0
+ * Date: 2020/9/10
+ * Mender:
+ * Modify:
+ * Description: 641. 设计循环双端队列
  */
 class CircularDeque(k: Int) {
 
