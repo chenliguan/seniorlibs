@@ -1,7 +1,7 @@
 package com.seniorlibs.baselib.utils;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2019/9/1.
  * Mender:

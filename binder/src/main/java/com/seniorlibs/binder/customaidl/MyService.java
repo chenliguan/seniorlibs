@@ -7,7 +7,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0
  * Date: 2019/11/17.
  * Mender:

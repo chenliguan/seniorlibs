@@ -1,7 +1,7 @@
 package com.read.kotlinlib.basic
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.28
  * Date: 2020/7/23.
  * Mender:

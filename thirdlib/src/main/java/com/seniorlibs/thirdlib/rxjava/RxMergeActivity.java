@@ -16,7 +16,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/3/15
  * Mender:

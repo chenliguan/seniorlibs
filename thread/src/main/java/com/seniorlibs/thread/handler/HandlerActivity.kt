@@ -16,7 +16,7 @@ import com.seniorlibs.thread.R
 import kotlin.concurrent.thread
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/6/26.
  * Mender:

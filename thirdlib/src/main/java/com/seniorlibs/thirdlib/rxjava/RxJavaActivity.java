@@ -32,7 +32,7 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2019/5/3
  * Mender:

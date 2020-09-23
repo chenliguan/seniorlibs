@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.28
  * Date: 2020/3/8.
  * Mender:

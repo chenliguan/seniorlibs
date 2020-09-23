@@ -1,7 +1,7 @@
 package com.seniorlibs.algorithm.queue
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/9/10
  * Mender:

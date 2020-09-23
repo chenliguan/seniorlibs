@@ -20,7 +20,7 @@ import java.util.List;
 import io.reactivex.functions.Consumer;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/1/3
  * Mender:

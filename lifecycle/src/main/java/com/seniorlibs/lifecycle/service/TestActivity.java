@@ -13,7 +13,7 @@ import com.seniorlibs.baselib.utils.LogUtils;
 import com.seniorlibs.lifecycle.R;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/1/12.
  * Mender:

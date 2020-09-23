@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.tencent.mmkv.MMKV
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/8/21.
  * Mender:

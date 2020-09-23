@@ -3,7 +3,7 @@ package com.seniorlibs.binder.customaidl;
 import android.os.IInterface;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0
  * Date: 2019/11/17.
  * Mender:

@@ -17,7 +17,7 @@ import kotlin.system.measureTimeMillis
 import androidx.core.net.toUri as toUri
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/4/1
  * Mender:

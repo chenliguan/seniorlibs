@@ -9,7 +9,7 @@ import android.os.IBinder;
 import com.seniorlibs.baselib.utils.LogUtils;
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/1/12.
  * Mender:

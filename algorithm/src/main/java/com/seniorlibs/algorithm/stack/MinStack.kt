@@ -3,7 +3,7 @@ package com.seniorlibs.algorithm.stack
 import java.util.*
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/9/23
  * Mender:

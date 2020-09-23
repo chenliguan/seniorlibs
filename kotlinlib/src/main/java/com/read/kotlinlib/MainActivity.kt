@@ -11,7 +11,7 @@ import com.read.kotlinlib.generic.GenericTest
 import com.seniorlibs.baselib.utils.LogUtils
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/4/1
  * Mender:

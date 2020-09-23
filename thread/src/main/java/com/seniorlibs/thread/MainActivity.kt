@@ -13,7 +13,7 @@ import com.seniorlibs.thread.synchronize.SynchronizedTest
 import com.seniorlibs.thread.threadpool.ThreadPoolManagerActivity
 
 /**
- * Author: 陈李冠
+ * Author: chen
  * Version: 1.0.0
  * Date: 2020/6/26.
  * Mender:
