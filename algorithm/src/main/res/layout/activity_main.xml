@@ -8,6 +8,11 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
+        android:id="@+id/btn_test"
+        style="@style/BtnStyles"
+        android:text="测试" />
+
+    <Button
         android:id="@+id/btn_linked_list"
         style="@style/BtnStyles"
         android:text="链表测试" />

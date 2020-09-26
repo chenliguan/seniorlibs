@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
+        findViewById<View>(R.id.btn_test).setOnClickListener(this)
         findViewById<View>(R.id.btn_linked_list).setOnClickListener(this)
         findViewById<View>(R.id.btn_array).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_tree).setOnClickListener(this)
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.btn_test -> TestActivity.actionStart(this)
             R.id.btn_linked_list -> LinkedActivity.actionStart(this)
             R.id.btn_array -> ArrayActivity.actionStart(this)
             R.id.btn_binary_tree -> BinaryTreeActivity.actionStart(this)

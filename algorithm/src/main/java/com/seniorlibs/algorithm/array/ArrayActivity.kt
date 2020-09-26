@@ -45,13 +45,13 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             val nums: IntArray = intArrayOf(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)
             // 删除排序数组中的重复项
             removeDuplicates(nums)
-            LogUtils.d(TAG, "删除排序数组中的重复项：${nums.asList().toString()}")
+            LogUtils.d(TAG, "26. 删除排序数组中的重复项：${nums.asList().toString()}")
         }
         R.id.btn_move_zeroes -> {
             val nums: IntArray = intArrayOf(0, 1, 0, 3, 12, 0, 1, 12, 0, 0, 6)
             // 移动零
             moveZeroes(nums)
-            LogUtils.d(TAG, "移动零：${nums.asList().toString()}")
+            LogUtils.d(TAG, "283. 移动零：${nums.asList().toString()}")
         }
         R.id.btn_max_area -> {
             val nums: IntArray = intArrayOf(1, 8, 6, 2, 5, 4, 8, 3, 7)
@@ -72,11 +72,18 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 删除排序数组中的重复项
+     *  26. 删除排序数组中的重复项 - 方法一：快慢指针
+     *
+     * 时间复杂度：O(n)，假设数组的长度是n，那么i和j分别最多遍历n步。
+     * 空间复杂度：O(1)，因为要求在原数组中操作，没有创建新数组。
+     *
+     * https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/solution/26-shan-chu-pai-xu-shu-zu-zhong-de-zhong-fu-xia-90/
+     * @param nums
+     * @return
      */
     fun removeDuplicates(nums: IntArray): Int {
         var i = 0  // 不重复指针-慢指针
-        var j = 0 // 快指针
+        var j = 1  // 快指针
 
         while (j < nums.size) {
             if (nums[i] != nums[j]) { // 不重复项才需要操作
@@ -94,19 +101,26 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 移动零
+     * 283. 移动零 - 方法一：快慢指针
+     *
+     * 时间复杂度：O(n)。代码执行的总操作（数组写入）是非 0 元素的数量。
+     * 空间复杂度：O(1)。只使用了常量空间，没有创建新数组。
+     *
+     * https://leetcode-cn.com/problems/move-zeroes/solution/283-yi-dong-ling-2-by-chen-li-guan/
+     * @param nums
      */
     private fun moveZeroes(nums: IntArray): Unit {
-        var i = -1 // 非零指针-慢指针
+        var i = 0  // 非零指针-慢指针
         var j = 0  // 快指针
 
         while (j < nums.size) {
             if (nums[j] != 0) {  // 非零项才需要操作
-                i++
                 if (i != j) {  // 1.判断当前指针和非零指针的差异，如果不等，说明非零指针和快指针之间都是零（否则，当前项是没移动过的，不能清空）
                     nums[i] = nums[j]  // 2.把 当前指针 赋值给 非零指针
                     nums[j] = 0   // 把 当前指针 赋值为 0
                 }
+
+                i++  // 核心：先交换再i++，删除排序数组中的重复项是 先i++再交换。因为它必须处理o位置，而重复项只处理1位置开始
             }
 
             j++ // 3.移动非零指针指向下一个待填充位置
