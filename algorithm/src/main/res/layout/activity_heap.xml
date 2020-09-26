@@ -8,7 +8,17 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
+        android:id="@+id/btn_heap"
+        style="@style/BtnStyles"
+        android:text="0. 二叉堆实现模板" />
+
+    <Button
         android:id="@+id/btn_top_k_frequent"
         style="@style/BtnStyles"
         android:text="347. 前 K 个高频元素" />
+
+    <Button
+        android:id="@+id/btn_get_least_numbers"
+        style="@style/BtnStyles"
+        android:text="40. 最小的k个数" />
 </LinearLayout>
