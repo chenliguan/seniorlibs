@@ -98,6 +98,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node2.left = node3
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "104. 二叉树的最大深度：${maxDepth(node)}") // 4
+                LogUtils.e(TAG, "104. 二叉树的最大深度1：${maxDepth1(node)}") // 4
             }
             R.id.btn_min_depth -> {
                 val node = TreeNode(1)
@@ -109,6 +110,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node2.left = node3
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "111. 二叉树的最小深度：${minDepth(node)}") // 3
+                LogUtils.e(TAG, "111. 二叉树的最小深度1：${minDepth1(node)}") // 3
             }
             R.id.btn_preorder -> {
                 list.clear()
@@ -297,11 +299,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 104.二叉树的最大深度
+     * 104.二叉树的最大深度 - 方法一：DFS
      *
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
-     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     * 空间复杂度：O(height)，其中height表示二叉树的高度。递归函数需要栈空间，而栈空间取决于递归的深度，因此空间复杂度等价于二叉树的高度。
      *
+     * https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/solution/104-er-cha-shu-de-zui-da-shen-du-by-chen-li-guan/
      * @param root
      * @return
      */
@@ -316,11 +319,44 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 111.二叉树的最小深度
+     * 104.二叉树的最大深度 - 方法二：BFS
      *
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
-     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     * 空间复杂度：O(n)，空间的消耗取决于队列存储的元素数量，其在最坏情况下会达到O(n)
      *
+     * https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/solution/104-er-cha-shu-de-zui-da-shen-du-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun maxDepth1(root: TreeNode?): Int {
+        var level = 0
+        val queue: Queue<TreeNode?> = LinkedList()
+
+        if (root == null) return level else queue.offer(root)
+
+        while (queue.isNotEmpty()) {
+            level++  // 层数+1
+
+            val size: Int = queue.size
+            for (j in 0 until size) {
+                val node = queue.poll()
+
+                if (node?.left != null) queue.add(node.left)    // 左右子节点，哪个不为空，哪个加入到队列中
+                if (node?.right != null) queue.add(node.right)
+            }
+        }
+
+        return level
+    }
+
+    /**
+     * 111.二叉树的最小深度 - 方法一：DFS
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(height)，其中height是树的高度。空间复杂度主要取决于递归时栈空间的开销；
+     *          最坏情况下，树呈现链状，空间复杂度为O(n)。平均情况下树的高度与节点数的对数正相关，空间复杂度为O(logN)
+     *
+     * https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/solution/111er-cha-shu-de-zui-xiao-shen-du-by-chen-li-guan/
      * @param root
      * @return
      */
@@ -333,9 +369,42 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         val right = minDepth(root.right)
 
         // 如果left和right都为0，返回1即可;
-        // 如果left和right只有一个为0，说明他只有一个子结点，只需要返回它另一个子节点的最小深度+1即可;
+        // 如果left和right只有一个为0，说明他只有一个子结点，只需要返回它另一个子节点的最小深度即可;
         // 如果left和right都不为0，说明他有两个子节点，只需要返回最小深度的+1即可。
         return if ((left == 0 || right == 0)) left + right + 1 else Math.min(left, right) + 1
+    }
+
+    /**
+     * 111.二叉树的最小深度 - 方法二：BFS
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
+     *
+     * https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/solution/111er-cha-shu-de-zui-xiao-shen-du-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun minDepth1(root: TreeNode?): Int {
+        var level = 0
+        val queue: Queue<TreeNode?> = LinkedList()
+
+        if (root == null) return level else queue.offer(root)
+
+        while (queue.isNotEmpty()) {
+            level++  // 层数+1
+
+            val size: Int = queue.size
+            for (j in 0 until size) {
+                val node = queue.poll()
+
+                if (node?.left == null && node?.right == null) return level   // 核心：当前node没有子节点了，直接返回他所在的层数即可，没必要在遍历下一层了
+
+                if (node.left != null) queue.add(node.left)    // 左右子节点，哪个不为空，哪个加入到队列中
+                if (node.right != null) queue.add(node.right)
+            }
+        }
+
+        return level
     }
 
     /**
@@ -604,13 +673,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         if (root == null) return res else queue.offer(root)
 
-        while (!queue.isEmpty()) {
-            val level: MutableList<Int> = mutableListOf()
+        while (queue.isNotEmpty()) {
+            val list: MutableList<Int> = mutableListOf()
             val size: Int = queue.size   // 每次遍历的数量为队列的长度
 
             for (i in 0 until size) {   // 将这一层的元素全部取出，放入到结果集合
                 val node = queue.poll()
-                level.add(node.`val`)
+                list.add(node.`val`)
 
                 val left = node.left
                 val right = node.right
@@ -618,7 +687,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 if (right != null) queue.offer(right)
             }
 
-            res.add(level)
+            res.add(list)
         }
 
         return res
@@ -638,18 +707,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun levelOrder1(root: TreeNode?): List<List<Int>>? {
         val res: MutableList<MutableList<Int>> = mutableListOf()  // 存放最终结果的集合
-        if (root == null) {
-            return res
-        }
+        if (root == null) return res
 
         dfsLevel(1, root, res)
         return res
     }
 
     fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
-        if (root == null) {
-            return
-        }
+        if (root == null) return
 
         if (res.size < index) {      // 假设res是[ [1],[2,3] ]， index是3，就再插入一个空list放到res中
             res.add(mutableListOf())
