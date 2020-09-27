@@ -10,20 +10,30 @@
     <Button
         android:id="@+id/btn_remove_duplicates"
         style="@style/BtnStyles"
-        android:text="删除排序数组中的重复项" />
+        android:text="26. 删除排序数组中的重复项" />
 
     <Button
         android:id="@+id/btn_move_zeroes"
         style="@style/BtnStyles"
-        android:text="移动零" />
+        android:text="283. 移动零" />
 
     <Button
         android:id="@+id/btn_max_area"
         style="@style/BtnStyles"
-        android:text="盛最多水的容器" />
+        android:text="11. 盛最多水的容器" />
+
+    <Button
+        android:id="@+id/btn_two_sum"
+        style="@style/BtnStyles"
+        android:text="1. 两数之和" />
 
     <Button
         android:id="@+id/btn_three_sum"
         style="@style/BtnStyles"
-        android:text="三数之和" />
+        android:text="15. 三数之和" />
+
+    <Button
+        android:id="@+id/btn_four_sum"
+        style="@style/BtnStyles"
+        android:text="18. 四数之和" />
 </LinearLayout>

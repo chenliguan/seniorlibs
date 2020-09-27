@@ -8,11 +8,6 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_two_sum"
-        style="@style/BtnStyles"
-        android:text="两数之和" />
-
-    <Button
         android:id="@+id/btn_is_anagram"
         style="@style/BtnStyles"
         android:text="242. 有效的字母异位词" />
