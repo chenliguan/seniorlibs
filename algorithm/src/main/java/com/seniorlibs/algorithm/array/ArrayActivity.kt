@@ -161,23 +161,31 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 1. 两数之和
+     *
+     * 时间复杂度：O(n)，把包含有n个元素的列表遍历两次，由于哈希表将查找时间缩短到O(1) ，所以时间复杂度为O(n)。
+     * 空间复杂度：O(n)，所需的额外空间取决于哈希表中存储的元素数量，该表中存储了n个元素。
+     *
+     * @param nums
+     * @param target
+     * @return
      */
     private fun twoSum(nums: IntArray, target: Int): IntArray {
-        val list = mutableListOf<Int>()
+        val res = mutableListOf<Int>()
         val map: MutableMap<Int, Int> = mutableMapOf()
 
         for (i in nums.indices) {
             val key = target - nums[i]  // 1.采用目标值-当前值=另一个值，然后在表中查这个值
             if (map.containsKey(key)) {     // 2.回过头来检查表中是否已经存在当前元素所对应的目标元素，有就返回，没有走3
-                list.add(map.getValue(key))
-                list.add(i)
+                res.add(map.getValue(key))
+                res.add(i)
             } else {
                 map[nums[i]] = i    // 3.将元素插入到表中：key是数值，value是下标
             }
         }
 
-        return list.toIntArray()
+        return res.toIntArray()
     }
+
 
     /**
      * 15. 三数之和 -4, -1, -1, -1, 0, -1, 1, 2    a + b + c = 0  ->  a + b = -c

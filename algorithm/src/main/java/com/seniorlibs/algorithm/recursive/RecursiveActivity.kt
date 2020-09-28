@@ -37,6 +37,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_climb_stairs).setOnClickListener(this)
+        findViewById<View>(R.id.btn_fib).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_my_pow).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
@@ -54,6 +55,12 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "70. 爬楼梯3：${climbStairs3(5)}")
                 LogUtils.e(TAG, "70. 爬楼梯4：${climbStairs4(5)}")
             }
+            R.id.btn_fib -> {
+                LogUtils.e(TAG, "509. 斐波那契数：${fib1(5)}")
+                LogUtils.e(TAG, "509. 斐波那契数：${fib2(5)}")
+                LogUtils.e(TAG, "509. 斐波那契数：${fib3(5)}")
+                LogUtils.e(TAG, "509. 斐波那契数：${fib4(5)}")
+            }
             R.id.btn_bracket_generate -> {
                 list.clear()
                 LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
@@ -65,7 +72,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_subsets -> {
                 listI.clear()
                 res.clear()
-                LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1,2,3))}")
+                LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1, 2, 3))}")
             }
 
             else -> {
@@ -74,8 +81,11 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 70. 爬楼梯
-     * 方法一：动态规划
+     * 动态规划
+     */
+
+    /**
+     * 70. 爬楼梯  方法一：动态规划
      *
      * 时间复杂度：循环执行n次，每次花费常数的时间代价，时间复杂度为 O(n)；
      * 空间复杂度：用了n空间的数组辅助，空间复杂度为 O(n)。
@@ -86,21 +96,20 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     fun climbStairs(n: Int): Int {
         if (n <= 2) return 2
 
-        val array = IntArray(n + 1)
+        val res = IntArray(n + 1)
 
-        array[1] = 1
-        array[2] = 2
+        res[1] = 1
+        res[2] = 2
 
         for (i in 3 until n + 1) {
-            array[i] = array[i - 1] + array[i - 2]
+            res[i] = res[i - 1] + res[i - 2]
         }
 
-        return array[n]
+        return res[n]
     }
 
     /**
-     * 70. 爬楼梯
-     * 方法二：动态规划优化，斐波那契数。数组当前值是依赖他前面两个值的（前两个除外），我们只需要用两个临时变量即可，不需要申请一个数组
+     * 70. 爬楼梯  方法二：动态规划优化，斐波那契数。数组当前值是依赖他前面两个值的（前两个除外），我们只需要用两个临时变量即可，不需要申请一个数组
      *
      * 时间复杂度：循环执行n次，每次花费常数的时间代价，时间复杂度为 O(n)；
      * 空间复杂度：只用了常数个变量作为辅助空间，空间复杂度为 O(1)。
@@ -125,8 +134,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 70. 爬楼梯
-     * 方法三：暴力递归
+     * 70. 爬楼梯 方法三：暴力递归
      *
      * 时间复杂度：O(2^n)。树形递归的大小为2^n；
      * 空间复杂度：O(n)。递归树的深度可以达到n
@@ -141,8 +149,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 70. 爬楼梯
-     * 方法三：记忆化递归
+     * 70. 爬楼梯  方法三：记忆化递归
      *
      * 时间复杂度：O(n)。树形递归的大小可以达到 n；
      * 空间复杂度：O(n)。递归树的深度可以达到 n
@@ -161,6 +168,106 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
 
         return climbStair(n - 1, second, first + second)  // 5 -> 4 -> 3 (2->1)
     }
+
+
+    /**
+     * 509. 斐波那契数  解法一：暴力递归(自顶向下)
+     *
+     * 时间复杂度：O(2^N)。这是计算斐波那契数最慢的方法。因为它需要指数的时间。
+     * 空间复杂度：O(N)，在堆栈中需要与 N 成正比的空间大小。该堆栈跟踪 fib(N) 的函数调用，随着堆栈的不断增长如果没有足够的内存则会导致 StackOverflowError。
+     *
+     * @param n
+     * @return
+     */
+    fun fib1(n: Int): Int {
+        if (n < 2) return n
+
+        return fib1(n - 1) + fib1(n - 2)
+    }
+
+    /**
+     * 509. 斐波那契数   解法二：备忘录递归(自顶向下)，解法一递归的升级版
+     *
+     * 思想：比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
+     *
+     * 时间复杂度：O(N)。
+     * 空间复杂度：O(N)，内存中使用的堆栈大小
+     *
+     * @param n
+     * @return
+     */
+    private var cache = IntArray(31)
+
+    fun fib2(n: Int): Int {
+        if (n < 2) return n
+
+        cache[0] = 0
+        cache[1] = 1
+        return memoize(n)
+    }
+
+    private fun memoize(n: Int): Int {
+        if (cache[n] != null) {
+            return cache[n]   // 如果 N 对应的斐波那契数存在，则返回
+        }
+
+        cache[n] = memoize(n - 1) + memoize(n - 2)  // 计算 N 对应的斐波那契数为 memoize(N-1) + memoize(N-2)
+        return memoize(n)
+    }
+
+    /**
+     * 509. 斐波那契数    解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级
+     *
+     * 思想：自底向上通过迭代计算子问题并存储已计算的值，通过已计算的值进行计算，减少递归带来的重复计算
+     *
+     * 时间复杂度：O(N)。
+     * 空间复杂度：O(N)，使用了空间大小为 N 的数组
+     *
+     * @param n
+     * @return
+     */
+    fun fib3(n: Int): Int {
+        if (n < 2) return n
+
+        val res = IntArray(n + 1)
+
+        res[0] = 0
+        res[1] = 1
+
+        for (i in 2 until n + 1) {
+            res[i] = res[i - 1] + res[i - 2]
+        }
+
+        return res[n]
+    }
+
+    /**
+     * 509. 斐波那契数   解法四：动态规划(自底向上)
+     *
+     * 解法三的优化，利用(状态压缩技巧)，其实状态只跟前一个数和当前数有关，不需要像第三种解法那样用一个数组进行存储，只需用两个值存储即可
+     *
+     * 时间复杂度：O(N)。
+     * 空间复杂度：O(1)，仅仅使用了 current，prev1，prev2
+     *
+     * @param n
+     * @return
+     */
+    fun fib4(n: Int): Int {
+        if (n == 0) return 0
+        if (n == 1 || n == 2) return 1
+
+        var pre = 1   // fib(1)
+        var cur = 1   // fib(2)
+
+        for (i in 3 until n + 1) {
+            val sum = pre + cur
+            pre = cur
+            cur = sum
+        }
+
+        return cur
+    }
+
 
 
     /**
