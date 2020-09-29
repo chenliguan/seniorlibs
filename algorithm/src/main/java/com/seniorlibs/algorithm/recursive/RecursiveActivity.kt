@@ -40,6 +40,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_climb_stairs).setOnClickListener(this)
         findViewById<View>(R.id.btn_fib).setOnClickListener(this)
+        findViewById<View>(R.id.btn_unique_paths).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_my_pow).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
@@ -63,6 +64,10 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "509. 斐波那契数：${fib2(5)}")
                 LogUtils.e(TAG, "509. 斐波那契数：${fib3(5)}")
                 LogUtils.e(TAG, "509. 斐波那契数：${fib4(5)}")
+            }
+            R.id.btn_unique_paths -> {
+                LogUtils.e(TAG, "62. 不同路径：${uniquePaths(3, 7)}")
+                LogUtils.e(TAG, "62. 不同路径：${uniquePaths1(3, 7)}")
             }
             R.id.btn_bracket_generate -> {
                 list.clear()
@@ -202,7 +207,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    private var cache = IntArray(31)
+    private var cache = arrayOfNulls<Int>(31)
 
     fun fib2(n: Int): Int {
         if (n < 2) return n
@@ -214,7 +219,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun memoize(n: Int): Int {
         if (cache[n] != null) {
-            return cache[n]   // 如果 N 对应的斐波那契数存在，则返回
+            return cache[n]!!   // 如果 N 对应的斐波那契数存在，则返回
         }
 
         cache[n] = memoize(n - 1) + memoize(n - 2)  // 计算 N 对应的斐波那契数为 memoize(N-1) + memoize(N-2)
@@ -274,6 +279,65 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         return cur
     }
 
+    /**
+     * 62. 不同路径  解法一：动态规划(自底向上)
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     *
+     * https://leetcode-cn.com/problems/unique-paths/solution/62-bu-tong-lu-jing-by-chen-li-guan/
+     * @param m
+     * @param n
+     * @return
+     */
+    fun uniquePaths(m: Int, n: Int): Int {
+        if (m == 0 || n == 0) return 0
+
+        val dp = Array(m) { IntArray(n) }
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1   // 0行 和 0列
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+                }
+            }
+        }
+        return dp[m - 1][n - 1]
+    }
+
+
+
+
+
+
+
+    /**
+     * 62. 不同路径  解法一：动态规划(自底向上)
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     *
+     * https://leetcode-cn.com/problems/unique-paths/solution/62-bu-tong-lu-jing-by-chen-li-guan/
+     * @param m
+     * @param n
+     * @return
+     */
+    fun uniquePaths1(m: Int, n: Int): Int {
+        if (m == 0 || n == 0) return 0
+
+        val res = Array(m) { IntArray(n) }
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                if (i == 0 || j == 0) {
+                    res[i][j] = 1
+                } else {
+                    res[i][j] = res[i - 1][j] + res[i][j - 1]
+                }
+            }
+        }
+        return res[m - 1][n - 1]
+    }
 
     /**
      * 1143. 最长公共子序列

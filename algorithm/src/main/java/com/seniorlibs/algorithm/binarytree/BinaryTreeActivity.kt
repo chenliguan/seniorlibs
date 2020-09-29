@@ -645,7 +645,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (pStart == pEnd) return null      // 前序数组为空，直接返回null
 
         val rootValue = preorder[pStart]     // 在前序数组中找到根节点值
-        val rootNode = TreeNode(rootValue)   // 构造根节点
+        val rootNode = TreeNode(rootValue)       // 构造根节点
         val iRootIndex = map[rootValue]!!    // 在中序哈希映射中找到根节点下标
 
         val leftNum = iRootIndex - iStart    // 中序数组的根节点下标 与 中序起点下标 差距

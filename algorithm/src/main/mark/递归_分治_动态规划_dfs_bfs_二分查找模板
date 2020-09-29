@@ -56,7 +56,19 @@ DFS是一个劲的往某一个方向搜索，而回溯算法建立在DFS基础�
 
 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
 
-四、二分查找代码模板
+
+五、动态规划
+动态规划和递归或者分治没有根本上的区别（关键看有无最优的子结构)
+共性:找到重复子问题
+差异性:最优子结构、中途可以淘太欠优解
+
+关键点：
+1.最优子结构：opt[n]=bestOf(opt[n-1], opt[n-2], ...)
+2.储存中间状态：opt[i]
+3.递推公式（美其名曰:状态转移方程或者DP方程)  一维：opt[i]=opt[n-1]+opt[n-2] 二维: opt[i,j]=opt[i+1],i]+opt[i][j+1](且判断a[i,j]是否空地)
+
+
+六、二分查找代码模板
 public int binarySearch(int[] array, int target) {
     int left = 0, right = array.length - 1, mid;
     while (left <= right) {
@@ -74,7 +86,7 @@ public int binarySearch(int[] array, int target) {
     return -1;
 }
 
-五、BFS模板-迭代
+七、BFS模板-迭代
 fun levelOrder(root: TreeNode?): List<List<Int>>? {
     val res: MutableList<List<Int>> = mutableListOf()  // 存放最终结果的集合
     if (root == null) return res
@@ -102,7 +114,7 @@ fun levelOrder(root: TreeNode?): List<List<Int>>? {
 }
 
 
-六、DFS模板
+八、DFS模板
 1、递归
 fun levelOrder1(root: TreeNode?): List<List<Int>>? {
     val res: MutableList<MutableList<Int>> = mutableListOf()  // 存放最终结果的集合

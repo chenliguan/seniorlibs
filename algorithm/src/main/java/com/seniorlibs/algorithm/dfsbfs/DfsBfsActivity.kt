@@ -76,9 +76,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
 //                    }
 //                }
 
-                val grid: Array<CharArray> = Array(4) { i ->
-                    charArrayOf()
-                }
+                val grid: Array<CharArray> = Array(4) { charArrayOf() }
                 grid[0] = charArrayOf('1', '1', '1', '1', '0')
                 grid[1] = charArrayOf('1', '1', '0', '1', '0')
                 grid[2] = charArrayOf('1', '1', '0', '0', '0')
@@ -86,9 +84,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
 
                 LogUtils.e(TAG, "200. 岛屿数量——方法一：深度优先遍历DFS：${numIslands(grid)}")
 
-                val grid1: Array<CharArray> = Array(4) { i ->
-                    charArrayOf()
-                }
+                val grid1: Array<CharArray> = Array(4) { charArrayOf() }
                 grid1[0] = charArrayOf('1', '1', '1', '1', '0')
                 grid1[1] = charArrayOf('1', '1', '0', '1', '0')
                 grid1[2] = charArrayOf('1', '1', '0', '0', '0')
