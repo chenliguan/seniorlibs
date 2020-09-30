@@ -8,6 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -297,7 +299,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 0 until m) {
             for (j in 0 until n) {
                 if (i == 0 || j == 0) {
-                    dp[i][j] = 1   // 0行 和 0列
+                    dp[i][j] = 1   // 0列 和 0行
                 } else {
                     dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
                 }
@@ -306,17 +308,13 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         return dp[m - 1][n - 1]
     }
 
-
-
-
-
-
-
     /**
-     * 62. 不同路径  解法一：动态规划(自底向上)
+     * 62. 不同路径  解法二：动态规划(自底向上)
+     *
+     * 解法一的优化，利用(状态压缩技巧)，其实状态只跟最近一行有关，不需要像第一种解法那样用两个数组进行存储，只需用一个数组存储即可
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     * 空间复杂度：O(n)，使用了空间大小为n的数组
      *
      * https://leetcode-cn.com/problems/unique-paths/solution/62-bu-tong-lu-jing-by-chen-li-guan/
      * @param m
@@ -326,17 +324,14 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths1(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
-        val res = Array(m) { IntArray(n) }
-        for (i in 0 until m) {
-            for (j in 0 until n) {
-                if (i == 0 || j == 0) {
-                    res[i][j] = 1
-                } else {
-                    res[i][j] = res[i - 1][j] + res[i][j - 1]
-                }
+        val dp = IntArray(n)
+        Arrays.fill(dp, 1)
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                dp[j] += dp[j - 1]
             }
         }
-        return res[m - 1][n - 1]
+        return dp[n - 1]
     }
 
     /**
