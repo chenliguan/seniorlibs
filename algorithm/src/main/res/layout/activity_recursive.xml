@@ -31,4 +31,9 @@
         android:id="@+id/btn_subsets"
         style="@style/BtnStyles"
         android:text="78. 子集" />
+
+    <Button
+        android:id="@+id/btn_longest_common_sub_sequence"
+        style="@style/BtnStyles"
+        android:text="1143. 最长公共子序列" />
 </LinearLayout>

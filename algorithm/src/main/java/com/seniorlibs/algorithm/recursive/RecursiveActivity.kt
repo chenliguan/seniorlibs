@@ -1,5 +1,6 @@
 package com.seniorlibs.algorithm.recursive
 
+import android.R.id
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
+
 
 /**
  * Author: chen
@@ -41,6 +43,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_my_pow).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -73,6 +76,9 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 listI.clear()
                 res.clear()
                 LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1, 2, 3))}")
+            }
+            R.id.btn_longest_common_sub_sequence -> {
+                LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
             }
 
             else -> {
@@ -269,6 +275,33 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * 1143. 最长公共子序列
+     *
+     * @param text1
+     * @param text2
+     * @return
+     */
+    fun longestCommonSubsequence(text1: String, text2: String): Int {
+        val m: Int = text1.length
+        val n: Int = text2.length
+        val c1: CharArray = text1.toCharArray()
+        val c2: CharArray = text2.toCharArray()
+        val dp = Array(m + 1) { IntArray(n + 1) }
+
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                if (c1[i] == c2[j]) {
+                    // 如果末端相同，去找它们各往后退一格的值加1即可
+                    dp[i + 1][j + 1] = dp[i][j] + 1
+                } else {
+                    // 如果末端不同，要么是text1往后退一格，要么是text2往前退一格，两个的最大值
+                    dp[i + 1][j + 1] = Math.max(dp[i + 1][j], dp[i][j + 1])
+                }
+            }
+        }
+        return dp[m][n]
+    }
 
     /**
      * 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
