@@ -17,4 +17,14 @@
         style="@style/BtnStyles"
         android:text="283. 移动零" />
 
+    <Button
+        android:id="@+id/btn_three_sum"
+        style="@style/BtnStyles"
+        android:text="15. 三数之和" />
+
+    <Button
+        android:id="@+id/btn_four_sum"
+        style="@style/BtnStyles"
+        android:text="18. 四数之和" />
+
 </LinearLayout>

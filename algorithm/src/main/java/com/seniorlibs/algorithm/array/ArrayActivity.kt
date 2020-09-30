@@ -67,8 +67,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             LogUtils.d(TAG, "15. 三数之和：${threeSum(nums)}")
         }
         R.id.btn_four_sum -> {
-            val nums: IntArray = intArrayOf(5, 5, 3, 5, 1, -5, 1, -2)
-            LogUtils.d(TAG, "18. 四数之和：${fourSum(nums, 4)}")
+            val nums: IntArray = intArrayOf(1, 0, -1, 0, -2, 2)
+            LogUtils.d(TAG, "18. 四数之和：${fourSum(nums, 0)}")
         }
         else -> {
         }
@@ -149,7 +149,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         while (left != right) {
             val width = right - left  // 1.计算宽
-            val minHeight = if (a[left] > a[right]) a[right--] else a[left++] // 2.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
+            val minHeight =
+                if (a[left] > a[right]) a[right--] else a[left++] // 2.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
             val area = width * minHeight // 3.计算区域面积
             if (area > max) { // 4.更新最大面积
                 max = area
@@ -188,45 +189,63 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 15. 三数之和 -4, -1, -1, -1, 0, -1, 1, 2    a + b + c = 0  ->  a + b = -c
+     * 15. 三数之和
+     * 判断nums中是否存在三个元素a，b，c，使得a+b+c=0，转化为->a+b=-c
      *
      * 时间复杂度 O(n^2)：其中固定指针k循环复杂度O(n)，双指针i，j 复杂度O(n)。
      * 空间复杂度 O(1)：指针使用常数大小的额外空间。
      *
+     * https://leetcode-cn.com/problems/3sum/solution/15san-shu-zhi-he-by-chen-li-guan/
      * @param a
      * @return
      */
     private fun threeSum(nums: IntArray): List<List<Int>> {
         val res = mutableListOf<MutableList<Int>>()
+        /* 当数组元素小于4个时，直接返回 */
         if (nums.size < 3) return res
 
-        Arrays.sort(nums)       // 排序，从小到大
+        /* 核心1：对数组进行从小到大排序 */
+        Arrays.sort(nums)
 
-        if (nums[0] > 0 || nums[nums.size - 1] < 0) {      // 优化1: 整个数组同符号，则无解
-            return res
-        }
+        /* 核心2：第二层循环k，k从f+1开始遍历，最大值是nums.size-2（右边有i/j）；留下i和j */
+        for (k in 0 until nums.size - 2) {
+            /* 当k的值与前面的值相等时忽略 */
+            if (k > 0 && nums[k] == nums[k - 1]) continue
 
-        /* 核心2：定义3个指针k，i，j k从0开始遍历，留下j和h，j指向i+1，h指向数组最大值 */
-        for (k in 0 until nums.size - 1) {                    // 最左(最小)数字的指针k，最大nums.size - 2，右边有i和j
-            if (k > 0 && nums[k] == nums[k - 1]) continue          // 跳过所有相同的nums[k]，已将nums[k-1]的所有组合加入到结果中
-
-            var i = k + 1                                     // 通过双指针i、j交替向中间移动。 i 在 k 右边；j 在 最后
+            /* 定义指针i指向k+1，指针j指向数组末尾，交替向中间移动 */
+            var i = k + 1
             var j = nums.size - 1
-            /* 核心3：开始i指针和j指针的表演，计算当前和，如果等于目标值，++i并去重，--j并去重，当当前和小于目标值时++i，当当前和大于目标值时--j */
+
+            /* 获取当前最小值，如果最小值比目标值大，说明整个循环越来越大的值根本没戏 */
+            val min = nums[k] + nums[i] + nums[i + 1]
+            if (min > 0) {
+                break
+            }
+            /* 获取当前最大值，如果最大值比目标值小，说明当前这一轮循环后面越来越小的值根本没戏，但是不能break，下一轮f+还存在==target */
+            val max = nums[k] + nums[nums.size - 1] + nums[nums.size - 2]
+            if (max < 0) {
+                continue
+            }
+
+            /* 核心3：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
             while (i < j) {
                 val sum = nums[k] + nums[i] + nums[j]
                 when {
                     sum < 0 -> {
-                        while (i < j && nums[i] == nums[++i]) {    // 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在后，因为++i会先让i+1）
+                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                        while (i < j && nums[i] == nums[++i]) {
                         }
                     }
                     sum > 0 -> {
-                        while (i < j && nums[j] == nums[--j]) {    // 实力太强，把大神那边左移一位，并跳过所有相同的nums[j]
+                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                        while (i < j && nums[j] == nums[--j]) {
                         }
                     }
                     sum == 0 -> {
-                        res.add(mutableListOf(nums[k], nums[i], nums[j]))     // 记录组合[k, i, j]到list
-                        while (i < j && nums[i] == nums[++i]) {    // 执行++i和--j并跳过所有相同复的nums[i]和nums[j]
+                        /* 记录组合[k, i, j]到list */
+                        res.add(mutableListOf(nums[k], nums[i], nums[j]))
+                        /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                        while (i < j && nums[i] == nums[++i]) {
                         }
                         while (i < j && nums[j] == nums[--j]) {
                         }
@@ -238,50 +257,80 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-
     /**
      * 18. 四数之和
+     * 判断nums中是否存在四个元素a，b，c和d ，使得a + b + c + d的值与target相等
      *
      * 时间复杂度 O(n^3)：其中固定指针f循环复杂度O(n)，k循环复杂度O(n)，双指针i，j 复杂度O(n)。
      * 空间复杂度 O(1)：指针使用常数大小的额外空间。
      *
+     * https://leetcode-cn.com/problems/4sum/solution/18-si-shu-zhi-he-by-chen-li-guan/
      * @param nums
      * @param target
      * @return
      */
     fun fourSum(nums: IntArray, target: Int): List<List<Int>> {
-        val list = mutableListOf<MutableList<Int>>()
-        if (nums.size < 4) return list
+        val res = mutableListOf<MutableList<Int>>()
+        /* 当数组元素小于4个时，直接返回 */
+        if (nums.size < 4) return res
 
-        Arrays.sort(nums)       // 排序，从小到大
+        /* 核心1：对数组进行从小到大排序 */
+        Arrays.sort(nums)
+        /* 核心2：定义4个指针f/k/i/j，f从0开始遍历，最大值是nums.size-3（右边有k/i/j） */
+        for (f in 0 until nums.size - 3) {
+            /* 当f的值与前面的值相等时忽略 */
+            if (f > 0 && nums[f] == nums[f - 1]) continue
 
-        if (nums[0] > 0 || nums[nums.size - 1] < 0) {     // 优化1: 整个数组同符号，则无解
-            return list
-        }
+            /* 获取当前最小值，如果最小值比目标值大，说明整个循环越来越大的值根本没戏 */
+            val min = nums[f] + nums[f + 1] + nums[f + 2] + nums[f + 3]
+            if (min > target) {
+                break
+            }
+            /* 获取当前最大值，如果最大值比目标值小，说明当前这一轮循环后面越来越小的值根本没戏；但是不能break，下一轮f+还存在==target */
+            val max = nums[f] + nums[nums.size - 1] + nums[nums.size - 2] + nums[nums.size - 3]
+            if (max < target) {
+                continue
+            }
 
-        for (f in 0 until nums.size - 2) {
-            if (f > 0 && nums[f] == nums[f - 1]) continue               // 跳过所有相同的nums[f]，已将nums[f-1]的所有组合加入到结果中
+            /* 核心3：第二层循环k，k从f+1开始遍历，最大值是nums.size-2（右边有i/j）；留下i和j */
+            for (k in f + 1 until nums.size - 2) {
+                /* 当k的值与前面的值相等时忽略 */
+                if (k > f + 1 && nums[k] == nums[k - 1]) continue
 
-            for (k in f + 1 until nums.size - 1) {                  // 最左(最小)数字的指针k，最大nums.size - 2，右边有i和j
-                if (k > f + 1 && nums[k] == nums[k - 1]) continue       // 跳过所有相同的nums[k]，已将nums[k-1]的所有组合加入到结果中
-
-                var i = k + 1                                      // 通过双指针i、j交替向中间移动。 i 在 k 右边；j 在 最后
+                /* 定义指针i指向k+1，指针j指向数组末尾，交替向中间移动 */
+                var i = k + 1
                 var j = nums.size - 1
+
+                /* 获取当前最小值，如果最小值比目标值大，说明整个循环越来越大的值根本没戏 */
+                val min = nums[f] + nums[k] + nums[i] + nums[i + 1]
+                if (min > target) {
+                    break
+                }
+                /* 获取当前最大值，如果最大值比目标值小，说明当前这一轮循环后面越来越小的值根本没戏，但是不能break，下一轮f+还存在==target */
+                val max = nums[f] + nums[k] + nums[nums.size - 1] + nums[nums.size - 2]
+                if (max < target) {
+                    continue
+                }
+
+                /* 核心4：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
                 while (i < j) {
                     val sum = nums[f] + nums[k] + nums[i] + nums[j]
-
                     when {
                         sum < target -> {
-                            while (i < j && nums[i] == nums[++i]) {    // 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在后，因为++i会先让i+1）
+                            /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                            while (i < j && nums[i] == nums[++i]) {
                             }
                         }
                         sum > target -> {
-                            while (i < j && nums[j] == nums[--j]) {    // 实力太强，把大神那边左移一位，并跳过所有相同的nums[j]
+                            /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                            while (i < j && nums[j] == nums[--j]) {
                             }
                         }
                         sum == target -> {
-                            list.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))     // 记录组合[k, i, j]到list
-                            while (i < j && nums[i] == nums[++i]) {    // 执行++i和--j并跳过所有相同复的nums[i]和nums[j]
+                            /* 记录组合[f, k, i, j]到list */
+                            res.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))
+                            /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                            while (i < j && nums[i] == nums[++i]) {
                             }
                             while (i < j && nums[j] == nums[--j]) {
                             }
@@ -291,6 +340,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        return list
+        return res
     }
 }
