@@ -1,6 +1,5 @@
 package com.seniorlibs.algorithm.recursive
 
-import android.R.id
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -43,6 +42,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_climb_stairs).setOnClickListener(this)
         findViewById<View>(R.id.btn_fib).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths).setOnClickListener(this)
+        findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_my_pow).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
@@ -68,8 +68,16 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "509. 斐波那契数：${fib4(5)}")
             }
             R.id.btn_unique_paths -> {
-                LogUtils.e(TAG, "62. 不同路径：${uniquePaths(3, 7)}")
-                LogUtils.e(TAG, "62. 不同路径：${uniquePaths1(3, 7)}")
+                LogUtils.e(TAG, "62. 不同路径：${uniquePaths(7, 3)}")
+                LogUtils.e(TAG, "62. 不同路径：${uniquePaths1(7, 3)}")
+            }
+            R.id.btn_unique_paths_with_obstacles -> {
+                val paths = arrayOf(intArrayOf(0, 0, 0), intArrayOf(0, 1, 0), intArrayOf(0, 0, 0))
+                LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles(paths)}")
+                LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles1(paths)}")
+            }
+            R.id.btn_longest_common_sub_sequence -> {
+                LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("abcde", "ace")}")
             }
             R.id.btn_bracket_generate -> {
                 list.clear()
@@ -83,9 +91,6 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 listI.clear()
                 res.clear()
                 LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1, 2, 3))}")
-            }
-            R.id.btn_longest_common_sub_sequence -> {
-                LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
             }
 
             else -> {
@@ -334,8 +339,75 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         return dp[n - 1]
     }
 
+
+    /**
+     * 63. 不同路径 II
+     *
+     * @param obstacleGrid
+     * @return
+     */
+    fun uniquePathsWithObstacles(obstacleGrid: Array<IntArray>): Int {
+        if (obstacleGrid.isEmpty()) return 0
+
+        // 定义 dp 数组并初始化第 1 行和第 1 列。
+        val m = obstacleGrid.size
+        val n: Int = obstacleGrid[0].size
+        val dp = Array(m) { IntArray(n) }
+
+        var i = 0
+        while (i < m && obstacleGrid[i][0] == 0) {
+            dp[i++][0] = 1
+        }
+        var j = 0
+        while (j < n && obstacleGrid[0][j] == 0) {
+            dp[0][j++] = 1
+        }
+
+        // 根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (obstacleGrid[i][j] == 0) {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+                }
+            }
+        }
+        return dp[m - 1][n - 1]
+    }
+
+    /**
+     * 63. 不同路径 II
+     *
+     * @param obstacleGrid
+     * @return
+     */
+    fun uniquePathsWithObstacles1(obstacleGrid: Array<IntArray>): Int {
+        if (obstacleGrid.isEmpty()) return 0
+
+        val n = obstacleGrid.size
+        val m: Int = obstacleGrid[0].size
+        val dp = IntArray(m)
+
+        dp[0] = if (obstacleGrid[0][0] == 0) 1 else 0
+        for (i in 0 until n) {
+            for (j in 0 until m) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[j] = 0
+                    continue
+                }
+                if (j - 1 >= 0 && obstacleGrid[i][j - 1] == 0) {
+                    dp[j] += dp[j - 1]
+                }
+            }
+        }
+        return dp[m - 1]
+    }
+
+
     /**
      * 1143. 最长公共子序列
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
      * @param text1
      * @param text2
@@ -348,19 +420,21 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         val c2: CharArray = text2.toCharArray()
         val dp = Array(m + 1) { IntArray(n + 1) }
 
-        for (i in 0 until m) {
-            for (j in 0 until n) {
-                if (c1[i] == c2[j]) {
-                    // 如果末端相同，去找它们各往后退一格的值加1即可
-                    dp[i + 1][j + 1] = dp[i][j] + 1
+        /* dp默认0行或0列是0 */
+        for (i in 1 until m + 1) {
+            for (j in 1 until n + 1) {
+                if (c1[i - 1] == c2[j - 1]) {
+                    /* 如果末端相同，去找它们各往后退一格的值加1即可 */
+                    dp[i][j] = dp[i - 1][j - 1] + 1
                 } else {
-                    // 如果末端不同，要么是text1往后退一格，要么是text2往前退一格，两个的最大值
-                    dp[i + 1][j + 1] = Math.max(dp[i + 1][j], dp[i][j + 1])
+                    /* 如果末端不同，要么是text1往后退一格，要么是text2往前退一格，两个的最大值 */
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
                 }
             }
         }
         return dp[m][n]
     }
+
 
     /**
      * 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。

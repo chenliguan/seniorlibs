@@ -23,6 +23,16 @@
         android:text="62. 不同路径" />
 
     <Button
+        android:id="@+id/btn_unique_paths_with_obstacles"
+        style="@style/BtnStyles"
+        android:text="63. 不同路径 II" />
+
+    <Button
+        android:id="@+id/btn_longest_common_sub_sequence"
+        style="@style/BtnStyles"
+        android:text="1143. 最长公共子序列" />
+
+    <Button
         android:id="@+id/btn_bracket_generate"
         style="@style/BtnStyles"
         android:text="22. 括号生成" />
@@ -37,8 +47,4 @@
         style="@style/BtnStyles"
         android:text="78. 子集" />
 
-    <Button
-        android:id="@+id/btn_longest_common_sub_sequence"
-        style="@style/BtnStyles"
-        android:text="1143. 最长公共子序列" />
 </LinearLayout>
