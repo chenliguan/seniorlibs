@@ -68,8 +68,8 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "509. 斐波那契数：${fib4(5)}")
             }
             R.id.btn_unique_paths -> {
-                LogUtils.e(TAG, "62. 不同路径：${uniquePaths(7, 3)}")
-                LogUtils.e(TAG, "62. 不同路径：${uniquePaths1(7, 3)}")
+                LogUtils.e(TAG, "62. 不同路径：${uniquePaths(3, 7)}")
+                LogUtils.e(TAG, "62. 不同路径：${uniquePaths1(3, 7)}")
             }
             R.id.btn_unique_paths_with_obstacles -> {
                 val paths = arrayOf(intArrayOf(0, 0, 0), intArrayOf(0, 1, 0), intArrayOf(0, 0, 0))
@@ -77,7 +77,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles1(paths)}")
             }
             R.id.btn_longest_common_sub_sequence -> {
-                LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("abcde", "ace")}")
+                LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
             }
             R.id.btn_bracket_generate -> {
                 list.clear()
@@ -404,7 +404,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 1143. 最长公共子序列
+     * 1143. 最长公共子序列  方法1：动态规划（自底向上）
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
@@ -421,8 +421,8 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         val dp = Array(m + 1) { IntArray(n + 1) }
 
         /* dp默认0行或0列是0 */
-        for (i in 1 until m + 1) {
-            for (j in 1 until n + 1) {
+        for (i in 1..m) {
+            for (j in 1..n) {
                 if (c1[i - 1] == c2[j - 1]) {
                     /* 如果末端相同，去找它们各往后退一格的值加1即可 */
                     dp[i][j] = dp[i - 1][j - 1] + 1
@@ -435,6 +435,25 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         return dp[m][n]
     }
 
+
+    /**
+     * 120. 三角形最小路径和
+     *
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal(triangle: List<List<Int>>): Int {
+        val n = triangle.size
+        // dp[i][j] 表示从点 (i, j) 到底边的最小路径和。
+        val dp = Array(n + 1) { IntArray(n + 1) }
+        // 从三角形的最后一行开始递推。
+        for (i in n - 1 downTo 0) {
+            for (j in 0..i) {
+                dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
+            }
+        }
+        return dp[0][0]
+    }
 
     /**
      * 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
