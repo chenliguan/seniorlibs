@@ -7,8 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -43,10 +41,11 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_fib).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
+        findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_my_pow).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
-        findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -73,11 +72,19 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_unique_paths_with_obstacles -> {
                 val paths = arrayOf(intArrayOf(0, 0, 0), intArrayOf(0, 1, 0), intArrayOf(0, 0, 0))
+//                val paths = arrayOf(intArrayOf(0), intArrayOf(1))
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles(paths)}")
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles1(paths)}")
             }
             R.id.btn_longest_common_sub_sequence -> {
                 LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
+            }
+            R.id.btn_minimum_total -> {
+                val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal1(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal2(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
             R.id.btn_bracket_generate -> {
                 list.clear()
@@ -286,6 +293,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         return cur
     }
 
+
     /**
      * 62. 不同路径  解法一：动态规划(自底向上)
      *
@@ -300,21 +308,28 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
+        // 定义 dp 数组并初始化第 0 行和第 0 列。
         val dp = Array(m) { IntArray(n) }
-        for (i in 0 until m) {
-            for (j in 0 until n) {
-                if (i == 0 || j == 0) {
-                    dp[i][j] = 1   // 0列 和 0行
-                } else {
-                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
-                }
+        var i = 0
+        while (i < m) {
+            dp[i++][0] = 1
+        }
+        var j = 0
+        while (j < n) {
+            dp[0][j++] = 1
+        }
+
+        // 根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
             }
         }
         return dp[m - 1][n - 1]
     }
 
     /**
-     * 62. 不同路径  解法二：动态规划(自底向上)
+     * 62. 不同路径  解法二：动态规划(自底向上)，空间优化
      *
      * 解法一的优化，利用(状态压缩技巧)，其实状态只跟最近一行有关，不需要像第一种解法那样用两个数组进行存储，只需用一个数组存储即可
      *
@@ -329,8 +344,13 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths1(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
+        // 定义 dp 数组并初始化第 1 列。
         val dp = IntArray(n)
-        Arrays.fill(dp, 1)
+        var j = 0
+        while (j < n) {
+            dp[j++] = 1
+        }
+
         for (i in 1 until m) {
             for (j in 1 until n) {
                 dp[j] += dp[j - 1]
@@ -341,20 +361,25 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 63. 不同路径 II
+     * 63. 不同路径 II  解法一：动态规划(自底向上)
      *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     *
+     * https://leetcode-cn.com/problems/unique-paths-ii/solution/63-bu-tong-lu-jing-ii-by-chen-li-guan-2/
      * @param obstacleGrid
      * @return
      */
     fun uniquePathsWithObstacles(obstacleGrid: Array<IntArray>): Int {
         if (obstacleGrid.isEmpty()) return 0
 
-        // 定义 dp 数组并初始化第 1 行和第 1 列。
-        val m = obstacleGrid.size
+        val m: Int = obstacleGrid.size
         val n: Int = obstacleGrid[0].size
-        val dp = Array(m) { IntArray(n) }
 
+        // 定义 dp 数组并初始化第 0 行和第 0 列。
+        val dp = Array(m) { IntArray(n) }
         var i = 0
+        // 一旦遇到值为1的情况，后面的都不会被赋值成1了，都是默认值0
         while (i < m && obstacleGrid[i][0] == 0) {
             dp[i++][0] = 1
         }
@@ -366,6 +391,7 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         // 根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
         for (i in 1 until m) {
             for (j in 1 until n) {
+                // 1是障碍物，0是非障碍物，0才往下迭代
                 if (obstacleGrid[i][j] == 0) {
                     dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
                 }
@@ -375,40 +401,48 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 63. 不同路径 II
+     * 63. 不同路径 II  解法二：动态规划(自底向上)，空间优化  TODO???
      *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(n)，使用了空间大小为n的数组
+     *
+     * https://leetcode-cn.com/problems/unique-paths-ii/solution/63-bu-tong-lu-jing-ii-by-chen-li-guan-2/
      * @param obstacleGrid
      * @return
      */
     fun uniquePathsWithObstacles1(obstacleGrid: Array<IntArray>): Int {
         if (obstacleGrid.isEmpty()) return 0
 
-        val n = obstacleGrid.size
-        val m: Int = obstacleGrid[0].size
-        val dp = IntArray(m)
+        val m: Int = obstacleGrid.size
+        val n: Int = obstacleGrid[0].size
 
+        // 定义 dp 数组并初始化第 1 列。
+        val dp = IntArray(n)
         dp[0] = if (obstacleGrid[0][0] == 0) 1 else 0
-        for (i in 0 until n) {
-            for (j in 0 until m) {
+
+        for (i in 0 until m) {
+            for (j in 0 until n) {
                 if (obstacleGrid[i][j] == 1) {
                     dp[j] = 0
                     continue
                 }
+
                 if (j - 1 >= 0 && obstacleGrid[i][j - 1] == 0) {
                     dp[j] += dp[j - 1]
                 }
             }
         }
-        return dp[m - 1]
+        return dp[n - 1]
     }
 
 
     /**
-     * 1143. 最长公共子序列  方法1：动态规划（自底向上）
+     * 1143. 最长公共子序列  解法一：动态规划（自底向上）
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
+     * https://leetcode-cn.com/problems/longest-common-subsequence/solution/1143-zui-chang-gong-gong-zi-xu-lie-by-chen-li-guan/
      * @param text1
      * @param text2
      * @return
@@ -435,16 +469,69 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         return dp[m][n]
     }
 
+    /**
+     * 120. 三角形最小路径和  解法一：暴力递归(自顶向下)，导致 超时
+     *
+     * 时间复杂度：O(2^n)，它需要指数的时间。n为三角形的行数。
+     * 空间复杂度：O(mn)，在堆栈中需要与 n 成正比的空间大小。n为三角形的行数。
+     *
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal2(triangle: List<List<Int>>): Int {
+        return dfs(triangle, 0, 0)
+    }
+
+    private fun dfs(triangle: List<List<Int>>, i: Int, j: Int): Int {
+        if (i == triangle.size) {
+             return 0
+        }
+        return Math.min(dfs(triangle, i + 1, j), dfs(triangle, i + 1, j + 1)) + triangle[i][j]
+    }
 
     /**
-     * 120. 三角形最小路径和
+     * 120. 三角形最小路径和  解法二：备忘录递归(自顶向下)，解法一递归的升级版
+     * 思想：比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n^2)，n为三角形的行数。
+     *
+     * @param triangle
+     * @return
+     */
+    private lateinit var res2: Array<Array<Int?>>
+
+    fun minimumTotal3(triangle: List<List<Int>>): Int {
+        res2 = Array(triangle.size) { arrayOfNulls<Int>(triangle.size) }
+
+        return dfs1(triangle, 0, 0)
+    }
+
+    private fun dfs1(triangle: List<List<Int>>, i: Int, j: Int): Int {
+        if (i == triangle.size) {
+            return 0
+        }
+
+        if (res2[i][j] != null) {
+            return res2[i][j]!!
+        }
+
+        return Math.min(dfs1(triangle, i + 1, j), dfs1(triangle, i + 1, j + 1)) + triangle[i][j]
+    }
+
+    /**
+     * 120. 三角形最小路径和  解法一：动态规划（自底向上）
+     * 在实际递推中发现，计算dp[i][j] 时，只用到了下一行的dp[i + 1][j]和dp[i + 1][j + 1]。因此dp数组不需要定义n行，只要定义1行就阔以啦.
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n^2)，n为三角形的行数。
      *
      * @param triangle
      * @return
      */
     fun minimumTotal(triangle: List<List<Int>>): Int {
         val n = triangle.size
-        // dp[i][j] 表示从点 (i, j) 到底边的最小路径和。
+        // dp[i][j] 表示从点(i, j)到底边的最小路径和。
         val dp = Array(n + 1) { IntArray(n + 1) }
         // 从三角形的最后一行开始递推。
         for (i in n - 1 downTo 0) {
@@ -454,6 +541,27 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         }
         return dp[0][0]
     }
+
+    /**
+     * 120. 三角形最小路径和  解法二：动态规划(自底向上)，空间优化
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n)，n为三角形的行数。
+     *
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal1(triangle: List<List<Int>>): Int {
+        val n = triangle.size
+        val dp = IntArray(n + 1)
+        for (i in n - 1 downTo 0) {
+            for (j in 0..i) {
+                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j]
+            }
+        }
+        return dp[0]
+    }
+
 
     /**
      * 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
