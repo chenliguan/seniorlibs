@@ -7,6 +7,7 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.algorithm.binarysearch.BinarySearchActivity
 import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
+import com.seniorlibs.algorithm.db.DbActivity
 import com.seniorlibs.algorithm.dfsbfs.DfsBfsActivity
 import com.seniorlibs.algorithm.greedy.GreedyActivity
 import com.seniorlibs.algorithm.heap.HeapActivity
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_queue).setOnClickListener(this)
         findViewById<View>(R.id.btn_heap).setOnClickListener(this)
         findViewById<View>(R.id.btn_recursive).setOnClickListener(this)
+        findViewById<View>(R.id.btn_db).setOnClickListener(this)
         findViewById<View>(R.id.btn_greedy).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_search).setOnClickListener(this)
     }
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_queue -> { QueueActivity.actionStart(this) }
             R.id.btn_heap -> { HeapActivity.actionStart(this) }
             R.id.btn_recursive -> { RecursiveActivity.actionStart(this) }
+            R.id.btn_db -> { DbActivity.actionStart(this) }
             R.id.btn_greedy -> { GreedyActivity.actionStart(this) }
             R.id.btn_binary_search -> { BinarySearchActivity.actionStart(this) }
 

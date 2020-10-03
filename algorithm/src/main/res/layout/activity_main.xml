@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/BaseMatchParent"
-    android:orientation="vertical"
-    tools:context=".main.MainActivity"
-    tools:ignore="MissingDefaultResource">
+    style="@style/BaseMatchParent">
 
-    <Button
-        android:id="@+id/btn_test"
-        style="@style/BtnStyles"
-        android:text="测试" />
+    <LinearLayout
+        style="@style/BaseMatchParent"
+        android:orientation="vertical"
+        tools:context=".main.MainActivity"
+        tools:ignore="MissingDefaultResource">
 
-    <Button
-        android:id="@+id/btn_linked_list"
-        style="@style/BtnStyles"
-        android:text="链表测试" />
+        <Button
+            android:id="@+id/btn_test"
+            style="@style/BtnStyles"
+            android:text="测试" />
 
-    <Button
-        android:id="@+id/btn_array"
-        style="@style/BtnStyles"
-        android:text="数组测试" />
+        <Button
+            android:id="@+id/btn_linked_list"
+            style="@style/BtnStyles"
+            android:text="链表测试" />
 
-    <Button
-        android:id="@+id/btn_binary_tree"
-        style="@style/BtnStyles"
-        android:text="二叉树" />
+        <Button
+            android:id="@+id/btn_array"
+            style="@style/BtnStyles"
+            android:text="数组测试" />
 
-    <Button
-        android:id="@+id/btn_dfs_bfs"
-        style="@style/BtnStyles"
-        android:text="深度优先遍历DFS、广度优先遍历BFS" />
+        <Button
+            android:id="@+id/btn_binary_tree"
+            style="@style/BtnStyles"
+            android:text="二叉树" />
 
-    <Button
-        android:id="@+id/btn_map"
-        style="@style/BtnStyles"
-        android:text="Map" />
+        <Button
+            android:id="@+id/btn_dfs_bfs"
+            style="@style/BtnStyles"
+            android:text="深度优先遍历DFS、广度优先遍历BFS" />
 
-    <Button
-        android:id="@+id/btn_stack"
-        style="@style/BtnStyles"
-        android:text="栈" />
+        <Button
+            android:id="@+id/btn_map"
+            style="@style/BtnStyles"
+            android:text="Map" />
 
-    <Button
-        android:id="@+id/btn_queue"
-        style="@style/BtnStyles"
-        android:text="队列" />
+        <Button
+            android:id="@+id/btn_stack"
+            style="@style/BtnStyles"
+            android:text="栈" />
 
-    <Button
-        android:id="@+id/btn_heap"
-        style="@style/BtnStyles"
-        android:text="堆" />
+        <Button
+            android:id="@+id/btn_queue"
+            style="@style/BtnStyles"
+            android:text="队列" />
 
-    <Button
-        android:id="@+id/btn_recursive"
-        style="@style/BtnStyles"
-        android:text="递归" />
+        <Button
+            android:id="@+id/btn_heap"
+            style="@style/BtnStyles"
+            android:text="堆" />
 
-    <Button
-        android:id="@+id/btn_greedy"
-        style="@style/BtnStyles"
-        android:text="贪心算法" />
+        <Button
+            android:id="@+id/btn_recursive"
+            style="@style/BtnStyles"
+            android:text="递归" />
 
-    <Button
-        android:id="@+id/btn_binary_search"
-        style="@style/BtnStyles"
-        android:text="二分查找" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_db"
+            style="@style/BtnStyles"
+            android:text="动态规划" />
+
+        <Button
+            android:id="@+id/btn_greedy"
+            style="@style/BtnStyles"
+            android:text="贪心算法" />
+
+        <Button
+            android:id="@+id/btn_binary_search"
+            style="@style/BtnStyles"
+            android:text="二分查找" />
+    </LinearLayout>
+</ScrollView>

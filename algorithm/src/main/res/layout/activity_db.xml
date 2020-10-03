@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BaseMatchParent"
+    android:orientation="vertical"
+    tools:context=".main.MainActivity"
+    tools:ignore="MissingDefaultResource">
+
+    <Button
+        android:id="@+id/btn_climb_stairs"
+        style="@style/BtnStyles"
+        android:text="70. 爬楼梯" />
+
+    <Button
+        android:id="@+id/btn_fib"
+        style="@style/BtnStyles"
+        android:text="509. 斐波那契数" />
+
+    <Button
+        android:id="@+id/btn_unique_paths"
+        style="@style/BtnStyles"
+        android:text="62. 不同路径" />
+
+    <Button
+        android:id="@+id/btn_unique_paths_with_obstacles"
+        style="@style/BtnStyles"
+        android:text="63. 不同路径 II" />
+
+    <Button
+        android:id="@+id/btn_longest_common_sub_sequence"
+        style="@style/BtnStyles"
+        android:text="1143. 最长公共子序列" />
+
+    <Button
+        android:id="@+id/btn_minimum_total"
+        style="@style/BtnStyles"
+        android:text="120. 三角形最小路径和" />
+
+</LinearLayout>

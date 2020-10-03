@@ -38,6 +38,8 @@
 
         <activity android:name=".recursive.RecursiveActivity" />
 
+        <activity android:name=".db.DbActivity" />
+
         <activity android:name=".greedy.GreedyActivity" />
 
         <activity android:name=".binarysearch.BinarySearchActivity" />
