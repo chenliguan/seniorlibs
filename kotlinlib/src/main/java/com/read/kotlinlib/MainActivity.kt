@@ -7,6 +7,7 @@ import com.read.kotlinlib.basic.AdvanceActivity
 import com.read.kotlinlib.basic.BasicActivity
 import com.read.kotlinlib.basic.CoroutineActivity
 import com.read.kotlinlib.basic.FlowFunActivity
+import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
 import com.seniorlibs.baselib.utils.LogUtils
 
@@ -57,6 +58,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         BasicActivity.companionFun()
+    }
+
+    /**
+     * 字节测试
+     *
+     * @param view
+     */
+    fun testBit(view: View?) {
+        val bitTest = BitTest()
+        bitTest.storeChar()
     }
 
     /**

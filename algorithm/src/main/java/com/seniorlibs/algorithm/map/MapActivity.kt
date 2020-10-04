@@ -53,6 +53,7 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btn_is_anagram -> {
                 LogUtils.e(TAG, "242. 有效的字母异位词：" + isAnagram("a", "b"))
+                LogUtils.e(TAG, "242. 有效的字母异位词：" + isAnagram1("a", "b"))
             }
 
             R.id.btn_is_anagram_groups -> {

@@ -7,6 +7,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="testBit"
+        android:text="字节"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="testGeneric"
         android:text="泛型测试"
         android:textAllCaps="false"/>
