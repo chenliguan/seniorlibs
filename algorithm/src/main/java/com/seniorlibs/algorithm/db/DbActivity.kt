@@ -43,6 +43,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
         findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -83,7 +84,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal2(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
-
+            R.id.btn_max_sub_array -> {
+                LogUtils.e(TAG, "53. 最大子序和：${maxSubArray(intArrayOf(-2,1,-3,4,-1,2,1,-5,4))}")
+            }
             else -> {
             }
         }
@@ -544,5 +547,31 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return dp[0]
+    }
+
+    /**
+     * 53. 最大子序和   数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+     * 解法一：动态规划  DP方程：IntArray db[i] = max(db[i−1] + num[i], num[i])
+     *                   或者: int sum(i) = max(sum(i−1) + num[i], num[i])， int db(i) = max(db(i−1), sum)
+     *
+     * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
+     * 空间复杂度：O(1)，只需要常数空间存放若干变量。
+     *
+     * @param nums
+     * @return
+     */
+    fun maxSubArray(nums: IntArray): Int {
+        var db = nums[0]
+        var sum = 0
+        for (x in nums) {
+//            if (x > 0) {
+//                sum += x
+//            } else {
+//                sum = x
+//            }
+            sum = Math.max(sum + x, x)
+            db = Math.max(db, sum)
+        }
+        return db
     }
 }

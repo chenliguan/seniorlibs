@@ -37,4 +37,9 @@
         style="@style/BtnStyles"
         android:text="120. 三角形最小路径和" />
 
+    <Button
+        android:id="@+id/btn_max_sub_array"
+        style="@style/BtnStyles"
+        android:text="53. 最大子序和" />
+
 </LinearLayout>
