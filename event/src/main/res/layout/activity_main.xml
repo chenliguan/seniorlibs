@@ -30,6 +30,13 @@
             android:textAllCaps="false"/>
 
         <Button
+            android:id="@+id/btn_internal_intercept"
+            style="@style/BtnStyles"
+            android:onClick="onInternalIntercept"
+            android:text="简单的内部拦截"
+            android:textAllCaps="false"/>
+
+        <Button
             android:id="@+id/onBsListenerClick"
             style="@style/BtnStyles"
             android:onClick="onBsListenerClick"
@@ -40,8 +47,14 @@
             android:id="@+id/btn_dispatch"
             style="@style/BtnStyles"
             android:onClick="onDispatchClick"
-            android:text="事件分发"
+            android:text="验证事件分发"
             android:textAllCaps="false"/>
 
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/BtnStyles"
+            android:onClick="onCancelClick"
+            android:text="验证cancel事件"
+            android:textAllCaps="false"/>
     </LinearLayout>
 </ScrollView>

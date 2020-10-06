@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.g.event.utils.MyUtils;
+import com.g.event.utils.EventUtils;
 import com.seniorlibs.event.ui.HorizontalScrollViewEx2;
 import com.seniorlibs.event.ui.ListViewEx;
 
@@ -39,8 +39,8 @@ public class DemoActivity_2 extends Activity {
     private void initView() {
         LayoutInflater inflater = getLayoutInflater();
         mListContainer = findViewById(R.id.container);
-        final int screenWidth = MyUtils.getScreenMetrics(this).widthPixels;
-        final int screenHeight = MyUtils.getScreenMetrics(this).heightPixels;
+        final int screenWidth = EventUtils.getScreenMetrics(this).widthPixels;
+        final int screenHeight = EventUtils.getScreenMetrics(this).heightPixels;
         for (int i = 0; i < 3; i++) {
             ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.content_layout2, mListContainer, false);
             layout.getLayoutParams().width = screenWidth;

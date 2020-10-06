@@ -31,8 +31,7 @@ public class TestButton extends TextView {
     }
 
     private void init() {
-        mScaledTouchSlop = ViewConfiguration.get(getContext())
-                .getScaledTouchSlop();
+        mScaledTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         Log.d(TAG, "sts:" + mScaledTouchSlop);
     }
 
@@ -42,24 +41,24 @@ public class TestButton extends TextView {
         int x = (int) event.getRawX();
         int y = (int) event.getRawY();
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN: {
-            break;
-        }
-        case MotionEvent.ACTION_MOVE: {
-            int deltaX = x - mLastX;
-            int deltaY = y - mLastY;
-            Log.d(TAG, "move, deltaX:" + deltaX + " deltaY:" + deltaY);
-            int translationX = (int)getTranslationX() + deltaX;
-            int translationY = (int)getTranslationY() + deltaY;
-            setTranslationX(translationX);
-            setTranslationY(translationY);
-            break;
-        }
-        case MotionEvent.ACTION_UP: {
-            break;
-        }
-        default:
-            break;
+            case MotionEvent.ACTION_DOWN: {
+                break;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                int deltaX = x - mLastX;
+                int deltaY = y - mLastY;
+                Log.d(TAG, "move, deltaX:" + deltaX + " deltaY:" + deltaY);
+                int translationX = (int) getTranslationX() + deltaX;
+                int translationY = (int) getTranslationY() + deltaY;
+                setTranslationX(translationX);
+                setTranslationY(translationY);
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                break;
+            }
+            default:
+                break;
         }
 
         mLastX = x;
