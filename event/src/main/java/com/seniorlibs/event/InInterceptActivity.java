@@ -23,15 +23,16 @@ import java.util.ArrayList;
 /**
  * 滑动冲突场景2-内部拦截
  */
-public class DemoActivity_2 extends Activity {
-    private static final String TAG = "DemoActivity_2";
+public class InInterceptActivity extends Activity {
+
+    private static final String TAG = "InInterceptActivity";
 
     private HorizontalScrollViewEx2 mListContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.demo_2);
+        setContentView(R.layout.activity_in_intercept);
         Log.d(TAG, "onCreate");
         initView();
     }
@@ -64,7 +65,7 @@ public class DemoActivity_2 extends Activity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DemoActivity_2.this, "click item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InInterceptActivity.this, "click item", Toast.LENGTH_SHORT).show();
             }
         });
     }

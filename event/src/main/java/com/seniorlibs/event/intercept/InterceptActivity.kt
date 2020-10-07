@@ -7,7 +7,7 @@ import com.seniorlibs.baselib.utils.LogUtils
 import com.seniorlibs.event.R
 
 /**
- * 内部拦截
+ * 拦截
  *
  * @constructor Create empty Intercept activity
  */

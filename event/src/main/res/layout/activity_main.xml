@@ -18,22 +18,22 @@
         <Button
             android:id="@+id/button2"
             style="@style/BtnStyles"
-            android:onClick="onButtonClick"
+            android:onClick="onOutIntercept"
             android:text="滑动冲突场景1-外部拦截"
             android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/button3"
             style="@style/BtnStyles"
-            android:onClick="onButtonClick"
+            android:onClick="onInternalIntercept"
             android:text="滑动冲突场景2-内部拦截"
             android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/btn_internal_intercept"
             style="@style/BtnStyles"
-            android:onClick="onInternalIntercept"
-            android:text="简单的内部拦截"
+            android:onClick="onIntercept"
+            android:text="简单的拦截"
             android:textAllCaps="false"/>
 
         <Button

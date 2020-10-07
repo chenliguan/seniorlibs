@@ -113,24 +113,36 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void onButtonClick(View v) {
-        if (v.getId() == R.id.button1) {
-            Intent intent = new Intent(this, TestActivity.class);
-            startActivity(intent);
-        } else if (v.getId() == R.id.button2) {
-            Intent intent = new Intent(this, DemoActivity_1.class);
-            startActivity(intent);
-        } else if (v.getId() == R.id.button3) {
-            Intent intent = new Intent(this, DemoActivity_2.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, TestActivity.class);
+        startActivity(intent);
     }
 
     /**
-     * 简单的内部拦截
+     * 滑动冲突场景1-外部拦截
+     *
+     * @param v
+     */
+    public void onOutIntercept(View v) {
+        Intent intent = new Intent(this, OutInterceptActivityActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * 滑动冲突场景2-内部拦截
      *
      * @param v
      */
     public void onInternalIntercept(View v) {
+        Intent intent = new Intent(this, InInterceptActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * 简单的拦截
+     *
+     * @param v
+     */
+    public void onIntercept(View v) {
         Intent intent = new Intent(this, InterceptActivity.class);
         startActivity(intent);
     }
