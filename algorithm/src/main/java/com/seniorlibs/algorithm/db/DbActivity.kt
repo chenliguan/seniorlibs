@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
+import java.util.*
 
 
 /**
@@ -555,8 +556,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 53. 最大子序和   数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
-     * 解法一：动态规划  DP方程：IntArray db[i] = max(db[i−1] + num[i], num[i])
-     *                   或者: sum(i) = max(sum(i−1) + num[i], num[i])， db(i) = max(db(i−1), sum)
+     * 解法一：动态规划  DP方程：sum = max(sum + num[i], num[i])， db = max(db, sum)
      *
      * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
      * 空间复杂度：O(1)，只需要常数空间存放若干变量。
@@ -581,7 +581,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 152. 乘积最大子数组
-     * 解法一：动态规划  DP方程：imax(i) = max(imax(i−1) * num[i], num[i])， imin(i) = min(imin(i−1) * num[i], num[i]), db(i) = max(db(i-1), imax)
+     * 解法一：动态规划  DP方程：imax = max(imax * num[i], num[i])， imin = min(imin * num[i], num[i]), db = max(db, imax)
      *
      * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
      * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
@@ -605,5 +605,27 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             db = Math.max(db, imax)
         }
         return db
+    }
+
+    /**
+     * 322. 零钱兑换
+     *
+     * @param coins
+     * @param amount
+     * @return
+     */
+    fun coinChange(coins: IntArray, amount: Int): Int {
+        val max = amount + 1
+        val dp = IntArray(amount + 1)
+        Arrays.fill(dp, max)
+        dp[0] = 0
+        for (i in 1..amount) {
+            for (j in coins.indices) {
+                if (coins[j] <= i) {
+                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1)
+                }
+            }
+        }
+        return if (dp[amount] > amount) -1 else dp[amount]
     }
 }
