@@ -42,4 +42,9 @@
         style="@style/BtnStyles"
         android:text="53. 最大子序和" />
 
+    <Button
+        android:id="@+id/btn_max_product"
+        style="@style/BtnStyles"
+        android:text="152. 乘积最大子数组" />
+
 </LinearLayout>

@@ -44,6 +44,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
         findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -85,7 +86,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
             R.id.btn_max_sub_array -> {
-                LogUtils.e(TAG, "53. 最大子序和：${maxSubArray(intArrayOf(-2,1,-3,4,-1,2,1,-5,4))}")
+                LogUtils.e(TAG, "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}")
+            }
+            R.id.btn_max_product -> {
+                LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
             }
             else -> {
             }
@@ -471,7 +475,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun dfs(triangle: List<List<Int>>, i: Int, j: Int): Int {
         if (i == triangle.size) {
-             return 0
+            return 0
         }
         return Math.min(dfs(triangle, i + 1, j), dfs(triangle, i + 1, j + 1)) + triangle[i][j]
     }
@@ -552,7 +556,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 53. 最大子序和   数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
      * 解法一：动态规划  DP方程：IntArray db[i] = max(db[i−1] + num[i], num[i])
-     *                   或者: int sum(i) = max(sum(i−1) + num[i], num[i])， int db(i) = max(db(i−1), sum)
+     *                   或者: sum(i) = max(sum(i−1) + num[i], num[i])， db(i) = max(db(i−1), sum)
      *
      * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
      * 空间复杂度：O(1)，只需要常数空间存放若干变量。
@@ -571,6 +575,34 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 //            }
             sum = Math.max(sum + x, x)
             db = Math.max(db, sum)
+        }
+        return db
+    }
+
+    /**
+     * 152. 乘积最大子数组
+     * 解法一：动态规划  DP方程：imax(i) = max(imax(i−1) * num[i], num[i])， imin(i) = min(imin(i−1) * num[i], num[i]), db(i) = max(db(i-1), imax)
+     *
+     * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
+     * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
+     *
+     * @param nums
+     * @return
+     */
+    fun maxProduct(nums: IntArray): Int {
+        var db = Int.MIN_VALUE
+        var imax = 1
+        var imin = 1
+        for (x in nums) {
+            if (x < 0) {
+                val tmp = imax
+                imax = imin
+                imin = tmp
+            }
+
+            imax = Math.max(imax * x, x)
+            imin = Math.min(imin * x, x)
+            db = Math.max(db, imax)
         }
         return db
     }
