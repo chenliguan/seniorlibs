@@ -35,6 +35,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_remove_duplicates).setOnClickListener(this)
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_area).setOnClickListener(this)
+        findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_two_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
@@ -57,6 +58,11 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             val nums: IntArray = intArrayOf(1, 8, 6, 2, 5, 4, 8, 3, 7)
             // 11. 盛最多水的容器
             LogUtils.d(TAG, "11. 盛最多水的容器：${maxArea(nums)}")
+        }
+        R.id.btn_reverse_string -> {
+            val s: CharArray = charArrayOf('h', 'e', 'l', 'l', 'o')
+            reverseString(s)
+            LogUtils.d(TAG, "344. 反转字符串：${s}")
         }
         R.id.btn_two_sum -> {
             val sum = twoSum(intArrayOf(2, 11, 15, 7), 9).asList().toString()
@@ -158,6 +164,36 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return max
+    }
+
+    /**
+     * 344. 反转字符串
+     *
+     * 时间复杂度：O(n)，其中n为字符数组的长度，一共执行了n/2次的交换；
+     * 空间复杂度：O(1),只使用了常数空间来存放若干变量。
+     *
+     * @param s
+     */
+    fun reverseString(s: CharArray): Unit {
+        if (s.isEmpty()) return
+
+        var left = 0
+        var right = s.size - 1
+        var temp: Char
+
+        while (left < right) {
+            // 跳过相等的字符
+            if (s[left] == s[right]) {
+                left++
+                right--
+                continue
+            }
+
+            // 交换
+            temp = s[left]
+            s[left++] = s[right]
+            s[right--] = temp
+        }
     }
 
     /**
