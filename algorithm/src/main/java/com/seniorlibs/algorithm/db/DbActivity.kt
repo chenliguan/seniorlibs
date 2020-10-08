@@ -46,6 +46,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
+        findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -91,6 +92,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_max_product -> {
                 LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
+            }
+            R.id.btn_coin_change -> {
+                LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
             }
             else -> {
             }
@@ -610,18 +614,30 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 322. 零钱兑换
      *
+     * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
+     * 空间复杂度：O(S)，DP数组需要开长度为总金额S的空间
+     *
+     * https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-chen-li-guan/
      * @param coins
      * @param amount
      * @return
      */
     fun coinChange(coins: IntArray, amount: Int): Int {
+        // 为啥dp数组初始化为amount+1呢，因为凑成amount金额的数最多只可能等于amount（全用1元面值的）
         val max = amount + 1
         val dp = IntArray(amount + 1)
         Arrays.fill(dp, max)
+
+        // base case
         dp[0] = 0
+        // 外层 for 循环在遍历所有状态的所有取值
         for (i in 1..amount) {
+            // 内层 for 循环在遍历硬币的值
             for (j in coins.indices) {
+                // coins[j] > i -> 子问题无解，跳过
                 if (coins[j] <= i) {
+                    // 求所有选择的最小值
+                    // db方程：
                     dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1)
                 }
             }

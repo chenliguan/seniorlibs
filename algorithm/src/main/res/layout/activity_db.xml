@@ -47,4 +47,9 @@
         style="@style/BtnStyles"
         android:text="152. 乘积最大子数组" />
 
+    <Button
+        android:id="@+id/btn_coin_change"
+        style="@style/BtnStyles"
+        android:text="322. 零钱兑换" />
+
 </LinearLayout>
