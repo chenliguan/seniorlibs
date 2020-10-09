@@ -47,6 +47,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
         findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rob).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -88,13 +89,20 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
             R.id.btn_max_sub_array -> {
-                LogUtils.e(TAG, "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}")
+                LogUtils.e(
+                    TAG,
+                    "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}"
+                )
             }
             R.id.btn_max_product -> {
                 LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
             }
             R.id.btn_coin_change -> {
                 LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
+            }
+            R.id.btn_rob -> {
+                LogUtils.e(TAG, "198. 打家劫舍：${rob(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍：${rob1(intArrayOf(2, 7, 9, 3, 1))}")
             }
             else -> {
             }
@@ -487,6 +495,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 120. 三角形最小路径和  解法二：备忘录递归(自顶向下)，解法一递归的升级版
+     *
      * 思想：比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
      *
      * 时间复杂度：O(n^2)，n为三角形的行数。
@@ -517,6 +526,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 120. 三角形最小路径和  解法一：动态规划（自底向上）
+     *
      * 在实际递推中发现，计算dp[i][j] 时，只用到了下一行的dp[i + 1][j]和dp[i + 1][j + 1]。因此dp数组不需要定义n行，只要定义1行就阔以啦.
      *
      * 时间复杂度：O(n^2)，n为三角形的行数。
@@ -559,8 +569,11 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 53. 最大子序和   数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
-     * 解法一：动态规划  DP方程：sum = max(sum + num[i], num[i])， db = max(db, sum)
+     * 53. 最大子序和   解法一：动态规划
+     *
+     * 思想：数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+     *
+     * DP方程：sum = max(sum + num[i], num[i])， db = max(db, sum)
      *
      * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
      * 空间复杂度：O(1)，只需要常数空间存放若干变量。
@@ -584,8 +597,8 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 152. 乘积最大子数组
-     * 解法一：动态规划
+     * 152. 乘积最大子数组  解法一：动态规划
+     *
      * DP方程：imax = max(imax * num[i], num[i])， imin = min(imin * num[i], num[i]), db = max(db, imax)
      *
      * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
@@ -645,5 +658,80 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return if (dp[amount] > amount) -1 else dp[amount]
+    }
+
+    /**
+     * 198. 打家劫舍  解法一：动态规划
+     *
+     * 思想：对于第k(k>2)间房屋，有两个选项：
+     * 1.偷窃第k间房屋，那么就不能偷窃第k−1间房屋，偷窃总金额为前k−2间房屋的最高总金额与第k间房屋的金额之和；
+     * 2.不偷窃第k间房屋，偷窃总金额为前k−1间房屋的最高总金额。
+     *
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
+     *
+     * base case：
+     *      dp[0] = nums[0]               // 只有一间房屋，则偷窃该房屋
+     *      dp[1] = max(nums[0],nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
+     *
+     * DP方程：dp[i] = max(dp[i−2] + nums[i], dp[i−1])
+     *
+     * @param nums
+     * @return
+     */
+    fun rob(nums: IntArray): Int {
+        if (nums.isEmpty()) {
+            return 0
+        }
+        val length = nums.size
+        if (length == 1) {
+            return nums[0]
+        }
+
+        val dp = IntArray(length)
+        dp[0] = nums[0]
+        dp[1] = Math.max(nums[0], nums[1])
+        for (i in 2 until length) {
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
+        }
+        return dp[length - 1]
+    }
+
+    /**
+     * 198. 打家劫舍  解法二：动态规划（空间优化）
+     *
+     * 思想：对于第k(k>2)间房屋，有两个选项：
+     * 1.偷窃第k间房屋，那么就不能偷窃第k−1间房屋，偷窃总金额为前k−2间房屋的最高总金额与第k间房屋的金额之和；
+     * 2.不偷窃第k间房屋，偷窃总金额为前k−1间房屋的最高总金额。
+     *
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(1)，不使用滚动数组，只存储前两间房屋的最高总金额，而不需要存储整个数组的结果，因此空间复杂度是O(1)；
+     *
+     * base case：
+     *      pre = nums[0]               // 只有一间房屋，则偷窃该房屋
+     *      cur = max(nums[0], nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
+     *
+     * DP方程：cur = max(pre + nums[i], cur)
+     *
+     * @param nums
+     * @return
+     */
+    fun rob1(nums: IntArray): Int {
+        if (nums.isEmpty()) {
+            return 0
+        }
+        val length = nums.size
+        if (length == 1) {
+            return nums[0]
+        }
+
+        var pre = nums[0]
+        var cur = Math.max(nums[0], nums[1])
+        for (i in 2 until length) {
+            val temp = cur
+            cur = Math.max(pre + nums[i], cur)
+            pre = temp
+        }
+        return cur
     }
 }
