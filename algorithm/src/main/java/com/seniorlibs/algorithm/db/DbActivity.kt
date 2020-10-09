@@ -585,7 +585,8 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 152. 乘积最大子数组
-     * 解法一：动态规划  DP方程：imax = max(imax * num[i], num[i])， imin = min(imin * num[i], num[i]), db = max(db, imax)
+     * 解法一：动态规划
+     * DP方程：imax = max(imax * num[i], num[i])， imin = min(imin * num[i], num[i]), db = max(db, imax)
      *
      * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
      * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
@@ -617,6 +618,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
      * 空间复杂度：O(S)，DP数组需要开长度为总金额S的空间
      *
+     * base case：dp[0] = 0
+     * DP方程：dp(n) = min{dp(n - coin) + 1}，coin ∈ coins、n > 0
+     *
      * https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-chen-li-guan/
      * @param coins
      * @param amount
@@ -624,21 +628,19 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun coinChange(coins: IntArray, amount: Int): Int {
         // 为啥dp数组初始化为amount+1呢，因为凑成amount金额的数最多只可能等于amount（全用1元面值的）
-        val max = amount + 1
         val dp = IntArray(amount + 1)
-        Arrays.fill(dp, max)
+        Arrays.fill(dp, amount + 1)
 
         // base case
         dp[0] = 0
         // 外层 for 循环在遍历所有状态的所有取值
-        for (i in 1..amount) {
+        for (n in 1..amount) {
             // 内层 for 循环在遍历硬币的值
-            for (j in coins.indices) {
+            for (coin in coins) {
                 // coins[j] > i -> 子问题无解，跳过
-                if (coins[j] <= i) {
+                if (coin <= n) {
                     // 求所有选择的最小值
-                    // db方程：
-                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1)
+                    dp[n] = Math.min(dp[n], dp[n - coin] + 1)
                 }
             }
         }
