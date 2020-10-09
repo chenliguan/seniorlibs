@@ -23,6 +23,7 @@
                 android:id="@+id/yellow"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:clickable="true"
                 android:background="@color/white_FFFFFFFF" />
         </com.seniorlibs.event.dispatch.MyViewGroup>
     </com.seniorlibs.event.dispatch.MyViewGroupParent>

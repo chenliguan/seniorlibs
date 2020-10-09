@@ -10,29 +10,24 @@ import com.seniorlibs.baselib.utils.LogUtils
 class InterceptViewGroup(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
     // 点击了InterceptView上，事件没传递到InterceptView，在InterceptViewGroup这一层被拦截，打印结果如下
-
-    // onTouchEvent返回true
     /**
     InterceptActivity dispatchTouchEvent
     InterceptViewGroup dispatchTouchEvent
-    InterceptViewGroup onInterceptTouchEvent                 // 拦截
-    InterceptViewGroup onTouchEvent MotionEvent.ACTION_DOWN  // 多次调用InterceptViewGroup的onTouchEvent
+    InterceptViewGroup onInterceptTouchEvent                // 拦截
+    InterceptViewGroup onTouchEvent MotionEvent.ACTION_DOWN
+    InterceptActivity onTouchEvent
     InterceptActivity dispatchTouchEvent
-    InterceptViewGroup dispatchTouchEvent
-    InterceptViewGroup onTouchEvent MotionEvent.ACTION_MOVE
-    InterceptActivity dispatchTouchEvent
-    InterceptViewGroup dispatchTouchEvent
-    InterceptViewGroup onTouchEvent MotionEvent.ACTION_UP
+    InterceptActivity onTouchEvent
      */
 
-    // onTouchEvent返回false
+    // 点击了InterceptView上，事件传递到InterceptView，在InterceptViewGroup这一层不拦截，打印结果如下
     /**
     InterceptActivity dispatchTouchEvent
     InterceptViewGroup dispatchTouchEvent
-    InterceptViewGroup onInterceptTouchEvent                 // 拦截
-    InterceptViewGroup onTouchEvent MotionEvent.ACTION_DOWN  // 只调用一次InterceptViewGroup的onTouchEvent
-    InterceptActivity onTouchEvent                           // 多次调用Activity.onTouchEvent
-    InterceptActivity dispatchTouchEvent
+    InterceptViewGroup onInterceptTouchEvent
+    InterceptView dispatchTouchEvent
+    InterceptView onTouchEvent
+    InterceptViewGroup onTouchEvent MotionEvent.ACTION_DOWN
     InterceptActivity onTouchEvent
     InterceptActivity dispatchTouchEvent
     InterceptActivity onTouchEvent
@@ -73,9 +68,6 @@ class InterceptViewGroup(context: Context, attrs: AttributeSet) : FrameLayout(co
             }
         }
 
-//        return super.onTouchEvent(event)
-        // true表示事件交由InterceptViewGroup消费，多次调用ViewGroup的onTouchEvent；
-        // false表示不消费，只调用一次ViewGroup的onTouchEvent；然后，回传给上层的Activity，多次调用Activity.onTouchEvent
-        return true
+        return super.onTouchEvent(event)
     }
 }

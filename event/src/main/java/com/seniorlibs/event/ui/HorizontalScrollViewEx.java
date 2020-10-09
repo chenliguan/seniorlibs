@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
+import com.g.event.utils.EventUtils;
+
 /**
  * 滑动冲突场景1-外部拦截
  * 父容器
  */
 public class HorizontalScrollViewEx extends ViewGroup {
+
     private static final String TAG = "HorizontalScrollViewEx";
 
     private int mChildrenSize;
@@ -53,7 +56,8 @@ public class HorizontalScrollViewEx extends ViewGroup {
 
     /**
      * 核心方法：在onInterceptTouchEvent方法中，
-     * 首先是ACTION_DOWN这个事件，父容器必须返回false，即不拦截ACTION_DOWN事件，这是因为一旦父容器拦截了ACTION_DOWN，那么后续的ACTION_MOVE和ACTION_UP事件都会直接交由父容器处理，这个时候事件没法再传递给子元素了；
+     * 首先是ACTION_DOWN这个事件，父容器必须返回false，即不拦截ACTION_DOWN事件，这是因为一旦父容器拦截了ACTION_DOWN，
+     *      那么后续的ACTION_MOVE和ACTION_UP事件都会直接交由父容器处理，这时事件没法再传递给子元素了；
      * 其次是ACTION_MOVE事件，这个事件可以根据需要来决定是否拦截，如果父容器需要拦截就返回true，否则返回false；
      * 最后是ACTION_UP事件，这里必须要返回false，因为ACTION_UP事件本身没有太多意义考虑一种情况
      *
@@ -62,6 +66,8 @@ public class HorizontalScrollViewEx extends ViewGroup {
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
+        Log.d(TAG, "event.getAction()=" + EventUtils.INSTANCE.getAction(event.getAction()));
+
         boolean intercepted = false;
         int x = (int) event.getX();
         int y = (int) event.getY();

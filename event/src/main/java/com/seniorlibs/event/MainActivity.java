@@ -9,7 +9,9 @@ import android.view.View;
 import com.seniorlibs.baselib.utils.LogUtils;
 import com.seniorlibs.event.cancel.CancelActivity;
 import com.seniorlibs.event.dispatch.DispatchActivity;
+import com.seniorlibs.event.intercept.InInterceptActivity;
 import com.seniorlibs.event.intercept.InterceptActivity;
+import com.seniorlibs.event.intercept.OutInterceptActivity;
 import com.seniorlibs.event.listener.IBrowserListener;
 import com.seniorlibs.event.listener.BrowserListenerHandle;
 
@@ -123,7 +125,7 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void onOutIntercept(View v) {
-        Intent intent = new Intent(this, OutInterceptActivityActivity.class);
+        Intent intent = new Intent(this, OutInterceptActivity.class);
         startActivity(intent);
     }
 

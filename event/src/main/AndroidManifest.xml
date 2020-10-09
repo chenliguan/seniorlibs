@@ -25,13 +25,13 @@
             android:launchMode="standard" />
 
         <activity
-            android:name=".OutInterceptActivityActivity"
+            android:name=".intercept.OutInterceptActivity"
             android:configChanges="screenLayout"
             android:label="@string/title_scene_1"
             android:launchMode="standard" />
 
         <activity
-            android:name=".InInterceptActivity"
+            android:name=".intercept.InInterceptActivity"
             android:configChanges="screenLayout"
             android:label="@string/title_scene_1"
             android:launchMode="standard" />

@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import com.g.event.utils.EventUtils
 import com.seniorlibs.baselib.utils.LogUtils
+import com.seniorlibs.event.intercept.InterceptActivity
 
 class MyViewGroup(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
@@ -20,8 +22,29 @@ class MyViewGroup(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         return super.dispatchTouchEvent(ev)
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        LogUtils.i(DispatchActivity.TAG,"MyViewGroup onTouchEvent")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                LogUtils.i(
+                    DispatchActivity.TAG,
+                    "MyViewGroup onTouchEvent " + EventUtils.getAction(event.action)
+                )
+            }
+            MotionEvent.ACTION_MOVE -> {
+                LogUtils.i(
+                    DispatchActivity.TAG,
+                    "MyViewGroup onTouchEvent " + EventUtils.getAction(event.action)
+                )
+            }
+            MotionEvent.ACTION_UP -> {
+                LogUtils.i(
+                    DispatchActivity.TAG,
+                    "MyViewGroup onTouchEvent " + EventUtils.getAction(event.action)
+                )
+            }
+            else -> {
+            }
+        }
         return super.onTouchEvent(event)
     }
 
