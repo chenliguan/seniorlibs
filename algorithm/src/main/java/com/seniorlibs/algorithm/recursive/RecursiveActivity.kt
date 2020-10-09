@@ -101,7 +101,6 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
         if (left == n && right == n) {
             // 2.处理当前层逻辑
             list.add(s)
-            return
         }
 
         // 3.下探到下一层

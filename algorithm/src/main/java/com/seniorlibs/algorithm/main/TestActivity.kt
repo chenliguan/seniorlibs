@@ -43,6 +43,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -64,6 +65,10 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_four_sum -> {
                 val nums: IntArray = intArrayOf(1,0,-1,0,-2,2)
                 LogUtils.d(ArrayActivity.TAG, "18. 四数之和：${fourSum(nums, 0)}")
+            }
+            R.id.btn_bracket_generate -> {
+                list.clear()
+                LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
             }
             else -> {
             }
@@ -246,4 +251,48 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
         return res
     }
+
+    /**
+     * 22. 括号生成
+     *
+     * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
+     * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
+     *
+     * https://leetcode-cn.com/problems/generate-parentheses/
+     * @param n
+     * @return
+     */
+    fun generateParenthesis(n: Int): List<String> {
+        if (n == 0) return list
+
+        generate(0, 0, n, "")
+
+        return list
+    }
+
+    val list = mutableListOf<String>()
+
+    private fun generate(left : Int, right : Int, n : Int, s : String) {
+        // 1.递归终结条件
+        if (left > n || left < right) {
+            return
+        }
+
+        // 2.处理当前层逻辑
+        if (left == n && right == n) {
+            list.add(s)
+        }
+
+        // 3. 下探到下一层
+        if (left < n) {
+            generate(left + 1, right, n, s + '(')
+        }
+
+        if (left > right) {
+            generate(left, right + 1, n, s + ')')
+        }
+
+        // 4. 恢复状态
+    }
+
 }

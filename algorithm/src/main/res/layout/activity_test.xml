@@ -27,4 +27,8 @@
         style="@style/BtnStyles"
         android:text="18. 四数之和" />
 
+    <Button
+        android:id="@+id/btn_bracket_generate"
+        style="@style/BtnStyles"
+        android:text="22. 括号生成" />
 </LinearLayout>

@@ -223,7 +223,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         return res.toIntArray()
     }
 
-
     /**
      * 15. 三数之和
      * 判断nums中是否存在三个元素a，b，c，使得a+b+c=0，转化为->a+b=-c
