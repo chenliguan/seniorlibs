@@ -734,4 +734,38 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
         return cur
     }
+
+    fun robTwo(nums: IntArray): Int {
+        if (nums.isEmpty()) {
+            return 0
+        }
+        val length = nums.size
+        if (length == 1) {
+            return nums[0]
+        }
+
+        return Math.max(
+            myRob(Arrays.copyOfRange(nums, 0, nums.size - 1)),
+            myRob(Arrays.copyOfRange(nums, 1, nums.size))
+        )
+    }
+
+    fun myRob(nums: IntArray): Int {
+        if (nums.isEmpty()) {
+            return 0
+        }
+        val length = nums.size
+        if (length == 1) {
+            return nums[0]
+        }
+
+        var pre = nums[0]
+        var cur = Math.max(nums[0], nums[1])
+        for (i in 2 until length) {
+            val temp = cur
+            cur = Math.max(pre + nums[i], cur)
+            pre = temp
+        }
+        return cur
+    }
 }
