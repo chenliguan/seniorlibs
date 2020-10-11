@@ -48,6 +48,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
         findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -74,7 +75,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_unique_paths_with_obstacles -> {
                 val paths = arrayOf(intArrayOf(0, 0, 0), intArrayOf(0, 1, 0), intArrayOf(0, 0, 0))
-//                val paths = arrayOf(intArrayOf(0), intArrayOf(1))
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles(paths)}")
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles1(paths)}")
             }
@@ -101,8 +101,12 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
             }
             R.id.btn_rob -> {
-                LogUtils.e(TAG, "198. 打家劫舍：${rob(intArrayOf(2, 7, 9, 3, 1))}")
-                LogUtils.e(TAG, "198. 打家劫舍：${rob1(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍0：${rob(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍1：${rob1(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍2：${rob2(intArrayOf(2, 7, 9, 3, 1))}")
+            }
+            R.id.btn_rob_two -> {
+                LogUtils.e(TAG, "213. 打家劫舍 II：${robTwo(intArrayOf(2, 7, 9, 3, 1))}")
             }
             else -> {
             }
@@ -671,30 +675,26 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
      *
      * base case：
-     *      dp[0] = nums[0]               // 只有一间房屋，则偷窃该房屋
-     *      dp[1] = max(nums[0],nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
+     *    dp[0] = nums[0]               // 只有一间房屋，则偷窃该房屋
+     *    dp[1] = max(nums[0],nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
      *
      * DP方程：dp[i] = max(dp[i−2] + nums[i], dp[i−1])
      *
+     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
      * @param nums
      * @return
      */
     fun rob(nums: IntArray): Int {
-        if (nums.isEmpty()) {
-            return 0
-        }
-        val length = nums.size
-        if (length == 1) {
-            return nums[0]
-        }
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
 
-        val dp = IntArray(length)
+        val dp = IntArray(nums.size)
         dp[0] = nums[0]
         dp[1] = Math.max(nums[0], nums[1])
-        for (i in 2 until length) {
+        for (i in 2 until nums.size) {
             dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
         }
-        return dp[length - 1]
+        return dp[nums.size - 1]
     }
 
     /**
@@ -708,26 +708,22 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(1)，不使用滚动数组，只存储前两间房屋的最高总金额，而不需要存储整个数组的结果，因此空间复杂度是O(1)；
      *
      * base case：
-     *      pre = nums[0]               // 只有一间房屋，则偷窃该房屋
-     *      cur = max(nums[0], nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
+     *    pre = nums[0]                // 只有一间房屋，则偷窃该房屋
+     *    cur = max(nums[0], nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
      *
      * DP方程：cur = max(pre + nums[i], cur)
      *
+     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
      * @param nums
      * @return
      */
     fun rob1(nums: IntArray): Int {
-        if (nums.isEmpty()) {
-            return 0
-        }
-        val length = nums.size
-        if (length == 1) {
-            return nums[0]
-        }
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
 
         var pre = nums[0]
         var cur = Math.max(nums[0], nums[1])
-        for (i in 2 until length) {
+        for (i in 2 until nums.size) {
             val temp = cur
             cur = Math.max(pre + nums[i], cur)
             pre = temp
@@ -735,37 +731,58 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return cur
     }
 
+    /**
+     * 198. 打家劫舍  解法二：动态规划（空间优化）- 代码优化
+     *
+     * base case：
+     *    pre = 0
+     *    cur = 0
+     *
+     * DP方程：cur = max(pre + num, cur)
+     *
+     * @param nums
+     * @return
+     */
+    fun rob2(nums: IntArray): Int {
+        var pre = 0
+        var cur = 0
+        var tmp: Int
+        for (num in nums) {
+            tmp = cur
+            cur = Math.max(pre + num, cur)
+            pre = tmp
+        }
+        return cur
+    }
+
+    /**
+     * 213. 打家劫舍 II  解法一：动态规划（空间优化）
+     *
+     * 思想：环状排列意味着第一个房子和最后一个房子中只能选择一个偷窃，因此可以把此环状排列房间问题约化为两个单排排列房间子问题：
+     * 1.在不偷窃第一个房子的情况下（即nums[0]），最大金额是p1；
+     * 2.在不偷窃最后一个房子的情况下（即nums[n-1]），最大金额是p2；
+     * 3.综合偷窃最大金额： 为以上两种情况的较大值，即 max(p1, p2)。
+     *
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(1)，不使用滚动数组，只存储前两间房屋的最高总金额，而不需要存储整个数组的结果，因此空间复杂度是O(1)；
+     *
+     * base case：
+     *    pre = 0            // pre(0) -- cur(1) -- num(2)
+     *    cur = 0
+     *
+     * DP方程：cur = max(pre + num, cur)
+     *
+     * https://leetcode-cn.com/problems/house-robber-ii/solution/213-da-jia-jie-she-ii-by-chen-li-guan/
+     * @param nums
+     * @return
+     */
     fun robTwo(nums: IntArray): Int {
-        if (nums.isEmpty()) {
-            return 0
-        }
-        val length = nums.size
-        if (length == 1) {
-            return nums[0]
-        }
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
 
         return Math.max(
-            myRob(Arrays.copyOfRange(nums, 0, nums.size - 1)),
-            myRob(Arrays.copyOfRange(nums, 1, nums.size))
+            rob1(Arrays.copyOfRange(nums, 1, nums.size)),
+            rob1(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
-    }
-
-    fun myRob(nums: IntArray): Int {
-        if (nums.isEmpty()) {
-            return 0
-        }
-        val length = nums.size
-        if (length == 1) {
-            return nums[0]
-        }
-
-        var pre = nums[0]
-        var cur = Math.max(nums[0], nums[1])
-        for (i in 2 until length) {
-            val temp = cur
-            cur = Math.max(pre + nums[i], cur)
-            pre = temp
-        }
-        return cur
     }
 }

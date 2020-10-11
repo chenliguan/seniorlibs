@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
+import com.seniorlibs.algorithm.db.DbActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 import kotlin.collections.ArrayList
@@ -44,6 +45,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -69,6 +71,9 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_bracket_generate -> {
                 list.clear()
                 LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
+            }
+            R.id.btn_rob_two -> {
+                LogUtils.e(DbActivity.TAG, "213. 打家劫舍 II：${rob(intArrayOf(2, 7, 9, 3, 1))}")
             }
             else -> {
             }
@@ -295,4 +300,35 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         // 4. 恢复状态
     }
 
+
+    /**
+     * 213. 打家劫舍 II
+     *
+     * @param nums
+     * @return
+     */
+    fun rob(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        return Math.max(
+            rob1(Arrays.copyOfRange(nums, 0, nums.size - 1)),
+            rob1(Arrays.copyOfRange(nums, 1, nums.size))
+        )
+    }
+
+    fun rob1(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        var pre = nums[0]
+        var cur = Math.max(nums[0], nums[1])
+        var temp = 0
+        for (i in 2 until nums.size) {
+            temp = cur
+            cur = Math.max(pre + nums[i], cur)
+            pre = temp
+        }
+        return cur
+    }
 }
