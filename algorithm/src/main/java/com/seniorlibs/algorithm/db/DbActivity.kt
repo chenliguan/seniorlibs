@@ -49,6 +49,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
+        findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -107,6 +108,17 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_rob_two -> {
                 LogUtils.e(TAG, "213. 打家劫舍 II：${robTwo(intArrayOf(2, 7, 9, 3, 1))}")
+            }
+            R.id.btn_maximal_square -> {
+//                val paths = arrayOf(
+//                    charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
+//                    charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
+//                )
+                val paths = arrayOf(
+                    charArrayOf('0'), charArrayOf('1')
+                )
+                LogUtils.e(TAG, "221. 最大正方形：${maximalSquare(paths)}")
+                LogUtils.e(TAG, "221. 最大正方形：${maximalSquare2(paths)}")
             }
             else -> {
             }
@@ -249,7 +261,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 509. 斐波那契数    解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级
+     * 509. 斐波那契数  解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级
      *
      * 思想：自底向上通过迭代计算子问题并存储已计算的值，通过已计算的值进行计算，减少递归带来的重复计算
      *
@@ -784,5 +796,89 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             rob1(Arrays.copyOfRange(nums, 1, nums.size)),
             rob1(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
+    }
+
+    /**
+     * 221. 最大正方形 解法一：动态规划
+     *
+     * 思想：以(i,j)为根据点，它最大的正方形的边长取决于(上, 左, 左上)边长最短的那一个
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     *
+     * base case：第 0 行和第 0 列，同步 matrix
+     *
+     * DP方程：dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
+     *
+     * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
+     * @param matrix
+     * @return
+     */
+    fun maximalSquare(matrix: Array<CharArray>): Int {
+        if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
+
+        val m = matrix.size
+        val n: Int = matrix[0].size
+        var max = 0
+
+        // 初始化base case：定义 dp 数组，相当于已经预处理新增第一行、第一行均为0
+        val dp = Array(m + 1) { IntArray(n + 1) }
+
+        // 根据状态转移方程 dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1 进行递推
+        for (i in 1..m) {
+            for (j in 1..n) {
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i - 1][j]), dp[i][j - 1]) + 1
+                    max = Math.max(dp[i][j], max)
+                } else {
+                    dp[i][j] = 0
+                }
+            }
+        }
+        return max * max
+    }
+
+    /**
+     * 221. 最大正方形 解法一：动态规划（空间优化）
+     *
+     * 思路：增加 northwest 西北角解决"左上角"的问题
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(n)，使用了空间大小为n的数组
+     *
+     * base case：第 0 行和第 0 列，同步 matrix
+     *
+     * DP方程：dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
+     *
+     * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
+     * @param matrix
+     * @return
+     */
+    fun maximalSquare2(matrix: Array<CharArray>): Int {
+        if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
+
+        val m = matrix.size
+        val n: Int = matrix[0].size
+        var max = 0
+
+        // 初始化base case：定义 dp 数组，相当于已经预处理新增第一行为0
+        val dp = IntArray(n + 1)
+        // 西北角/左上角
+        var northWest = dp[0]
+
+        // 根据状态转移方程 dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1 进行递推
+        for (i in 1..m) {
+            for (j in 1..n) {
+                val temp = dp[j]
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[j] = Math.min(dp[j - 1], Math.min(dp[j], northWest)) + 1
+                    max = Math.max(dp[j], max)
+                } else {
+                    dp[j] = 0
+                }
+                northWest = temp
+            }
+        }
+        return max * max
     }
 }
