@@ -46,6 +46,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
+        findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -62,18 +63,26 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_three_sum -> {
                 val nums: IntArray = intArrayOf(-4, -1, -1, -1, 0, -1, 1, 2)
-                LogUtils.d(ArrayActivity.TAG, "15. 三数之和：${threeSum(nums)}")
+                LogUtils.d(TAG, "15. 三数之和：${threeSum(nums)}")
             }
             R.id.btn_four_sum -> {
-                val nums: IntArray = intArrayOf(1,0,-1,0,-2,2)
-                LogUtils.d(ArrayActivity.TAG, "18. 四数之和：${fourSum(nums, 0)}")
+                val nums: IntArray = intArrayOf(1, 0, -1, 0, -2, 2)
+                LogUtils.d(TAG, "18. 四数之和：${fourSum(nums, 0)}")
             }
             R.id.btn_bracket_generate -> {
                 list.clear()
                 LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
             }
             R.id.btn_rob_two -> {
-                LogUtils.e(DbActivity.TAG, "213. 打家劫舍 II：${rob(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "213. 打家劫舍 II：${rob(intArrayOf(2, 7, 9, 3, 1))}")
+            }
+            R.id.btn_unique_paths -> {
+                LogUtils.e(TAG, "62. 不同路径：${uniquePaths(3, 7)}")
+            }
+            R.id.btn_unique_paths_with_obstacles -> {
+//                val paths = arrayOf(intArrayOf(0, 0, 0), intArrayOf(0, 1, 0), intArrayOf(0, 0, 0))
+                val paths = arrayOf(intArrayOf(0), intArrayOf(1))
+                LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles(paths)}")
             }
             else -> {
             }
@@ -165,15 +174,19 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
                 when {
                     sum < 0 -> {
-                        while (i < j && nums[i] == nums[++i]) {}
+                        while (i < j && nums[i] == nums[++i]) {
+                        }
                     }
                     sum > 0 -> {
-                        while (i < j && nums[j] == nums[--j]) {}
+                        while (i < j && nums[j] == nums[--j]) {
+                        }
                     }
                     sum == 0 -> {
                         res.add(mutableListOf(nums[k], nums[i], nums[j]))
-                        while (i < j && nums[i] == nums[++i]) {}
-                        while (i < j && nums[j] == nums[--j]) {}
+                        while (i < j && nums[i] == nums[++i]) {
+                        }
+                        while (i < j && nums[j] == nums[--j]) {
+                        }
                     }
                 }
             }
@@ -277,7 +290,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
     val list = mutableListOf<String>()
 
-    private fun generate(left : Int, right : Int, n : Int, s : String) {
+    private fun generate(left: Int, right: Int, n: Int, s: String) {
         // 1.递归终结条件
         if (left > n || left < right) {
             return
@@ -330,5 +343,66 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             pre = temp
         }
         return cur
+    }
+
+    /**
+     * 62. 不同路径
+     *
+     * @param m
+     * @param n
+     * @return
+     */
+    fun uniquePaths(m: Int, n: Int): Int {
+        if (m == 0 || n == 0) return 0
+
+        // base case
+        val dp = IntArray(n)
+        for (j in 0 until n) {
+            dp[j] = 1
+        }
+
+        // dp
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                dp[j] = dp[j] + dp[j - 1]
+            }
+        }
+
+        return dp[n - 1]
+    }
+
+
+    /**
+     * 63. 不同路径 II
+     *
+     * @param obstacleGrid
+     * @return
+     */
+    fun uniquePathsWithObstacles(obstacleGrid: Array<IntArray>): Int {
+        if (obstacleGrid.isEmpty() || obstacleGrid[0].isEmpty()) return 0
+
+        // base case
+        val m = obstacleGrid.size
+        val n = obstacleGrid[0].size
+
+        // base case
+        val dp = IntArray(n)
+        dp[0] = if (obstacleGrid[0][0] == 0) 1 else 0
+
+        // db
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[j] = 0
+                    continue
+                }
+
+                if (j > 1 && obstacleGrid[i][j] == 0) {
+                    dp[j] = dp[j] + dp[j - 1]
+                }
+            }
+        }
+
+        return dp[n - 1]
     }
 }

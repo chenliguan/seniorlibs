@@ -108,17 +108,15 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_rob_two -> {
                 LogUtils.e(TAG, "213. 打家劫舍 II：${robTwo(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "213. 打家劫舍 I 2：${rob4(intArrayOf(2, 7, 9, 3, 1))}")
             }
             R.id.btn_maximal_square -> {
-//                val paths = arrayOf(
-//                    charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
-//                    charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
-//                )
                 val paths = arrayOf(
-                    charArrayOf('0'), charArrayOf('1')
+                    charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
+                    charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
                 )
-                LogUtils.e(TAG, "221. 最大正方形：${maximalSquare(paths)}")
-                LogUtils.e(TAG, "221. 最大正方形：${maximalSquare2(paths)}")
+                LogUtils.e(TAG, "221. 最大正方形1：${maximalSquare(paths)}")
+                LogUtils.e(TAG, "221. 最大正方形2：${maximalSquare2(paths)}")
             }
             else -> {
             }
@@ -328,18 +326,16 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
-        // 定义 dp 数组并初始化第 0 行和第 0 列。
+        // base case：定义 dp 数组并初始化第 0 行和第 0 列。
         val dp = Array(m) { IntArray(n) }
-        var i = 0
-        while (i < m) {
-            dp[i++][0] = 1
+        for (i in 0 until m) {
+            dp[i][0] = 1
         }
-        var j = 0
-        while (j < n) {
-            dp[0][j++] = 1
+        for (j in 0 until n) {
+            dp[0][j] = 1
         }
 
-        // 根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
+        // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
         for (i in 1 until m) {
             for (j in 1 until n) {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
@@ -364,18 +360,19 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths1(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
-        // 定义 dp 数组并初始化第 1 列。
+        // base case：定义 dp 数组并初始化第 1 列。
         val dp = IntArray(n)
-        var j = 0
-        while (j < n) {
-            dp[j++] = 1
+        for (j in 0 until n) {
+            dp[j] = 1
         }
 
+        // dp：根据状态转移方程 dp[j] = [j] + [j - 1] 进行递推。
         for (i in 1 until m) {
             for (j in 1 until n) {
                 dp[j] += dp[j - 1]
             }
         }
+
         return dp[n - 1]
     }
 
@@ -391,24 +388,24 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun uniquePathsWithObstacles(obstacleGrid: Array<IntArray>): Int {
-        if (obstacleGrid.isEmpty()) return 0
+        if (obstacleGrid.isEmpty() || obstacleGrid[0].isEmpty()) return 0
 
         val m: Int = obstacleGrid.size
         val n: Int = obstacleGrid[0].size
 
-        // 定义 dp 数组并初始化第 0 行和第 0 列。
+        // base case：定义 dp 数组并初始化第 0 行和第 0 列
         val dp = Array(m) { IntArray(n) }
-        var i = 0
         // 一旦遇到值为1的情况，后面的都不会被赋值成1了，都是默认值0
-        while (i < m && obstacleGrid[i][0] == 0) {
-            dp[i++][0] = 1
+        for (i in 0 until m) {
+            if (obstacleGrid[i][0] == 1) break
+            dp[i][0] = 1
         }
-        var j = 0
-        while (j < n && obstacleGrid[0][j] == 0) {
-            dp[0][j++] = 1
+        for (j in 0 until n) {
+            if (obstacleGrid[0][j] == 1) break
+            dp[0][j] = 1
         }
 
-        // 根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
+        // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推
         for (i in 1 until m) {
             for (j in 1 until n) {
                 // 1是障碍物，0是非障碍物，0才往下迭代
@@ -421,7 +418,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 63. 不同路径 II  解法二：动态规划(自底向上)，空间优化  TODO???
+     * 63. 不同路径 II  解法二：动态规划(自底向上)，空间优化
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(n)，使用了空间大小为n的数组
@@ -431,24 +428,26 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun uniquePathsWithObstacles1(obstacleGrid: Array<IntArray>): Int {
-        if (obstacleGrid.isEmpty()) return 0
+        if (obstacleGrid.isEmpty() || obstacleGrid[0].isEmpty()) return 0
 
         val m: Int = obstacleGrid.size
         val n: Int = obstacleGrid[0].size
 
-        // 定义 dp 数组并初始化第 1 列。
+        // base case：定义 dp 数组并初始化第 1 列
         val dp = IntArray(n)
         dp[0] = if (obstacleGrid[0][0] == 0) 1 else 0
 
+        // db：dp[j] = dp[j] + dp[j - 1]
         for (i in 0 until m) {
             for (j in 0 until n) {
+                // 处理[0][1]的情况，从0开始
                 if (obstacleGrid[i][j] == 1) {
                     dp[j] = 0
                     continue
                 }
 
-                if (j - 1 >= 0 && obstacleGrid[i][j - 1] == 0) {
-                    dp[j] += dp[j - 1]
+                if (j > 0 && obstacleGrid[i][j] == 0) {
+                    dp[j] = dp[j] + dp[j - 1]
                 }
             }
         }
@@ -472,6 +471,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         val n: Int = text2.length
         val c1: CharArray = text1.toCharArray()
         val c2: CharArray = text2.toCharArray()
+
         val dp = Array(m + 1) { IntArray(n + 1) }
 
         /* dp默认0行或0列是0 */
@@ -506,6 +506,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (i == triangle.size) {
             return 0
         }
+
         return Math.min(dfs(triangle, i + 1, j), dfs(triangle, i + 1, j + 1)) + triangle[i][j]
     }
 
@@ -589,6 +590,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      *
      * 思想：数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
      *
+     * base case：dp = nums[0]
      * DP方程：sum = max(sum + num[i], num[i])， db = max(db, sum)
      *
      * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
@@ -598,15 +600,14 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun maxSubArray(nums: IntArray): Int {
+        // base case：dp = nums[0]。因为nums只有一个值而且是负数时，需要给dp初始值，否则dp=0就是最大值
         var db = nums[0]
+        // nums只有一个值，这个sum都会赋值
         var sum = 0
-        for (x in nums) {
-//            if (x > 0) {
-//                sum += x
-//            } else {
-//                sum = x
-//            }
-            sum = Math.max(sum + x, x)
+
+        for (num in nums) {
+            // dp
+            sum = Math.max(sum + num, num)
             db = Math.max(db, sum)
         }
         return db
@@ -700,9 +701,11 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (nums.isEmpty()) return 0
         if (nums.size == 1) return nums[0]
 
+        // base case
         val dp = IntArray(nums.size)
         dp[0] = nums[0]
         dp[1] = Math.max(nums[0], nums[1])
+        // dp
         for (i in 2 until nums.size) {
             dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
         }
@@ -733,8 +736,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (nums.isEmpty()) return 0
         if (nums.size == 1) return nums[0]
 
+        // base case
         var pre = nums[0]
         var cur = Math.max(nums[0], nums[1])
+        // dp
         for (i in 2 until nums.size) {
             val temp = cur
             cur = Math.max(pre + nums[i], cur)
@@ -818,7 +823,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
 
         val m = matrix.size
-        val n: Int = matrix[0].size
+        val n = matrix[0].size
         var max = 0
 
         // 初始化base case：定义 dp 数组，相当于已经预处理新增第一行、第一行均为0
@@ -858,7 +863,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
 
         val m = matrix.size
-        val n: Int = matrix[0].size
+        val n = matrix[0].size
         var max = 0
 
         // 初始化base case：定义 dp 数组，相当于已经预处理新增第一行为0
@@ -869,6 +874,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         // 根据状态转移方程 dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1 进行递推
         for (i in 1..m) {
             for (j in 1..n) {
+                // 提前一轮赋值，在下一轮循环使用 对应dp[i-1]；赋值的是为改变值前的dp[j]，也就是改变值后中上一行的dp[j-1]；结果就是dp[i-1][j-1]
                 val temp = dp[j]
                 if (matrix[i - 1][j - 1] == '1') {
                     dp[j] = Math.min(dp[j - 1], Math.min(dp[j], northWest)) + 1
@@ -880,5 +886,33 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return max * max
+    }
+
+    fun rob3(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        // base case
+        var pre = nums[0]
+        var cur = Math.max(nums[0], nums[1])
+
+        // dp
+        for (i in 2 until nums.size) {
+            val temp = cur
+            cur = Math.max(pre + nums[i], cur)
+            pre = temp
+        }
+
+        return cur
+    }
+
+    fun rob4(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        return Math.max(
+            rob3(Arrays.copyOfRange(nums, 1, nums.size)),
+            rob3(Arrays.copyOfRange(nums, 0, nums.size - 1))
+        )
     }
 }
