@@ -51,6 +51,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
         findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -121,7 +122,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_count_sub_strings -> {
                 LogUtils.e(TAG, "647. 回文子串：${countSubstrings("baba")}")
-                LogUtils.e(TAG, "647. 回文子串1：${countSubstrings1("baba")}")
+            }
+            R.id.btn_longest_palindrome -> {
+                LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("baba")}")
             }
             else -> {
             }
@@ -945,7 +948,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * }
      *
      * 时间复杂度：O(n^2)，
-     * 空间复杂度：O(n^2)
+     * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
      *
      * https://leetcode-cn.com/problems/palindromic-substrings/solution/647-hui-wen-zi-chuan-by-chen-li-guan/
      * @param s
@@ -964,14 +967,16 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         // 为什么从右下角遍历：因为在填dp表时，(i, j) 位置的值依赖于（i+1,j-1），也就是当前位置的左下方。
         // 显然如果从上往下遍历，左下方的值就完全没有初始化，当然当前位置也会是错误的。但是从右下角遍历就保证了左下方的所有值都已经计算好了。
         // db：j>=i，所以只用填右半张表，左半默认false
-        for (i in n - 1 downTo 0) {
+        for (i in n - 2 downTo 0) {
             for (j in i + 1 until n) {
                 if (s[i] == s[j]) {
-                    if (j - i == 1) {
-                        // j - i == 1：两个字符，例如：i和j相邻的时候：“cbbd”
+                    if (j - i < 3) {
+                        // j - i == 1：中间没有字符，一定是回文子串。如：aaa->aa(i=0,j=1),aa(i=1,j=2)
+                        // j - i == 2：中间只有1个字符，即去掉两头，剩下中间部分只有1个字符，显然是回文。如：baba->bab(i=0,j=2),aba(i=1,j=3)
+                        // 所以：s[i] == s[j]成立和j - i < 3前提下，直接可以下结论：dp[i][j] = true
                         dp[i][j] = true
                     } else {
-                        // j - i > 1：多于两个字符
+                        // j - i >= 3：多于3个字符
                         dp[i][j] = dp[i + 1][j - 1]
                     }
                 } else {
@@ -987,46 +992,42 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 647. 回文子串  动态规划（空间优化）TODO???
+     * 5. 最长回文子串
      *
      * 时间复杂度：O(n^2)，
-     * 空间复杂度：O(n)
+     * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
      *
-     * @param s
-     * @return
      */
-    fun countSubstrings1(s: String): Int {
-        if (s.isEmpty()) return 0
+    fun longestPalindrome(s: String): String {
+        if (s.length < 2) return s
 
         // base case：只有一个字母的时候肯定是回文子串，数量是s.length
         val n = s.length
-        var count = s.length
+        var maxLen = 1
+        var begin = 0
         val dp = Array(n) { BooleanArray(n) }
-        // 单个字符
         for (i in 0 until n) dp[i][i] = true
 
-        // 为什么从右下角遍历：因为在填dp表时，(i, j) 位置的值依赖于（i+1,j-1），也就是当前位置的左下方。
-        // 显然如果从上往下遍历，左下方的值就完全没有初始化，当然当前位置也会是错误的。但是从右下角遍历就保证了左下方的所有值都已经计算好了。
-        // db：j>=i，所以只用填右半张表，左半默认false
-        for (i in n - 1 downTo 0) {
+        // db
+        for (i in n - 2 downTo 0) {
             for (j in i + 1 until n) {
                 if (s[i] == s[j]) {
-                    if (j - i == 1) {
-                        // j - i == 1：两个字符，例如：i和j相邻的时候：“cbbd”
+                    if (j - i < 3) {
                         dp[i][j] = true
                     } else {
-                        // j - i > 1：多于两个字符
                         dp[i][j] = dp[i + 1][j - 1]
                     }
                 } else {
                     dp[i][j] = false
                 }
 
-                if (dp[i][j]) {
-                    count++
+                // 只要 dp[i][j] == true 成立，就表示子串 s[i..j] 是回文，此时记录回文长度和起始位置
+                if (dp[i][j] && j - i + 1 > maxLen) {
+                    maxLen = j - i + 1
+                    begin = i
                 }
             }
         }
-        return count
+        return s.substring(begin, begin + maxLen)
     }
 }

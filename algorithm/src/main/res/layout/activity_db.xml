@@ -72,4 +72,9 @@
         style="@style/BtnStyles"
         android:text="647. 回文子串" />
 
+    <Button
+        android:id="@+id/btn_longest_palindrome"
+        style="@style/BtnStyles"
+        android:text="5. 最长回文子串" />
+
 </LinearLayout>
