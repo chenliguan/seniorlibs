@@ -50,6 +50,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_rob).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
         findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
+        findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -117,6 +118,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 )
                 LogUtils.e(TAG, "221. 最大正方形1：${maximalSquare(paths)}")
                 LogUtils.e(TAG, "221. 最大正方形2：${maximalSquare2(paths)}")
+            }
+            R.id.btn_count_sub_strings -> {
+                LogUtils.e(TAG, "647. 回文子串：${countSubstrings("baba")}")
+                LogUtils.e(TAG, "647. 回文子串1：${countSubstrings1("baba")}")
             }
             else -> {
             }
@@ -914,5 +919,114 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             rob3(Arrays.copyOfRange(nums, 1, nums.size)),
             rob3(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
+    }
+
+    /**
+     * 647. 回文子串  动态规划
+     *
+     * "回文串”是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串、
+     * "abc"："a", "b", "c"
+     * "aaa"："a", "a", "a", "aa", "aa", "aaa"
+     * "baba"："b", "a", "b", "a", "bab", "aba"
+     * "leveel"："l", "e", "v", "e", "e", "l", "l", "le"
+     *
+     * 思路：
+     * base case；只有一个字母的时候肯定是回文子串
+     *      for (i in 0 until n) dp[i][i] = true
+     *
+     * dp：
+     * 如果s[i]==s[j]，说明只要dp[i+1][j-1]是回文子串，那么dp[i][j]也是回文子串；
+     * 如果s[i]!=s[j]，说明dp[i][j]必定不是回文子串。
+     *
+     * if(s.charAt(i) == s.charAt(j)){
+     *    dp[i][j] = dp[i+1][j-1]
+     * } else {
+     *    dp[i][j] = false;
+     * }
+     *
+     * 时间复杂度：O(n^2)，
+     * 空间复杂度：O(n^2)
+     *
+     * https://leetcode-cn.com/problems/palindromic-substrings/solution/647-hui-wen-zi-chuan-by-chen-li-guan/
+     * @param s
+     * @return
+     */
+    fun countSubstrings(s: String): Int {
+        if (s.isEmpty()) return 0
+
+        // base case：只有一个字母的时候肯定是回文子串，数量是s.length
+        val n = s.length
+        var count = s.length
+        val dp = Array(n) { BooleanArray(n) }
+        // 单个字符
+        for (i in 0 until n) dp[i][i] = true
+
+        // 为什么从右下角遍历：因为在填dp表时，(i, j) 位置的值依赖于（i+1,j-1），也就是当前位置的左下方。
+        // 显然如果从上往下遍历，左下方的值就完全没有初始化，当然当前位置也会是错误的。但是从右下角遍历就保证了左下方的所有值都已经计算好了。
+        // db：j>=i，所以只用填右半张表，左半默认false
+        for (i in n - 1 downTo 0) {
+            for (j in i + 1 until n) {
+                if (s[i] == s[j]) {
+                    if (j - i == 1) {
+                        // j - i == 1：两个字符，例如：i和j相邻的时候：“cbbd”
+                        dp[i][j] = true
+                    } else {
+                        // j - i > 1：多于两个字符
+                        dp[i][j] = dp[i + 1][j - 1]
+                    }
+                } else {
+                    dp[i][j] = false
+                }
+
+                if (dp[i][j]) {
+                    count++
+                }
+            }
+        }
+        return count
+    }
+
+    /**
+     * 647. 回文子串  动态规划（空间优化）TODO???
+     *
+     * 时间复杂度：O(n^2)，
+     * 空间复杂度：O(n)
+     *
+     * @param s
+     * @return
+     */
+    fun countSubstrings1(s: String): Int {
+        if (s.isEmpty()) return 0
+
+        // base case：只有一个字母的时候肯定是回文子串，数量是s.length
+        val n = s.length
+        var count = s.length
+        val dp = Array(n) { BooleanArray(n) }
+        // 单个字符
+        for (i in 0 until n) dp[i][i] = true
+
+        // 为什么从右下角遍历：因为在填dp表时，(i, j) 位置的值依赖于（i+1,j-1），也就是当前位置的左下方。
+        // 显然如果从上往下遍历，左下方的值就完全没有初始化，当然当前位置也会是错误的。但是从右下角遍历就保证了左下方的所有值都已经计算好了。
+        // db：j>=i，所以只用填右半张表，左半默认false
+        for (i in n - 1 downTo 0) {
+            for (j in i + 1 until n) {
+                if (s[i] == s[j]) {
+                    if (j - i == 1) {
+                        // j - i == 1：两个字符，例如：i和j相邻的时候：“cbbd”
+                        dp[i][j] = true
+                    } else {
+                        // j - i > 1：多于两个字符
+                        dp[i][j] = dp[i + 1][j - 1]
+                    }
+                } else {
+                    dp[i][j] = false
+                }
+
+                if (dp[i][j]) {
+                    count++
+                }
+            }
+        }
+        return count
     }
 }

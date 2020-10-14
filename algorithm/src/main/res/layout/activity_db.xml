@@ -67,4 +67,9 @@
         style="@style/BtnStyles"
         android:text="221. 最大正方形" />
 
+    <Button
+        android:id="@+id/btn_count_sub_strings"
+        style="@style/BtnStyles"
+        android:text="647. 回文子串" />
+
 </LinearLayout>
