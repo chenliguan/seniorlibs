@@ -46,4 +46,15 @@
         android:id="@+id/btn_unique_paths_with_obstacles"
         style="@style/BtnStyles"
         android:text="63. 不同路径 II" />
+
+    <Button
+        android:id="@+id/btn_max_depth"
+        style="@style/BtnStyles"
+        android:text="104.二叉树的最大深度" />
+
+    <Button
+        android:id="@+id/btn_min_depth"
+        style="@style/BtnStyles"
+        android:text="104.二叉树的最小深度" />
+
 </LinearLayout>

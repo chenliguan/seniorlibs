@@ -47,6 +47,8 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_depth).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_depth).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -84,9 +86,126 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 val paths = arrayOf(intArrayOf(0), intArrayOf(1))
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles(paths)}")
             }
+            R.id.btn_max_depth -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "104. 二叉树的最大深度：${maxDepth(node)}") // 4
+                LogUtils.e(TAG, "104. 二叉树的最大深度1：${maxDepth1(node)}") // 4
+            }
+            R.id.btn_min_depth -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "111. 二叉树的最小深度：${minDepth(node)}") // 3
+                LogUtils.e(TAG, "111. 二叉树的最小深度1：${minDepth1(node)}") // 3
+            }
             else -> {
             }
         }
+    }
+
+    /**
+     * 104. 二叉树的最大深度 DFS
+     *
+     * @param node
+     * @return
+     */
+    private fun maxDepth(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        val left = maxDepth(root.left)
+
+        val right = maxDepth(root.right)
+
+        return Math.max(left, right) + 1
+    }
+
+    /**
+     * 104. 二叉树的最大深度 BFS
+     *
+     * @param node
+     * @return
+     */
+    private fun maxDepth1(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
+        var level = 0
+        queue.offer(root)
+
+        var size = queue.size
+        while (size > 0) {
+            level++
+            for (i in 0 until size) {
+                val node = queue.poll()
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
+            }
+            size = queue.size
+        }
+
+        return level
+    }
+
+    /**
+     * 111. 二叉树的最小深度
+     *
+     * @param node
+     * @return
+     */
+    private fun minDepth(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        val left = minDepth(root.left)
+
+        val right = minDepth(root.right)
+
+        return if (left == 0 || right == 0) { left + right + 1 } else { Math.min(left, right) + 1 }
+    }
+
+    /**
+     * 111. 二叉树的最小深度
+     *
+     * @param node
+     * @return
+     */
+    private fun minDepth1(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
+        var level = 0
+        queue.offer(root)
+
+        var size = queue.size
+        while (size > 0) {
+            level++
+            for (i in 0 until size) {
+                val node = queue.poll()
+                if (node.left == null && node.right == null) return level
+
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
+            }
+            size = queue.size
+        }
+
+        return level
+    }
+
+    class TreeNode(var `val`: Int) {
+        var left: TreeNode? = null
+        var right: TreeNode? = null
     }
 
     /**

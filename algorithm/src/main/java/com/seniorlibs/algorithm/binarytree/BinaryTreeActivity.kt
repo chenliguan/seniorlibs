@@ -329,21 +329,21 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun maxDepth1(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
         var level = 0
-        val queue: Queue<TreeNode?> = LinkedList()
+        queue.offer(root)
 
-        if (root == null) return level else queue.offer(root)
-
-        while (queue.isNotEmpty()) {
-            level++  // 层数+1
-
-            val size: Int = queue.size
-            for (j in 0 until size) {
+        var size = queue.size
+        while (size > 0) {
+            level++
+            for (i in 0 until size) {
                 val node = queue.poll()
-
-                if (node?.left != null) queue.add(node.left)    // 左右子节点，哪个不为空，哪个加入到队列中
-                if (node?.right != null) queue.add(node.right)
+                if (node.left != null) queue.offer(node.left) // 左右子节点，哪个不为空，哪个加入到队列中
+                if (node.right != null) queue.offer(node.right)
             }
+            size = queue.size
         }
 
         return level
@@ -385,23 +385,23 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun minDepth1(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
         var level = 0
-        val queue: Queue<TreeNode?> = LinkedList()
+        queue.offer(root)
 
-        if (root == null) return level else queue.offer(root)
-
-        while (queue.isNotEmpty()) {
-            level++  // 层数+1
-
-            val size: Int = queue.size
-            for (j in 0 until size) {
+        var size = queue.size
+        while (size > 0) {
+            level++
+            for (i in 0 until size) {
                 val node = queue.poll()
+                if (node.left == null && node.right == null) return level
 
-                if (node?.left == null && node?.right == null) return level   // 核心：当前node没有子节点了，直接返回他所在的层数即可，没必要在遍历下一层了
-
-                if (node.left != null) queue.add(node.left)    // 左右子节点，哪个不为空，哪个加入到队列中
-                if (node.right != null) queue.add(node.right)
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
             }
+            size = queue.size
         }
 
         return level
