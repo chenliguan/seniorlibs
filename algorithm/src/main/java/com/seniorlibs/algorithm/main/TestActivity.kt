@@ -40,6 +40,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
+        findViewById<View>(R.id.btn_level_order_bottom).setOnClickListener(this)
         findViewById<View>(R.id.btn_remove_duplicates).setOnClickListener(this)
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
@@ -57,6 +58,21 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.btn_level_order_bottom -> {
+                val node = TreeNode(3)
+                val node_left = TreeNode(9)
+                val node_right = TreeNode(20)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right2 = TreeNode(7)
+                node_right.right = node_right2
+                val node_left2 = TreeNode(15)
+                node_right.left = node_left2
+
+                LogUtils.e(TAG, "107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代：${levelOrder(node)}")
+                LogUtils.e(TAG, "107. 二叉树的层次遍历 -- 方法二：DFS深度遍历-递归：${levelOrder1(node)}")
+            }
             R.id.btn_remove_duplicates -> {
                 LogUtils.e(TAG, "26. 删除排序数组中的重复项：${removeDuplicates(intArrayOf(1, 1, 2))}")
             }
@@ -113,6 +129,60 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             else -> {
             }
         }
+    }
+
+    /**
+     * 107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代
+     *
+     * @param node
+     * @return
+     */
+    private fun levelOrder(root: TreeNode?) : List<List<Int>>? {
+        val res = mutableListOf<MutableList<Int>>()
+        if (root == null) return res
+
+        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
+
+        queue.offer(root)
+        var size = queue.size
+        while (size > 0) {
+            val list = mutableListOf<Int>()
+            for (i in 0 until size) {
+                val node = queue.poll()
+                list.add(node.`val`)
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
+            }
+            res.add(list)
+            size = queue.size
+        }
+        return res
+    }
+
+    /**
+     * 107. 二叉树的层次遍历 -- 方法二：DFS深度遍历-递归
+     *
+     * @param node
+     * @return
+     */
+    private fun levelOrder1(root: TreeNode?) : List<List<Int>>? {
+        val res = mutableListOf<MutableList<Int>>()
+        if (root == null) return res
+
+        dfsLevel(1, root, res)
+        return res
+    }
+
+    private fun dfsLevel(index : Int, root: TreeNode?, res : MutableList<MutableList<Int>>) : List<List<Int>>? {
+        if (root == null) return res
+
+        if (res.size < index) res.add(mutableListOf())
+
+        res[index - 1].add(root.`val`)
+
+        if (root.left != null) dfsLevel(index + 1, root.left, res)
+        if (root.right != null) dfsLevel(index + 1, root.right, res)
+        return res
     }
 
     /**
