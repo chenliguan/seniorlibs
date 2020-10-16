@@ -16,6 +16,7 @@ import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.algorithm.queue.QueueActivity
 import com.seniorlibs.algorithm.recursive.RecursiveActivity
 import com.seniorlibs.algorithm.stack.StackActivity
+import com.seniorlibs.algorithm.trie.TrieActivity
 
 /**
  * Author: chen
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_db).setOnClickListener(this)
         findViewById<View>(R.id.btn_greedy).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_search).setOnClickListener(this)
+        findViewById<View>(R.id.btn_achieve_trie).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -68,6 +70,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_db -> { DbActivity.actionStart(this) }
             R.id.btn_greedy -> { GreedyActivity.actionStart(this) }
             R.id.btn_binary_search -> { BinarySearchActivity.actionStart(this) }
+            R.id.btn_achieve_trie -> { TrieActivity.actionStart(this) }
 
             else -> {
             }

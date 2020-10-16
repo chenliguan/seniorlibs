@@ -74,5 +74,10 @@
             android:id="@+id/btn_binary_search"
             style="@style/BtnStyles"
             android:text="二分查找" />
+
+        <Button
+            android:id="@+id/btn_achieve_trie"
+            style="@style/BtnStyles"
+            android:text="字典树" />
     </LinearLayout>
 </ScrollView>

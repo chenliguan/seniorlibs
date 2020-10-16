@@ -43,6 +43,8 @@
         <activity android:name=".greedy.GreedyActivity" />
 
         <activity android:name=".binarysearch.BinarySearchActivity" />
+
+        <activity android:name=".trie.TrieActivity" />
     </application>
 
 </manifest>
