@@ -47,9 +47,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
-        findViewById<View>(R.id.btn_is_valid_BST).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_valid_bst).setOnClickListener(this)
         findViewById<View>(R.id.btn_build_tree).setOnClickListener(this)
-        findViewById<View>(R.id.btn_level_order_bottom).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -145,7 +144,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "145. 二叉树的后序遍历-递归：${postorderTraversal(node)}")
                 LogUtils.e(TAG, "145. 二叉树的后序遍历-迭代：${postorderTraversal1(node)}")
             }
-            R.id.btn_is_valid_BST -> {
+            R.id.btn_is_valid_bst -> {
                 pre = Long.MIN_VALUE
 
                 val node = TreeNode(10)
@@ -164,21 +163,6 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_build_tree -> {
                 LogUtils.e(TAG, "105. 从前序与中序遍历序列构造二叉树：${buildTree(intArrayOf(3, 9, 20, 15, 7), intArrayOf(9, 3, 15, 20, 7))}")
-            }
-            R.id.btn_level_order_bottom -> {
-                val node = TreeNode(3)
-                val node_left = TreeNode(9)
-                val node_right = TreeNode(20)
-                node.left = node_left
-                node.right = node_right
-
-                val node_right2 = TreeNode(7)
-                node_right.right = node_right2
-                val node_left2 = TreeNode(15)
-                node_right.left = node_left2
-
-                LogUtils.e(TAG, "107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代：${levelOrder(node)}")
-                LogUtils.e(TAG, "107. 二叉树的层次遍历 -- 方法二：DFS深度遍历-递归：${levelOrder1(node)}")
             }
             else -> {
             }
@@ -656,75 +640,5 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         rootNode.right = buildTreeHelper(preorder, pStart + 1 + leftNum, pEnd,
                 inorder, iRootIndex + 1, iEnd, map)  // 递归的构造右子树
         return rootNode
-    }
-
-    /**
-     * 107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代
-     *
-     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
-     * 空间复杂度：O(n)，队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)。
-     *
-     * @param root
-     * @return
-     */
-    fun levelOrder(root: TreeNode?): List<List<Int>>? {
-        val res: MutableList<List<Int>> = mutableListOf()  // 存放最终结果的集合
-        val queue: Queue<TreeNode> = LinkedList()   // 创建一个队列，将根节点放入其中
-
-        if (root == null) return res else queue.offer(root)
-
-        while (queue.isNotEmpty()) {
-            val list: MutableList<Int> = mutableListOf()
-            val size: Int = queue.size   // 每次遍历的数量为队列的长度
-
-            for (i in 0 until size) {   // 将这一层的元素全部取出，放入到结果集合
-                val node = queue.poll()
-                list.add(node.`val`)
-
-                val left = node.left
-                val right = node.right
-                if (left != null) queue.offer(left)  // 如果节点的左右孩子不为空，放入队列
-                if (right != null) queue.offer(right)
-            }
-
-            res.add(list)
-        }
-
-        return res
-    }
-
-
-    /**
-     * 107. 二叉树的层次遍历 -- DFS深度遍历-递归
-     *
-     * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果当前行对应的 list 不存在，就加入一个空 list 进去。
-     *
-     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
-     * 空间复杂度：O(h)，h 是树的高度。
-     *
-     * @param root
-     * @return
-     */
-    fun levelOrder1(root: TreeNode?): List<List<Int>>? {
-        val res: MutableList<MutableList<Int>> = mutableListOf()  // 存放最终结果的集合
-        if (root == null) return res
-
-        dfsLevel(1, root, res)
-        return res
-    }
-
-    fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
-        if (root == null) return
-
-        // 假设res是[[1],[2,3]]，index是3，就再插入一个空list放到res中
-        if (res.size < index) res.add(mutableListOf())
-
-        // 将当前节点的值加入到res中，index-1代表当前层，假设index-1是3-1=2，节点值是6。res是[[1],[2,5],[3,4]]，加入后res就变为[[1],[2,5],[3,4,6]]
-        res[index - 1].add(root.`val`)
-
-        // 递归的处理左子树，右子树，同时将层数index+1
-        if (root.left != null) dfsLevel(index + 1, root.left, res)
-
-        if (root.right != null) dfsLevel(index + 1, root.right, res)
     }
 }

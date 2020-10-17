@@ -7,7 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
+import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
 import com.seniorlibs.algorithm.db.DbActivity
+import com.seniorlibs.algorithm.dfsbfs.DfsBfsActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 import kotlin.collections.ArrayList
@@ -58,6 +60,24 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.btn_largest_values -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(DfsBfsActivity.TAG, "515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：${largestValues(node)}")
+                LogUtils.e(DfsBfsActivity.TAG, "515. 在每个树行中找最大值 -- 方法二：DFS深度遍历-递归：${largestValues1(node)}")
+            }
             R.id.btn_level_order_bottom -> {
                 val node = TreeNode(3)
                 val node_left = TreeNode(9)
@@ -129,6 +149,88 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             else -> {
             }
         }
+    }
+
+    /**
+     * 515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：
+     *
+     * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果 当前值 比 此位置的值 大，就用 当前值 覆盖。
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(n)，队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)。
+     *
+     * https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/solution/515-zai-mei-ge-shu-xing-zhong-zhao-zui-da-zhi-by-c/
+     *
+     * @param root
+     * @return
+     */
+    fun largestValues(root: TreeNode?): List<Int> {
+        val res = mutableListOf<Int>()
+        if (root == null) return res
+
+        // 1 创建一个队列，将根节点放入其中
+        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
+        queue.offer(root)
+
+        // 2.1 遍历每一层前，存下当前队列的长度
+        var size = queue.size
+        while (size > 0) {
+            var max = Int.MIN_VALUE
+            // 2.2 将这一层的元素全部取出，因为长度已确定，不会遍历新加入的左右节点
+            for (i in 0 until size) {
+                val node = queue.poll()
+                // 2.3 记录每层的最大值
+                max = Math.max(max, node.`val`)
+
+                // 3 如果节点的左右孩子不为空，放入队列
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
+            }
+
+            // 4 赋值到集合中，并跟新size
+            res.add(max)
+            size = queue.size
+        }
+        return res
+    }
+
+    /**
+     * 515. 在每个树行中找最大值 -- 方法二：DFS深度遍历-递归：
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(h)，h 是树的高度。
+     *
+     * https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/solution/515-zai-mei-ge-shu-xing-zhong-zhao-zui-da-zhi-by-c/
+     * @param root
+     * @return
+     */
+    fun largestValues1(root: TreeNode?): List<Int> {
+        val res = mutableListOf<Int>()
+        if (root == null) return res
+
+        dfsLargest(1, root, res)
+        return res
+    }
+
+    private fun dfsLargest(index: Int, root: TreeNode?, res : MutableList<Int>) {
+        // 1.递归终结条件
+        if (root == null) return
+
+        if (res.size < index) {
+            res.add(Int.MIN_VALUE)
+        }
+
+        // 2.处理当前层逻辑：如果 当前值 比 此位置的值 大，就用 当前值 覆盖。
+        if (res[index - 1] < root.`val`) {
+            res[index - 1] = root.`val`
+        }
+
+        // 3.下探到下一层
+        if (root.left != null) dfsLargest(index + 1, root.left, res)
+
+        if (root.right != null) dfsLargest(index + 1, root.right, res)
+
+        // 4.清理恢复当前层
     }
 
     /**
