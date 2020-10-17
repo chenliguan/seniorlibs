@@ -120,7 +120,7 @@ class BitTest {
 
 
         /**
-         * Bytes char
+         * Bytes char。char以UTF-16编码实现方式存储，UTF-16：'A'占2字节，'中'占2字节；
          */
         val chineseChar = charToByte('中')
         LogUtils.d(TAG, "chineseChar.byte：${chineseChar.size}")
@@ -136,8 +136,8 @@ class BitTest {
         for (b in bytesCharA) {
             LogUtils.d(TAG, "bytesCharA.toHexString：${Integer.toHexString(b.toInt())}")
         }
-//        bytesCharA.size：2         调整为 --> 1
-//        bytesCharA.toHexString：0  调整为 --> 41
+//        bytesCharA.size：2
+//        bytesCharA.toHexString：0
 //        bytesCharA.toHexString：41
 
         /**
