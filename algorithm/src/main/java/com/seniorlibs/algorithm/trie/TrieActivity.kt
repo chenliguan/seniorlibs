@@ -58,7 +58,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                     charArrayOf('S', 'F', 'C', 'S'),
                     charArrayOf('A', 'D', 'E', 'E')
                 )
-                LogUtils.d(TAG, "79. 单词搜索：${exist(paths, "ABCCED")}")
+                LogUtils.d(TAG, "79. 单词搜索：${exist(paths, "BCCED")}")
             }
             else -> {
             }
@@ -80,32 +80,34 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun exist(board: Array<CharArray>, word: String): Boolean {
+        if (board.isEmpty() || board[0].isEmpty() || word.isEmpty()) return false
+
         val words = word.toCharArray()
         for (i in board.indices) {
             for (j in board[0].indices) {
-                // 从[i,j]这个坐标开始查找
+                // 从[i,j]这个坐标开始查找，只要有一处返回true，说明网格中能够找到相应的单词，否则不能找到
                 if (dfs(board, words, i, j, 0)) return true
             }
         }
         return false
     }
 
-    fun dfs(board: Array<CharArray>, word: CharArray, i: Int, j: Int, index: Int): Boolean {
-        // 边界的判断，如果越界直接返回false。index表示的是查找到字符串word的第几个字符，
-        // 如果这个字符不等于board[i][j]，说明验证这个坐标路径是走不通的，直接返回false
-        if (i >= board.size || i < 0 || j >= board[0].size || j < 0 || board[i][j] != word[index]) return false
+    fun dfs(board: Array<CharArray>, words: CharArray, i: Int, j: Int, index: Int): Boolean {
+        // 如果越界直接返回false。index表示的是查找到字符串word的第几个字符， 如果这个字符不等于board[i][j]，说明这个坐标路径是走不通的，直接返回false
+        if (i < 0 || i >= board.size || j < 0 || j >= board[0].size || board[i][j] != words[index]) return false
+
         // 如果word的每个字符都查找完了，直接返回true
-        if (index == word.size - 1) return true
+        if (index == words.size - 1) return true
 
         // 把当前坐标的值保存下来，为了在最后复原
         val tmp = board[i][j]
         // 然后修改当前坐标的值
         board[i][j] = '.'
         // 走递归，沿着当前坐标的上下左右4个方向查找
-        val res = dfs(board, word, i + 1, j, index + 1)
-                || dfs(board, word, i - 1, j, index + 1)
-                || dfs(board, word, i, j + 1, index + 1)
-                || dfs(board, word, i, j - 1, index + 1)
+        val res = dfs(board, words, i + 1, j, index + 1)
+                || dfs(board, words, i - 1, j, index + 1)
+                || dfs(board, words, i, j + 1, index + 1)
+                || dfs(board, words, i, j - 1, index + 1)
         // 递归之后再把当前的坐标复原
         board[i][j] = tmp
         return res
