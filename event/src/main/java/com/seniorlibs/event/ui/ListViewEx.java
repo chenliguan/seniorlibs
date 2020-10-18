@@ -75,5 +75,4 @@ public class ListViewEx extends ListView {
         mLastY = y;
         return super.dispatchTouchEvent(event);
     }
-
 }
