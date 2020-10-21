@@ -16,4 +16,14 @@
         android:id="@+id/btn_exist"
         style="@style/BtnStyles"
         android:text="79. 单词搜索" />
+
+    <Button
+        android:id="@+id/btn_num_is_lands"
+        style="@style/BtnStyles"
+        android:text="200. 岛屿数量（DFS / BFS）" />
+
+    <Button
+        android:id="@+id/btn_find_circle_num"
+        style="@style/BtnStyles"
+        android:text="547. 朋友圈" />
 </LinearLayout>

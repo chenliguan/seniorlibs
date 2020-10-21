@@ -220,7 +220,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return climbStair(n - 1, second, first + second)  // 5 -> 4 -> 3 (2->1)
     }
 
-
     /**
      * 509. 斐波那契数  解法一：暴力递归(自顶向下)
      *

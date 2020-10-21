@@ -206,8 +206,56 @@ fun postorder(root: Node?): List<Int> {
 }
 
 
+九、并查集
+class UnionFind {
+    private var count = 0
+    private var parent: IntArray
 
+    /**
+     * 用 parent 数组记录每个节点的父节点，相当于指向父节点的指针，所以 parent 数组内实际存储着一个森林（若干棵多叉树）
+     * 构造函数，n 为图的节点总数
+     * @param x
+     * @return
+     */
+    fun UnionFind(n: Int) {
+        // 一开始互不连通
+        count = n
+        parent = IntArray(n)
+        // 父节点指针初始指向自己
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
 
+    /**
+     * 返回某个节点 x 的根节点
+     * @param x
+     * @return
+     */
+    fun find(x: Int): Int {
+        // 根节点的 parent[x] == x
+        var x = x
+        while (parent[x] != x) {
+            x = parent[x]
+        }
+        return x
+    }
+
+    /**
+     * 合并
+     * @param p
+     * @param q
+     */
+    fun union(p: Int, q: Int) {
+        val rootP = find(p)
+        val rootQ = find(q)
+        if (rootP == rootQ)
+            return
+        // 将两棵树合并为一棵
+        parent[rootP] = rootQ
+        count--
+    }
+}
 
 
 

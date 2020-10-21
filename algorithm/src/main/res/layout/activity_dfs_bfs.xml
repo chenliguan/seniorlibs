@@ -17,9 +17,4 @@
         style="@style/BtnStyles"
         android:text="515. 在每个树行中找最大值" />
 
-    <Button
-        android:id="@+id/btn_num_is_lands"
-        style="@style/BtnStyles"
-        android:text="200. 岛屿数量（DFS / BFS）" />
-
 </LinearLayout>
