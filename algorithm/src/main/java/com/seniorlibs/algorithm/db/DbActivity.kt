@@ -61,10 +61,11 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_climb_stairs -> {
-                LogUtils.e(TAG, "70. 爬楼梯1：${climbStairs(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯2：${climbStairs1(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯1：${climbStairs1(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯2：${climbStairs2(5)}")
                 LogUtils.e(TAG, "70. 爬楼梯3：${climbStairs3(5)}")
                 LogUtils.e(TAG, "70. 爬楼梯4：${climbStairs4(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯5：${climbStairs5(5)}")
             }
             R.id.btn_fib -> {
                 LogUtils.e(TAG, "509. 斐波那契数：${fib1(5)}")
@@ -136,7 +137,75 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      */
 
     /**
-     * 70. 爬楼梯  方法一：动态规划
+     * 70. 爬楼梯 方法一：暴力递归(自顶向下)
+     *
+     * 时间复杂度：O(2^n)。树形递归的大小为2^n；
+     * 空间复杂度：O(n)。递归树的深度可以达到n
+     *
+     * @param n
+     * @return
+     */
+    fun climbStairs1(n: Int): Int {
+        if (n <= 1) return 1
+        if (n == 2) return 2
+
+        return climbStairs3(n - 1) + climbStairs3(n - 2)
+    }
+
+    /**
+     * 70. 爬楼梯  解法二：备忘录递归(自顶向下)，解法一递归的升级版（记住）
+     *
+     * 时间复杂度：O(n)。树形递归的大小可以达到 n；
+     * 空间复杂度：O(n)。递归树的深度可以达到 n
+     *
+     * @param n
+     * @return
+     */
+    fun climbStairs2(n: Int): Int {
+        if (n <= 1) return 1
+        if (n == 2) return 2
+
+        val cache = IntArray(n + 1)
+        cache[0] = 0
+        cache[1] = 1
+        return climb(n, cache)
+    }
+
+    private fun climb(n: Int, cache : IntArray): Int {
+        if (n <= 1) return 1
+        if (n == 2) return 2
+
+        // 如果 N 对应的楼梯数存在，则返回
+        if (cache[n] != 0) return cache[n]
+
+        // 计算 N 对应的楼梯数为 memoize(N-1) + memoize(N-2)
+        cache[n] = climb(n - 1, cache) + climb(n - 2, cache)
+
+        return cache[n]
+    }
+
+    /**
+     * 70. 爬楼梯  解法2.1：备忘录递归(自顶向下)，解法二递归的升级版
+     *
+     * 时间复杂度：O(n)。树形递归的大小可以达到 n；
+     * 空间复杂度：O(n)。递归树的深度可以达到 n
+     *
+     * @param n
+     * @return
+     */
+    fun climbStairs3(n: Int): Int {
+        return climbStair(n, 1, 2)
+    }
+
+    fun climbStair(n: Int, first: Int, second: Int): Int {
+        if (n <= 1) return first
+        if (n == 2) return second
+
+        return climbStair(n - 1, second, first + second)  // 5 -> 4 -> 3 (2->1)
+    }
+
+    /**
+     * 70. 爬楼梯  解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级（记住）
      *
      * 时间复杂度：循环执行n次，每次花费常数的时间代价，时间复杂度为 O(n)；
      * 空间复杂度：用了n空间的数组辅助，空间复杂度为 O(n)。
@@ -144,23 +213,25 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs(n: Int): Int {
-        if (n <= 2) return 2
+    fun climbStairs4(n: Int): Int {
+        if (n <= 1) return 1
+        if (n == 2) return 2
 
-        val res = IntArray(n + 1)
+        val dp = IntArray(n + 1)
+        // base case
+        dp[1] = 1
+        dp[2] = 2
 
-        res[1] = 1
-        res[2] = 2
-
+        // dp
         for (i in 3 until n + 1) {
-            res[i] = res[i - 1] + res[i - 2]
+            dp[i] = dp[i - 1] + dp[i - 2]
         }
 
-        return res[n]
+        return dp[n]
     }
 
     /**
-     * 70. 爬楼梯  方法二：动态规划优化，斐波那契数。数组当前值是依赖他前面两个值的（前两个除外），我们只需要用两个临时变量即可，不需要申请一个数组
+     * 70. 爬楼梯  方法四：动态规划优化(自底向上)，斐波那契数。数组当前值是依赖他前面两个值的（前两个除外），我们只需要用两个临时变量即可，不需要申请一个数组
      *
      * 时间复杂度：循环执行n次，每次花费常数的时间代价，时间复杂度为 O(n)；
      * 空间复杂度：只用了常数个变量作为辅助空间，空间复杂度为 O(1)。
@@ -168,8 +239,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs1(n: Int): Int {
-        if (n <= 2) return n
+    fun climbStairs5(n: Int): Int {
+        if (n <= 1) return 1
+        if (n == 2) return 2
 
         var first = 1
         var second = 2
@@ -184,41 +256,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return sum
     }
 
-    /**
-     * 70. 爬楼梯 方法三：暴力递归
-     *
-     * 时间复杂度：O(2^n)。树形递归的大小为2^n；
-     * 空间复杂度：O(n)。递归树的深度可以达到n
-     *
-     * @param n
-     * @return
-     */
-    fun climbStairs3(n: Int): Int {
-        if (n <= 2) return n
-
-        return climbStairs3(n - 1) + climbStairs3(n - 2)
-    }
-
-    /**
-     * 70. 爬楼梯  方法三：记忆化递归
-     *
-     * 时间复杂度：O(n)。树形递归的大小可以达到 n；
-     * 空间复杂度：O(n)。递归树的深度可以达到 n
-     *
-     * @param n
-     * @return
-     */
-    fun climbStairs4(n: Int): Int {
-
-        return climbStair(n, 1, 2)
-    }
-
-    fun climbStair(n: Int, first: Int, second: Int): Int {
-        if (n <= 1) return first
-        if (n == 2) return second
-
-        return climbStair(n - 1, second, first + second)  // 5 -> 4 -> 3 (2->1)
-    }
 
     /**
      * 509. 斐波那契数  解法一：暴力递归(自顶向下)
@@ -230,13 +267,14 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fib1(n: Int): Int {
-        if (n < 2) return n
+        if (n <= 0) return 0
+        if (n == 1 || n == 2) return 1
 
         return fib1(n - 1) + fib1(n - 2)
     }
 
     /**
-     * 509. 斐波那契数   解法二：备忘录递归(自顶向下)，解法一递归的升级版
+     * 509. 斐波那契数   解法二：备忘录递归(自顶向下)，解法一递归的升级版（记住）
      *
      * 思想：比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
      *
@@ -246,27 +284,31 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    private var cache = arrayOfNulls<Int>(31)
-
     fun fib2(n: Int): Int {
-        if (n < 2) return n
+        if (n <= 0) return 0
+        if (n == 1 || n == 2) return 1
 
+        val cache = IntArray(n + 1)
         cache[0] = 0
         cache[1] = 1
-        return memoize(n)
+        return fib(n, cache)
     }
 
-    private fun memoize(n: Int): Int {
-        if (cache[n] != null) {
-            return cache[n]!!   // 如果 N 对应的斐波那契数存在，则返回
-        }
+    private fun fib(n: Int, cache : IntArray): Int {
+        if (n <= 0) return 0
+        if (n == 1 || n == 2) return 1
 
-        cache[n] = memoize(n - 1) + memoize(n - 2)  // 计算 N 对应的斐波那契数为 memoize(N-1) + memoize(N-2)
-        return memoize(n)
+        // 如果 N 对应的斐波那契数存在，则返回
+        if (cache[n] != 0) return cache[n]
+
+        // 计算 N 对应的斐波那契数为 fb(N-1) + fb(N-2)
+        cache[n] = fib(n - 1, cache) + fib(n - 2, cache)
+
+        return cache[n]
     }
 
     /**
-     * 509. 斐波那契数  解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级
+     * 509. 斐波那契数  解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级（记住）
      *
      * 思想：自底向上通过迭代计算子问题并存储已计算的值，通过已计算的值进行计算，减少递归带来的重复计算
      *
@@ -277,18 +319,20 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fib3(n: Int): Int {
-        if (n < 2) return n
+        if (n <= 0) return 0
+        if (n == 1 || n == 2) return 1
 
-        val res = IntArray(n + 1)
+        val dp = IntArray(n + 1)
+        // base case
+        dp[0] = 0
+        dp[1] = 1
 
-        res[0] = 0
-        res[1] = 1
-
+        // dp
         for (i in 2 until n + 1) {
-            res[i] = res[i - 1] + res[i - 2]
+            dp[i] = dp[i - 1] + dp[i - 2]
         }
 
-        return res[n]
+        return dp[n]
     }
 
     /**
@@ -303,7 +347,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fib4(n: Int): Int {
-        if (n == 0) return 0
+        if (n <= 0) return 0
         if (n == 1 || n == 2) return 1
 
         var pre = 1   // fib(1)
