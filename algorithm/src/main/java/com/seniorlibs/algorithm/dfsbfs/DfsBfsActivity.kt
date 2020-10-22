@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
-import com.seniorlibs.algorithm.main.TestActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -44,6 +43,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_level_order_bottom).setOnClickListener(this)
         findViewById<View>(R.id.btn_largest_values).setOnClickListener(this)
+        findViewById<View>(R.id.btn_ladder_length).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -64,8 +64,14 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
                 val node_left2 = BinaryTreeActivity.TreeNode(15)
                 node_right.left = node_left2
 
-                LogUtils.e(BinaryTreeActivity.TAG, "107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代：${levelOrder(node)}")
-                LogUtils.e(BinaryTreeActivity.TAG, "107. 二叉树的层次遍历 -- 方法二：DFS深度遍历-递归：${levelOrder1(node)}")
+                LogUtils.e(
+                    BinaryTreeActivity.TAG,
+                    "107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代：${levelOrder(node)}"
+                )
+                LogUtils.e(
+                    BinaryTreeActivity.TAG,
+                    "107. 二叉树的层次遍历 -- 方法二：DFS深度遍历-递归：${levelOrder1(node)}"
+                )
             }
             R.id.btn_largest_values -> {
                 val node = TreeNode(1)
@@ -84,6 +90,10 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
 
                 LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：${largestValues(node)}")
                 LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法二：DFS深度遍历-递归：${largestValues1(node)}")
+            }
+            R.id.btn_ladder_length -> {
+                val list = mutableListOf("hot","dot","dog","lot","log","cog")
+                LogUtils.e(TAG, "127. 单词接龙 -- 方法一：双向BFS：" + "${ladderLength("hit", "cog", list)}")
             }
             else -> {
             }
@@ -155,7 +165,11 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-    fun dfsLevel(index: Int, root: BinaryTreeActivity.TreeNode?, res: MutableList<MutableList<Int>>) {
+    fun dfsLevel(
+        index: Int,
+        root: BinaryTreeActivity.TreeNode?,
+        res: MutableList<MutableList<Int>>
+    ) {
         if (root == null) return
 
         // 假设res是[[1],[2,3]]，index是3，就再插入一个空list放到res中
@@ -188,7 +202,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res
 
         // 1 创建一个队列，将根节点放入其中
-        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
+        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
         queue.offer(root)
 
         // 2.1 遍历每一层前，存下当前队列的长度
@@ -231,7 +245,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-    private fun dfsLargest(index: Int, root: TreeNode?, res : MutableList<Int>) {
+    private fun dfsLargest(index: Int, root: TreeNode?, res: MutableList<Int>) {
         // 1.递归终结条件
         if (root == null) return
 
@@ -250,5 +264,91 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         if (root.right != null) dfsLargest(index + 1, root.right, res)
 
         // 4.清理恢复当前层
+    }
+
+    /**
+     * 127. 单词接龙  方法一：双向BFS
+     *
+     * 时间复杂度：O(M×N)，其中 MM 是单词的长度N是单词表中单词的总数。与单向搜索相同的是，找到所有的变换需要M * N次操作。
+     *          但是搜索时间会被缩小一半，因为两个搜索会在中间某处相遇。
+     * 空间复杂度：O(M×N)，要在all_combo_dict字典中记录每个单词的M个通用状态，这与单向搜索相同。
+     *          但是因为会在中间相遇，所以双向搜索的搜索空间变小。
+     *
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    fun ladderLength(beginWord: String, endWord: String, wordList: List<String>): Int {
+        if (!wordList.contains(endWord)) return 0
+
+        // 将beginWord加入list
+        val wordList = wordList as MutableList<String>
+        wordList.add(beginWord)
+
+        // 从两端BFS遍历要用的队列
+        var queue1: Queue<String> = LinkedList()
+        var queue2: Queue<String> = LinkedList()
+        // 两端已经遍历过的节点
+        var visited1: MutableSet<String?> = HashSet()
+        var visited2: MutableSet<String?> = HashSet()
+        queue1.offer(beginWord)
+        queue2.offer(endWord)
+        visited1.add(beginWord)
+        visited2.add(endWord)
+
+        var count = 0
+        val allWordSet: Set<String> = HashSet(wordList)
+
+        while (queue1.isNotEmpty() && queue2.isNotEmpty()) {
+            // 从AB两个方向的中，选择当前节点更少的队列，在另一个方向进行层序遍历
+            if (queue1.size > queue2.size) {
+                val temp = queue1
+                queue1 = queue2
+                queue2 = temp
+                val v = visited1
+                visited1 = visited2
+                visited2 = v
+            }
+
+            // 开始遍历每一层的字符串
+            count++
+            var size1: Int = queue1.size
+            while (size1-- > 0) {
+                val s = queue1.poll()
+                val chars = s.toCharArray()
+                // 遍历一个字符串的每个字符，轮流替换后，对比
+                for (i in chars.indices) {
+                    // 保存第i位的原始字符
+                    val temp = chars[i]
+
+                    // 用a~z替换当前字符，再对比新字符串。因为单词是由a~z这有限数量的字符组成的，可以遍历当前单词能转换成的所有单词，判断其是否包含在候选单词中
+                    var c = 'a'
+                    while (c <= 'z') {
+                        chars[i] = c
+                        val newString = String(chars)
+                        // 已经访问过了，跳过
+                        if (visited1.contains(newString)) {
+                            c++
+                            continue
+                        }
+                        // 两端遍历相遇，结束遍历，返回count
+                        if (visited2.contains(newString)) {
+                            return count + 1
+                        }
+                        // 如果单词在列表中存在，将其添加到队列，并标记为已访问
+                        if (allWordSet.contains(newString)) {
+                            queue1.offer(newString)
+                            visited1.add(newString)
+                        }
+                        c++
+                    }
+
+                    // 恢复第i位的原始字符
+                    chars[i] = temp
+                }
+            }
+        }
+        return 0
     }
 }

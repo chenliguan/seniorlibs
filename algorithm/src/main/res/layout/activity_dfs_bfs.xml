@@ -17,4 +17,8 @@
         style="@style/BtnStyles"
         android:text="515. 在每个树行中找最大值" />
 
+    <Button
+        android:id="@+id/btn_ladder_length"
+        style="@style/BtnStyles"
+        android:text="127. 单词接龙" />
 </LinearLayout>

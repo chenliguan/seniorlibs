@@ -236,7 +236,9 @@ class UnionFind {
         // 根节点的 parent[x] == x
         var x = x
         while (parent[x] != x) {
-            x = parent[x]
+            // 进行路径压缩
+            parent[x] = parent[parent[x]];
+            x = parent[x];
         }
         return x
     }
