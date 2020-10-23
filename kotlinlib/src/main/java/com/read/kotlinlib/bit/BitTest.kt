@@ -16,11 +16,11 @@ class BitTest {
         const val TAG = "BitTest"
     }
 
-    /** char
-    GBK+GBK2312：'中'占3字节；
-    UTF-8：'A'占1字节，'中'占3字节；
-    UTF-16：'A'占2字节，'中'占2字节；
-    UTF-32：'A'和'中'都占4字节；
+    /**
+    GBK+GBK2312："中"占3字节；
+    UTF-8："A"占1字节，"中"占3字节；
+    UTF-16："A"占2字节，"中"占2字节；
+    UTF-32："A"和"中"都占4字节；
     */
 
     /**
@@ -36,8 +36,8 @@ class BitTest {
         for (b in bytesGb) {
             LogUtils.d(TAG, "bytesGb.toHexString：${Integer.toHexString(b.toInt())}")
         }
-// "中"
-//        bytesGb.bytes：2  + bytesGb.char：1
+// "中"   GBK
+//        bytesGb.bytes(字节数)：2  + bytesGb.char(字符数)：1
 //        bytesGb.toHexString：ffffffd6
 //        bytesGb.toHexString：ffffffd0
 
@@ -47,13 +47,13 @@ class BitTest {
         for (b in bytesUtf8) {
             LogUtils.d(TAG, "bytesUtf8.toHexString：${Integer.toHexString(b.toInt())}")
         }
-// "中"
-//        bytesUtf8.bytes：3  + bytesUtf8.char：1
+// "中"   utf-8
+//        bytesUtf8.bytes(字节数)：3  + bytesUtf8.char(字符数)：1
 //        bytesUtf8.toHexString：ffffffe6
 //        bytesUtf8.toHexString：ffffff96
 //        bytesUtf8.toHexString：ffffff97
 // "A"
-//        bytesUtf8.bytes：1  + bytesUtf8.char：1
+//        bytesUtf8.bytes(字节数)：1  + bytesUtf8.char(字符数)：1
 //        bytesUtf8.toHexString：41
 
         val s16 = "A"
@@ -62,14 +62,14 @@ class BitTest {
         for (b in bytesUtf16) {
             LogUtils.d(TAG, "bytesUtf16.toHexString：${Integer.toHexString(b.toInt())}")
         }
-// "中"
-//        bytesUtf16.bytes：4 + bytesUtf16.char：1
+// "中"   utf-16
+//        bytesUtf16.bytes(字节数)：4 + bytesUtf16.char(字符数)：1
 //        bytesUtf16.toHexString：ffffffff
 //        bytesUtf16.toHexString：fffffffe
 //        bytesUtf16.toHexString：ffffff97
 //        bytesUtf16.toHexString：65
 // "A"
-//        bytesUtf8.bytes：4  + bytesUtf8.char：1
+//        bytesUtf8.bytes(字节数)：4  + bytesUtf8.char(字符数)：1
 //        bytesUtf16.toHexString：ffffffff
 //        bytesUtf16.toHexString：fffffffe
 //        bytesUtf8.toHexString：0
@@ -81,8 +81,8 @@ class BitTest {
         for (b in bytesUtf32) {
             LogUtils.d(TAG, "bytesUtf32.toHexString：${Integer.toHexString(b.toInt())}")
         }
-// "中"
-//        bytesUtf32.bytes：8 + bytesUtf32.char：1
+// "中"   utf-32
+//        bytesUtf32.bytes(字节数)：8 + bytesUtf32.char(字符数)：1
 //        bytesUtf.toHexString：ffffffff
 //        bytesUtf.toHexString：fffffffe
 //        bytesUtf.toHexString：0
@@ -92,7 +92,7 @@ class BitTest {
 //        bytesUtf.toHexString：0
 //        bytesUtf.toHexString：0
 // "A"
-//        bytesUtf32.bytes：8 + bytesUtf32.char：1
+//        bytesUtf32.bytes(字节数)：8 + bytesUtf32.char(字符数)：1
 //        bytesUtf.toHexString：ffffffff
 //        bytesUtf.toHexString：fffffffe
 //        bytesUtf.toHexString：0
@@ -104,39 +104,49 @@ class BitTest {
 
 
         /**
-         * 中文生僻字
+         * 中文生僻字（特殊）
          */
         val sm8 = "𡃁"
-        val bytesUtfm8 = sm8.toByteArray(charset("utf-8"))
+        val bytesUtfm8 = sm8.toByteArray(charset("utf-16"))
         LogUtils.d(TAG, "bytesUtfm8.bytes：${bytesUtfm8.size}  + bytesUtfm8.char：${sm8.toCharArray().size}")
         for (b in bytesUtfm8) {
             LogUtils.d(TAG, "bytesUtfm8.toHexString：${Integer.toHexString(b.toInt())}")
         }
-//        bytesUtfm8.bytes：4  + bytesUtfm8.char：2
+// "𡃁"   utf-8
+//        bytesUtfm8.bytes(字节数)：4  + bytesUtfm8.char(字符数)：2
 //        bytesUtf8.toHexString：fffffff0
 //        bytesUtf8.toHexString：ffffffa1
 //        bytesUtf8.toHexString：ffffff83
 //        bytesUtf8.toHexString：ffffff81
-
+// "𡃁"   utf-16
+//        bytesUtfm8.bytes(字节数)：6  + bytesUtfm8.char(字符数)：2
+//        bytesUtfm8.toHexString：fffffffe
+//        bytesUtfm8.toHexString：ffffffff
+//        bytesUtfm8.toHexString：ffffffd8
+//        bytesUtfm8.toHexString：44
+//        bytesUtfm8.toHexString：ffffffdc
+//        bytesUtfm8.toHexString：ffffffc1
 
         /**
          * Bytes char。char以UTF-16编码实现方式存储，UTF-16：'A'占2字节，'中'占2字节；
          */
         val chineseChar = charToByte('中')
-        LogUtils.d(TAG, "chineseChar.byte：${chineseChar.size}")
+        LogUtils.d(TAG, "chineseChar.bytes：${chineseChar.size}")
         for (b in chineseChar) {
             LogUtils.d(TAG, "chineseChar.toHexString：${Integer.toHexString(b.toInt())}")
         }
-//        chineseChar.byte：2
+// '中'   utf-16
+//        chineseChar.bytes(字节数)：2
 //        chineseChar.toHexString：4e
 //        chineseChar.toHexString：2d
 
         val bytesCharA = charToByte('A')
-        LogUtils.d(TAG, "bytesCharA.size：${bytesCharA.size}")
+        LogUtils.d(TAG, "bytesCharA.bytes：${bytesCharA.size}")
         for (b in bytesCharA) {
             LogUtils.d(TAG, "bytesCharA.toHexString：${Integer.toHexString(b.toInt())}")
         }
-//        bytesCharA.size：2
+// 'A'    utf-16
+//        bytesCharA.bytes(字节数)：2
 //        bytesCharA.toHexString：0
 //        bytesCharA.toHexString：41
 
@@ -146,7 +156,7 @@ class BitTest {
         // emoji 代表表情        字符数是2(2个表情)；字符串长度是4；所以字符串长度 不一定等于 字符数
         val emoji  = "👦👩";
         LogUtils.d(TAG, "emoji.length：${emoji.length} + emoji.bytes：${emoji.toByteArray().size} + emoji.char：${emoji.toCharArray().size}")
-//        emoji.length：4 + emoji.bytes：8 + emoji.char：4
+//        emoji.length：4 + emoji.bytes(字节数)：8 + emoji.char(字符数)：4
 
 
         /**
