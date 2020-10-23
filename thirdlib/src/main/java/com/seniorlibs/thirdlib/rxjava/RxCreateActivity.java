@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.seniorlibs.baselib.utils.LogUtils;
 import com.seniorlibs.thirdlib.R;
+import com.seniorlibs.thirdlib.rxjava.schedulers.InjectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -446,10 +447,14 @@ public class RxCreateActivity extends AppCompatActivity {
      * <p>
      * 场景：延迟指定事件，发送一个数值，一般用于检测
      *
+     * 注：timer操作符默认运行在一个新线程上
+     * 也可自定义线程调度器（第3个参数）：timer(long,TimeUnit,Scheduler)
+     *
      * @param view
      */
     public void timer(View view) {
         Observable.timer(2, TimeUnit.SECONDS)
+                .compose(InjectionUtils.schedulersTransformer())
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -482,6 +487,9 @@ public class RxCreateActivity extends AppCompatActivity {
      * 每隔指定时间，就发送事件。发送的事件序列 = 从0开始、无限递增1的的整数序列
      * 注：interval默认在computation调度器上执行，也可自定义指定线程调度器（第3个参数）：interval(long,TimeUnit,Scheduler)
      * <p>
+     *
+     * 注：interval默认在computation调度器上执行
+     * 也可自定义指定线程调度器（第3个参数）：interval(long,TimeUnit,Scheduler)
      *
      * @param view
      */
