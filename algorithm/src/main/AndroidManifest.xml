@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.TestActivity" />
+        <activity android:name=".main.AlgorithmTestActivity" />
 
         <activity android:name=".linkedlist.LinkedActivity" />
 

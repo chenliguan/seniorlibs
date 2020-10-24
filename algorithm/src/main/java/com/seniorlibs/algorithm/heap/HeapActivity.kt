@@ -100,7 +100,11 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
      */
     @RequiresApi(Build.VERSION_CODES.N)
     fun topKFrequent(nums: IntArray, k: Int): MutableList<Int> {
-        val map: MutableMap<Int, Int> = mutableMapOf()  // 1. 使用map统计每个元素出现的次数：元素为键，元素出现的次数为值
+        val res: MutableList<Int> = mutableListOf()
+        if (nums.isEmpty()) return res
+
+        // 1. 使用map统计每个元素出现的次数：元素为键，元素出现的次数为值
+        val map: MutableMap<Int, Int> = mutableMapOf()
         for (num in nums) {
             if (map.containsKey(num)) {
                 map[num] = map[num]!! + 1
@@ -112,19 +116,22 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         // 2.1 优先堆队列：按升序用小顶堆保存次数最大的k个元素
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> map[o1]!! - map[o2]!! })
         for (key in map.keys) {
-            if (heap.size < k) {   // 2.2 如果堆的元素个数小于k，就可以直接插入堆中
+            if (heap.size < k) {
+                // 2.2 如果堆的元素个数小于k：
+                // 就可以直接插入堆中
                 heap.offer(key)
-            } else if (map[key]!! > map[heap.peek()]!!) { // 如果堆的元素个数等于k，
-                heap.poll()                               // 2.3 如果新元素的次数比堆顶端的元素大，则弹出堆顶端的元素，将新的元素添加进堆中
+            } else if (map[key]!! > map[heap.peek()]!!) {
+                // 2.3 如果堆的元素个数等于k：如果新元素的次数比堆顶端的元素大，则弹出堆顶端的元素，将新的元素添加进堆中
+                heap.poll()
                 heap.offer(key)
             }
         }
 
-        val list: MutableList<Int> = mutableListOf()   // 3. 最小堆中的k个元素即为前k个高频元素，取出堆中的元素
+        // 3. 最小堆中的k个元素即为前k个高频元素，遍历取出堆中的元素
         for (i in heap) {
-            list.add(i)
+            res.add(i)
         }
-        return list
+        return res
     }
 
 

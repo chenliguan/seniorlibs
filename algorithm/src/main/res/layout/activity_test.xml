@@ -8,63 +8,9 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_largest_values"
+        android:id="@+id/btn_top_k_frequent"
         style="@style/BtnStyles"
-        android:text="515. 在每个树行中找最大值" />
+        android:text="347. 前 K 个高频元素" />
 
-    <Button
-        android:id="@+id/btn_level_order_bottom"
-        style="@style/BtnStyles"
-        android:text="107. 二叉树的层次遍历 II" />
-
-    <Button
-        android:id="@+id/btn_remove_duplicates"
-        style="@style/BtnStyles"
-        android:text="26. 删除排序数组中的重复项" />
-
-    <Button
-        android:id="@+id/btn_move_zeroes"
-        style="@style/BtnStyles"
-        android:text="283. 移动零" />
-
-    <Button
-        android:id="@+id/btn_three_sum"
-        style="@style/BtnStyles"
-        android:text="15. 三数之和" />
-
-    <Button
-        android:id="@+id/btn_four_sum"
-        style="@style/BtnStyles"
-        android:text="18. 四数之和" />
-
-    <Button
-        android:id="@+id/btn_bracket_generate"
-        style="@style/BtnStyles"
-        android:text="22. 括号生成" />
-
-    <Button
-        android:id="@+id/btn_rob_two"
-        style="@style/BtnStyles"
-        android:text="213. 打家劫舍 II" />
-
-    <Button
-        android:id="@+id/btn_unique_paths"
-        style="@style/BtnStyles"
-        android:text="62. 不同路径" />
-
-    <Button
-        android:id="@+id/btn_unique_paths_with_obstacles"
-        style="@style/BtnStyles"
-        android:text="63. 不同路径 II" />
-
-    <Button
-        android:id="@+id/btn_max_depth"
-        style="@style/BtnStyles"
-        android:text="104.二叉树的最大深度" />
-
-    <Button
-        android:id="@+id/btn_min_depth"
-        style="@style/BtnStyles"
-        android:text="104.二叉树的最小深度" />
 
 </LinearLayout>

@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_test -> TestActivity.actionStart(this)
+            R.id.btn_test -> AlgorithmTestActivity.actionStart(this)
             R.id.btn_linked_list -> LinkedActivity.actionStart(this)
             R.id.btn_array -> ArrayActivity.actionStart(this)
             R.id.btn_binary_tree -> BinaryTreeActivity.actionStart(this)
