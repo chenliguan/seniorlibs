@@ -8,9 +8,32 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
+        android:id="@+id/btn_bracket_generate"
+        style="@style/BtnStyles"
+        android:text="22. 括号生成" />
+
+    <Button
         android:id="@+id/btn_top_k_frequent"
         style="@style/BtnStyles"
         android:text="347. 前 K 个高频元素" />
 
+    <Button
+        android:id="@+id/btn_is_anagram"
+        style="@style/BtnStyles"
+        android:text="242. 有效的字母异位词" />
 
+    <Button
+        android:id="@+id/btn_is_anagram_groups"
+        style="@style/BtnStyles"
+        android:text="49. 字母异位词分组" />
+
+    <Button
+        android:id="@+id/btn_is_fizz_buzz"
+        style="@style/BtnStyles"
+        android:text="412. Fizz buzz" />
+
+    <Button
+        android:id="@+id/btn_max_area"
+        style="@style/BtnStyles"
+        android:text="11. 盛最多水的容器" />
 </LinearLayout>

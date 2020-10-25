@@ -77,20 +77,20 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun isAnagram(s: String, t: String): Boolean {
-        if (s.length != t.length) {
-            return false
-        }
+        if (s.length != t.length) return false
 
         val sArray = s.toCharArray()
         val tArray = t.toCharArray()
 
-        val count = IntArray(26)
-        for (i in sArray.indices) {
-            count[sArray[i] - 'a']++
-            count[tArray[i] - 'a']--
+        val array = IntArray(26)
+        for (c in sArray) {
+            array[c - 'a']++
+        }
+        for (c in tArray) {
+            array[c - 'a']--
         }
 
-        for (c in count) if (c != 0) return false
+        for (i in array) if (i > 0) return false
 
         return true
     }
@@ -122,32 +122,31 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun groupAnagrams(strs: Array<String>): List<List<String>> {
-        if (strs.isEmpty()) return mutableListOf()
+        val res : MutableList<List<String>> = mutableListOf()
+        if (strs.isEmpty()) return res
 
-        val map = hashMapOf<String, MutableList<String>>()
-        val count = IntArray(26)
-
+        val map = mutableMapOf<String, MutableList<String>>()
         for (str in strs) {
-            Arrays.fill(count, 0) // 将count数组清零
-
-            for (c in str.toCharArray()) {
-                count[c - 'a']++
+            val sArray = str.toCharArray()
+            val array = IntArray(26)
+            for (c in sArray) {
+                array[c - 'a']++
             }
 
+            // 将每个字符串s转换为字符数组count-->key，由26个非负整数组成，表示a，b，c的数量。"eat", "tea"的key是相等的
             val sb = StringBuilder()
-            for (i in count) { // 将每个字符串s转换为字符数组count-->key，由26个非负整数组成，表示a，b，c的数量。"eat", "tea"的key是相等的
-                sb.append("#${i}")
+            for (c in array) {
+                sb.append("#${c}")
             }
 
             val key = sb.toString()
             if (!map.containsKey(key)) {
-                map[key] = mutableListOf(str)
-            } else{
-                map[key]?.add(str)
+                map[key] = mutableListOf()
             }
+            map[key]!!.add(str)
         }
 
-        return ArrayList(map.values)
+        return map.values.toList()
     }
 
     /**

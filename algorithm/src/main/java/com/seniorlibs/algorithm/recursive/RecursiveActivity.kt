@@ -49,7 +49,6 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_bracket_generate -> {
-                list.clear()
                 LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
             }
             R.id.btn_my_pow -> {
@@ -66,6 +65,8 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+    val list: MutableList<String> = mutableListOf()
 
     /**
      * 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
@@ -87,32 +88,30 @@ class RecursiveActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun generateParenthesis(n: Int): List<String> {
-        generate(0, 0, n, "")
-        return list
+        val res: MutableList<String> = mutableListOf()
+        if (n == 0) return res
+
+        // ((()))
+        // 添加 ) ，需要 ( 的数量大于 )
+        // 添加 ( , 需要 ( 数量小于 n
+        return generate(0, 0,  n, "", res)
     }
 
-    val list: MutableList<String> = mutableListOf()
-
-    private fun generate(left: Int, right: Int, n: Int, s: String) {
+    fun generate(l: Int, r: Int, n : Int, str : String, res : MutableList<String>): MutableList<String> {
         // 1.递归终结条件（最先写） // 肯定不合法，提前结束，即“剪枝”
-        if (left > n || left < right) {
-            return
-        }
-        if (left == n && right == n) {
-            // 2.处理当前层逻辑
-            list.add(s)
-        }
+        if (l > n || r > l) return res
+
+        // 2.处理当前层逻辑
+        if (l == n && r == l) res.add(str)
 
         // 3.下探到下一层
-        if (left < n) {  // left随时可以加，只要别用完(n)
-            generate(left + 1, right, n, s + "(")
-        }
+        if (l < n) generate(l + 1, r, n , str + "(", res)
 
-        if (left > right) { // right必须之前有左括号，左个数>右个数
-            generate(left, right + 1, n, s + ")")
-        }
+        if (r < l) generate(l, r + 1, n , str + ")", res)
 
         // 4.清理恢复当前层
+
+        return res
     }
 
 

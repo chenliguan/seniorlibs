@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
+import com.seniorlibs.algorithm.recursive.RecursiveActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -84,6 +85,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+
+
     /**
      *  26. 删除排序数组中的重复项 - 方法一：快慢指针
      *
@@ -149,18 +152,21 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     private fun maxArea(a: IntArray): Int {
         if (a.isEmpty()) return 0
 
-        var left = 0
-        var right = a.size - 1
+        var i = 0
+        var j = a.size - 1
         var max = 0
 
-        while (left != right) {
-            val width = right - left  // 1.计算宽
-            val minHeight =
-                if (a[left] > a[right]) a[right--] else a[left++] // 2.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
-            val area = width * minHeight // 3.计算区域面积
-            if (area > max) { // 4.更新最大面积
+        while (i < j) {
+            // 1.计算宽/高
+            val w = j - i
+            val h = Math.min(a[i], a[j])
+            // 2.计算区域面积，并更新最大面积
+            val area = w * h
+            if (area > max) {
                 max = area
             }
+            // 3.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
+            if (a[i] < a[j]) i++ else j--
         }
 
         return max
