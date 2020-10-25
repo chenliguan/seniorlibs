@@ -45,6 +45,8 @@
         <activity android:name=".binarysearch.BinarySearchActivity" />
 
         <activity android:name=".trie.TrieActivity" />
+
+        <activity android:name=".bit.BitActivity" />
     </application>
 
 </manifest>

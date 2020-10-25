@@ -7,6 +7,7 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.algorithm.binarysearch.BinarySearchActivity
 import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
+import com.seniorlibs.algorithm.bit.BitActivity
 import com.seniorlibs.algorithm.db.DbActivity
 import com.seniorlibs.algorithm.dfsbfs.DfsBfsActivity
 import com.seniorlibs.algorithm.greedy.GreedyActivity
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_greedy).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_search).setOnClickListener(this)
         findViewById<View>(R.id.btn_achieve_trie).setOnClickListener(this)
+        findViewById<View>(R.id.btn_bit).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_greedy -> { GreedyActivity.actionStart(this) }
             R.id.btn_binary_search -> { BinarySearchActivity.actionStart(this) }
             R.id.btn_achieve_trie -> { TrieActivity.actionStart(this) }
+            R.id.btn_bit -> { BitActivity.actionStart(this) }
 
             else -> {
             }

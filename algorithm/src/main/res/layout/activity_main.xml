@@ -79,5 +79,10 @@
             android:id="@+id/btn_achieve_trie"
             style="@style/BtnStyles"
             android:text="字典树" />
+
+        <Button
+            android:id="@+id/btn_bit"
+            style="@style/BtnStyles"
+            android:text="位运算" />
     </LinearLayout>
 </ScrollView>
