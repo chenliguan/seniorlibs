@@ -1,0 +1,173 @@
+package mark;  Last modified 2020-10-18; size 859 bytes
+  MD5 checksum 1c764a392cb734a0589b638018a40acb
+  Compiled from "ListViewEx4.java"
+public class ListViewEx4
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #16.#28        // java/lang/Object."<init>":()V
+   #2 = String             #29            // Java
+   #3 = Fieldref           #30.#31        // java/lang/System.out:Ljava/io/PrintStream;
+   #4 = Methodref          #32.#33        // java/io/PrintStream.println:(Z)V
+   #5 = String             #34            // android
+   #6 = Long               1000l
+   #8 = Methodref          #35.#36        // java/lang/Long.valueOf:(J)Ljava/lang/Long;
+   #9 = Class              #37            // java/lang/StringBuilder
+  #10 = Methodref          #9.#28         // java/lang/StringBuilder."<init>":()V
+  #11 = Methodref          #9.#38         // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #12 = Methodref          #9.#39         // java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  #13 = Methodref          #9.#40         // java/lang/StringBuilder.toString:()Ljava/lang/String;
+  #14 = Methodref          #32.#41        // java/io/PrintStream.println:(Ljava/lang/String;)V
+  #15 = Class              #42            // ListViewEx4
+  #16 = Class              #43            // java/lang/Object
+  #17 = Utf8               <init>
+  #18 = Utf8               ()V
+  #19 = Utf8               Code
+  #20 = Utf8               LineNumberTable
+  #21 = Utf8               print
+  #22 = Utf8               StackMapTable
+  #23 = Class              #42            // ListViewEx4
+  #24 = Class              #44            // java/lang/String
+  #25 = Class              #45            // java/io/PrintStream
+  #26 = Utf8               SourceFile
+  #27 = Utf8               ListViewEx4.java
+  #28 = NameAndType        #17:#18        // "<init>":()V
+  #29 = Utf8               Java
+  #30 = Class              #46            // java/lang/System
+  #31 = NameAndType        #47:#48        // out:Ljava/io/PrintStream;
+  #32 = Class              #45            // java/io/PrintStream
+  #33 = NameAndType        #49:#50        // println:(Z)V
+  #34 = Utf8               android
+  #35 = Class              #51            // java/lang/Long
+  #36 = NameAndType        #52:#53        // valueOf:(J)Ljava/lang/Long;
+  #37 = Utf8               java/lang/StringBuilder
+  #38 = NameAndType        #54:#55        // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #39 = NameAndType        #54:#56        // append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  #40 = NameAndType        #57:#58        // toString:()Ljava/lang/String;
+  #41 = NameAndType        #49:#59        // println:(Ljava/lang/String;)V
+  #42 = Utf8               ListViewEx4
+  #43 = Utf8               java/lang/Object
+  #44 = Utf8               java/lang/String
+  #45 = Utf8               java/io/PrintStream
+  #46 = Utf8               java/lang/System
+  #47 = Utf8               out
+  #48 = Utf8               Ljava/io/PrintStream;
+  #49 = Utf8               println
+  #50 = Utf8               (Z)V
+  #51 = Utf8               java/lang/Long
+  #52 = Utf8               valueOf
+  #53 = Utf8               (J)Ljava/lang/Long;
+  #54 = Utf8               append
+  #55 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #56 = Utf8               (Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  #57 = Utf8               toString
+  #58 = Utf8               ()Ljava/lang/String;
+  #59 = Utf8               (Ljava/lang/String;)V
+{
+  public ListViewEx4();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 1: 0
+
+  public void print();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=3, locals=4, args_size=1
+         0: ldc           #2                  // String Java
+         2: astore_1
+         3: ldc           #2                  // String Java
+         5: astore_2
+         6: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         9: aload_1
+        10: aload_2
+        11: if_acmpne     18
+        14: iconst_1
+        15: goto          19
+        18: iconst_0
+        19: invokevirtual #4                  // Method java/io/PrintStream.println:(Z)V
+        22: ldc           #5                  // String android
+        24: astore_2
+        25: ldc2_w        #6                  // long 1000l
+        28: invokestatic  #8                  // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+        31: astore_3
+        32: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        35: new           #9                  // class java/lang/StringBuilder
+        38: dup
+        39: invokespecial #10                 // Method java/lang/StringBuilder."<init>":()V
+        42: aload_2
+        43: invokevirtual #11                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+        46: aload_3
+        47: invokevirtual #12                 // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+        50: invokevirtual #13                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+        53: invokevirtual #14                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        56: return
+      LineNumberTable:
+        line 3: 0
+        line 4: 3
+        line 5: 6
+        line 7: 22
+        line 8: 25
+        line 9: 32
+        line 10: 56
+      StackMapTable: number_of_entries = 2
+        frame_type = 255 /* full_frame */
+          offset_delta = 18
+          locals = [ class ListViewEx4, class java/lang/String, class java/lang/String ]
+          stack = [ class java/io/PrintStream ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 0
+          locals = [ class ListViewEx4, class java/lang/String, class java/lang/String ]
+          stack = [ class java/io/PrintStream, int ]
+}
+SourceFile: "ListViewEx4.java"
+
+
+
+@groovyx.ast.bytecode.Bytecode
+  public void <init>() {
+    aload 0
+    INVOKESPECIAL java/lang/Object.<init> ()V
+    return
+  }
+
+  @groovyx.ast.bytecode.Bytecode
+  public void print() {
+    ldc "Java"
+    astore 1
+    ldc "Java"
+    astore 2
+    getstatic 'java/lang/System.out','Ljava/io/PrintStream;'
+    aload 1
+    aload 2
+    if_acmpne l0
+    iconst_1
+    _goto l1
+   l0
+    iconst_0
+   l1
+    INVOKEVIRTUAL java/io/PrintStream.println (Z)V
+    ldc "android"
+    astore 2
+    ldc 1000
+    INVOKESTATIC java/lang/Long.valueOf (J)Ljava/lang/Long;
+    astore 3
+    getstatic 'java/lang/System.out','Ljava/io/PrintStream;'
+    _new 'java/lang/StringBuilder'
+    dup
+    INVOKESPECIAL java/lang/StringBuilder.<init> ()V
+    aload 2
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    aload 3
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
+    INVOKEVIRTUAL java/io/PrintStream.println (Ljava/lang/String;)V
+    return
+  }

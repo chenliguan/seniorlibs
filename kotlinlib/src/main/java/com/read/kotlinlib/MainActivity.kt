@@ -9,6 +9,7 @@ import com.read.kotlinlib.basic.CoroutineActivity
 import com.read.kotlinlib.basic.FlowFunActivity
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
+import com.read.kotlinlib.string.StringTest
 import com.seniorlibs.baselib.utils.LogUtils
 
 /**
@@ -68,6 +69,16 @@ class MainActivity : AppCompatActivity() {
     fun testBit(view: View?) {
         val bitTest = BitTest()
         bitTest.storeChar()
+    }
+
+    /**
+     * 字符串测试
+     *
+     * @param view
+     */
+    fun testString(view: View?) {
+        val stringTest = StringTest()
+        stringTest.store()
     }
 
     /**

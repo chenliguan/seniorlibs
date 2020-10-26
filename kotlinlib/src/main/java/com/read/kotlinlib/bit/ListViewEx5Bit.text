@@ -1,0 +1,149 @@
+package mark;Last modified 2020-10-25; size 984 bytes
+  MD5 checksum 404af05eca8442c34f18377121e2e6a4
+  Compiled from "ListViewEx5.java"
+public class com.read.kotlinlib.bit.ListViewEx5
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #20.#32        // java/lang/Object."<init>":()V
+   #2 = String             #33            // Java
+   #3 = Class              #34            // java/lang/String
+   #4 = String             #35            // Kotlin
+   #5 = Methodref          #3.#36         // java/lang/String."<init>":(Ljava/lang/String;)V
+   #6 = Fieldref           #37.#38        // java/lang/System.out:Ljava/io/PrintStream;
+   #7 = Methodref          #39.#40        // java/io/PrintStream.println:(Z)V
+   #8 = String             #41            // Android
+   #9 = Long               1000l
+  #11 = Methodref          #42.#43        // java/lang/Long.valueOf:(J)Ljava/lang/Long;
+  #12 = Class              #44            // java/lang/StringBuilder
+  #13 = Methodref          #12.#32        // java/lang/StringBuilder."<init>":()V
+  #14 = Methodref          #12.#45        // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #15 = Methodref          #12.#46        // java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  #16 = Methodref          #12.#47        // java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+  #17 = Methodref          #12.#48        // java/lang/StringBuilder.toString:()Ljava/lang/String;
+  #18 = Methodref          #39.#49        // java/io/PrintStream.println:(Ljava/lang/String;)V
+  #19 = Class              #50            // com/read/kotlinlib/bit/ListViewEx5
+  #20 = Class              #51            // java/lang/Object
+  #21 = Utf8               <init>
+  #22 = Utf8               ()V
+  #23 = Utf8               Code
+  #24 = Utf8               LineNumberTable
+  #25 = Utf8               print
+  #26 = Utf8               StackMapTable
+  #27 = Class              #50            // com/read/kotlinlib/bit/ListViewEx5
+  #28 = Class              #34            // java/lang/String
+  #29 = Class              #52            // java/io/PrintStream
+  #30 = Utf8               SourceFile
+  #31 = Utf8               ListViewEx5.java
+  #32 = NameAndType        #21:#22        // "<init>":()V
+  #33 = Utf8               Java
+  #34 = Utf8               java/lang/String
+  #35 = Utf8               Kotlin
+  #36 = NameAndType        #21:#53        // "<init>":(Ljava/lang/String;)V
+  #37 = Class              #54            // java/lang/System
+  #38 = NameAndType        #55:#56        // out:Ljava/io/PrintStream;
+  #39 = Class              #52            // java/io/PrintStream
+  #40 = NameAndType        #57:#58        // println:(Z)V
+  #41 = Utf8               Android
+  #42 = Class              #59            // java/lang/Long
+  #43 = NameAndType        #60:#61        // valueOf:(J)Ljava/lang/Long;
+  #44 = Utf8               java/lang/StringBuilder
+  #45 = NameAndType        #62:#63        // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #46 = NameAndType        #62:#64        // append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  #47 = NameAndType        #62:#65        // append:(J)Ljava/lang/StringBuilder;
+
+  #48 = NameAndType        #66:#67        // toString:()Ljava/lang/String;
+  #49 = NameAndType        #57:#53        // println:(Ljava/lang/String;)V
+  #50 = Utf8               com/read/kotlinlib/bit/ListViewEx5
+  #51 = Utf8               java/lang/Object
+  #52 = Utf8               java/io/PrintStream
+  #53 = Utf8               (Ljava/lang/String;)V
+  #54 = Utf8               java/lang/System
+  #55 = Utf8               out
+  #56 = Utf8               Ljava/io/PrintStream;
+  #57 = Utf8               println
+  #58 = Utf8               (Z)V
+  #59 = Utf8               java/lang/Long
+  #60 = Utf8               valueOf
+  #61 = Utf8               (J)Ljava/lang/Long;
+  #62 = Utf8               append
+  #63 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #64 = Utf8               (Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  #65 = Utf8               (J)Ljava/lang/StringBuilder;
+  #66 = Utf8               toString
+  #67 = Utf8               ()Ljava/lang/String;
+{
+  public com.read.kotlinlib.bit.ListViewEx5();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 3: 0
+
+  public void print();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=4, locals=7, args_size=1
+         0: ldc           #2                  // String Java
+         2: astore_1
+         3: ldc           #2                  // String Java
+         5: astore_2
+         6: new           #3                  // class java/lang/String
+         9: dup
+        10: ldc           #4                  // String Kotlin
+        12: invokespecial #5                  // Method java/lang/String."<init>":(Ljava/lang/String;)V
+        15: astore_3
+        16: getstatic     #6                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        19: aload_1
+        20: aload_2
+        21: if_acmpne     28
+        24: iconst_1
+        25: goto          29
+        28: iconst_0
+        29: invokevirtual #7                  // Method java/io/PrintStream.println:(Z)V
+        32: ldc           #8                  // String Android
+        34: astore_2
+        35: ldc2_w        #9                  // long 1000l
+        38: invokestatic  #11                 // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+        41: astore        4
+        43: ldc2_w        #9                  // long 1000l
+        46: lstore        5
+        48: getstatic     #6                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        51: new           #12                 // class java/lang/StringBuilder
+        54: dup
+        55: invokespecial #13                 // Method java/lang/StringBuilder."<init>":()V
+        58: aload_2
+        59: invokevirtual #14                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+        62: aload         4
+        64: invokevirtual #15                 // Method java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+        67: lload         5
+        69: invokevirtual #16                 // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+        72: invokevirtual #17                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+        75: invokevirtual #18                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        78: return
+      LineNumberTable:
+        line 5: 0
+        line 6: 3
+        line 7: 6
+        line 8: 16
+        line 10: 32
+        line 11: 35
+        line 12: 43
+        line 13: 48
+        line 14: 78
+      StackMapTable: number_of_entries = 2
+        frame_type = 255 /* full_frame */
+          offset_delta = 28
+          locals = [ class com/read/kotlinlib/bit/ListViewEx5, class java/lang/String, class java/lang/String, class java/lang/String ]
+          stack = [ class java/io/PrintStream ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 0
+          locals = [ class com/read/kotlinlib/bit/ListViewEx5, class java/lang/String, class java/lang/String, class java/lang/String ]
+          stack = [ class java/io/PrintStream, int ]
+}

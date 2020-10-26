@@ -14,6 +14,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="testString"
+        android:text="字符串"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="testGeneric"
         android:text="泛型测试"
         android:textAllCaps="false"/>
