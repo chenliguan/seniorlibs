@@ -61,6 +61,11 @@
             android:text="递归" />
 
         <Button
+            android:id="@+id/btn_back"
+            style="@style/BtnStyles"
+            android:text="回溯算法" />
+
+        <Button
             android:id="@+id/btn_db"
             style="@style/BtnStyles"
             android:text="动态规划" />

@@ -15,6 +15,7 @@ import com.seniorlibs.algorithm.heap.HeapActivity
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
 import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.algorithm.queue.QueueActivity
+import com.seniorlibs.algorithm.recursive.BackActivity
 import com.seniorlibs.algorithm.recursive.RecursiveActivity
 import com.seniorlibs.algorithm.stack.StackActivity
 import com.seniorlibs.algorithm.trie.TrieActivity
@@ -43,13 +44,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_test).setOnClickListener(this)
         findViewById<View>(R.id.btn_linked_list).setOnClickListener(this)
         findViewById<View>(R.id.btn_array).setOnClickListener(this)
-        findViewById<View>(R.id.btn_binary_tree).setOnClickListener(this)
-        findViewById<View>(R.id.btn_dfs_bfs).setOnClickListener(this)
         findViewById<View>(R.id.btn_map).setOnClickListener(this)
         findViewById<View>(R.id.btn_stack).setOnClickListener(this)
         findViewById<View>(R.id.btn_queue).setOnClickListener(this)
         findViewById<View>(R.id.btn_heap).setOnClickListener(this)
+        findViewById<View>(R.id.btn_binary_tree).setOnClickListener(this)
+        findViewById<View>(R.id.btn_dfs_bfs).setOnClickListener(this)
         findViewById<View>(R.id.btn_recursive).setOnClickListener(this)
+        findViewById<View>(R.id.btn_back).setOnClickListener(this)
         findViewById<View>(R.id.btn_db).setOnClickListener(this)
         findViewById<View>(R.id.btn_greedy).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_search).setOnClickListener(this)
@@ -62,13 +64,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_test -> AlgorithmTestActivity.actionStart(this)
             R.id.btn_linked_list -> LinkedActivity.actionStart(this)
             R.id.btn_array -> ArrayActivity.actionStart(this)
-            R.id.btn_binary_tree -> BinaryTreeActivity.actionStart(this)
-            R.id.btn_dfs_bfs -> DfsBfsActivity.actionStart(this)
             R.id.btn_map -> { MapActivity.actionStart(this) }
             R.id.btn_stack -> { StackActivity.actionStart(this) }
             R.id.btn_queue -> { QueueActivity.actionStart(this) }
             R.id.btn_heap -> { HeapActivity.actionStart(this) }
+            R.id.btn_binary_tree -> BinaryTreeActivity.actionStart(this)
+            R.id.btn_dfs_bfs -> DfsBfsActivity.actionStart(this)
             R.id.btn_recursive -> { RecursiveActivity.actionStart(this) }
+            R.id.btn_back -> { BackActivity.actionStart(this) }
             R.id.btn_db -> { DbActivity.actionStart(this) }
             R.id.btn_greedy -> { GreedyActivity.actionStart(this) }
             R.id.btn_binary_search -> { BinarySearchActivity.actionStart(this) }
