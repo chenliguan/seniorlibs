@@ -38,6 +38,8 @@
 
         <activity android:name=".recursive.RecursiveActivity" />
 
+        <activity android:name=".recursive.BackActivity" />
+
         <activity android:name=".db.DbActivity" />
 
         <activity android:name=".greedy.GreedyActivity" />
@@ -47,6 +49,7 @@
         <activity android:name=".trie.TrieActivity" />
 
         <activity android:name=".bit.BitActivity" />
+
     </application>
 
 </manifest>

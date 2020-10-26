@@ -35,13 +35,14 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        setContentView(R.layout.activity_algorithm_test)
 
         initView()
         initData()
     }
 
     private fun initView() {
+        findViewById<View>(R.id.btn_is_valid).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_top_k_frequent).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_anagram).setOnClickListener(this)
@@ -57,6 +58,10 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.btn_is_valid -> {
+                val valid = isValid("]")
+                LogUtils.d(TAG, "20. 有效的括号：${valid}")
+            }
             R.id.btn_bracket_generate -> {
                 LogUtils.e(RecursiveActivity.TAG, "22. 括号生成：${generateParenthesis(3)}")
             }
@@ -71,7 +76,19 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_is_anagram_groups -> {
-                LogUtils.e(MapActivity.TAG, "49. 字母异位词分组：" + groupAnagrams(arrayOf("eat", "tea", "tan", "ate", "nat", "bat")))
+                LogUtils.e(
+                    MapActivity.TAG,
+                    "49. 字母异位词分组：" + groupAnagrams(
+                        arrayOf(
+                            "eat",
+                            "tea",
+                            "tan",
+                            "ate",
+                            "nat",
+                            "bat"
+                        )
+                    )
+                )
             }
 
             R.id.btn_is_fizz_buzz -> {
@@ -88,6 +105,35 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * 思想：如果输入是 ( ，入栈 )，当输入 ) 时弹出栈中的 (，对比是否相等。不等直接返回false退出
+     *      如果输入是 ) ，此时栈为空，以后也无法再匹配此 ) ，直接返回false退出；
+     *      如果连续输入是 ((，最后栈不为空，返回结果false；
+     *
+     * @param s
+     * @return
+     */
+    fun isValid(s: String): Boolean {
+        if (s.isEmpty()) return false
+
+        val chars = s.toCharArray()
+        val stack = LinkedList<Char>()
+
+        for (c in chars) {
+            if (c == '(') {
+                stack.push(')')
+            } else if (c == '[') {
+                stack.push(']')
+            } else if (c == '{') {
+                stack.push('}')
+            } else if (stack.isEmpty() || stack.pop() != c) {
+                return false
+            }
+        }
+
+        return stack.isEmpty()
+    }
+
     fun generateParenthesis(n: Int): List<String> {
         val res: MutableList<String> = mutableListOf()
         if (n == 0) return res
@@ -95,10 +141,16 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         // ((()))
         // 添加 ) ，需要 ( 的数量大于 )
         // 添加 ( , 需要 ( 数量小于 n
-        return generate(0, 0,  n, "", res)
+        return generate(0, 0, n, "", res)
     }
 
-    fun generate(l: Int, r: Int, n : Int, str : String, res : MutableList<String>): MutableList<String> {
+    fun generate(
+        l: Int,
+        r: Int,
+        n: Int,
+        str: String,
+        res: MutableList<String>
+    ): MutableList<String> {
         // 1.递归终结条件（最先写） // 肯定不合法，提前结束，即“剪枝”
         if (l > n || r > l) return res
 
@@ -106,9 +158,9 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         if (l == n && r == l) res.add(str)
 
         // 3.下探到下一层
-        if (l < n) generate(l + 1, r, n , str + "(", res)
+        if (l < n) generate(l + 1, r, n, str + "(", res)
 
-        if (r < l) generate(l, r + 1, n , str + ")", res)
+        if (r < l) generate(l, r + 1, n, str + ")", res)
 
         // 4.清理恢复当前层
 
@@ -137,7 +189,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun groupAnagrams(strs: Array<String>): List<List<String>> {
-        val res : MutableList<List<String>> = mutableListOf()
+        val res: MutableList<List<String>> = mutableListOf()
         if (strs.isEmpty()) return res
 
         val map = mutableMapOf<String, MutableList<String>>()
@@ -231,7 +283,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 优先级队列，升序->小顶堆
-        val queue  = PriorityQueue(Comparator<Int> { o1, o2 -> map[o1]!! - map[o2]!!})
+        val queue = PriorityQueue(Comparator<Int> { o1, o2 -> map[o1]!! - map[o2]!! })
 
         for (key in map.keys) {
             if (queue.size < k) {

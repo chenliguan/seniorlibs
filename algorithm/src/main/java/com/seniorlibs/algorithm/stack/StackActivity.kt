@@ -73,6 +73,13 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 20. 有效的括号
      *
+     * 思想：如果输入是 ( ，入栈 )，当输入 ) 时弹出栈中的 (，对比是否相等。不等直接返回false退出
+     *      如果输入是 ) ，此时栈为空，以后也无法再匹配此 ) ，直接返回false退出；
+     *      如果连续输入是 ((，最后栈不为空，返回结果false；
+     *
+     * 时间复杂度O(n)：正确的括号组合需要遍历一遍s；
+     * 空间复杂度O(n)：栈使用线性的空间大小。
+     *
      * @param s
      * @return
      */

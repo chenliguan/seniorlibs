@@ -30,7 +30,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recursive)
+        setContentView(R.layout.activity_back)
 
         initView()
         initData()
@@ -39,6 +39,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
+        findViewById<View>(R.id.btn_solve_n_queens).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -54,6 +55,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
                 listI.clear()
                 res.clear()
                 LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1, 2, 3))}")
+            }
+            R.id.btn_solve_n_queens -> {
+                LogUtils.e(TAG, "51. N 皇后：${solveNQueens(4)}")
             }
 
             else -> {
@@ -144,5 +148,102 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         listI.removeAt(listI.size - 1) // 递归结束，撤销选择，不选择当前位置元素
 
         dfs(cur + 1, nums)               // 3.下探到下一层（类似右子树）
+    }
+
+
+    /**
+     * 51. N 皇后   方法1：回溯算法
+     *
+     * 皇后们的约束条件：这一行这一列和这左右两边的对角线上都不能有皇后。
+     * 1.不能同行
+     * 2.不能同列
+     * 3.不能同斜线
+     *
+     * @param n
+     * @return
+     */
+    fun solveNQueens(n: Int): List<List<String>>? {
+        val chess = Array(n) { CharArray(n) }
+        for (i in 0 until n) {
+            for (j in 0 until n) {
+                chess[i][j] = '.'
+            }
+        }
+
+        val res: MutableList<List<String>> = ArrayList()
+        // DFS
+        solve(res, chess, 0)
+        return res
+    }
+
+    /**
+     * DFS
+     */
+    private fun solve(res: MutableList<List<String>>, chess: Array<CharArray>, row: Int) {
+        // 终止条件，最后一行都走完了，说明找到了一种解法，把它加入到集合res中
+        if (row == chess.size) {
+            // 把每一行(数组)转为list
+            res.add(construct(chess))
+            return
+        }
+
+        // 遍历每一行的每一位
+        for (col in chess.indices) {
+            // 判断这个位置是否可以放皇后
+            if (isValid(chess, row, col)) {
+                // 尝试在这个位置放上皇后
+                chess[row][col] = 'Q'
+
+                // 递归到下一行继续
+                solve(res, chess, row + 1)
+
+                // 如果最终不能成功，那么返回时把这个位置还原，符合回溯思想
+                chess[row][col] = '.'
+            }
+        }
+    }
+
+    /**
+     * 把每一行(数组)转为list
+     */
+    private fun construct(chess: Array<CharArray>): List<String> {
+        val path = mutableListOf<String>()
+        for (i in chess.indices) {
+            // chess[0] 一行 -> "..Q."
+            path.add(String(chess[i]))
+        }
+        return path
+    }
+
+    /**
+     * 判断这个位置是否可以放皇后：row表示第几行，col表示第几列
+     */
+    private fun isValid(chess: Array<CharArray>, row: Int, col: Int): Boolean {
+        // 判断当前列有没有皇后，因为他是一行一行往下走的，只需要检查走过的行数即可，
+        // 通俗一点就是判断当前 坐标位置的上面有没有皇后
+        for (i in 0 until row) {
+            if (chess[i][col] == 'Q') {
+                return false
+            }
+        }
+
+        // 判断当前坐标的右上角有没有皇后
+        var i = row - 1
+        var j = col + 1
+        while (i >= 0 && j < chess.size) {
+            if (chess[i--][j++] == 'Q') {
+                return false
+            }
+        }
+
+        // 判断当前坐标的左上角有没有皇后
+        var i1 = row - 1
+        var j1 = col - 1
+        while (i1 >= 0 && j1 >= 0) {
+            if (chess[i1--][j1--] == 'Q') {
+                return false
+            }
+        }
+        return true
     }
 }
