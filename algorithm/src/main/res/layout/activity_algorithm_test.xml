@@ -8,6 +8,11 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
+        android:id="@+id/btn_solve_n_queens"
+        style="@style/BtnStyles"
+        android:text="51. N 皇后" />
+
+    <Button
         android:id="@+id/btn_is_valid"
         style="@style/BtnStyles"
         android:text="20. 有效的括号" />

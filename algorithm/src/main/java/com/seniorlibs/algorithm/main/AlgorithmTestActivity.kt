@@ -42,6 +42,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
+        findViewById<View>(R.id.btn_solve_n_queens).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_valid).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
         findViewById<View>(R.id.btn_top_k_frequent).setOnClickListener(this)
@@ -58,6 +59,9 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.btn_solve_n_queens -> {
+                LogUtils.e(TAG, "51. N 皇后：${solveNQueens(4)}")
+            }
             R.id.btn_is_valid -> {
                 val valid = isValid("]")
                 LogUtils.d(TAG, "20. 有效的括号：${valid}")
@@ -79,14 +83,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(
                     MapActivity.TAG,
                     "49. 字母异位词分组：" + groupAnagrams(
-                        arrayOf(
-                            "eat",
-                            "tea",
-                            "tan",
-                            "ate",
-                            "nat",
-                            "bat"
-                        )
+                        arrayOf("eat", "tea", "tan", "ate", "nat", "bat")
                     )
                 )
             }
@@ -104,6 +101,81 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+    fun solveNQueens(n: Int): List<List<String>>? {
+        val chess = Array(n) { CharArray(n) }
+        for (i in chess.indices) {
+            for (j in chess[0].indices) {
+                chess[i][j] = '.'
+            }
+        }
+
+        val res : MutableList<List<String>> = mutableListOf()
+        // DFS
+        solveDfs(res, chess, 0)
+        return res
+    }
+
+    private fun solveDfs(res: MutableList<List<String>>, chess: Array<CharArray>, row: Int) {
+        // 1.退出条件
+        if (row == chess.size) {
+            res.add(turn(chess))
+            return
+        }
+
+        for (col in chess.indices) {
+            if (isValid(chess, row, col)) {
+                // 2.处理当前层逻辑
+                chess[row][col] = 'Q'
+
+                // 3.下探到下一层
+                solveDfs(res, chess, row + 1)
+
+                // 4. 恢复当前层状态
+                chess[row][col] = '.'
+            }
+        }
+    }
+
+    private fun isValid(chess : Array<CharArray>, row: Int, col : Int) : Boolean {
+        // 上面
+        for (i in 0 until row) {
+            if (chess[i][col] == 'Q') {
+                return false
+            }
+        }
+
+
+        // 右上角
+        var i = row - 1
+        var j = col + 1
+        while (i >= 0 && j < chess.size) {
+            if (chess[i--][j++] == 'Q') {
+                return false
+            }
+        }
+
+        // 左上角
+        var i1 = row - 1
+        var j1 = col - 1
+        while (i1 >= 0 && j1 >= 0) {
+            if (chess[i1--][j1--] == 'Q') {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    private fun turn(chess: Array<CharArray>): List<String> {
+        val list = mutableListOf<String>()
+        for (i in chess.indices) {
+            // 一行chess[0]
+            list.add(String(chess[i]))
+        }
+        return list
+    }
+
 
     /**
      * 思想：如果输入是 ( ，入栈 )，当输入 ) 时弹出栈中的 (，对比是否相等。不等直接返回false退出

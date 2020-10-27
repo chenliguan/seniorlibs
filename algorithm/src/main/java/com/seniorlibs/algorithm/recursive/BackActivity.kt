@@ -65,8 +65,6 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    val list: MutableList<String> = mutableListOf()
-
     /**
      * 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
      *
@@ -135,19 +133,23 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun dfs(cur: Int, nums: IntArray) {
-        // 1.递归终结条件（最先写）
-        if (cur == nums.size) {       // 指针越界，记录答案
+        // 1 递归终结条件（最先写）：指针越界，记录答案
+        if (cur == nums.size) {
             res.add(ArrayList(listI))
             return
         }
 
-        listI.add(nums[cur])                  // 选择当前位置元素
+        // 2.1 选择当前位置元素
+        listI.add(nums[cur])
 
-        dfs(cur + 1, nums)               // 3.下探到下一层（类似左子树）
+        // 3.1 下探到下一层（类似左子树）
+        dfs(cur + 1, nums)
 
-        listI.removeAt(listI.size - 1) // 递归结束，撤销选择，不选择当前位置元素
+        // 2.2 递归结束，撤销选择，不选择当前位置元素
+        listI.removeAt(listI.size - 1)
 
-        dfs(cur + 1, nums)               // 3.下探到下一层（类似右子树）
+        // 3.2 下探到下一层（类似右子树）
+        dfs(cur + 1, nums)
     }
 
 
@@ -170,24 +172,24 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        val res: MutableList<List<String>> = ArrayList()
+        val res: MutableList<List<String>> = mutableListOf()
         // DFS
-        solve(res, chess, 0)
+        solveDfs(res, chess, 0)
         return res
     }
 
     /**
      * DFS
      */
-    private fun solve(res: MutableList<List<String>>, chess: Array<CharArray>, row: Int) {
+    private fun solveDfs(res: MutableList<List<String>>, chess: Array<CharArray>, row: Int) {
         // 终止条件，最后一行都走完了，说明找到了一种解法，把它加入到集合res中
         if (row == chess.size) {
             // 把每一行(数组)转为list
-            res.add(construct(chess))
+            res.add(turn(chess))
             return
         }
 
-        // 遍历每一行的每一位
+        // 遍历每一行的每一个位置->列
         for (col in chess.indices) {
             // 判断这个位置是否可以放皇后
             if (isValid(chess, row, col)) {
@@ -195,7 +197,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
                 chess[row][col] = 'Q'
 
                 // 递归到下一行继续
-                solve(res, chess, row + 1)
+                solveDfs(res, chess, row + 1)
 
                 // 如果最终不能成功，那么返回时把这个位置还原，符合回溯思想
                 chess[row][col] = '.'
@@ -206,13 +208,13 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 把每一行(数组)转为list
      */
-    private fun construct(chess: Array<CharArray>): List<String> {
-        val path = mutableListOf<String>()
+    private fun turn(chess: Array<CharArray>): List<String> {
+        val list = mutableListOf<String>()
         for (i in chess.indices) {
             // chess[0] 一行 -> "..Q."
-            path.add(String(chess[i]))
+            list.add(String(chess[i]))
         }
-        return path
+        return list
     }
 
     /**
