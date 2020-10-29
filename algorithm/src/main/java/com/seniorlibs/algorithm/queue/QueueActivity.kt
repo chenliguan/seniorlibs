@@ -48,7 +48,7 @@ class QueueActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_design_circular_deque -> {
-                val circularDeque = CircularDeque(5) // 设置容量大小为3
+                val circularDeque = CircularDeque1(5) // 设置容量大小为3
                 LogUtils.e(TAG, "" + circularDeque.insertFront(7))
                 Thread.sleep(200)
                 LogUtils.e(TAG, "" + circularDeque.insertLast(0))

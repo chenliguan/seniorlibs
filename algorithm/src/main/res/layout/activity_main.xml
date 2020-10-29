@@ -16,6 +16,11 @@
             android:text="测试" />
 
         <Button
+            android:id="@+id/btn_other"
+            style="@style/BtnStyles"
+            android:text="其他" />
+
+        <Button
             android:id="@+id/btn_linked_list"
             style="@style/BtnStyles"
             android:text="链表测试" />

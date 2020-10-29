@@ -50,6 +50,8 @@
 
         <activity android:name=".bit.BitActivity" />
 
+        <activity android:name=".other.OtherActivity" />
+
     </application>
 
 </manifest>

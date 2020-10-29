@@ -14,6 +14,7 @@ import com.seniorlibs.algorithm.greedy.GreedyActivity
 import com.seniorlibs.algorithm.heap.HeapActivity
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
 import com.seniorlibs.algorithm.map.MapActivity
+import com.seniorlibs.algorithm.other.OtherActivity
 import com.seniorlibs.algorithm.queue.QueueActivity
 import com.seniorlibs.algorithm.recursive.BackActivity
 import com.seniorlibs.algorithm.recursive.RecursiveActivity
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_binary_search).setOnClickListener(this)
         findViewById<View>(R.id.btn_achieve_trie).setOnClickListener(this)
         findViewById<View>(R.id.btn_bit).setOnClickListener(this)
+        findViewById<View>(R.id.btn_other).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -77,6 +79,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_binary_search -> { BinarySearchActivity.actionStart(this) }
             R.id.btn_achieve_trie -> { TrieActivity.actionStart(this) }
             R.id.btn_bit -> { BitActivity.actionStart(this) }
+            R.id.btn_other -> { OtherActivity.actionStart(this) }
 
             else -> {
             }
