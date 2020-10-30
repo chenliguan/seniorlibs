@@ -19,6 +19,7 @@ import com.seniorlibs.algorithm.queue.QueueActivity
 import com.seniorlibs.algorithm.recursive.BackActivity
 import com.seniorlibs.algorithm.recursive.RecursiveActivity
 import com.seniorlibs.algorithm.stack.StackActivity
+import com.seniorlibs.algorithm.string.StringActivity
 import com.seniorlibs.algorithm.trie.TrieActivity
 
 /**
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_test).setOnClickListener(this)
         findViewById<View>(R.id.btn_linked_list).setOnClickListener(this)
+        findViewById<View>(R.id.btn_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_array).setOnClickListener(this)
         findViewById<View>(R.id.btn_map).setOnClickListener(this)
         findViewById<View>(R.id.btn_stack).setOnClickListener(this)
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btn_test -> AlgorithmTestActivity.actionStart(this)
             R.id.btn_linked_list -> LinkedActivity.actionStart(this)
+            R.id.btn_string -> StringActivity.actionStart(this)
             R.id.btn_array -> ArrayActivity.actionStart(this)
             R.id.btn_map -> { MapActivity.actionStart(this) }
             R.id.btn_stack -> { StackActivity.actionStart(this) }

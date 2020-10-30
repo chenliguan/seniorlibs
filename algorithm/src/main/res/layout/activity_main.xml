@@ -23,12 +23,17 @@
         <Button
             android:id="@+id/btn_linked_list"
             style="@style/BtnStyles"
-            android:text="链表测试" />
+            android:text="链表" />
+
+        <Button
+            android:id="@+id/btn_string"
+            style="@style/BtnStyles"
+            android:text="字符串" />
 
         <Button
             android:id="@+id/btn_array"
             style="@style/BtnStyles"
-            android:text="数组测试" />
+            android:text="数组" />
 
         <Button
             android:id="@+id/btn_binary_tree"
