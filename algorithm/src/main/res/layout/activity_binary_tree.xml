@@ -48,8 +48,13 @@
         android:text="98. 验证二叉搜索树" />
 
     <Button
-        android:id="@+id/btn_build_tree"
+        android:id="@+id/btn_pre_in_build_tree"
         style="@style/BtnStyles"
         android:text="105. 从前序与中序遍历序列构造二叉树" />
+
+    <Button
+        android:id="@+id/btn_in_post_build_tree"
+        style="@style/BtnStyles"
+        android:text="106. 从中序与后序遍历序列构造二叉树" />
 
 </LinearLayout>

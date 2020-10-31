@@ -48,7 +48,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_valid_bst).setOnClickListener(this)
-        findViewById<View>(R.id.btn_build_tree).setOnClickListener(this)
+        findViewById<View>(R.id.btn_pre_in_build_tree).setOnClickListener(this)
+        findViewById<View>(R.id.btn_in_post_build_tree).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -161,8 +162,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "98. 验证二叉搜索树：${isValidBST(node)}")
                 LogUtils.e(TAG, "98. 验证二叉搜索树：${isValidBST1(node)}")
             }
-            R.id.btn_build_tree -> {
-                LogUtils.e(TAG, "105. 从前序与中序遍历序列构造二叉树：${buildTree(intArrayOf(3, 9, 20, 15, 7), intArrayOf(9, 3, 15, 20, 7))}")
+            R.id.btn_pre_in_build_tree -> {
+                LogUtils.e(TAG, "105. 从前序与中序遍历序列构造二叉树：${preInbuildTree(intArrayOf(3, 9, 20, 15, 7), intArrayOf(9, 3, 15, 20, 7))}")
+            }
+            R.id.btn_in_post_build_tree -> {
+                LogUtils.e(TAG, "106. 从中序与后序遍历序列构造二叉树：${1}")
             }
             else -> {
             }
@@ -613,7 +617,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @param inorder
      * @return
      */
-    fun buildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
+    fun preInbuildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
         val map: MutableMap<Int, Int> = mutableMapOf()
         for (i in inorder.indices) {
