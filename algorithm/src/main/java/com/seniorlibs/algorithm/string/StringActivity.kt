@@ -228,6 +228,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 541. 反转字符串 II
      *
+     * 时间复杂度：O(n)，其中n是 s 的大小。我们建立一个辅助数组，用来翻转 s 的一半字符。
+     * 空间复杂度：O(n)，a 的大小。
+     *
      * @param s
      * @param k
      * @return
