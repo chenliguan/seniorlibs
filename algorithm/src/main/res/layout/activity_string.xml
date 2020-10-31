@@ -12,4 +12,23 @@
         style="@style/BtnStyles"
         android:text="709. 转换成小写字母" />
 
+    <Button
+        android:id="@+id/btn_first_uniq_char"
+        style="@style/BtnStyles"
+        android:text="387. 字符串中的第一个唯一字符" />
+
+    <Button
+        android:id="@+id/btn_my_atoi"
+        style="@style/BtnStyles"
+        android:text="8. 字符串转换整数 (atoi)" />
+
+    <Button
+        android:id="@+id/btn_reverse_string"
+        style="@style/BtnStyles"
+        android:text="344. 反转字符串" />
+
+    <Button
+        android:id="@+id/btn_reverse_string2"
+        style="@style/BtnStyles"
+        android:text="541. 反转字符串2" />
 </LinearLayout>

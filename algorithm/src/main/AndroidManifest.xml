@@ -52,6 +52,8 @@
 
         <activity android:name=".other.OtherActivity" />
 
+        <activity android:name=".string.StringActivity" />
+
     </application>
 
 </manifest>

@@ -8,6 +8,16 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
+        android:id="@+id/btn_reverse_string"
+        style="@style/BtnStyles"
+        android:text="344. 反转字符串" />
+
+    <Button
+        android:id="@+id/btn_to_lower_case"
+        style="@style/BtnStyles"
+        android:text="709. 转换成小写字母" />
+
+    <Button
         android:id="@+id/btn_solve_n_queens"
         style="@style/BtnStyles"
         android:text="51. N 皇后" />

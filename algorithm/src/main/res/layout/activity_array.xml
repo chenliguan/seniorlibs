@@ -37,8 +37,4 @@
         style="@style/BtnStyles"
         android:text="18. 四数之和" />
 
-    <Button
-        android:id="@+id/btn_reverse_string"
-        style="@style/BtnStyles"
-        android:text="344. 反转字符串" />
 </LinearLayout>

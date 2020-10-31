@@ -11,6 +11,7 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.algorithm.recursive.RecursiveActivity
+import com.seniorlibs.algorithm.string.StringActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -42,6 +43,8 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
+        findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
+        findViewById<View>(R.id.btn_to_lower_case).setOnClickListener(this)
         findViewById<View>(R.id.btn_solve_n_queens).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_valid).setOnClickListener(this)
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
@@ -59,6 +62,14 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.btn_reverse_string -> {
+                val s: CharArray = charArrayOf('h', 'e', 'l', 'l', 'o')
+                reverseString(s)
+                LogUtils.d(ArrayActivity.TAG, "344. 反转字符串：${s}")
+            }
+            R.id.btn_to_lower_case -> {
+                LogUtils.e(StringActivity.TAG, "709. 转换成小写字母：" + toLowerCase("Hello"))
+            }
             R.id.btn_solve_n_queens -> {
                 LogUtils.e(TAG, "51. N 皇后：${solveNQueens(4)}")
             }
@@ -102,6 +113,34 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    fun reverseString(s: CharArray): Unit {
+        if (s.isEmpty()) return
+
+        var i = 0
+        var j = s.size - 1
+        while (i < j) {
+            val temp = s[i]
+            s[i] = s[j]
+            s[j] = temp
+
+            i++
+            j--
+        }
+    }
+
+
+    fun toLowerCase(str: String): String {
+        if (str.isEmpty()) return str
+
+        val ch =  str.toCharArray()
+        for (i in ch.indices) {
+            if (ch[i] in 'A'..'Z') {
+                ch[i] = ch[i] + 32
+            }
+        }
+        return String(ch)
+    }
+    
     fun solveNQueens(n: Int): List<List<String>>? {
         val chess = Array(n) { CharArray(n) }
         for (i in chess.indices) {
