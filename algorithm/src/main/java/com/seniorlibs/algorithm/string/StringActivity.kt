@@ -42,6 +42,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_my_atoi).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_common_prefix).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -63,10 +64,13 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_reverse_string -> {
                 val s: CharArray = charArrayOf('h', 'e', 'l', 'l', 'o')
                 reverseString(s)
-                LogUtils.d(ArrayActivity.TAG, "344. 反转字符串：${s}")
+                LogUtils.d(TAG, "344. 反转字符串：${s}")
             }
             R.id.btn_reverse_string2 -> {
-                LogUtils.d(ArrayActivity.TAG, "541. 反转字符串2：${reverseStr("abcdefg", 2)}")
+                LogUtils.d(TAG, "541. 反转字符串2：${reverseStr("abcdefg", 2)}")
+            }
+            R.id.btn_longest_common_prefix -> {
+                LogUtils.d(TAG, "14. 最长公共前缀：${longestCommonPrefix(arrayOf("flower","flow","flight"))}")
             }
             else -> {
             }
@@ -257,5 +261,34 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             start += 2 * k
         }
         return String(ch)
+    }
+
+    /**
+     * 14. 最长公共前缀   方法1：纵向扫描
+     *
+     * 纵向扫描时，从前往后遍历所有字符串的每一列，比较相同列上的字符是否相同，
+     * 如果相同则继续对下一列进行比较，如果不相同则当前列不再属于公共前缀，当前列之前的部分为最长公共前缀。
+     *
+     * 时间复杂度：O(mn)，其中m是字符串数组中的字符串的平均长度，n是字符串的数量。最坏情况下，字符串数组中的每个字符串的每个字符都会被比较一次。
+     * 空间复杂度：O(1)。使用的额外空间复杂度为常数。
+     *
+     * @param strs
+     * @return
+     */
+    fun longestCommonPrefix(strs: Array<String>): String? {
+        if (strs.isEmpty()) return ""
+
+        // 从前往后遍历 0 行字符串的每一列 j
+        for (j in strs[0].indices) {
+            val c = strs[0][j]
+            // 比较一列上的所有字符 i 是否相同，如果全相同则继续对下一列 j 进行比较
+            for (i in 1 until strs.size) {
+                // 如果达到当前行长度 或 存在不相同，则当前列 j 不再属于公共前缀，当前列之前的部分为最长公共前缀。
+                if (j == strs[i].length || strs[i][j] != c) {
+                    return strs[0].substring(0, j)
+                }
+            }
+        }
+        return strs[0]
     }
 }

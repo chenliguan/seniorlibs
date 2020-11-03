@@ -8,6 +8,7 @@
   （1）最优重复性：动态规划；
   （2）最近重复性：根据重复性的构造和分解，便有分治和回溯。
 
+
 二、递归模板
 public void recur(int level, int param) {
   // 1.递归终结条件（最先写）
@@ -19,8 +20,8 @@ public void recur(int level, int param) {
   // 2.处理当前层逻辑
   process(level, param);
 
-  // 3.下探到下一层
-  recur( level: level + 1, newParam);
+  // 3.下探到下一层，关键：level + 1
+  recur(level: level + 1, newParam);
 
   // 4.清理恢复当前层
   revertStates();
@@ -39,9 +40,9 @@ public void recur(int level, int param) {
   process(level, param);
 
   // 3.调用函数下探到下一层，解决更细节的子问题
-  int subresult1 = recur( level: level + 1, newParam);
-  int subresult2 = recur( level: level + 1, newParam);
-  int subresult3 = recur( level: level + 1, newParam);
+  int subresult1 = recur(level: level + 1, newParam);
+  int subresult2 = recur(level: level + 1, newParam);
+  int subresult3 = recur(level: level + 1, newParam);
 
   // 4.将子问题的解的合并，产生最终结果
   int result = processResult(subresult1, subresult2, subresult3, …);
@@ -49,6 +50,7 @@ public void recur(int level, int param) {
   // 5.清理恢复当前层
   revertStates();
 }
+
 
 四、回溯
 回溯算法是一种 有方向地 遍历搜索算法，以 深度优先遍历 的方式尝试所有的可能性。但不同的是在搜索过程中，达到结束条件后，恢复状态，回溯上一层，再次搜索。
@@ -58,47 +60,77 @@ public void recur(int level, int param) {
 
 回溯算法 采用试错 的思想，它尝试分步的去解决一个问题。在分步解决问题的过程中，当它通过尝试发现现有的分步答案不能得到有效的正确的解答的时候，
 它将取消上一步甚至是上几步的计算，再通过其它的可能的分步解答再次尝试寻找问题的答案。回溯法通常用最简单的递归方法来实现，在反复重复上述的步骤后可能出现两种情况：
-①找到一个可能存在的正确的答案；②在尝试了所有可能的分步方法后宣告该问题没有答案。
+（1）找到一个可能存在的正确的答案；②在尝试了所有可能的分步方法后宣告该问题没有答案。
 
 
 五、动态规划
+1、特点
 动态规划和递归或者分治没有根本上的区别（关键看有无最优的子结构)
-共性:找到重复子问题
-差异性:最优子结构、中途可以淘太欠优解
-
-关键点：
-1.根据最优子结构定义状态：opt[i]，opt[n]=bestOf(opt[n-1], opt[n-2], ...)
-2.递推状态转移方程（DP方程）
-  一维：opt[i] = opt[n - 1] + opt[n - 2]
-  二维: opt[i, j] = opt[i + 1], i] + opt[i][j + 1] (且判断a[i, j]是否空地)
-3.考虑初始化 （base case）
-4.考虑输出
-5.考虑优化空间
+ 1.共性:找到重复子问题
+ 2.差异性:最优子结构、中途可以淘太欠优解
 
 递归问题一含有重疊的子问题，操作重复
-1.记忆化搜索(自顶而下)
-2.动态规划(自底而上)
+ 1.记忆化搜索(自顶而下)
+ 2.动态规划(自底而上)
 
-常识：
-1.一般求解最值的问题都可以朝着动态规划的方向去想
+常识：一般求解最值的问题都可以朝着动态规划的方向去想
 
-思考思路：想到动态规划，但又不知从何入手，可以试试这么思考：
-1.大问题是什么？
-2.规模小一点的子问题是什么？
-3.它们之间有什么联系？
+2、关键点：
+ 1.根据最优子结构定义状态：dp[n] = bestOf(dp[n-1], dp[n-2], ...)
+ 2.递推状态转移方程（DP方程）
+   一维：dp[i] = dp[n-1] + dp[n-2]
+   二维: dp[i,j] = dp[i+1], i] + dp[i][j+1] (且判断dp[i, j]是否空地)
+ 3.考虑初始化（base case）
+ 4.考虑输出
+ 5.考虑优化空间
 
-大问题是一个字符串是否是回文串，那规模小一点的子问题呢？
-一个字符串是回文串，它的首尾字符相同，且剩余子串也是一个回文串。所以，剩余子串是否为回文串，就是规模小一点的子问题，它的结果影响大问题的结果。
-我们怎么去描述子问题呢？写出
-(1)base case：只有一个字母的时候肯定是回文子串，for (i in 0 until n) dp[i][i] = true
-(2)db方程：
-// 如果s[i]==s[j]，说明只要dp[i+1][j-1]是回文子串，那么dp[i][j]也是回文子串；
-// 如果s[i]!=s[j]，说明dp[i][j]必定不是回文子串。
-if(s.charAt(i) == s.charAt(j)){
-    dp[i][j] = dp[i+1][j-1]
-} else {
-    dp[i][j] = false;
+3、DP顺推模板
+public void fun(int level, int param) {
+    // base case：定义 dp 数组并初始化第 0 行和第 0 列。// 二维情况
+    dp = [][]
+
+    // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
+    for i = 0..M {
+        for j = 0..N {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        }
+    }
+    return dp[M][N]
 }
+
+fun uniquePaths(m: Int, n: Int): Int {
+    if (m == 0 || n == 0) return 0
+
+    // base case：定义 dp 数组并初始化第 0 行和第 0 列。// 二维情况
+    val dp = Array(m) { IntArray(n) }
+    for (i in 0 until m) dp[i][0] = 1
+    for (j in 0 until n) dp[0][j] = 1
+
+    // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
+    for (i in 1 until m) {
+        for (j in 1 until n) {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        }
+    }
+    return dp[m - 1][n - 1]
+}
+
+4、思考思路：想到动态规划，但又不知从何入手，可以试试这么思考：
+ 1.大问题是什么？
+ 2.规模小一点的子问题是什么？
+ 3.它们之间有什么联系？
+
+5、大问题是一个字符串是否是回文串，那规模小一点的子问题呢？
+ 一个字符串是回文串，它的首尾字符相同，且剩余子串也是一个回文串。所以，剩余子串是否为回文串，就是规模小一点的子问题，它的结果影响大问题的结果。
+ 我们怎么去描述子问题呢？写出
+ （1）base case：只有一个字母的时候肯定是回文子串，for (i in 0 until n) dp[i][i] = true
+ （2）db方程：
+ // 如果s[i]==s[j]，说明只要dp[i+1][j-1]是回文子串，那么dp[i][j]也是回文子串；如果s[i]!=s[j]，说明dp[i][j]必定不是回文子串。
+ if(s.charAt(i) == s.charAt(j)){
+    dp[i][j] = dp[i+1][j-1]
+ } else {
+    dp[i][j] = false;
+ }
 
 
 六、二分查找代码模板

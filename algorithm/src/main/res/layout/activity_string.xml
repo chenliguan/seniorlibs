@@ -31,4 +31,9 @@
         android:id="@+id/btn_reverse_string2"
         style="@style/BtnStyles"
         android:text="541. 反转字符串2" />
+
+    <Button
+        android:id="@+id/btn_longest_common_prefix"
+        style="@style/BtnStyles"
+        android:text="14. 最长公共前缀" />
 </LinearLayout>

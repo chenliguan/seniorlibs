@@ -61,11 +61,11 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_climb_stairs -> {
-                LogUtils.e(TAG, "70. 爬楼梯1：${climbStairs1(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯2：${climbStairs2(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯3：${climbStairs3(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯4：${climbStairs4(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯5：${climbStairs5(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯1：${fun1(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯2：${fun2(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯3：${fun3(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯4：${fun4(5)}")
+                LogUtils.e(TAG, "70. 爬楼梯5：${fun5(5)}")
             }
             R.id.btn_fib -> {
                 LogUtils.e(TAG, "509. 斐波那契数：${fib1(5)}")
@@ -87,7 +87,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_minimum_total -> {
                 val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
-                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal4(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal1(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal2(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
@@ -145,11 +145,11 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs1(n: Int): Int {
+    fun fun1(n: Int): Int {
         if (n <= 1) return 1
         if (n == 2) return 2
 
-        return climbStairs3(n - 1) + climbStairs3(n - 2)
+        return fun1(n - 1) + fun1(n - 2)
     }
 
     /**
@@ -158,28 +158,27 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。树形递归的大小可以达到 n；
      * 空间复杂度：O(n)。递归树的深度可以达到 n
      *
+     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
      * @param n
      * @return
      */
-    fun climbStairs2(n: Int): Int {
+    fun fun2(n: Int): Int {
         if (n <= 1) return 1
         if (n == 2) return 2
 
         val cache = IntArray(n + 1)
         cache[0] = 0
         cache[1] = 1
-        return climb(n, cache)
+
+        return funs(n, cache)
     }
 
-    private fun climb(n: Int, cache : IntArray): Int {
-        if (n <= 1) return 1
-        if (n == 2) return 2
-
+    private fun funs(n: Int, cache : IntArray): Int {
         // 如果 N 对应的楼梯数存在，则返回
         if (cache[n] != 0) return cache[n]
 
         // 计算 N 对应的楼梯数为 memoize(N-1) + memoize(N-2)
-        cache[n] = climb(n - 1, cache) + climb(n - 2, cache)
+        cache[n] = funs(n - 1, cache) + funs(n - 2, cache)
 
         return cache[n]
     }
@@ -193,15 +192,16 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs3(n: Int): Int {
-        return climbStair(n, 1, 2)
+    fun fun3(n: Int): Int {
+        return funss(n, 1, 2)
     }
 
-    fun climbStair(n: Int, first: Int, second: Int): Int {
+    fun funss(n: Int, first: Int, second: Int): Int {
         if (n <= 1) return first
         if (n == 2) return second
 
-        return climbStair(n - 1, second, first + second)  // 5 -> 4 -> 3 (2->1)
+        // 5 -> 4 -> 3 (2->1)
+        return funss(n - 1, second, first + second)
     }
 
     /**
@@ -210,10 +210,18 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
      * 空间复杂度：O(n)。用了n空间的数组辅助，空间复杂度为。
      *
+     * base case：
+     *    f(0) = 1
+     *    f(1) = 1
+     *    f(2) = 2
+     *
+     * DP方程：dp(n) = dp(n-1) + dp(n-2)
+     *
+     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
      * @param n
      * @return
      */
-    fun climbStairs4(n: Int): Int {
+    fun fun4(n: Int): Int {
         if (n <= 1) return 1
         if (n == 2) return 2
 
@@ -222,7 +230,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         dp[1] = 1
         dp[2] = 2
 
-        // dp
+        // dp方程：f(n) = f(n-1) + f(n-2)
         for (i in 3 until n + 1) {
             dp[i] = dp[i - 1] + dp[i - 2]
         }
@@ -239,7 +247,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun climbStairs5(n: Int): Int {
+    fun fun5(n: Int): Int {
         if (n <= 1) return 1
         if (n == 2) return 2
 
@@ -281,6 +289,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
      * 空间复杂度：O(n)，内存中使用的堆栈大小
      *
+     * https://leetcode-cn.com/problems/fibonacci-number/solution/509-fei-bo-na-qi-shu-by-chen-li-guan/
      * @param n
      * @return
      */
@@ -291,18 +300,16 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         val cache = IntArray(n + 1)
         cache[0] = 0
         cache[1] = 1
-        return fib(n, cache)
+
+        return fibs(n, cache)
     }
 
-    private fun fib(n: Int, cache : IntArray): Int {
-        if (n <= 0) return 0
-        if (n == 1 || n == 2) return 1
-
+    private fun fibs(n: Int, cache : IntArray): Int {
         // 如果 N 对应的斐波那契数存在，则返回
         if (cache[n] != 0) return cache[n]
 
         // 计算 N 对应的斐波那契数为 fb(N-1) + fb(N-2)
-        cache[n] = fib(n - 1, cache) + fib(n - 2, cache)
+        cache[n] = fibs(n - 1, cache) + fibs(n - 2, cache)
 
         return cache[n]
     }
@@ -315,6 +322,14 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
      * 空间复杂度：O(n)，使用了空间大小为 N 的数组
      *
+     * base case：
+     *    f(0) = 0
+     *    f(1) = 1
+     *    f(2) = 1
+     *
+     * DP方程：dp(n) = dp(n-1) + dp(n-2)
+     *
+     * https://leetcode-cn.com/problems/fibonacci-number/solution/509-fei-bo-na-qi-shu-by-chen-li-guan/
      * @param n
      * @return
      */
@@ -369,6 +384,13 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
+     * base case：定义 dp 数组并初始化第 0 行和第 0 列 的值为 1
+     *    f(0) = 1
+     *    f(1) = 1
+     *    f(2) = 2
+     *
+     * DP方程：dp(i,j) = dp(i-1, j) + dp(i, j-1)
+     *
      * https://leetcode-cn.com/problems/unique-paths/solution/62-bu-tong-lu-jing-by-chen-li-guan/
      * @param m
      * @param n
@@ -377,14 +399,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
-        // base case：定义 dp 数组并初始化第 0 行和第 0 列。
+        // base case：定义 dp 数组并初始化第 0 行和第 0 列 的值为 1
         val dp = Array(m) { IntArray(n) }
-        for (i in 0 until m) {
-            dp[i][0] = 1
-        }
-        for (j in 0 until n) {
-            dp[0][j] = 1
-        }
+        for (i in 0 until m) dp[i][0] = 1
+        for (j in 0 until n) dp[0][j] = 1
 
         // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
         for (i in 1 until m) {
@@ -413,9 +431,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
         // base case：定义 dp 数组并初始化第 1 列。
         val dp = IntArray(n)
-        for (j in 0 until n) {
-            dp[j] = 1
-        }
+        for (j in 0 until n) dp[j] = 1
 
         // dp：根据状态转移方程 dp[j] = [j] + [j - 1] 进行递推。
         for (i in 1 until m) {
@@ -540,8 +556,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return dp[m][n]
     }
 
+
     /**
      * 120. 三角形最小路径和  解法一：暴力递归(自顶向下)，导致 超时
+     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
      *
      * 时间复杂度：O(2^n)，它需要指数的时间。n为三角形的行数。
      * 空间复杂度：O(mn)，在堆栈中需要与 n 成正比的空间大小。n为三角形的行数。
@@ -549,22 +567,20 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param triangle
      * @return
      */
-    fun minimumTotal2(triangle: List<List<Int>>): Int {
+    fun minimumTotal1(triangle: List<List<Int>>): Int {
         return dfs(triangle, 0, 0)
     }
 
     private fun dfs(triangle: List<List<Int>>, i: Int, j: Int): Int {
-        if (i == triangle.size) {
-            return 0
-        }
+        if (i == triangle.size) return 0
 
         return Math.min(dfs(triangle, i + 1, j), dfs(triangle, i + 1, j + 1)) + triangle[i][j]
     }
 
     /**
-     * 120. 三角形最小路径和  解法二：备忘录递归(自顶向下)，解法一递归的升级版
+     * 120. 三角形最小路径和  解法二：备忘录递归(自顶向下)，解法一递归的升级版（记住）
      *
-     * 思想：比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
+     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值。比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
      *
      * 时间复杂度：O(n^2)，n为三角形的行数。
      * 空间复杂度：O(n^2)，n为三角形的行数。
@@ -572,44 +588,55 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param triangle
      * @return
      */
-    private lateinit var res2: Array<Array<Int?>>
+    fun minimumTotal2(triangle: List<List<Int>>): Int {
+        val res = Array(triangle.size) { IntArray(triangle.size) }
+        for (i in triangle.indices) {
+            for (j in triangle.indices) {
+                res[i][j] = -1
+            }
+        }
 
-    fun minimumTotal3(triangle: List<List<Int>>): Int {
-        res2 = Array(triangle.size) { arrayOfNulls<Int>(triangle.size) }
-
-        return dfs1(triangle, 0, 0)
+        return dfs1(triangle, res,0, 0)
     }
 
-    private fun dfs1(triangle: List<List<Int>>, i: Int, j: Int): Int {
-        if (i == triangle.size) {
-            return 0
-        }
+    private fun dfs1(triangle: List<List<Int>>, res: Array<IntArray>, i: Int, j: Int): Int {
+        if (i == triangle.size) return 0
 
-        if (res2[i][j] != null) {
-            return res2[i][j]!!
-        }
+        if (res[i][j] != -1) return res[i][j]
 
-        return Math.min(dfs1(triangle, i + 1, j), dfs1(triangle, i + 1, j + 1)) + triangle[i][j]
+        // 该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
+        res[i][j] = Math.min(dfs1(triangle, res,i + 1, j), dfs1(triangle, res,i + 1, j + 1)) + triangle[i][j]
+
+        return res[i][j]
     }
 
     /**
-     * 120. 三角形最小路径和  解法一：动态规划（自底向上）
+     * 120. 三角形最小路径和  解法一：动态规划（自底向上）（记住）
      *
-     * 在实际递推中发现，计算dp[i][j] 时，只用到了下一行的dp[i + 1][j]和dp[i + 1][j + 1]。因此dp数组不需要定义n行，只要定义1行就阔以啦.
+     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值。从三角形的最后一行-->往上，每一行的最右-->左 开始递推
+     *
+     * 步骤：计算dp[i][j]时，只用到了下一行的dp[i + 1][j]和dp[i + 1][j + 1]。当计算三角形的最后一行时，需要额外一行辅助计算(默认值时0)，因此数组长度是n + 1。
+     *
+     * 注意：本题的（自底向上）和其他题的区别，是从第n-1行开始计算，所以要倒着来。
      *
      * 时间复杂度：O(n^2)，n为三角形的行数。
      * 空间复杂度：O(n^2)，n为三角形的行数。
      *
+     * base case：定义dp二维数组，大小是n+1，并初始化值为0
+     * DP方程：dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
+     *
+     * https://leetcode-cn.com/problems/triangle/solution/120-san-jiao-xing-zui-xiao-lu-jing-he-by-chen-li-g/
      * @param triangle
      * @return
      */
-    fun minimumTotal(triangle: List<List<Int>>): Int {
+    fun minimumTotal3(triangle: List<List<Int>>): Int {
         val n = triangle.size
-        // dp[i][j] 表示从点(i, j)到底边的最小路径和。
+        // base case：dp[i][j]表示从点(i, j)到底边的最小路径和
         val dp = Array(n + 1) { IntArray(n + 1) }
-        // 从三角形的最后一行开始递推。
+
+        // DP方程：从三角形的最后一行-->往上，每一行的最右-->左 开始递推
         for (i in n - 1 downTo 0) {
-            for (j in 0..i) {
+            for (j in triangle[i].size - 1 downTo 0) {
                 dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
             }
         }
@@ -625,16 +652,17 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param triangle
      * @return
      */
-    fun minimumTotal1(triangle: List<List<Int>>): Int {
+    fun minimumTotal4(triangle: List<List<Int>>): Int {
         val n = triangle.size
         val dp = IntArray(n + 1)
         for (i in n - 1 downTo 0) {
-            for (j in 0..i) {
+            for (j in triangle[i].size - 1 downTo 0) {
                 dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j]
             }
         }
         return dp[0]
     }
+
 
     /**
      * 53. 最大子序和   解法一：动态规划
@@ -642,6 +670,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 思想：数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
      *
      * base case：dp = nums[0]
+     *
      * DP方程：sum = max(sum + num[i], num[i])， db = max(db, sum)
      *
      * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
@@ -663,6 +692,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
         return db
     }
+
 
     /**
      * 152. 乘积最大子数组  解法一：动态规划
@@ -692,6 +722,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
         return db
     }
+
 
     /**
      * 322. 零钱兑换
@@ -731,18 +762,20 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 198. 打家劫舍  解法一：动态规划
      *
-     * 思想：对于第k(k>2)间房屋，有两个选项：
-     * 1.偷窃第k间房屋，那么就不能偷窃第k−1间房屋，偷窃总金额为前k−2间房屋的最高总金额与第k间房屋的金额之和；
-     * 2.不偷窃第k间房屋，偷窃总金额为前k−1间房屋的最高总金额。
+     * 思想：对于第i(i>2)间房屋，有两个选项：
+     * 1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和；
+     * 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的最高总金额。
      *
      * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
      * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
      *
      * base case：
-     *    dp[0] = nums[0]               // 只有一间房屋，则偷窃该房屋
-     *    dp[1] = max(nums[0],nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
+     *    dp[0] = nums[0]               // 只有1间房屋，则偷窃该房屋
+     *    dp[1] = max(nums[0],nums[1])  // 只有2间房屋，选择其中金额较高的房屋进行偷窃
      *
-     * DP方程：dp[i] = max(dp[i−2] + nums[i], dp[i−1])
+     * DP方程：val a = dp[i - 2] + nums[i]
+     *        val b = dp[i - 1]
+     *        dp[i] = Math.max(a, b)
      *
      * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
      * @param nums
@@ -752,13 +785,19 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (nums.isEmpty()) return 0
         if (nums.size == 1) return nums[0]
 
-        // base case
+        // base case：dp[0]=只有一间房屋，则偷窃该房屋；dp[1]=只有两间房屋，选择其中金额较高的房屋进行偷窃
         val dp = IntArray(nums.size)
         dp[0] = nums[0]
         dp[1] = Math.max(nums[0], nums[1])
-        // dp
+
+        // dp方程：dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
         for (i in 2 until nums.size) {
-            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
+            // 1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和
+            val a = dp[i - 2] + nums[i]
+            // 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的最高总金额
+            val b = dp[i - 1]
+            // 选择其中金额较高的房屋进行偷窃
+            dp[i] = Math.max(a, b)
         }
         return dp[nums.size - 1]
     }
@@ -849,10 +888,12 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (nums.size == 1) return nums[0]
 
         return Math.max(
-            rob1(Arrays.copyOfRange(nums, 1, nums.size)),
-            rob1(Arrays.copyOfRange(nums, 0, nums.size - 1))
+            rob(Arrays.copyOfRange(nums, 1, nums.size)),
+            rob(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
     }
+
+
 
     /**
      * 221. 最大正方形 解法一：动态规划

@@ -358,6 +358,9 @@ class BasicActivity : AppCompatActivity() {
 
         // 注意以下不是固定长度，而是元素
         val intArray1 = intArrayOf(26)
+
+        // 二维的最佳写法
+        val chess = Array(26) { CharArray(26) }
     }
 
     fun list() {
