@@ -9,6 +9,7 @@ import com.read.kotlinlib.basic.CoroutineActivity
 import com.read.kotlinlib.basic.FlowFunActivity
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
+import com.read.kotlinlib.inner.InnerClass
 import com.read.kotlinlib.string.StringTest
 import com.seniorlibs.baselib.utils.LogUtils
 
@@ -89,6 +90,16 @@ class MainActivity : AppCompatActivity() {
     fun testGeneric(view: View?) {
         val genericTest = GenericTest()
         genericTest.genericErasure()
+    }
+
+    /**
+     * 内部类测试
+     *
+     * @param view
+     */
+    fun testInner(view: View?) {
+        val innerClass = InnerClass()
+        innerClass.main()
     }
 
     /**

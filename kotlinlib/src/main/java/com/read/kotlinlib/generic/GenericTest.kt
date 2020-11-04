@@ -1,6 +1,5 @@
 package com.read.kotlinlib.generic
 
-import com.read.kotlinlib.MainActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
