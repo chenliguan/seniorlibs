@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BaseMatchParent"
+    android:orientation="vertical"
+    tools:context=".main.MainActivity"
+    tools:ignore="MissingDefaultResource">
+
+    <Button
+        android:id="@+id/btn_rob"
+        style="@style/BtnStyles"
+        android:text="198. 打家劫舍" />
+
+    <Button
+        android:id="@+id/btn_rob_2"
+        style="@style/BtnStyles"
+        android:text="213. 打家劫舍 II" />
+
+
+    <Button
+        android:id="@+id/btn_max_profit_1"
+        style="@style/BtnStyles"
+        android:text="121. 买卖股票的最佳时机 1" />
+
+    <Button
+        android:id="@+id/btn_max_profit_2"
+        style="@style/BtnStyles"
+        android:text="122. 买卖股票的最佳时机 2" />
+
+    <Button
+        android:id="@+id/btn_max_profit_3"
+        style="@style/BtnStyles"
+        android:text="123. 买卖股票的最佳时机 3" />
+
+    <Button
+        android:id="@+id/btn_max_profit_4"
+        style="@style/BtnStyles"
+        android:text="188. 买卖股票的最佳时机 4" />
+
+    <Button
+        android:id="@+id/btn_max_profit_5"
+        style="@style/BtnStyles"
+        android:text="309. 买卖股票的最佳时机含冷冻期" />
+
+    <Button
+        android:id="@+id/btn_max_profit_6"
+        style="@style/BtnStyles"
+        android:text="714. 买卖股票的最佳时机含手续费" />
+
+</LinearLayout>

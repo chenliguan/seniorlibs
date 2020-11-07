@@ -42,6 +42,8 @@
 
         <activity android:name=".db.DbActivity" />
 
+        <activity android:name=".db.DbActivity2" />
+
         <activity android:name=".greedy.GreedyActivity" />
 
         <activity android:name=".binarysearch.BinarySearchActivity" />

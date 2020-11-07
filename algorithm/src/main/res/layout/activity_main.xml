@@ -81,6 +81,11 @@
             android:text="动态规划" />
 
         <Button
+            android:id="@+id/btn_db2"
+            style="@style/BtnStyles"
+            android:text="动态规划2" />
+
+        <Button
             android:id="@+id/btn_greedy"
             style="@style/BtnStyles"
             android:text="贪心算法" />

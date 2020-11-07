@@ -9,6 +9,7 @@ import com.seniorlibs.algorithm.binarysearch.BinarySearchActivity
 import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
 import com.seniorlibs.algorithm.bit.BitActivity
 import com.seniorlibs.algorithm.db.DbActivity
+import com.seniorlibs.algorithm.db.DbActivity2
 import com.seniorlibs.algorithm.dfsbfs.DfsBfsActivity
 import com.seniorlibs.algorithm.greedy.GreedyActivity
 import com.seniorlibs.algorithm.heap.HeapActivity
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_recursive).setOnClickListener(this)
         findViewById<View>(R.id.btn_back).setOnClickListener(this)
         findViewById<View>(R.id.btn_db).setOnClickListener(this)
+        findViewById<View>(R.id.btn_db2).setOnClickListener(this)
         findViewById<View>(R.id.btn_greedy).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_search).setOnClickListener(this)
         findViewById<View>(R.id.btn_achieve_trie).setOnClickListener(this)
@@ -78,6 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_recursive -> { RecursiveActivity.actionStart(this) }
             R.id.btn_back -> { BackActivity.actionStart(this) }
             R.id.btn_db -> { DbActivity.actionStart(this) }
+            R.id.btn_db2 -> { DbActivity2.actionStart(this) }
             R.id.btn_greedy -> { GreedyActivity.actionStart(this) }
             R.id.btn_binary_search -> { BinarySearchActivity.actionStart(this) }
             R.id.btn_achieve_trie -> { TrieActivity.actionStart(this) }

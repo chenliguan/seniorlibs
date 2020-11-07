@@ -47,8 +47,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
         findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
-        findViewById<View>(R.id.btn_rob).setOnClickListener(this)
-        findViewById<View>(R.id.btn_rob_two).setOnClickListener(this)
         findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
@@ -104,16 +102,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_coin_change -> {
                 LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
             }
-            R.id.btn_rob -> {
-                LogUtils.e(TAG, "198. 打家劫舍11：${rob11(intArrayOf(2, 7, 9, 3, 1))}")
-                LogUtils.e(TAG, "198. 打家劫舍12：${rob12(intArrayOf(2, 7, 9, 3, 1))}")
-                LogUtils.e(TAG, "198. 打家劫舍21：${rob21(intArrayOf(2, 7, 9, 3, 1))}")
-                LogUtils.e(TAG, "198. 打家劫舍22：${rob22(intArrayOf(2, 7, 9, 3, 1))}")
-            }
-            R.id.btn_rob_two -> {
-                LogUtils.e(TAG, "213. 打家劫舍 II：${robTwo(intArrayOf(2, 7, 9, 3, 1))}")
-                LogUtils.e(TAG, "213. 打家劫舍 I 2：${rob4(intArrayOf(2, 7, 9, 3, 1))}")
-            }
             R.id.btn_maximal_square -> {
                 val paths = arrayOf(
                     charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
@@ -133,9 +121,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    /**
-     * 动态规划
-     */
 
     /**
      * 70. 爬楼梯 方法一：暴力递归(自顶向下)
@@ -760,168 +745,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return if (dp[amount] > amount) -1 else dp[amount]
     }
 
-    /**
-     * 198. 打家劫舍  解法1.1：动态规划（记住）
-     *
-     * 思想：对于第i(i>2)间房屋，有两个选项：
-     * 1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和；
-     * 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的最高总金额。
-     *
-     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
-     * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
-     *
-     * base case：
-     *    dp[0] = nums[0]               // 只有1间房屋，则偷窃该房屋
-     *    dp[1] = max(nums[0],nums[1])  // 只有2间房屋，选择其中金额较高的房屋进行偷窃
-     *
-     * DP方程：val a = dp[i - 2] + nums[i]
-     *        val b = dp[i - 1]
-     *        dp[i] = Math.max(a, b)
-     *
-     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
-     * @param nums
-     * @return
-     */
-    fun rob11(nums: IntArray): Int {
-        if (nums.isEmpty()) return 0
-        if (nums.size == 1) return nums[0]
-
-        // base case：dp[0]=只有一间房屋，则偷窃该房屋；dp[1]=只有两间房屋，选择其中金额较高的房屋进行偷窃
-        val dp = IntArray(nums.size)
-        dp[0] = nums[0]
-        dp[1] = Math.max(nums[0], nums[1])
-
-        // dp方程：
-        for (i in 2 until nums.size) {
-            // 1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和
-            // 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的最高总金额
-            // 3.选择其中金额较高的房屋进行偷窃
-            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
-        }
-        return dp[nums.size - 1]
-    }
-
-    /**
-     * 198. 打家劫舍  解法1.2：动态规划（思路优化）-按二维的0/1背包问题思路结局（记住）
-     *
-     * @param nums
-     * @return
-     */
-    fun rob12(nums: IntArray): Int {
-        if (nums.isEmpty()) return 0
-        if (nums.size == 1) return nums[0]
-
-        // base case：dp[0][0] = 0，第1天不偷窃房屋；dp[0][1]，第1天偷窃房屋
-        val dp = Array(nums.size) { IntArray(2) }
-        dp[0][0] = 0
-        dp[0][1] = nums[0]
-
-        // dp方程：
-        for (i in 1 until nums.size) {
-            // 1.第i天没偷房子，选择 第i-1天没偷房子 和 第i-1天偷了房子 中金额最高的
-            dp[i][0] = Math.max(dp[i - 1] [0], dp[i - 1] [1])
-            // 2.第i天偷了房子，第i-1天没偷房子+第i天偷房子的金额(第i-1天不能偷房子)
-            dp[i][1] = dp[i - 1] [0] + nums[i]
-        }
-
-        // 3.第nums.size天选择偷或不偷时，选择其中金额最高的方式
-        return Math.max(dp[nums.size - 1] [0], dp[nums.size - 1] [1])
-    }
-
-    /**
-     * 198. 打家劫舍  解法2.1：动态规划（空间优化）
-     *
-     * 思想：对于第k(k>2)间房屋，有两个选项：
-     * 1.偷窃第k间房屋，那么就不能偷窃第k−1间房屋，偷窃总金额为前k−2间房屋的最高总金额与第k间房屋的金额之和；
-     * 2.不偷窃第k间房屋，偷窃总金额为前k−1间房屋的最高总金额。
-     *
-     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
-     * 空间复杂度：O(1)，不使用滚动数组，只存储前两间房屋的最高总金额，而不需要存储整个数组的结果，因此空间复杂度是O(1)；
-     *
-     * base case：
-     *    pre = nums[0]                // 只有一间房屋，则偷窃该房屋
-     *    cur = max(nums[0], nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
-     *
-     * DP方程：cur = max(pre + nums[i], cur)
-     *
-     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
-     * @param nums
-     * @return
-     */
-    fun rob21(nums: IntArray): Int {
-        if (nums.isEmpty()) return 0
-        if (nums.size == 1) return nums[0]
-
-        // base case
-        var pre = nums[0]
-        var cur = Math.max(nums[0], nums[1])
-        // dp
-        for (i in 2 until nums.size) {
-            val temp = cur
-            cur = Math.max(pre + nums[i], cur)
-            pre = temp
-        }
-        return cur
-    }
-
-    /**
-     * 198. 打家劫舍  解法2.2：动态规划（空间优化）- 代码优化
-     *
-     * base case：
-     *    pre = 0
-     *    cur = 0
-     *
-     * DP方程：cur = max(pre + num, cur)
-     *
-     * @param nums
-     * @return
-     */
-    fun rob22(nums: IntArray): Int {
-        var pre = 0
-        var cur = 0
-        var tmp: Int
-        for (num in nums) {
-            tmp = cur
-            cur = Math.max(pre + num, cur)
-            pre = tmp
-        }
-        return cur
-    }
-
-
-
-    /**
-     * 213. 打家劫舍 II  解法一：动态规划（空间优化）
-     *
-     * 思想：环状排列意味着第一个房子和最后一个房子中只能选择一个偷窃，因此可以把此环状排列房间问题约化为两个单排排列房间子问题：
-     * 1.在不偷窃第一个房子的情况下（即nums[0]），最大金额是p1；
-     * 2.在不偷窃最后一个房子的情况下（即nums[n-1]），最大金额是p2；
-     * 3.综合偷窃最大金额： 为以上两种情况的较大值，即 max(p1, p2)。
-     *
-     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
-     * 空间复杂度：O(1)，不使用滚动数组，只存储前两间房屋的最高总金额，而不需要存储整个数组的结果，因此空间复杂度是O(1)；
-     *
-     * base case：
-     *    pre = 0            // pre(0) -- cur(1) -- num(2)
-     *    cur = 0
-     *
-     * DP方程：cur = max(pre + num, cur)
-     *
-     * https://leetcode-cn.com/problems/house-robber-ii/solution/213-da-jia-jie-she-ii-by-chen-li-guan/
-     * @param nums
-     * @return
-     */
-    fun robTwo(nums: IntArray): Int {
-        if (nums.isEmpty()) return 0
-        if (nums.size == 1) return nums[0]
-
-        return Math.max(
-            rob11(Arrays.copyOfRange(nums, 1, nums.size)),
-            rob11(Arrays.copyOfRange(nums, 0, nums.size - 1))
-        )
-    }
-
-
 
     /**
      * 221. 最大正方形 解法一：动态规划
@@ -1008,33 +831,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return max * max
     }
 
-    fun rob3(nums: IntArray): Int {
-        if (nums.isEmpty()) return 0
-        if (nums.size == 1) return nums[0]
-
-        // base case
-        var pre = nums[0]
-        var cur = Math.max(nums[0], nums[1])
-
-        // dp
-        for (i in 2 until nums.size) {
-            val temp = cur
-            cur = Math.max(pre + nums[i], cur)
-            pre = temp
-        }
-
-        return cur
-    }
-
-    fun rob4(nums: IntArray): Int {
-        if (nums.isEmpty()) return 0
-        if (nums.size == 1) return nums[0]
-
-        return Math.max(
-            rob3(Arrays.copyOfRange(nums, 1, nums.size)),
-            rob3(Arrays.copyOfRange(nums, 0, nums.size - 1))
-        )
-    }
 
     /**
      * 647. 回文子串  动态规划
