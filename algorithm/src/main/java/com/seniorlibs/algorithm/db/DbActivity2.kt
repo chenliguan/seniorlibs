@@ -76,8 +76,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "123. 买卖股票的最佳时机 32：${maxProfit31(intArrayOf(7, 1, 5, 3, 6, 4))}")
             }
             R.id.btn_max_profit_4 -> {
-                LogUtils.e(TAG, "188. 买卖股票的最佳时机 41：${maxProfit41(intArrayOf(7, 1, 5, 3, 6, 4))}")
-                LogUtils.e(TAG, "188. 买卖股票的最佳时机 42：${maxProfit41(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                LogUtils.e(TAG, "188. 买卖股票的最佳时机 41：${maxProfit41(2, intArrayOf(7, 1, 5, 3, 6, 4))}")
             }
             R.id.btn_max_profit_5 -> {
                 LogUtils.e(TAG, "309. 买卖股票的最佳时机含冷冻期 51：${maxProfit51(intArrayOf(7, 1, 5, 3, 6, 4))}")
@@ -435,7 +434,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 123. 买卖股票的最佳时机 3  核心：k=2  解法1：动态规划
-     * 1、思路：
+     * 1、思路：之前的解法，都在穷举所有状态，只是之前的题目中 k 都被化简掉了。这道题由于没有消掉 k 的影响，所以必须要对 k 进行穷举
      *
      * // base case：
 
@@ -452,20 +451,53 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     fun maxProfit31(prices: IntArray): Int {
         if (prices.isEmpty()) return 0
 
-        return 0
+        val k = 2
+        val dp = Array(prices.size) { Array(k + 1) { IntArray(2) } }
+
+        for (i in 1..k) {
+            dp[0][i][0] = 0
+            dp[0][i][1] = -prices[0]
+        }
+
+        for (i in 1 until prices.size) {
+            for (j in k downTo 1) {
+                dp[i][j][0] = Math.max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
+                dp[i][j][1] = Math.max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
+            }
+        }
+
+        return dp[prices.size - 1][k][0]
     }
 
     /**
-     * 124. 买卖股票的最佳时机 4  解法1：
+     * 124. 买卖股票的最佳时机 4  核心：k为任意值  解法1：
      *
      * @param prices
      * @return
      */
-    fun maxProfit41(prices: IntArray): Int {
+    fun maxProfit41(k: Int, prices: IntArray): Int {
         if (prices.isEmpty()) return 0
 
-        return 0
+        // 一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = +infinity --> 买卖股票的最佳时机 2
+        if (k >= prices.size / 2) return maxProfit21(prices)
+
+        val dp = Array(prices.size) { Array(k + 1) { IntArray(2) } }
+
+        for (i in 1..k) {
+            dp[0][i][0] = 0
+            dp[0][i][1] = -prices[0]
+        }
+
+        for (i in 1 until prices.size) {
+            for (j in k downTo 1) {
+                dp[i][j][0] = Math.max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
+                dp[i][j][1] = Math.max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
+            }
+        }
+
+        return dp[prices.size - 1][k][0]
     }
+
 
     /**
      * 309. 买卖股票的最佳时机含冷冻期 5 核心：k 为正无穷但有冷却时间  解法1：动态规划
