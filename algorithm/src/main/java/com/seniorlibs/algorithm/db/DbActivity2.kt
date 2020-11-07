@@ -84,8 +84,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "309. 买卖股票的最佳时机含冷冻期 52：${maxProfit52(intArrayOf(7, 1, 5, 3, 6, 4))}")
             }
             R.id.btn_max_profit_6 -> {
-                LogUtils.e(TAG, "714. 买卖股票的最佳时机含手续费 61：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4))}")
-                LogUtils.e(TAG, "714. 买卖股票的最佳时机含手续费 62：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                LogUtils.e(TAG, "714. 买卖股票的最佳时机含手续费 61：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4), 1)}")
+                LogUtils.e(TAG, "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}")
             }
             else -> {
             }
@@ -535,14 +535,61 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 714. 买卖股票的最佳时机含手续费  解法1：
+     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划（空间优化）
+     * 1、思路：由于具有相同的 k 值，因此情况六和情况二非常相似，不同之处在于情况六有「手续费」，因此在每次买入或卖出股票之后的收益需要扣除手续费
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
      *
      * @param prices
      * @return
      */
-    fun maxProfit61(prices: IntArray): Int {
+    fun maxProfit61(prices: IntArray, fee : Int): Int {
         if (prices.isEmpty()) return 0
 
-        return 0
+        // base case：
+        val dp = Array(prices.size) { IntArray(2) }
+        dp[0][0] = 0
+        dp[0][1] = -prices[0] - fee
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i] - fee)
+        }
+
+        return dp[prices.size - 1][0]
+    }
+
+    /**
+     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划
+     * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     * @param prices
+     * @return
+     */
+    fun maxProfit62(prices: IntArray, fee : Int): Int {
+        if (prices.isEmpty()) return 0
+
+        // base case:
+        // dp[0][0] = 0           --> dp[i][0] = 0
+        // dp[0][1] = -prices[0]  --> dp[i][1] = -prices[0] - fee
+        var dp_i_0 = 0
+        var dp_i_1 = -prices[0] - fee
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            val temp = dp_i_0
+            // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+            dp_i_0 = Math.max(temp, dp_i_1 + prices[i])
+            // dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i]) - fee
+            dp_i_1 = Math.max(dp_i_1, temp - prices[i] - fee)
+        }
+
+        // return dp[prices.size - 1][0]
+        return dp_i_0
     }
 }
