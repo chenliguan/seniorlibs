@@ -105,9 +105,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
             }
             R.id.btn_rob -> {
-                LogUtils.e(TAG, "198. 打家劫舍0：${rob(intArrayOf(2, 7, 9, 3, 1))}")
-                LogUtils.e(TAG, "198. 打家劫舍1：${rob1(intArrayOf(2, 7, 9, 3, 1))}")
-                LogUtils.e(TAG, "198. 打家劫舍2：${rob2(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍11：${rob11(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍12：${rob12(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍21：${rob21(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍22：${rob22(intArrayOf(2, 7, 9, 3, 1))}")
             }
             R.id.btn_rob_two -> {
                 LogUtils.e(TAG, "213. 打家劫舍 II：${robTwo(intArrayOf(2, 7, 9, 3, 1))}")
@@ -760,7 +761,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 198. 打家劫舍  解法一：动态规划
+     * 198. 打家劫舍  解法1.1：动态规划（记住）
      *
      * 思想：对于第i(i>2)间房屋，有两个选项：
      * 1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和；
@@ -781,7 +782,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param nums
      * @return
      */
-    fun rob(nums: IntArray): Int {
+    fun rob11(nums: IntArray): Int {
         if (nums.isEmpty()) return 0
         if (nums.size == 1) return nums[0]
 
@@ -790,20 +791,45 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         dp[0] = nums[0]
         dp[1] = Math.max(nums[0], nums[1])
 
-        // dp方程：dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
+        // dp方程：
         for (i in 2 until nums.size) {
             // 1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和
-            val a = dp[i - 2] + nums[i]
             // 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的最高总金额
-            val b = dp[i - 1]
-            // 选择其中金额较高的房屋进行偷窃
-            dp[i] = Math.max(a, b)
+            // 3.选择其中金额较高的房屋进行偷窃
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
         }
         return dp[nums.size - 1]
     }
 
     /**
-     * 198. 打家劫舍  解法二：动态规划（空间优化）
+     * 198. 打家劫舍  解法1.2：动态规划（思路优化）-按二维的0/1背包问题思路结局（记住）
+     *
+     * @param nums
+     * @return
+     */
+    fun rob12(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        // base case：dp[0][0] = 0，第1天不偷窃房屋；dp[0][1]，第1天偷窃房屋
+        val dp = Array(nums.size) { IntArray(2) }
+        dp[0][0] = 0
+        dp[0][1] = nums[0]
+
+        // dp方程：
+        for (i in 1 until nums.size) {
+            // 1.第i天没偷房子，选择 第i-1天没偷房子 和 第i-1天偷了房子 中金额最高的
+            dp[i][0] = Math.max(dp[i - 1] [0], dp[i - 1] [1])
+            // 2.第i天偷了房子，第i-1天没偷房子+第i天偷房子的金额(第i-1天不能偷房子)
+            dp[i][1] = dp[i - 1] [0] + nums[i]
+        }
+
+        // 3.第nums.size天选择偷或不偷时，选择其中金额最高的方式
+        return Math.max(dp[nums.size - 1] [0], dp[nums.size - 1] [1])
+    }
+
+    /**
+     * 198. 打家劫舍  解法2.1：动态规划（空间优化）
      *
      * 思想：对于第k(k>2)间房屋，有两个选项：
      * 1.偷窃第k间房屋，那么就不能偷窃第k−1间房屋，偷窃总金额为前k−2间房屋的最高总金额与第k间房屋的金额之和；
@@ -822,7 +848,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param nums
      * @return
      */
-    fun rob1(nums: IntArray): Int {
+    fun rob21(nums: IntArray): Int {
         if (nums.isEmpty()) return 0
         if (nums.size == 1) return nums[0]
 
@@ -839,7 +865,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 198. 打家劫舍  解法二：动态规划（空间优化）- 代码优化
+     * 198. 打家劫舍  解法2.2：动态规划（空间优化）- 代码优化
      *
      * base case：
      *    pre = 0
@@ -850,7 +876,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param nums
      * @return
      */
-    fun rob2(nums: IntArray): Int {
+    fun rob22(nums: IntArray): Int {
         var pre = 0
         var cur = 0
         var tmp: Int
@@ -861,6 +887,8 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
         return cur
     }
+
+
 
     /**
      * 213. 打家劫舍 II  解法一：动态规划（空间优化）
@@ -888,8 +916,8 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (nums.size == 1) return nums[0]
 
         return Math.max(
-            rob(Arrays.copyOfRange(nums, 1, nums.size)),
-            rob(Arrays.copyOfRange(nums, 0, nums.size - 1))
+            rob11(Arrays.copyOfRange(nums, 1, nums.size)),
+            rob11(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
     }
 
