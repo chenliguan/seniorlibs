@@ -9,7 +9,7 @@ import com.read.kotlinlib.basic.CoroutineActivity
 import com.read.kotlinlib.basic.FlowFunActivity
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
-import com.read.kotlinlib.inner.InnerClass
+import com.read.kotlinlib.inner.*
 import com.read.kotlinlib.string.StringTest
 import com.seniorlibs.baselib.utils.LogUtils
 
@@ -32,6 +32,10 @@ class MainActivity : AppCompatActivity() {
 
         @JvmStatic
         fun jvm() {
+
+        }
+
+        init {
 
         }
     }
@@ -98,8 +102,24 @@ class MainActivity : AppCompatActivity() {
      * @param view
      */
     fun testInner(view: View?) {
-        val innerClass = InnerClass()
-        innerClass.main()
+        // final测试
+        val final = Final()
+        final.main()
+
+        // 测试Java匿名内部类有哪些限制
+        val outerClass = OuterClass()
+        outerClass.main()
+
+        // 测试Java内部类
+        val outer = Outer()
+        outer.main()
+        // 测试Kotlin内部类
+        val outerKt = Outerkt()
+        outerKt.main()
+
+        // 测试匿名内部类的构造方法（关注：匿名内部类对外部类的引用）
+        val client = ConstructorClient()
+        client.runInnerClass()
     }
 
     /**

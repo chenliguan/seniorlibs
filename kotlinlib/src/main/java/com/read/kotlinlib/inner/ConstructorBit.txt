@@ -1,0 +1,49 @@
+Classfile /C:/Users/Administrator/Desktop/bytecode/inner/InnerInterface/com/read/kotlinlib/inner/Con
+ctor.class                                                                                          
+  Last modified 2020-11-8; size 400 bytes                                                           
+  MD5 checksum e5f101f89dfd660708190a4237839419                                                     
+  Compiled from "Constructor.java"                                                                  
+class com.read.kotlinlib.inner.Constructor                                                          
+  minor version: 0                                                                                  
+  major version: 52                                                                                 
+  flags: ACC_SUPER                                                                                  
+Constant pool:                                                                                      
+   #1 = Methodref          #3.#15         // java/lang/Object."<init>":()V                          
+   #2 = Class              #16            // com/read/kotlinlib/inner/Constructor                   
+   #3 = Class              #17            // java/lang/Object                                       
+   #4 = Class              #18            // com/read/kotlinlib/inner/Constructor$InnerInterface    
+   #5 = Utf8               InnerInterface                                                           
+   #6 = Utf8               InnerClasses                                                             
+   #7 = Class              #19            // com/read/kotlinlib/inner/Constructor$InnerClass        
+   #8 = Utf8               InnerClass                                                               
+   #9 = Utf8               <init>                                                                   
+  #10 = Utf8               ()V                                                                      
+  #11 = Utf8               Code                                                                     
+  #12 = Utf8               LineNumberTable                                                          
+  #13 = Utf8               SourceFile                                                               
+  #14 = Utf8               Constructor.java                                                         
+  #15 = NameAndType        #9:#10         // "<init>":()V                                           
+  #16 = Utf8               com/read/kotlinlib/inner/Constructor                                     
+  #17 = Utf8               java/lang/Object                                                         
+  #18 = Utf8               com/read/kotlinlib/inner/Constructor$InnerInterface                      
+  #19 = Utf8               com/read/kotlinlib/inner/Constructor$InnerClass                          
+{                                                                                                   
+  com.read.kotlinlib.inner.Constructor();                                                           
+    descriptor: ()V                                                                                 
+    flags:                                                                                          
+    Code:                                                                                           
+      stack=1, locals=1, args_size=1                                                                
+         0: aload_0                                                                                 
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V               
+         4: return                                                                                  
+      LineNumberTable:                                                                              
+        line 3: 0                                                                                   
+}                                                                                                   
+SourceFile: "Constructor.java"                                                                      
+InnerClasses:                                                                                       
+     public static #5= #4 of #2; //InnerInterface=class com/read/kotlinlib/inner/Constructor$InnerIn
+ace of class com/read/kotlinlib/inner/Constructor                                                   
+     public abstract #8= #7 of #2; //InnerClass=class com/read/kotlinlib/inner/Constructor$InnerClas
+ class com/read/kotlinlib/inner/Constructor                                                         
+                                                                                                    
+C:\Users\Administrator\Desktop\bytecode\inner\InnerInterface>                                       

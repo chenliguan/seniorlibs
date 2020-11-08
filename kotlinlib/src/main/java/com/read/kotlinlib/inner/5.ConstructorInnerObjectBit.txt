@@ -1,0 +1,63 @@
+Classfile /C:/Users/Administrator/Desktop/bytecode/inner/object/com/read/kotlinlib/inner/ConstructorClient.class
+  Last modified 2020-11-8; size 429 bytes
+  MD5 checksum d4d179a0ab99cd12508170bd5e4873f5
+  Compiled from "ConstructorClient.java"
+public class com.read.kotlinlib.inner.ConstructorClient
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #2.#14         // java/lang/Object."<init>":()V
+   #2 = Class              #15            // java/lang/Object
+   #3 = Class              #16            // com/read/kotlinlib/inner/ConstructorClient$1
+   #4 = Methodref          #3.#17         // com/read/kotlinlib/inner/ConstructorClient$1."<init>":(Ljava/lang/Object;)V
+   #5 = Class              #18            // com/read/kotlinlib/inner/ConstructorClient
+   #6 = Utf8               InnerClasses
+   #7 = Utf8               <init>
+   #8 = Utf8               ()V
+   #9 = Utf8               Code
+  #10 = Utf8               LineNumberTable
+  #11 = Utf8               runInnerObject
+  #12 = Utf8               SourceFile
+  #13 = Utf8               ConstructorClient.java
+  #14 = NameAndType        #7:#8          // "<init>":()V
+  #15 = Utf8               java/lang/Object
+  #16 = Utf8               com/read/kotlinlib/inner/ConstructorClient$1
+  #17 = NameAndType        #7:#19         // "<init>":(Ljava/lang/Object;)V
+  #18 = Utf8               com/read/kotlinlib/inner/ConstructorClient
+  #19 = Utf8               (Ljava/lang/Object;)V
+{
+  public com.read.kotlinlib.inner.ConstructorClient();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 3: 0
+
+  public static void runInnerObject();
+    descriptor: ()V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=3, locals=2, args_size=0
+         0: new           #2                  // class java/lang/Object
+         3: dup
+         4: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         7: astore_0
+         8: new           #3                  // class com/read/kotlinlib/inner/ConstructorClient$1
+        11: dup
+        12: aload_0
+        13: invokespecial #4                  // Method com/read/kotlinlib/inner/ConstructorClient$1."<init>":(Ljava/lang/Object;)V
+        16: astore_1
+        17: return
+      LineNumberTable:
+        line 6: 0
+        line 8: 8
+        line 14: 17
+}
+SourceFile: "ConstructorClient.java"
+InnerClasses:
+     static #3; //class com/read/kotlinlib/inner/ConstructorClient$1

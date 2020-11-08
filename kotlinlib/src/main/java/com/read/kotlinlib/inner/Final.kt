@@ -8,15 +8,15 @@ import com.seniorlibs.baselib.utils.LogUtils
  * Date: 2020/11/4.
  * Mender:
  * Modify:
- * Description: 内部类测试
+ * Description: final测试
  */
-class InnerClass {
+class Final {
 
-    private val TAG = "InnerClass"
+    private val TAG = "Final"
 
     private var innerObject : ABSClass? = null
 
-    abstract class ABSClass {
+    internal abstract class ABSClass {
         abstract fun print()
     }
 
@@ -41,7 +41,7 @@ class InnerClass {
 
     /**
      * 对于匿名内部类对象要访问的所有final(val)类型局部变量，都拷贝成为该对象中的一个数据成员
-     * 以下情况，只创建一次innerObject对象，它的s也被拷贝成为该对象中的一个数据成员。因此，对象不变，此成员也不会变
+     * 以下情况，只创建一次innerObject对象，它的s也被拷贝成为该对象中的一个数据成员。因此，匿名内部类对象不变，此成员也不会变
      *
      * @param s
      */
