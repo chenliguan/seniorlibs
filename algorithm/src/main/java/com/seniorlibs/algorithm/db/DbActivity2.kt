@@ -261,22 +261,19 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     总状态数: n*K*2种状态
 
     for 0 <= i < n:
-    for 1 <= k <= K:
-    for s in {0, 1}:
-    dp[i][k][s] = max(buy, sell, rest)
+        for 1 <= k <= K:
+            for s in {0, 1}:
+                dp[i][k][s] = max(buy, sell, rest)
 
     2、状态转移框架分析
+
+    // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
     dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
     没持有股票 = max(   选择 休息 ,     选择 卖出      )
-    解释：今天我没有持有股票，有两种可能：
-    (1)我昨天就没有持有，然后今天选择 休息，所以我今天还是没有持有；
-    (2)我昨天持有股票，但今天我选择 卖出了，所以我今天没有持有股票了。
 
+    // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票。注意：只允许交易一次，因此手上的现金数就是当天的股价的相反数
     dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
     持有股票   = max(   选择 休息 ,     选择 买入      )
-    解释：今天我持有着股票，有两种可能：
-    (1)我昨天持有股票，然后今天选择 休息，所以我今天还持有着股票；
-    (2)我昨天就没有持有，但今天我选择 买入，所以今天我就持有股票了。
 
     dp[-1][k][0] = 0          // 因为 i 是从 0 开始的，所以 i = -1 意味着还没有开始，这时候的利润当然是 0 。
     dp[-1][k][1] = -infinity  // 还没开始的时候，是不可能持有股票的，用负无穷表示这种不可能。
@@ -295,7 +292,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 121. 买卖股票的最佳时机 1 -- 最低点买入，最高点卖出 核心：k=1  解法1：动态规划
-     * 1、思路：k都是1，不会改变，即k对状态转移已经没有影响了，可以进行进一步化简去掉所有 k。
+     * 1、思路：k都是1，不会改变，即k对状态转移已经没有影响了，可以进行进一步化简去掉所有 k
+     *         (1)可以买入代表之前买入了0次，所以第二个状态转移方程是 dp[i-1][0][0]
+     *         (2)第二个状态转移方程利用了 dp[i-1][1-1][0] = dp[i][0][0] = 0，理解为只允许交易一次，所以买入前利润都是0
      *    注意：你不能在买入股票前卖出股票。
      *
      * // base case：
@@ -304,7 +303,6 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      *
      * // dp方程：
      * dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])   --> dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
-     * // 第二个状态转移方程利用了 dp[i-1][1-1][0] = dp[i][0][0] = 0  --> k = 0 意味着根本不允许交易，这时利润是 0。也可理解为：只允许交易一次，所以买入前利润都是0
      * dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][1-1][0] - prices[i]) --> dp[i][1] = Math.max(dp[i - 1][1], 0 - prices[i])
      *
      * 2、
@@ -324,7 +322,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // dp方程：
         for (i in 1 until prices.size) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
             dp[i][1] = Math.max(dp[i - 1][1], 0 - prices[i])
         }
 
@@ -364,7 +365,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 122. 买卖股票的最佳时机 2 -- 跌了最低点买入，涨了最高点卖出  核心：k为正无穷  解法1：动态规划
-     * 1、思路：如果 k 为正无穷，那么就可以认为 k 和 k - 1 是一样的，因此有dp[i-1][k-1][0] = dp[i-1][k][0] 和 dp[i-1][k-1][1] = dp[i-1][k][1]
+     * 1、思路：如果k为正无穷
+     *         (1)可以买入代表之前买入了k-1次，所以第二个状态转移方程是 dp[i-1][k-1][0]
+     *         (2)所以就可以认为k和k-1是一样的，所以第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0]
      *    注意：你不能在买入股票前卖出股票。
      *
      * // base case：
@@ -372,9 +375,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * dp[i][0][1] = dp[i][1] --> dp[0][1] = -prices[0]
      *
      * // dp方程：
-     * dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])   --> dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
-     * // 第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0] = 0
-     * dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][1-1][0] - prices[i]) --> dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i])
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])   --> dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i]) --> dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i])
      *
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
@@ -393,7 +395,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // dp方程：
         for (i in 1 until prices.size) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
             dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i])
         }
 
@@ -401,7 +406,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 122. 买卖股票的最佳时机 2 -- 跌了最低点买入，涨了最高点卖出  核心：k为正无穷  解法2：动态规划（空间优化）
+     * 122. 买卖股票的最佳时机 2 -- 跌到最低点买入，涨到最高点卖出  核心：k为正无穷  解法2：动态规划（空间优化）
      * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
@@ -437,13 +442,13 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 1、思路：之前的解法，都在穷举所有状态，只是之前的题目中 k 都被化简掉了。这道题由于没有消掉 k 的影响，所以必须要对 k 进行穷举
      *
      * // base case：
-
+     *
      * // dp方程：
      * // 第二个状态转移方程利用了
      *
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
-     * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     * 空间复杂度：O(n)，虽然是三维数组，但是第三维是常数，与问题规模无关。
      *
      * @param prices
      * @return
@@ -451,58 +456,76 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     fun maxProfit31(prices: IntArray): Int {
         if (prices.isEmpty()) return 0
 
-        val k = 2
-        val dp = Array(prices.size) { Array(k + 1) { IntArray(2) } }
+        val maxK = 2
 
-        for (i in 1..k) {
-            dp[0][i][0] = 0
-            dp[0][i][1] = -prices[0]
+        // base case：
+        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
+        for (k in 1..maxK) {
+            dp[0][k][0] = 0
+            dp[0][k][1] = -prices[0]
         }
 
+        // dp方程：
         for (i in 1 until prices.size) {
-            for (j in k downTo 1) {
-                dp[i][j][0] = Math.max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
-                dp[i][j][1] = Math.max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
+            for (k in maxK downTo 1) {
+                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
+
+                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
             }
         }
 
-        return dp[prices.size - 1][k][0]
+        return dp[prices.size - 1][maxK][0]
     }
 
     /**
      * 124. 买卖股票的最佳时机 4  核心：k为任意值  解法1：
+     * 1、思路：如果k为正无穷
+     *         (1)可以买入代表之前买入了k-1次，所以第二个状态转移方程是 dp[i-1][k-1][0]
+     *         (2)所以就可以认为k和k-1是一样的，所以第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0]
+     *    注意：你不能在买入股票前卖出股票。
+     *
+     *    本题和3的区别：一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
+     *
+     * 2、
+     * 时间复杂度：O(nk)，这里n表示股价数组的长度，k是最多可以完成交易的次数；
+     * 空间复杂度：O(nk)，三维dp数组的大小，第3维是常数，故忽略
      *
      * @param prices
      * @return
      */
-    fun maxProfit41(k: Int, prices: IntArray): Int {
+    fun maxProfit41(maxK: Int, prices: IntArray): Int {
         if (prices.isEmpty()) return 0
 
-        // 一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = +infinity --> 买卖股票的最佳时机 2
-        if (k >= prices.size / 2) return maxProfit21(prices)
+        // 一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
+        if (maxK >= prices.size / 2) return maxProfit21(prices)
 
-        val dp = Array(prices.size) { Array(k + 1) { IntArray(2) } }
-
-        for (i in 1..k) {
-            dp[0][i][0] = 0
-            dp[0][i][1] = -prices[0]
+        // base case：
+        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
+        for (k in 1..maxK) {
+            dp[0][k][0] = 0
+            dp[0][k][1] = -prices[0]
         }
 
+        // dp方程：
         for (i in 1 until prices.size) {
-            for (j in k downTo 1) {
-                dp[i][j][0] = Math.max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
-                dp[i][j][1] = Math.max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
+            for (k in maxK downTo 1) {
+                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
+
+                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
             }
         }
 
-        return dp[prices.size - 1][k][0]
+        return dp[prices.size - 1][maxK][0]
     }
-
 
     /**
      * 309. 买卖股票的最佳时机含冷冻期 5 核心：k 为正无穷但有冷却时间  解法1：动态规划
-     * 1、思路：由于具有相同的 k 值，因此情况五和情况二非常相似，不同之处在于情况五有「冷却时间-1天」的限制。
-     *         如果要在第 i 天买入股票，第二个状态转移方程中就不能使用 dp[i-1][0]，而应该使用 dp[i-2][0]，其他不变
+     * 1、思路：由于具有相同的 k 值，因此情况五和情况二非常相似，不同之处在于情况五有「冷却时间-1天」的限制--卖出股票后，你无法在第二天买入股票 (即冷冻期为1天)，只能在第三天买入股票
+     *         所以，如果要在第i天买入股票，必须满足：手上无股票且不在冷冻期买入 --> 第二个状态转移方程中就不能使用 dp[i-1][0]，而应该使用 dp[i-2][0]，其他不变
      *
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
@@ -521,12 +544,16 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // dp方程：
         for (i in 1 until prices.size) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
-            dp[i][1] = Math.max(dp[i - 1][1], (if (i >= 2) dp[i - 2][0] else 0) - prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)前天不持股，今天选择买入股票（现金数减少）
+            dp[i][1] = Math.max(dp[i - 1][1], if (i > 1) dp[i - 2][0] else 0 - prices[i])
         }
 
         return dp[prices.size - 1][0]
     }
+
 
     /**
      * 309. 买卖股票的最佳时机含冷冻期 5 核心：k 为正无穷但有冷却时间  解法2：动态规划（空间优化）
@@ -546,7 +573,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         var dp_i_0 = 0
         var dp_i_1 = -prices[0]
         // 代表 dp[i-2][0]
-        var dp_pre_0 = 0
+        var dp_i_2_0 = 0
 
         // dp方程：
         for (i in 1 until prices.size) {
@@ -556,10 +583,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
             dp_i_0 = Math.max(temp, dp_i_1 + prices[i])
             // dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
-            dp_i_1 = Math.max(dp_i_1, dp_pre_0 - prices[i])
+            dp_i_1 = Math.max(dp_i_1, dp_i_2_0 - prices[i])
 
             // 记录 dp[i-2][0]
-            dp_pre_0 = temp
+            dp_i_2_0 = temp
         }
 
         // return dp[prices.size - 1][0]
@@ -587,7 +614,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // dp方程：
         for (i in 1 until prices.size) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
             dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i] - fee)
         }
 
