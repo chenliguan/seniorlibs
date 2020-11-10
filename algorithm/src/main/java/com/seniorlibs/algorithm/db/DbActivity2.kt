@@ -293,7 +293,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     /**
      * 121. 买卖股票的最佳时机 1 -- 最低点买入，最高点卖出 核心：k=1  解法1：动态规划
      * 1、思路：k都是1，不会改变，即k对状态转移已经没有影响了，可以进行进一步化简去掉所有 k
-     *         (1)可以买入代表之前买入了0次，所以第二个状态转移方程是 dp[i-1][0][0]
+     *         (1)可以买入代表之前最多买入了0次，所以第二个状态转移方程是 dp[i-1][0][0]。--> 必须满足：手上无股票买入
      *         (2)第二个状态转移方程利用了 dp[i-1][1-1][0] = dp[i][0][0] = 0，理解为只允许交易一次，所以买入前利润都是0
      *    注意：你不能在买入股票前卖出股票。
      *
@@ -309,6 +309,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
      *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/121-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
      * @param prices
      * @return
      */
@@ -336,9 +337,12 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     /**
      * 121. 买卖股票的最佳时机 1 -- 最低点买入，最高点卖出 解法2：动态规划（空间优化 -- 考虑使用「滚动变量」（「滚动数组」技巧））
      * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/121-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
      * @param prices
      * @return
      */
@@ -368,7 +372,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 1、思路：如果k为正无穷
      *         (1)可以买入代表之前买入了k-1次，所以第二个状态转移方程是 dp[i-1][k-1][0]
      *         (2)所以就可以认为k和k-1是一样的，所以第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0]
-     *    注意：你不能在买入股票前卖出股票。
+     *    注意：你不能在买入股票前卖出股票。--> 必须满足：手上无股票且不在冷冻期（1天）买入
      *
      * // base case：
      * dp[i][0][0] = dp[i][0] --> dp[0][0] = 0
@@ -382,6 +386,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
      *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/solution/122-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
      * @param prices
      * @return
      */
@@ -408,9 +413,12 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     /**
      * 122. 买卖股票的最佳时机 2 -- 跌到最低点买入，涨到最高点卖出  核心：k为正无穷  解法2：动态规划（空间优化）
      * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/solution/122-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
      * @param prices
      * @return
      */
@@ -450,6 +458,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：O(n)，虽然是三维数组，但是第三维是常数，与问题规模无关。
      *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/123-mai-mai-gu-piao-de-zui-jia-shi-ji-iii-by-chen-/
      * @param prices
      * @return
      */
@@ -460,14 +469,14 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // base case：
         val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
-        for (k in 1..maxK) {
+        for (k in 1 until maxK + 1) {
             dp[0][k][0] = 0
             dp[0][k][1] = -prices[0]
         }
 
         // dp方程：
         for (i in 1 until prices.size) {
-            for (k in maxK downTo 1) {
+            for (k in 1 until maxK + 1) {
                 // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
                 dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
 
@@ -492,6 +501,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(nk)，这里n表示股价数组的长度，k是最多可以完成交易的次数；
      * 空间复杂度：O(nk)，三维dp数组的大小，第3维是常数，故忽略
      *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/188-mai-mai-gu-piao-de-zui-jia-shi-ji-iv-by-chen-l/
      * @param prices
      * @return
      */
@@ -503,14 +513,14 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // base case：
         val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
-        for (k in 1..maxK) {
+        for (k in 1 until maxK + 1) {
             dp[0][k][0] = 0
             dp[0][k][1] = -prices[0]
         }
 
         // dp方程：
         for (i in 1 until prices.size) {
-            for (k in maxK downTo 1) {
+            for (k in 1 until maxK + 1) {
                 // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
                 dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
 
@@ -531,6 +541,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
      *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/309-zui-jia-mai-mai-gu-piao-shi-ji-han-leng-don-41/
      * @param prices
      * @return
      */
@@ -548,7 +559,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
 
             // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)前天不持股，今天选择买入股票（现金数减少）
-            dp[i][1] = Math.max(dp[i - 1][1], if (i > 1) dp[i - 2][0] else 0 - prices[i])
+            dp[i][1] = Math.max(dp[i - 1][1], (if (i > 1) dp[i - 2][0] else 0) - prices[i])
         }
 
         return dp[prices.size - 1][0]
@@ -557,10 +568,13 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 309. 买卖股票的最佳时机含冷冻期 5 核心：k 为正无穷但有冷却时间  解法2：动态规划（空间优化）
-     * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     * 1、思路：第 i 天的最大收益只和第 i - 1 天和第 i - 2 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/309-zui-jia-mai-mai-gu-piao-shi-ji-han-leng-don-41/
      * @param prices
      * @return
      */
@@ -601,6 +615,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
      *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/714-mai-mai-gu-piao-de-zui-jia-shi-ji-han-shou-1-7/
      * @param prices
      * @return
      */
@@ -627,9 +642,12 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     /**
      * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划
      * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
      * 2、
      * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
      * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/714-mai-mai-gu-piao-de-zui-jia-shi-ji-han-shou-1-7/
      * @param prices
      * @return
      */
