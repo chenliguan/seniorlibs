@@ -104,5 +104,10 @@
             android:id="@+id/btn_bit"
             style="@style/BtnStyles"
             android:text="位运算" />
+
+        <Button
+            android:id="@+id/btn_sort"
+            style="@style/BtnStyles"
+            android:text="排序" />
     </LinearLayout>
 </ScrollView>

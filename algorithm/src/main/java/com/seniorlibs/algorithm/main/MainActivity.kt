@@ -19,6 +19,7 @@ import com.seniorlibs.algorithm.other.OtherActivity
 import com.seniorlibs.algorithm.queue.QueueActivity
 import com.seniorlibs.algorithm.recursive.BackActivity
 import com.seniorlibs.algorithm.recursive.RecursiveActivity
+import com.seniorlibs.algorithm.sort.SortActivity
 import com.seniorlibs.algorithm.stack.StackActivity
 import com.seniorlibs.algorithm.string.StringActivity
 import com.seniorlibs.algorithm.trie.TrieActivity
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_binary_search).setOnClickListener(this)
         findViewById<View>(R.id.btn_achieve_trie).setOnClickListener(this)
         findViewById<View>(R.id.btn_bit).setOnClickListener(this)
+        findViewById<View>(R.id.btn_sort).setOnClickListener(this)
         findViewById<View>(R.id.btn_other).setOnClickListener(this)
     }
 
@@ -85,6 +87,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_binary_search -> { BinarySearchActivity.actionStart(this) }
             R.id.btn_achieve_trie -> { TrieActivity.actionStart(this) }
             R.id.btn_bit -> { BitActivity.actionStart(this) }
+            R.id.btn_sort -> { SortActivity.actionStart(this) }
             R.id.btn_other -> { OtherActivity.actionStart(this) }
 
             else -> {

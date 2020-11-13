@@ -56,6 +56,8 @@
 
         <activity android:name=".string.StringActivity" />
 
+        <activity android:name=".sort.SortActivity" />
+
     </application>
 
 </manifest>

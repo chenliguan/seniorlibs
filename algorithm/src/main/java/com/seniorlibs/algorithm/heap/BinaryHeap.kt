@@ -35,10 +35,23 @@ class BinaryHeap(capacity: Int) {
         return heapSize == heap.size
     }
 
+    /**
+     * 父节点，索引为的父结点的索引是(i-1)/2
+     *
+     * @param i
+     * @return
+     */
     private fun parent(i: Int): Int {
         return (i - 1) / d
     }
 
+    /**
+     * 左/右节点：索引为i的左孩子的索引是(2*i+1)，索引为i的左孩子的索引是(2*i+2)
+     *
+     * @param i
+     * @param k
+     * @return
+     */
     private fun kthChild(i: Int, k: Int): Int {
         return d * i + k
     }
@@ -48,9 +61,8 @@ class BinaryHeap(capacity: Int) {
      * 时间复杂性: O(log N)，在最坏的情况下，我们需要遍历到根本
      */
     fun insert(x: Int) {
-        if (isFull()) {
-            throw NoSuchElementException("Heap is full, No space to insert new element")
-        }
+        if (isFull()) throw NoSuchElementException("Heap is full, No space to insert new element")
+
         heap[heapSize] = x
         heapSize++
         heapifyUp(heapSize - 1)
@@ -61,9 +73,8 @@ class BinaryHeap(capacity: Int) {
      * Complexity: O(log N)
      */
     fun delete(x: Int): Int {
-        if (isEmpty()) {
-            throw NoSuchElementException("Heap is empty, No element to delete")
-        }
+        if (isEmpty()) throw NoSuchElementException("Heap is empty, No element to delete")
+
         val maxElement = heap[x]
         heap[x] = heap[heapSize - 1]
         heapSize--
@@ -71,9 +82,10 @@ class BinaryHeap(capacity: Int) {
         return maxElement
     }
 
-
     /**
-     * 插入元素时保持堆属性。
+     * 插入元素时保持堆属性
+     *
+     * @param i
      */
     private fun heapifyUp(i: Int) {
         var i = i
@@ -85,9 +97,10 @@ class BinaryHeap(capacity: Int) {
         heap[i] = insertValue
     }
 
-
     /**
-     * 在删除元素时保持堆属性。
+     * 在删除元素时保持堆属性
+     *
+     * @param i
      */
     private fun heapifyDown(i: Int) {
         var i = i
@@ -95,22 +108,19 @@ class BinaryHeap(capacity: Int) {
         val temp = heap[i]
         while (kthChild(i, 1) < heapSize) {
             child = maxChild(i)
-            if (temp >= heap[child]) {
-                break
-            }
+            if (temp >= heap[child]) break
+            
             heap[i] = heap[child]
             i = child
         }
         heap[i] = temp
     }
 
-
     private fun maxChild(i: Int): Int {
         val leftChild = kthChild(i, 1)
         val rightChild = kthChild(i, 2)
         return if (heap[leftChild] > heap[rightChild]) leftChild else rightChild
     }
-
 
     /**
      * 打印堆的所有元素
@@ -120,7 +130,6 @@ class BinaryHeap(capacity: Int) {
         for (i in 0 until heapSize) print(heap[i].toString() + " ")
         println()
     }
-
 
     /**
      * 此方法返回堆的max元素。
