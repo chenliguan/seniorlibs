@@ -40,6 +40,9 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_quick_sort).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge_sort).setOnClickListener(this)
         findViewById<View>(R.id.btn_heap_sort).setOnClickListener(this)
+        findViewById<View>(R.id.btn_select_sort).setOnClickListener(this)
+        findViewById<View>(R.id.btn_insert_sort).setOnClickListener(this)
+        findViewById<View>(R.id.btn_bubble_sort).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -62,6 +65,21 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
                 val array = intArrayOf(4, 6, 8, 5, 9)
                 heapSort(array)
                 LogUtils.e(TAG, "堆排序：${array.asList()}")
+            }
+            R.id.btn_select_sort -> {
+                val array = intArrayOf(4, 6, 8, 5, 9)
+                selectSort(array)
+                LogUtils.e(TAG, "选择排序：${array.asList()}")
+            }
+            R.id.btn_insert_sort -> {
+                val array = intArrayOf(4, 6, 8, 5, 9)
+                insertSort(array)
+                LogUtils.e(TAG, "插入排序：${array.asList()}")
+            }
+            R.id.btn_bubble_sort -> {
+                val array = intArrayOf(4, 6, 8, 5, 9)
+                bubbleSort(array)
+                LogUtils.e(TAG, "冒泡排序：${array.asList()}")
             }
             else -> {
             }
@@ -174,11 +192,10 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 堆排序
+     * 堆排序（heap sort）
      *
-     * 核心思想：（1）将无需序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆；
-     * 　　     （2）将堆顶元素与末尾元素交换，将最大元素”沉”到数组末端；
-     * 　     　（3）重新调整结构，使其满足堆定义，然后继续交换堆顶元素与当前末尾元素，反复执行调整+交换步骤，直到整个序列有序。
+     * 核心思想：先将待排序的序列建成大根堆，使得每个父节点的元素大于等于它的子节点。此时整个序列最大值即为堆顶元素，
+     *          我们将其与末尾元素交换，使末尾元素为最大值，然后再调整堆顶元素使得剩下的 n-1n−1 个元素仍为大根堆，再重复执行以上操作我们即能得到一个有序的序列
      *
      * 时间复杂度：O(nlogn)。初始化建堆的时间复杂度为O(n)，建完堆以后需要进行n−1次调整，一次调整（即maxHeapify） 的时间复杂度为O(logn)，
      *                     那么n−1次调整即需要O(nlogn)的时间复杂度。因此，总时间复杂度为O(n+nlogn)=O(nlogn)；
@@ -190,16 +207,17 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         if (array.size <= 1) return array
 
         // 建立最大堆：遍历父节点，索引为的父结点的索引是(i-1)/2，假设有5个
-        val length: Int = array.size
-        for (i in (length - 1) / 2 downTo 0) {
+        for (i in (array.size - 1) / 2 downTo 0) {
             // 调整大堆，只需遍历 i = 1、0
             maxHeap(array, array.size, i)
         }
 
         // 排序：每次忽略最后一个最大的值，假设有5个，i = 4、3、2、1
-        for (i in length - 1 downTo 1) {
+        for (i in array.size - 1 downTo 1) {
             // 最大的在0位置，那么开始沉降，这样每交换一次最大的值就丢到最后了
-            swap(array, 0, i)
+            val temp = array[0]
+            array[0] = array[i]
+            array[i] = temp
             // 调整大堆
             maxHeap(array, i, 0)
         }
@@ -218,7 +236,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         // 左/右节点：索引为i的左孩子的索引是(2*i+1)，索引为i的左孩子的索引是(2*i+2)
         val left = index * 2 + 1
         val right = index * 2 + 2
-        // 目标序号：父节点
+        // 目标序号：父节点，largest == 变化的值
         var largest = index
 
         // left < length。左节点大于根节点，将左序号赋值为目标序号
@@ -230,22 +248,112 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         // 目标序号元素不是最大值
         if (index != largest) {
             // 数据交换
-            swap(array, index, largest)
+            val temp = array[index]
+            array[index] = array[largest]
+            array[largest] = temp
+
             // 继续调整大堆
-            maxHeap(array, length, largest) // largest==变化的值
+            maxHeap(array, length, largest)
         }
     }
 
+
     /**
-     * 数据交换
+     * 选择排序
+     * 思想：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置；
+     *      然后，再从剩余未排序元素中继续寻找最小（大）元素；最后放到 前面已排序数组的 末尾。
+     *
+     * 时间复杂度：O(n^2)，这里n是数组的长度；
+     * 空间复杂度：O(1)，使用到常数个临时变量。
      *
      * @param array
-     * @param index1
-     * @param index2
+     * @return
      */
-    fun swap(array: IntArray, index1: Int, index2: Int) {
-        val temp = array[index1]
-        array[index1] = array[index2]
-        array[index2] = temp
+    fun selectSort(array: IntArray) : IntArray {
+        if (array.size <= 1) return array
+
+        // i = 1 逐步递增，是指 前面已排序数组的 最后一个位置
+        for (i in array.indices) {
+            var minIndex = i
+            // 从下一个位置后，找到最小数的下标
+            for (j in i + 1 until array.size) {
+                // 将最小数的索引保存
+                if (array[j] < array[minIndex]) minIndex = j
+            }
+
+            // 最后交换元素
+            val temp = array[i]
+            array[i] = array[minIndex]
+            array[minIndex] = temp
+        }
+
+        return array
     }
+
+
+    /**
+     * 插入排序
+     * 思想：将一个数字插入 前面已排序的数组，不使用逐步交换，使用先赋值给「临时变量」；
+     *      然后把不适合的元素逐个后移；最后空出一个位置，把「临时变量」赋值给这个空位；
+     *
+     * 时间复杂度：O(n^2)，这里n是数组的长度；
+     * 空间复杂度：O(1)，使用到常数个临时变量。
+     *
+     * @param array
+     * @return
+     */
+    fun insertSort(array: IntArray) : IntArray {
+        if (array.size <= 1) return array
+
+        // i = 1 逐步递增，是指 前面已排序数组的 后一个位置
+        for (i in 1 until array.size) {
+            // 先临时暂存这个变量
+            val temp = array[i]
+            var pre = i - 1
+            // 然后前面比插入元素大的值逐个后移，空出一个位置
+            while(pre >= 0 && temp < array[pre]) {
+                array[pre + 1] = array[pre]
+                pre--
+            }
+
+            // 最后把「临时变量」赋值给空位
+            array[pre + 1] = temp
+        }
+
+        return array
+    }
+
+    /**
+     * 冒泡排序  超时
+     * 思想：进行 n-1 趟比较并交换，对相邻的元素进行两两比较，大小不相等则进行交换，每一趟会将最小或最大的元素“冒”到 后面已排序数组 前面
+     *
+     * 时间复杂度：O(n^2)，这里n是数组的长度；
+     * 空间复杂度：O(1)，使用到常数个临时变量。
+     *
+     * @param array
+     * @return
+     */
+    fun bubbleSort(array: IntArray): IntArray {
+        if (array.size <= 1) return array
+
+        // array.size - 1 逐步递减，是指 后面已排序数组 前一个位置
+        for (i in array.size - 1 downTo 0) {
+            var sorted = true
+            for (j in 0 until i) {
+                // 相邻元素两两对比
+                if (array[j] > array[j + 1]) {
+                    // 元素交换
+                    val temp = array[j]
+                    array[j] = array[j + 1]
+                    array[j + 1] = temp
+
+                    sorted = false
+                }
+            }
+            if (sorted) break
+        }
+
+        return array
+    }
+
 }

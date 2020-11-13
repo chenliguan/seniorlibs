@@ -22,4 +22,18 @@
         style="@style/BtnStyles"
         android:text="堆排序" />
 
+    <Button
+        android:id="@+id/btn_select_sort"
+        style="@style/BtnStyles"
+        android:text="选择排序（selection Sort）" />
+
+    <Button
+        android:id="@+id/btn_insert_sort"
+        style="@style/BtnStyles"
+        android:text="插入排序（insertion Sort）" />
+
+    <Button
+        android:id="@+id/btn_bubble_sort"
+        style="@style/BtnStyles"
+        android:text="冒泡排序（bubble Sort）" />
 </LinearLayout>
