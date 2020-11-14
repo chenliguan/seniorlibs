@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
 
+
 /**
  * Author: chen
  * Version: 1.0.0
@@ -16,7 +17,7 @@ import com.seniorlibs.baselib.utils.LogUtils
  * Modify:
  * Description: 链表
  */
-class LinkedActivity : AppCompatActivity(), View.OnClickListener {
+open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         private const val TAG = "LinkedActivity"
@@ -43,6 +44,7 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_handler_reuse).setOnClickListener(this)
         findViewById<View>(R.id.btn_has_cycle).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_link).setOnClickListener(this)
+        findViewById<View>(R.id.btn_merge_two_lists).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -86,6 +88,21 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li22.next = li33
                 li33.next = li44
                 LogUtils.e(TAG, "206. 反转链表：${reverseList(li11)}")
+                LogUtils.e(TAG, "206. 反转链表：${reverseList1(li11)}")
+            }
+            R.id.btn_merge_two_lists -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+
+                val li11 = ListNode(0)
+                val li22 = ListNode(3)
+                val li33 = ListNode(4)
+                li11.next = li22
+                li22.next = li33
+                LogUtils.e(TAG, "21. 合并两个有序链表：${mergeTwoLists(li1, li11)}")
             }
             else -> {
             }
@@ -174,6 +191,7 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         return true // 4.如果有环，快跑者最终一定会追上慢跑者
     }
 
+
     /**
      * 206. 反转链表。方法一：双指针迭代
      *
@@ -184,27 +202,26 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun reverseList1(head: ListNode?): ListNode? {
-        if (head == null) return null
+        if (head?.next == null) return head
 
-        var pre : ListNode? = null
+        // 申请节点pre和cur，pre指向null
+        var pre: ListNode? = null
         var cur = head
-        var temp : ListNode? = null
+        var temp: ListNode? = null
 
         while (cur != null) {
-            temp = cur.next  // 缓存当前节点的下一个节点
-
-            cur.next = pre   // 然后将当前节点指向pre
-
-            pre = cur      // pre和cur节点都往后前进一位
+            // 记录当前节点的下一个节点
+            temp = cur.next
+            // 然后将当前节点指向pre
+            cur.next = pre
+            // pre和cur节点都前进一位
+            pre = cur
             cur = temp
         }
 
-        return pre    // pre最终成了新的表头
+        // pre最终成了新的表头
+        return pre
     }
-
-
-    var pre : ListNode? = null
-    var temp : ListNode? = null
 
     /**
      * 206. 反转链表。方法二：递归
@@ -215,18 +232,48 @@ class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @param head
      * @return
      */
-    fun reverseList(h : ListNode?): ListNode? {
-        if (h == null) return pre
+    fun reverseList(head: ListNode?): ListNode? {
+        // 递归终止条件是当前为空，或者下一个节点为空
+        if (head?.next == null) return head
 
-        var head = h
-
-        temp = head.next   // 缓存当前节点的下一个节点
-
-        head.next = pre    // 然后将当前节点指向pre
-
-        pre = head         // pre和cur节点都往后前进一位
-        head = temp
-
-        return reverseList(head)
+        // 这里的cur就是最后一个节点
+        val cur = reverseList(head.next)
+        // 如果链表是 1->2->3->4->5，那么此时的cur就是5
+        // 而head=4，head.next=5，head.next.next=null
+        // 所以head.next.next = 5.next，所以head.next?.next = head -> 5.next = 4
+        head.next?.next = head
+        // 防止链表循环，需要将head.next设置为空
+        head.next = null
+        // 每层递归函数都返回cur，也就是最后一个节点
+        return cur
     }
+
+    /**
+     * 21. 合并两个有序链表
+     *
+     * 时间复杂度：O(n+m)，其中n和m分别为两个链表的长度。因为每次调用递归都会去掉 l1 或者 l2 的头节点（直到至少有一个链表为空），
+     *                  函数 mergeTwoList 至多只会递归调用每个节点一次。因此，时间复杂度取决于合并后的链表长度，即 O(n+m)。
+     * 空间复杂度：O(n+m)，其中n和m分别为两个链表的长度。递归调用mergeTwoLists时需要消耗栈空间，栈空间的大小取决于递归调用的深度。
+     *                  结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)。
+     * @param l1
+     * @param l2
+     * @return
+     */
+    fun mergeTwoLists(l1: ListNode?, l2: ListNode?): ListNode? {
+        // 1. 两条链表分别名为 l1 和 l2，当 l1 为空或 l2 为空时结束
+        if (l1 == null) return l2
+        if (l2 == null) return l1
+
+        // 如果 l1 的 val 值更小，则将 l1.next 与排序好的链表头相接，l2 同理
+        if (l1.`val` < l2.`val`) {
+            l1.next = mergeTwoLists(l1.next, l2)
+            // 每一层调用都返回排序好的链表头
+            return l1
+        } else {
+            l2.next = mergeTwoLists(l1, l2.next)
+            // 每一层调用都返回排序好的链表头
+            return l2
+        }
+    }
+
 }

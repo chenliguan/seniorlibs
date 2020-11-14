@@ -26,4 +26,10 @@
         android:layout_height="48dp"
         android:text="206. 反转链表" />
 
+    <Button
+        android:id="@+id/btn_merge_two_lists"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="21. 合并两个有序链表" />
+
 </LinearLayout>
