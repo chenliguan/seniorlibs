@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.recursive.RecursiveActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -36,10 +35,10 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_remove_duplicates).setOnClickListener(this)
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_area).setOnClickListener(this)
-        findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_two_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_merge).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -67,10 +66,17 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_three_sum -> {
             val nums: IntArray = intArrayOf(-4, -1, -1, -1, 0, -1, 1, 2)
             LogUtils.d(TAG, "15. 三数之和：${threeSum(nums)}")
+            LogUtils.d(TAG, "15. 三数之和1：${threeSum1(nums)}")
         }
         R.id.btn_four_sum -> {
-            val nums: IntArray = intArrayOf(1, 0, -1, 0, -2, 2)
-            LogUtils.d(TAG, "18. 四数之和：${fourSum(nums, 0)}")
+            val nums: IntArray = intArrayOf(0, 4, -5, 2, -2, 4, 2, -1, 4)
+            LogUtils.d(TAG, "18. 四数之和：${fourSum(nums, 12)}")
+            LogUtils.d(TAG, "18. 四数之和1：${fourSum1(nums, 12)}")
+        }
+        R.id.btn_merge -> {
+            val nums1: IntArray = intArrayOf(1, 2, 3, 5, 6)
+            val nums2: IntArray = intArrayOf(1, 2, 6)
+            LogUtils.d(TAG, "88. 合并两个有序数组：${merge(nums1, 3, nums2,3)}")
         }
         else -> {
         }
@@ -195,7 +201,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 15. 三数之和
+     * 15. 三数之和 记忆版-保留最核心
      * 判断nums中是否存在三个元素a，b，c，使得a+b+c=0，转化为->a+b=-c
      *
      * 时间复杂度 O(n^2)：其中固定指针k循环复杂度O(n)，双指针i，j 复杂度O(n)。
@@ -205,7 +211,59 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param a
      * @return
      */
-    private fun threeSum(nums: IntArray): List<List<Int>> {
+    fun threeSum(nums: IntArray): List<List<Int>> {
+        /* 核心1：对数组进行从小到大排序 */
+        Arrays.sort(nums)
+
+        /* 核心2：第二层循环k，k从f+1开始遍历，最大值是nums.size-2（右边有i/j）；留下i和j */
+        val res = mutableListOf<MutableList<Int>>()
+        for (k in 0 until nums.size - 2) {
+            /* 如果最左边的值大于0，那三数之和肯定大于0 */
+            if (nums[k] > 0) break
+            /* 当k的值与前面的值相等时忽略 */
+            if (k > 0 && nums[k] == nums[k - 1]) continue
+            /* 定义指针i指向k+1，指针j指向数组末尾，交替向中间移动 */
+            var i = k + 1
+            var j = nums.size - 1
+
+            /* 核心3：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
+            while (i < j) {
+                val sum = nums[k] + nums[i] + nums[j]
+                when {
+                    sum < 0 -> {
+                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                        while (i < j && nums[i] == nums[++i]) {}
+                    }
+                    sum > 0 -> {
+                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                        while (i < j && nums[j] == nums[--j]) {}
+                    }
+                    sum == 0 -> {
+                        /* 记录组合[k, i, j]到list */
+                        res.add(mutableListOf(nums[k], nums[i], nums[j]))
+                        /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                        while (i < j && nums[i] == nums[++i]) {}
+                        while (i < j && nums[j] == nums[--j]) {}
+                    }
+
+                }
+            }
+        }
+        return res
+    }
+
+    /**
+     * 15. 三数之和 优化版-深度剪枝
+     * 判断nums中是否存在三个元素a，b，c，使得a+b+c=0，转化为->a+b=-c
+     *
+     * 时间复杂度 O(n^2)：其中固定指针k循环复杂度O(n)，双指针i，j 复杂度O(n)。
+     * 空间复杂度 O(1)：指针使用常数大小的额外空间。
+     *
+     * https://leetcode-cn.com/problems/3sum/solution/15san-shu-zhi-he-by-chen-li-guan/
+     * @param a
+     * @return
+     */
+    fun threeSum1(nums: IntArray): List<List<Int>> {
         val res = mutableListOf<MutableList<Int>>()
         /* 当数组元素小于4个时，直接返回 */
         if (nums.size < 3) return res
@@ -239,13 +297,11 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 when {
                     sum < 0 -> {
                         /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                        while (i < j && nums[i] == nums[++i]) {
-                        }
+                        while (i < j && nums[i] == nums[++i]) {}
                     }
                     sum > 0 -> {
                         /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                        while (i < j && nums[j] == nums[--j]) {
-                        }
+                        while (i < j && nums[j] == nums[--j]) { }
                     }
                     sum == 0 -> {
                         /* 记录组合[k, i, j]到list */
@@ -264,7 +320,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 18. 四数之和
+     * 18. 四数之和 记忆版-保留最核心
      * 判断nums中是否存在四个元素a，b，c和d ，使得a + b + c + d的值与target相等
      *
      * 时间复杂度 O(n^3)：其中固定指针f循环复杂度O(n)，k循环复杂度O(n)，双指针i，j 复杂度O(n)。
@@ -276,6 +332,64 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fourSum(nums: IntArray, target: Int): List<List<Int>> {
+        /* 核心1：对数组进行从小到大排序 */
+        Arrays.sort(nums)
+
+        /* 核心2：定义4个指针f/k/i/j，f从0开始遍历，最大值是nums.size-3（右边有k/i/j） */
+        val res = mutableListOf<MutableList<Int>>()
+        for (f in 0 until nums.size - 3) {
+            /* 当k的值与前面的值相等时忽略 */
+            if (f > 0 && nums[f] == nums[f - 1]) continue
+
+            /* 核心3：第二层循环k，k从f+1开始遍历，最大值是nums.size-2（右边有i/j）；留下i和j */
+            for (k in f + 1 until nums.size - 2) {
+                /* 注意：四数之和是target,和三数之和是0，注释以下判断条件 */
+//                if (nums[k] > 0) break
+                /* 当k的值与前面的值相等时忽略 */
+                if (k > f + 1 && nums[k] == nums[k - 1]) continue
+                /* 定义指针i指向k+1，指针j指向数组末尾，交替向中间移动 */
+                var i = k + 1
+                var j = nums.size - 1
+
+                /* 核心4：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
+                while (i < j) {
+                    val sum = nums[f] + nums[k] + nums[i] + nums[j]
+                    when {
+                        sum < target -> {
+                            /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                            while (i < j && nums[i] == nums[++i]) {}
+                        }
+                        sum > target -> {
+                            /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                            while (i < j && nums[j] == nums[--j]) {}
+                        }
+                        sum == target -> {
+                            /* 记录组合[f, k, i, j]到list */
+                            res.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))
+                            /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                            while (i < j && nums[i] == nums[++i]) {}
+                            while (i < j && nums[j] == nums[--j]) {}
+                        }
+                    }
+                }
+            }
+        }
+        return res
+    }
+
+    /**
+     * 18. 四数之和 优化版-深度剪枝
+     * 判断nums中是否存在四个元素a，b，c和d ，使得a + b + c + d的值与target相等
+     *
+     * 时间复杂度 O(n^3)：其中固定指针f循环复杂度O(n)，k循环复杂度O(n)，双指针i，j 复杂度O(n)。
+     * 空间复杂度 O(1)：指针使用常数大小的额外空间。
+     *
+     * https://leetcode-cn.com/problems/4sum/solution/18-si-shu-zhi-he-by-chen-li-guan/
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun fourSum1(nums: IntArray, target: Int): List<List<Int>> {
         val res = mutableListOf<MutableList<Int>>()
         /* 当数组元素小于4个时，直接返回 */
         if (nums.size < 4) return res
@@ -347,5 +461,34 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return res
+    }
+
+
+    /**
+     * 88. 合并两个有序数组
+     * 思路：设置指针 len1 和 len2 分别指向 nums1 和 nums2 的有数字尾部，从尾部值开始比较遍历，同时设置指针 len 指向 nums1 的最末尾，每次遍历比较值大小之后
+     *       因为 nums1 的空间都集中在后面，所以从后向前处理排序的数据会更好，节省空间
+     *
+     * 时间复杂度：O(m+n)
+     * 空间复杂度：O(m+n)
+     *
+     * https://leetcode-cn.com/problems/merge-sorted-array/solution/88-he-bing-liang-ge-you-xu-shu-zu-by-chen-li-guan/
+     * @param nums1
+     * @param m
+     * @param nums2
+     * @param n
+     */
+    fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int) {
+        var len1 = m - 1
+        var len2 = n - 1
+        var len = m + n - 1
+
+        while (len1 >= 0 && len2 >= 0) {
+            // 注意--符号在后面，表示先进行计算再减1，这种缩写缩短了代码
+            nums1[len--] = if (nums1[len1] > nums2[len2]) nums1[len1--] else nums2[len2--]
+        }
+
+        // 表示将nums2数组剩余部分拷贝到nums1数组中：从下标0位置开始，长度为len2+1
+        System.arraycopy(nums2, 0, nums1, 0, len2 + 1)
     }
 }

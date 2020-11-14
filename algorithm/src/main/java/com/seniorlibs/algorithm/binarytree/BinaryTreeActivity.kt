@@ -628,6 +628,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，其中n是树中的节点个数；
      * 空间复杂度：O(n)，除去返回的答案需要的O(n)空间之外，还需要使用O(n)的空间存储哈希映射，
      *       以及O(h)（其中h是树的高度）的空间表示递归时栈空间。这里h<n，所以总空间复杂度为O(n)。
+     *
+     * https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/solution/106-cong-zhong-xu-yu-hou-xu-bian-li-xu-lie-gou-2-4/
      * @param preorder
      * @param inorder
      * @return
@@ -683,6 +685,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，其中n是树中的节点个数；
      * 空间复杂度：O(n)，除去返回的答案需要的O(n)空间之外，还需要使用O(n)的空间存储哈希映射，
      *       以及O(h)（其中h是树的高度）的空间表示递归时栈空间。这里h<n，所以总空间复杂度为O(n)。
+     *
+     * https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/solution/106-cong-zhong-xu-yu-hou-xu-bian-li-xu-lie-gou-2-4/
      * @param preorder
      * @param inorder
      * @return

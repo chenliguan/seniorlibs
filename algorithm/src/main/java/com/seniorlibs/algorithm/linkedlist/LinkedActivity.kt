@@ -198,6 +198,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。
      * 空间复杂度：O(1)，使用常量空间。
      *
+     * https://leetcode-cn.com/problems/reverse-linked-list/solution/206-fan-zhuan-lian-biao-by-chen-li-guan/
      * @param head
      * @return
      */
@@ -229,6 +230,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。
      * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
      *
+     * https://leetcode-cn.com/problems/reverse-linked-list/solution/206-fan-zhuan-lian-biao-by-chen-li-guan/
      * @param head
      * @return
      */
@@ -255,6 +257,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      *                  函数 mergeTwoList 至多只会递归调用每个节点一次。因此，时间复杂度取决于合并后的链表长度，即 O(n+m)。
      * 空间复杂度：O(n+m)，其中n和m分别为两个链表的长度。递归调用mergeTwoLists时需要消耗栈空间，栈空间的大小取决于递归调用的深度。
      *                  结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)。
+     *
+     * https://leetcode-cn.com/problems/linked-list-cycle/solution/21-he-bing-liang-ge-you-xu-lian-biao-by-chen-li-gu/
      * @param l1
      * @param l2
      * @return

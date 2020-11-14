@@ -37,4 +37,9 @@
         style="@style/BtnStyles"
         android:text="18. 四数之和" />
 
+    <Button
+        android:id="@+id/btn_merge"
+        style="@style/BtnStyles"
+        android:text="88. 合并两个有序数组" />
+
 </LinearLayout>
