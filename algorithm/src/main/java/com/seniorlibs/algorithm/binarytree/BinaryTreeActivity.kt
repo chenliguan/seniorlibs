@@ -163,10 +163,21 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "98. 验证二叉搜索树：${isValidBST1(node)}")
             }
             R.id.btn_pre_in_build_tree -> {
-                LogUtils.e(TAG, "105. 从前序与中序遍历序列构造二叉树：${preInbuildTree(intArrayOf(3, 9, 20, 15, 7), intArrayOf(9, 3, 15, 20, 7))}")
+                LogUtils.e(
+                    TAG,
+                    "105. 从前序与中序遍历序列构造二叉树：${buildTree(
+                        intArrayOf(3, 9, 20, 15, 7),
+                        intArrayOf(9, 3, 15, 20, 7)
+                    )}"
+                )
             }
             R.id.btn_in_post_build_tree -> {
-                LogUtils.e(TAG, "106. 从中序与后序遍历序列构造二叉树：${1}")
+                LogUtils.e(
+                    TAG, "106. 从中序与后序遍历序列构造二叉树：${buildTree1(
+                        intArrayOf(9, 15, 7, 20, 3),
+                        intArrayOf(9, 3, 15, 20, 7)
+                    )}"
+                )
             }
             else -> {
             }
@@ -319,7 +330,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun maxDepth1(root: TreeNode?): Int {
         if (root == null) return 0
 
-        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
+        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
         var level = 0
         queue.offer(root)
 
@@ -375,7 +386,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun minDepth1(root: TreeNode?): Int {
         if (root == null) return 0
 
-        val queue : Queue<TreeNode> = LinkedList<TreeNode>()
+        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
         var level = 0
         queue.offer(root)
 
@@ -602,7 +613,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         if (root.`val` <= minValue || root.`val` >= maxValue) return false  // 左子树节点小于它的根节点
 
-        return solution(root.left, minValue, root.`val`.toLong()) && solution(root.right, root.`val`.toLong(), maxValue)
+        return solution(root.left, minValue, root.`val`.toLong()) && solution(
+            root.right,
+            root.`val`.toLong(),
+            maxValue
+        )
     }
 
     /**
@@ -617,32 +632,101 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @param inorder
      * @return
      */
-    fun preInbuildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
+    fun buildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
         val map: MutableMap<Int, Int> = mutableMapOf()
-        for (i in inorder.indices) {
-            map[inorder[i]] = i
-        }
+        for (i in inorder.indices) map[inorder[i]] = i
 
-        return buildTreeHelper(preorder, 0, preorder.size, inorder, 0, inorder.size, map)
+        return buildTrees(
+            preorder, 0, preorder.size - 1,
+            inorder, 0, inorder.size - 1, map
+        )
     }
 
-    private fun buildTreeHelper(preorder: IntArray, pStart: Int, pEnd: Int,
-                                inorder: IntArray, iStart: Int, iEnd: Int, map: MutableMap<Int, Int>): TreeNode? {
+    private fun buildTrees(
+        preorder: IntArray, preStart: Int, preEnd: Int,
+        inorder: IntArray, inStart: Int, inEnd: Int, map: MutableMap<Int, Int>
+    ): TreeNode? {
+        // 1.递归终结条件：当后指针在前指针前时，返回null结束
+        if (preStart > preEnd) return null
 
-        if (pStart == pEnd) return null      // 前序数组为空，直接返回null
+        // 2.处理当前层逻辑
+        // 在前序数组中找到根节点值
+        val rootVal = preorder[preStart]
+        // 在中序哈希映射中找到根节点下标
+        val rootIndex = map[rootVal]!!
+        // 中序数组的根节点下标 与 中序起点下标 差距
+        val leftSize = rootIndex - inStart
 
-        val rootValue = preorder[pStart]     // 在前序数组中找到根节点值
-        val rootNode = TreeNode(rootValue)       // 构造根节点
-        val iRootIndex = map[rootValue]!!    // 在中序哈希映射中找到根节点下标
+        // 3.下探到下一层，
+        // 构造根节点
+        val rootNode = TreeNode(rootVal)
+        // 递归的构造左子树
+        rootNode.left = buildTrees(
+            preorder, preStart + 1, preStart + leftSize,
+            inorder, inStart, rootIndex, map
+        )
 
-        val leftNum = iRootIndex - iStart    // 中序数组的根节点下标 与 中序起点下标 差距
+        // 递归的构造右子树
+        rootNode.right = buildTrees(
+            preorder, preStart + leftSize + 1, preEnd,
+            inorder, rootIndex + 1, inEnd, map
+        )
+        return rootNode
+    }
 
-        rootNode.left = buildTreeHelper(preorder, pStart + 1, pStart + 1 + leftNum,
-                inorder, iStart, iRootIndex, map)    // 递归的构造左子树
+    /**
+     * 106. 从中序与后序遍历序列构造二叉树
+     *
+     * 核心思想：后序遍历的根节点始终出现在数组的最后一位，而中序遍历中根节点出现在数组的中间位置
+     *
+     * 时间复杂度：O(n)，其中n是树中的节点个数；
+     * 空间复杂度：O(n)，除去返回的答案需要的O(n)空间之外，还需要使用O(n)的空间存储哈希映射，
+     *       以及O(h)（其中h是树的高度）的空间表示递归时栈空间。这里h<n，所以总空间复杂度为O(n)。
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    fun buildTree1(postorder: IntArray, inorder: IntArray): TreeNode? {
+        // 构造哈希映射，帮助我们快速定位中序数组根节点
+        val map: MutableMap<Int, Int> = mutableMapOf()
+        for (i in inorder.indices) map[inorder[i]] = i
 
-        rootNode.right = buildTreeHelper(preorder, pStart + 1 + leftNum, pEnd,
-                inorder, iRootIndex + 1, iEnd, map)  // 递归的构造右子树
+        return buildTree1s(
+            postorder, 0, postorder.size - 1,
+            inorder, 0, inorder.size - 1, map
+        )
+    }
+
+    private fun buildTree1s(
+        postorder: IntArray, postStart: Int, postEnd: Int,
+        inorder: IntArray, inStart: Int, inEnd: Int, map: MutableMap<Int, Int>
+    ): TreeNode? {
+        // 1.递归终结条件：当后指针在前指针前时，返回null结束
+        if (postStart > postEnd) return null
+
+        // 2.处理当前层逻辑
+        // 在后序数组中找到根节点值
+        val rootVal = postorder[postEnd]
+        // 在中序哈希映射中找到根节点下标
+        val rootIndex = map[rootVal]!!
+        // 中序数组的根节点下标 与 中序起点下标 差距
+        val leftSize = rootIndex - inStart
+
+        // 3.下探到下一层，
+        // 构造根节点
+        val rootNode = TreeNode(rootVal)
+        // 递归的构造左子树
+        rootNode.left = buildTree1s(
+            postorder, postStart, postStart + leftSize - 1,
+            inorder, inStart, rootIndex, map
+        )
+
+        // 递归的构造右子树
+        rootNode.right = buildTree1s(
+            postorder, postStart + leftSize, postEnd - 1,
+            inorder, rootIndex + 1, inEnd, map
+        )
         return rootNode
     }
 }
