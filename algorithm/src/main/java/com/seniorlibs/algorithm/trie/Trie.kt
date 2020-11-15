@@ -6,7 +6,7 @@ package com.seniorlibs.algorithm.trie
  * Date: 2020/10/16
  * Mender:
  * Modify:
- * Description: Trie实现
+ * Description: 字典树
  */
 class Trie {
 
@@ -71,5 +71,22 @@ class Trie {
     fun startsWith(prefix: String?): Boolean {
         val node = searchPrefix(prefix!!)
         return node != null
+    }
+
+    class TrieNode {
+        var array = arrayOfNulls<TrieNode>(26)
+        var isEnd = false
+
+        fun containsKey(ch: Char): Boolean {
+            return array[ch - 'a'] != null
+        }
+
+        fun get(ch: Char): TrieNode? {
+            return array[ch - 'a']
+        }
+
+        fun put(ch: Char, node: TrieNode?) {
+            array[ch - 'a'] = node
+        }
     }
 }

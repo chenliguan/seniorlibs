@@ -88,28 +88,23 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_find_circle_num -> {
                 val grid: Array<IntArray> = Array(3) { intArrayOf() }
-//                grid[0] = intArrayOf(1,0,0,1)
-//                grid[1] = intArrayOf(0,1,1,0)
-//                grid[2] = intArrayOf(0,1,1,1)
-//                grid[3] = intArrayOf(1,0,1,1)
-
                 grid[0] = intArrayOf(1,1,0)
                 grid[1] = intArrayOf(1,1,0)
                 grid[2] = intArrayOf(0,0,1)
-                LogUtils.e(TAG, "547. 朋友圈——方法一：深度优先遍历DFS：${findCircleNum(grid)}")
+                val unionFind = FindCircleNum(grid)
+                LogUtils.e(TAG, "547. 朋友圈——方法三：并查集（最优解）：${unionFind.findCircleNum()}")
 
                 val grid1: Array<IntArray> = Array(3) { intArrayOf() }
                 grid1[0] = intArrayOf(1,1,0)
                 grid1[1] = intArrayOf(1,1,0)
                 grid1[2] = intArrayOf(0,0,1)
-                LogUtils.e(TAG, "547. 朋友圈——方法二：广度优先遍历BFS：${findCircleNum1(grid1)}")
+                LogUtils.e(TAG, "547. 朋友圈——方法一：深度优先遍历DFS：${findCircleNum2(grid1)}")
 
                 val grid2: Array<IntArray> = Array(3) { intArrayOf() }
                 grid2[0] = intArrayOf(1,1,0)
                 grid2[1] = intArrayOf(1,1,0)
                 grid2[2] = intArrayOf(0,0,1)
-                val unionFind = UnionFind()
-                LogUtils.e(TAG, "547. 朋友圈——方法三：并查集：${unionFind.findCircleNum(grid2)}")
+                LogUtils.e(TAG, "547. 朋友圈——方法二：广度优先遍历BFS：${findCircleNum3(grid2)}")
             }
             else -> {
             }
@@ -255,7 +250,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 547. 朋友圈——方法一：深度优先遍历DFS
+     * 547. 朋友圈——方法2：深度优先遍历DFS
      *
      * 题解：M[i][j] = 1，表示已知第 i 个和 j 个学生互为朋友关系
      * 思路：从一个特定点开始，访问所有邻接的节点。然后对于这些邻接节点，我们依然通过访问邻接节点的方式，知道访问所有可以到达的节点。因此，我们按照一层一层的方式访问节点
@@ -266,7 +261,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * @param M
      * @return
      */
-    fun findCircleNum(M: Array<IntArray>): Int {
+    fun findCircleNum2(M: Array<IntArray>): Int {
         // 标记学生是否被访问过
         val visited = BooleanArray(M.size)
         var count = 0
@@ -292,7 +287,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 547. 朋友圈——方法二：广度优先遍历BFS
+     * 547. 朋友圈——方法3：广度优先遍历BFS（太复杂，先不考虑）
      *
      * 时间复杂度：O(n^2)，整个矩阵都要被遍历，大小为n^2；
      * 空间复杂度：O(n)，visited数组的大小。
@@ -300,7 +295,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * @param M
      * @return
      */
-    fun findCircleNum1(M: Array<IntArray>): Int {
+    fun findCircleNum3(M: Array<IntArray>): Int {
         var count = 0
         if (M.isEmpty()) return count
 

@@ -354,6 +354,7 @@ class BasicActivity : AppCompatActivity() {
     private fun array() {
         // arrayOfNulls<数据类型>(长度)，默认值都是null == java中的 int[] intArray = new int[6]
         val arrayOfNulls = arrayOfNulls<Int>(26)
+        // 推荐
         val intArray = IntArray(26)
 
         // 注意以下不是固定长度，而是元素
