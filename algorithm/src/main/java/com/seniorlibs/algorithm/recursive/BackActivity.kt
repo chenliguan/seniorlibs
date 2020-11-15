@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.other.LRUCache
 import com.seniorlibs.baselib.utils.LogUtils
 
 
@@ -76,7 +75,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 22. 括号生成  方法一：回溯
      *
-     * 思路：left随时可以加，只要别用完(n) ; right必须之前有左括号，左个数>右个数
+     * 思路：左括号只要小于n，left随时可以加; right必须之前有左括号，左括号个数>右括号个数
      *
      * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
      * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
@@ -175,14 +174,14 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
         val res: MutableList<List<String>> = mutableListOf()
         // DFS
-        solveDfs(res, chess, 0)
+        solveNDfs(res, chess, 0)
         return res
     }
 
     /**
      * DFS
      */
-    private fun solveDfs(res: MutableList<List<String>>, chess: Array<CharArray>, row: Int) {
+    private fun solveNDfs(res: MutableList<List<String>>, chess: Array<CharArray>, row: Int) {
         // 终止条件，最后一行都走完了，说明找到了一种解法，把它加入到集合res中
         if (row == chess.size) {
             // 把每一行(数组)转为list
@@ -198,7 +197,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
                 chess[row][col] = 'Q'
 
                 // 递归到下一行继续
-                solveDfs(res, chess, row + 1)
+                solveNDfs(res, chess, row + 1)
 
                 // 如果最终不能成功，那么返回时把这个位置还原，符合回溯思想
                 chess[row][col] = '.'

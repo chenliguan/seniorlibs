@@ -168,7 +168,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 2、
      * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
      * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
-     *
+     * 3、https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
      * @param nums
      * @return
      */
@@ -198,6 +198,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 2、
      * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
      * 空间复杂度：O(1)，分别使用两个滚动变量，将一维数组状态优化到常数大小。
+     * 3、https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
      * @param nums
      * @return
      */

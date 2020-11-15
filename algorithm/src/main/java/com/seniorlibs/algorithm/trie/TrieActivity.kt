@@ -91,8 +91,8 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                 grid[0] = intArrayOf(1,1,0)
                 grid[1] = intArrayOf(1,1,0)
                 grid[2] = intArrayOf(0,0,1)
-                val unionFind = FindCircleNum(grid)
-                LogUtils.e(TAG, "547. 朋友圈——方法三：并查集（最优解）：${unionFind.findCircleNum()}")
+                val unionFind = FindCircleNum()
+                LogUtils.e(TAG, "547. 朋友圈——方法三：并查集（最优解）：${unionFind.findCircleNum(grid)}")
 
                 val grid1: Array<IntArray> = Array(3) { intArrayOf() }
                 grid1[0] = intArrayOf(1,1,0)

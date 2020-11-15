@@ -69,6 +69,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(1) 。运行时间与n中位为1的有关。在最坏情况下， n中所有位都是1 。对于32位整数，运行时间是O(1)的。
      * 空间复杂度：O(1) 。没有使用额外空间。
      *
+     * https://leetcode-cn.com/problems/number-of-1-bits/solution/191-wei-1de-ge-shu-by-chen-li-guan/
      * @param n
      * @return
      */
@@ -77,10 +78,10 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
         var mask = 1
         for (i in 0..31) {
             // 00000000000000000000001000001001 & 1 / 1000 / 100000000 != 0
-            if (n and mask != 0) {
+            if (n and mask != 0) {  // &
                 bits++
             }
-            mask = mask shl 1  // 左移<<=， 1 / 10 / 100 / 1000 / ... / 1000000000000000000000000000000
+            mask = mask shl 1  // 左移 <<（x >> 1-> x/2）， 1 / 10 / 100 / 1000 / ... / 1000000000000000000000000000000
         }
         return bits
     }
@@ -93,6 +94,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(1) 。运行时间与n中位为1的有关。在最坏情况下， n中所有位都是1 。对于32位整数，运行时间是O(1)的。
      * 空间复杂度：O(1) 。没有使用额外空间。
      *
+     * https://leetcode-cn.com/problems/number-of-1-bits/solution/191-wei-1de-ge-shu-by-chen-li-guan/
      * @param n
      * @return
      */
@@ -104,7 +106,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
             // 00000000000000000000001000001001 & 00000000000000000000001000001000 = 00000000000000000000001000001000
             // 00000000000000000000001000001000 & 00000000000000000000001000000111 = 00000000000000000000001000000000
             // 00000000000000000000001000000000 & 00000000000000000000000111111111 = 00000000000000000000000000000000
-            n = n and n - 1
+            n = n and n - 1  // &
         }
         return sum
     }
@@ -126,6 +128,6 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun isPowerOfTwo(n: Int): Boolean {
-        return n > 0 && n and n - 1 == 0
+        return n > 0 && n and n - 1 == 0  // &
     }
 }
