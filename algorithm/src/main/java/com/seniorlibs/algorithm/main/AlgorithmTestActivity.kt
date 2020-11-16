@@ -2,16 +2,10 @@ package com.seniorlibs.algorithm.main
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.array.ArrayActivity
-import com.seniorlibs.algorithm.map.MapActivity
-import com.seniorlibs.algorithm.recursive.RecursiveActivity
-import com.seniorlibs.algorithm.string.StringActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -43,16 +37,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
-        findViewById<View>(R.id.btn_to_lower_case).setOnClickListener(this)
-        findViewById<View>(R.id.btn_solve_n_queens).setOnClickListener(this)
-        findViewById<View>(R.id.btn_is_valid).setOnClickListener(this)
-        findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
-        findViewById<View>(R.id.btn_top_k_frequent).setOnClickListener(this)
-        findViewById<View>(R.id.btn_is_anagram).setOnClickListener(this)
-        findViewById<View>(R.id.btn_is_anagram_groups).setOnClickListener(this)
-        findViewById<View>(R.id.btn_is_fizz_buzz).setOnClickListener(this)
-        findViewById<View>(R.id.btn_max_area).setOnClickListener(this)
+        findViewById<View>(R.id.btn_1).setOnClickListener(this)
 
     }
 
@@ -62,353 +47,65 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_reverse_string -> {
-                val s: CharArray = charArrayOf('h', 'e', 'l', 'l', 'o')
-                reverseString(s)
-                LogUtils.d(ArrayActivity.TAG, "344. 反转字符串：${s}")
+            R.id.btn_1 -> {
+                LogUtils.d(TAG, "1一鲍母A-Z的消息通过以下方式进行了编码：${numDecodings("27")}")
             }
-            R.id.btn_to_lower_case -> {
-                LogUtils.e(StringActivity.TAG, "709. 转换成小写字母：" + toLowerCase("Hello"))
-            }
-            R.id.btn_solve_n_queens -> {
-                LogUtils.e(TAG, "51. N 皇后：${solveNQueens(4)}")
-            }
-            R.id.btn_is_valid -> {
-                val valid = isValid("]")
-                LogUtils.d(TAG, "20. 有效的括号：${valid}")
-            }
-            R.id.btn_bracket_generate -> {
-                LogUtils.e(RecursiveActivity.TAG, "22. 括号生成：${generateParenthesis(3)}")
-            }
-            R.id.btn_top_k_frequent -> {
-                val nums: IntArray = intArrayOf(1, 1, 1, 2, 2, 3)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    LogUtils.d(TAG, "347. 前 K 个高频元素 ：" + topKFrequent(nums, 2))
-                }
-            }
-            R.id.btn_is_anagram -> {
-                LogUtils.e(MapActivity.TAG, "242. 有效的字母异位词：" + isAnagram("a", "b"))
-            }
-
-            R.id.btn_is_anagram_groups -> {
-                LogUtils.e(
-                    MapActivity.TAG,
-                    "49. 字母异位词分组：" + groupAnagrams(
-                        arrayOf("eat", "tea", "tan", "ate", "nat", "bat")
-                    )
+            R.id.btn_2 -> {
+                val list = listOf("hot", "dot", "dog", "lot", "log", "cog")
+                LogUtils.d(
+                    TAG,
+                    "给定两个单词(beginWord 和endWord)和一个字典：${ladderLength("hit", "cog", list)}"
                 )
-            }
-
-            R.id.btn_is_fizz_buzz -> {
-                LogUtils.e(MapActivity.TAG, "412. Fizz buzz：" + fizzBuzz(15))
-            }
-
-            R.id.btn_max_area -> {
-                val nums: IntArray = intArrayOf(1, 8, 6, 2, 5, 4, 8, 3, 7)
-                // 11. 盛最多水的容器
-                LogUtils.d(ArrayActivity.TAG, "11. 盛最多水的容器：${maxArea(nums)}")
             }
             else -> {
             }
         }
     }
 
-    fun reverseString(s: CharArray): Unit {
-        if (s.isEmpty()) return
+    fun numDecodings(s: String): Int {
+        if (s.isEmpty() || s == "0") return 0
+        if (s.length == 1) return 1
 
-        var i = 0
-        var j = s.size - 1
-        while (i < j) {
-            val temp = s[i]
-            s[i] = s[j]
-            s[j] = temp
-
-            i++
-            j--
+        val map = mutableMapOf<Char, Int>()
+        for (c in 'A'..'Z') {
+            map[c] = c - 'A' + 1
         }
+
+        return decodings(1, s, s.length, map)
     }
 
+    fun decodings(n: Int, s: String, length : Int, map: MutableMap<Char, Int>): Int {
+        if (s.isEmpty()) return 1
+        if (s[0] == '0') return 0
+        if (s.length == 1) return 1
 
-    fun toLowerCase(str: String): String {
-        if (str.isEmpty()) return str
+        var num = 0
 
-        val ch =  str.toCharArray()
-        for (i in ch.indices) {
-            if (ch[i] in 'A'..'Z') {
-                ch[i] = ch[i] + 32
-            }
-        }
-        return String(ch)
-    }
-    
-    fun solveNQueens(n: Int): List<List<String>>? {
-        val chess = Array(n) { CharArray(n) }
-        for (i in chess.indices) {
-            for (j in chess[0].indices) {
-                chess[i][j] = '.'
-            }
+        if (s.length > 1) {
+            // 取1位
+            num += decodings(n + 1, s.substring(1, s.length), length, map)
         }
 
-        val res : MutableList<List<String>> = mutableListOf()
-        // DFS
-        solveDfs(res, chess, 0)
-        return res
-    }
-
-    private fun solveDfs(res: MutableList<List<String>>, chess: Array<CharArray>, row: Int) {
-        // 1.退出条件
-        if (row == chess.size) {
-            res.add(turn(chess))
-            return
-        }
-
-        for (col in chess.indices) {
-            if (isValid(chess, row, col)) {
-                // 2.处理当前层逻辑
-                chess[row][col] = 'Q'
-
-                // 3.下探到下一层
-                solveDfs(res, chess, row + 1)
-
-                // 4. 恢复当前层状态
-                chess[row][col] = '.'
-            }
-        }
-    }
-
-    private fun isValid(chess : Array<CharArray>, row: Int, col : Int) : Boolean {
-        // 上面
-        for (i in 0 until row) {
-            if (chess[i][col] == 'Q') {
-                return false
-            }
-        }
-
-
-        // 右上角
-        var i = row - 1
-        var j = col + 1
-        while (i >= 0 && j < chess.size) {
-            if (chess[i--][j++] == 'Q') {
-                return false
-            }
-        }
-
-        // 左上角
-        var i1 = row - 1
-        var j1 = col - 1
-        while (i1 >= 0 && j1 >= 0) {
-            if (chess[i1--][j1--] == 'Q') {
-                return false
-            }
-        }
-
-        return true
-    }
-
-    private fun turn(chess: Array<CharArray>): List<String> {
-        val list = mutableListOf<String>()
-        for (i in chess.indices) {
-            // 一行chess[0]
-            list.add(String(chess[i]))
-        }
-        return list
-    }
-
-
-    /**
-     * 思想：如果输入是 ( ，入栈 )，当输入 ) 时弹出栈中的 (，对比是否相等。不等直接返回false退出
-     *      如果输入是 ) ，此时栈为空，以后也无法再匹配此 ) ，直接返回false退出；
-     *      如果连续输入是 ((，最后栈不为空，返回结果false；
-     *
-     * @param s
-     * @return
-     */
-    fun isValid(s: String): Boolean {
-        if (s.isEmpty()) return false
-
-        val chars = s.toCharArray()
-        val stack = LinkedList<Char>()
-
-        for (c in chars) {
-            if (c == '(') {
-                stack.push(')')
-            } else if (c == '[') {
-                stack.push(']')
-            } else if (c == '{') {
-                stack.push('}')
-            } else if (stack.isEmpty() || stack.pop() != c) {
-                return false
-            }
-        }
-
-        return stack.isEmpty()
-    }
-
-    fun generateParenthesis(n: Int): List<String> {
-        val res: MutableList<String> = mutableListOf()
-        if (n == 0) return res
-
-        // ((()))
-        // 添加 ) ，需要 ( 的数量大于 )
-        // 添加 ( , 需要 ( 数量小于 n
-        return generate(0, 0, n, "", res)
-    }
-
-    fun generate(
-        l: Int,
-        r: Int,
-        n: Int,
-        str: String,
-        res: MutableList<String>
-    ): MutableList<String> {
-        // 1.递归终结条件（最先写） // 肯定不合法，提前结束，即“剪枝”
-        if (l > n || r > l) return res
-
-        // 2.处理当前层逻辑
-        if (l == n && r == l) res.add(str)
-
-        // 3.下探到下一层
-        if (l < n) generate(l + 1, r, n, str + "(", res)
-
-        if (r < l) generate(l, r + 1, n, str + ")", res)
-
-        // 4.清理恢复当前层
-
-        return res
-    }
-
-    fun isAnagram(s: String, t: String): Boolean {
-        if (s.length != t.length) return false
-
-        val sArray = s.toCharArray()
-        val tArray = t.toCharArray()
-
-        val array = IntArray(26)
-        for (c in sArray) {
-            array[c - 'a']++
-        }
-        for (c in tArray) {
-            array[c - 'a']--
-        }
-
-        for (i in array) {
-            if (i > 0) return false
-        }
-
-        return true
-    }
-
-    fun groupAnagrams(strs: Array<String>): List<List<String>> {
-        val res: MutableList<List<String>> = mutableListOf()
-        if (strs.isEmpty()) return res
-
-        val map = mutableMapOf<String, MutableList<String>>()
-        for (str in strs) {
-            val sArray = str.toCharArray()
-            val array = IntArray(26)
-            for (c in sArray) {
-                array[c - 'a']++
-            }
-
-            // 将每个字符串s转换为字符数组count-->key，由26个非负整数组成，表示a，b，c的数量。"eat", "tea"的key是相等的
-            val sb = StringBuilder()
-            for (c in array) {
-                sb.append("#${c}")
-            }
-
-            val key = sb.toString()
-            if (!map.containsKey(key)) {
-                map[key] = mutableListOf()
-            }
-            map[key]!!.add(str)
-        }
-
-        return map.values.toList()
-    }
-
-    fun fizzBuzz(n: Int): List<String> {
-        val res = mutableListOf<String>()
-        val map = mutableMapOf<Int, String>(3 to "fizz", 5 to "buzz")
-
-        for (i in 1 until n + 1) {
-            val str = StringBuilder()
-            for (key in map.keys) {
-                if (i % key == 0) {
-                    str.append(map[key])
-                }
-            }
-
-            if (str.isEmpty()) {
-                str.append(i.toString())
-            }
-
-            res.add(str.toString())
-        }
-
-        return res
-    }
-
-    fun maxArea(a: IntArray): Int {
-        if (a.isEmpty()) return 0
-
-        var i = 0
-        var j = a.size - 1
-        var max = 0
-
-        while (i < j) {
-            // 1.计算宽/高
-            val w = j - i
-            val h = Math.min(a[i], a[j])
-            // 2.计算区域面积，并更新最大面积
-            val area = w * h
-            if (area > max) {
-                max = area
-            }
-            // 3.选择左右指针最小的高度，最大指针不动，移动小的指针向中间移动
-            if (a[i] < a[j]) i++ else j--
-        }
-
-        return max
-    }
-
-    /**
-     * 347. 前 K 个高频元素
-     *
-     * @param nums
-     * @param k
-     * @return
-     */
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun topKFrequent(nums: IntArray, k: Int): IntArray {
-        val res = IntArray(k)
-        if (nums.isEmpty()) return res
-
-        val map = mutableMapOf<Int, Int>()
-        for (n in nums) {
-            if (map.containsKey(n)) {
-                map[n] = map[n]!! + 1
+        if (s.length >= 2) {
+            // 取2位
+            val value = s.substring(0, 2).toInt()
+            if (map.containsValue(value)) {
+                num += decodings(n + 1, s.substring(2, s.length), length, map)
             } else {
-                map[n] = 1
+                return num
             }
         }
 
-        // 优先级队列，升序->小顶堆
-        val queue = PriorityQueue(Comparator<Int> { o1, o2 -> map[o1]!! - map[o2]!! })
-
-        for (key in map.keys) {
-            if (queue.size < k) {
-                queue.offer(key)
-            } else if (map[key]!! > map[queue.peek()]!!) {
-                queue.poll()
-                queue.offer(key)
-            }
-        }
-
-        for (i in 0 until queue.size) {
-            res[i] = queue.poll()
-        }
-
-        return res
+        return num
     }
+
+    fun ladderLength(beginWord: String, endWord: String, wordList: List<String>): Int {
+        if (wordList.isEmpty()) return 0
+        if (!wordList.contains(beginWord) || !wordList.contains(endWord)) return 0
+
+
+        return 0
+
+    }
+
 }

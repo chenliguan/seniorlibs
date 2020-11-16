@@ -8,52 +8,12 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_reverse_string"
+        android:id="@+id/btn_1"
         style="@style/BtnStyles"
-        android:text="344. 反转字符串" />
+        android:text="1一鲍母A-Z的消息通过以下方式进行了编码" />
 
     <Button
-        android:id="@+id/btn_to_lower_case"
+        android:id="@+id/btn_2"
         style="@style/BtnStyles"
-        android:text="709. 转换成小写字母" />
-
-    <Button
-        android:id="@+id/btn_solve_n_queens"
-        style="@style/BtnStyles"
-        android:text="51. N 皇后" />
-
-    <Button
-        android:id="@+id/btn_is_valid"
-        style="@style/BtnStyles"
-        android:text="20. 有效的括号" />
-
-    <Button
-        android:id="@+id/btn_bracket_generate"
-        style="@style/BtnStyles"
-        android:text="22. 括号生成" />
-
-    <Button
-        android:id="@+id/btn_top_k_frequent"
-        style="@style/BtnStyles"
-        android:text="347. 前 K 个高频元素" />
-
-    <Button
-        android:id="@+id/btn_is_anagram"
-        style="@style/BtnStyles"
-        android:text="242. 有效的字母异位词" />
-
-    <Button
-        android:id="@+id/btn_is_anagram_groups"
-        style="@style/BtnStyles"
-        android:text="49. 字母异位词分组" />
-
-    <Button
-        android:id="@+id/btn_is_fizz_buzz"
-        style="@style/BtnStyles"
-        android:text="412. Fizz buzz" />
-
-    <Button
-        android:id="@+id/btn_max_area"
-        style="@style/BtnStyles"
-        android:text="11. 盛最多水的容器" />
+        android:text="给定两个单词(beginWord 和endWord)和一个字典" />
 </LinearLayout>
