@@ -231,10 +231,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val p = stack.pop()        // 将根节点弹出
-            res.add(p!!.`val`)                 // 加入到结果集合中
+            // 将根节点弹出
+            val p = stack.pop()
+            // 加入到结果集合中
+            res.add(p!!.`val`)
 
-            for (i in p.children.size - 1 downTo 0) {  // 将该节点的子节点从右往左压入栈
+            // 将该节点的子节点从右往左压入栈
+            for (i in p.children.size - 1 downTo 0) {
                 stack.push(p.children[i])
             }
         }
@@ -282,14 +285,18 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val node = stack.pop()        // 将根节点弹出
-            res.add(node!!.`val`)                 // 加入到结果集合中
+            // 将根节点弹出
+            val node = stack.pop()
+            // 加入到结果集合中
+            res.add(node!!.`val`)
 
-            for (i in 0 until node.children.size) {  // 将该节点的子节点从左往右压入栈
+            // 将该节点的子节点从左往右压入栈
+            for (i in 0 until node.children.size) {
                 stack.push(node.children[i])
             }
         }
-        return res.reversed()  // 最后将list反转
+        // 最后将list反转
+        return res.reversed()
     }
 
     class TreeNode(var `val`: Int) {
@@ -490,13 +497,20 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val node = stack.pop()  // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            val node = stack.pop()
             if (node != null) {
-                if (node.right != null) stack.push(node.right)   // 添加右节点
-                if (node.left != null) stack.push(node.left)     // 添加左节点
-                stack.push(node)               // 添加根节点
-                stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
-            } else {                           // 遇到标记，弹出栈顶元素，加入到集合中
+                // 添加右节点
+                if (node.right != null) stack.push(node.right)
+                // 添加左节点
+                if (node.left != null) stack.push(node.left)
+
+                // 添加根节点
+                stack.push(node)
+                // 根节点访问过，但还没有处理，需要做一下标记null
+                stack.push(null)
+            } else {
+                // 遇到标记，弹出栈顶元素，加入到集合中
                 res.add(stack.pop()!!.`val`)
             }
         }
@@ -520,14 +534,20 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val node = stack.pop()     // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            val node = stack.pop()
             if (node != null) {
-                if (node.right != null) stack.push(node.right)   // 添加右节点
-                stack.push(node)                  // 添加根节点
-                stack.push(null)               // 根节点访问过，但还没有处理，需要做一下标记null
-                if (node.left != null) stack.push(node.left)     // 添加左节点
+                // 添加右节点
+                if (node.right != null) stack.push(node.right)
+                // 添加根节点
+                stack.push(node)
+                // 根节点访问过，但还没有处理，需要做一下标记null
+                stack.push(null)
+                // 添加左节点
+                if (node.left != null) stack.push(node.left)
             } else {
-                res.add(stack.pop()!!.`val`)      // 遇到标记，弹出栈顶元素，加入到集合中
+                // 遇到标记，弹出栈顶元素，加入到集合中
+                res.add(stack.pop()!!.`val`)
             }
         }
         return res
@@ -550,13 +570,19 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            val node = stack.pop()    // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            val node = stack.pop()
             if (node != null) {
-                stack.push(node)                  // 添加根节点
-                stack.push(null)            // 根节点访问过，但还没有处理，需要做一下标记null
-                if (node.right != null) stack.push(node.right)    // 添加右节点
-                if (node.left != null) stack.push(node.left)      // 添加左节点
-            } else {                           // 遇到标记，模拟执行方法内部操作
+                // 添加根节点
+                stack.push(node)
+                // 根节点访问过，但还没有处理，需要做一下标记null
+                stack.push(null)
+                // 添加右节点
+                if (node.right != null) stack.push(node.right)
+                // 添加左节点
+                if (node.left != null) stack.push(node.left)
+            } else {
+                // 遇到标记，模拟执行方法内部操作
                 res.add(stack.pop()!!.`val`)
             }
         }

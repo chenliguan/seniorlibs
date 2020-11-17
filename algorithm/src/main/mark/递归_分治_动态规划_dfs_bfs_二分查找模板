@@ -160,94 +160,123 @@ public int binarySearch(int[] array, int target) {
 }
 
 七、BFS模板-迭代
-fun levelOrder(root: TreeNode?): List<List<Int>>? {
-    val res: MutableList<List<Int>> = mutableListOf()  // 存放最终结果的集合
-    if (root == null) return res
+    /**
+     * 107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(n)，队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)。
+     *
+     * @param root
+     * @return
+     */
+    fun levelOrder(root: TreeNode?): List<List<Int>>? {
+        // 1.1 创建一个存放最终结果的集合 和 存放节点的队列
+        val res: MutableList<List<Int>> = mutableListOf()
+        val queue: Queue<TreeNode> = LinkedList()
 
-    val queue: Queue<TreeNode> = LinkedList()   // 创建一个队列，将根节点放入其中
-    queue.offer(root)
-    while (!queue.isEmpty()) {
-        val level: MutableList<Int> = mutableListOf()
-        val size: Int = queue.size   // 每次遍历的数量为队列的长度
+        // 1.2 根节点不==null，将根节点放入其中
+        if (root == null) return res else queue.offer(root)
 
-        for (i in 0 until size) {   // 将这一层的元素全部取出，放入到结果集合
-            val node = queue.poll()
-            level.add(node.`val`)
+        // 2.1 遍历每一层前，下层的队列不为空，继续遍历
+        while (queue.isNotEmpty()) {
+            val list: MutableList<Int> = mutableListOf()
+            // 2.2 将这一层的元素全部取出，因为长度已确定，不会遍历新加入的左右节点
+            for (i in 0 until queue.size) {
+                val node = queue.poll()
+                // 2.3 添加遍历后的元素到集合中
+                list.add(node.`val`)
 
-            val left = node.left
-            val right = node.right
-            if (left != null) queue.offer(left)  // 如果节点的左右孩子不为空，放入队列
-            if (right != null) queue.offer(right)
+                // 3 如果节点的左右孩子不为空，放入队列
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
+            }
+
+            // 4 赋值到集合中
+            res.add(list)
         }
 
-        res.add(level)
+        return res
     }
-
-    return res
-}
 
 
 八、DFS模板
 1、递归
-fun levelOrder1(root: TreeNode?): List<List<Int>>? {
-    val res: MutableList<MutableList<Int>> = mutableListOf()  // 存放最终结果的集合
-    if (root == null) return res
+    /**
+     * 107. 二叉树的层次遍历 -- DFS深度遍历-递归
+     *
+     * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果当前行对应的 list 不存在，就加入一个空 list 进去。
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(h)，h 是树的高度。
+     *
+     * @param root
+     * @return
+     */
+    fun levelOrder1(root: TreeNode?): List<List<Int>>? {
+        // 存放最终结果的集合
+        val res: MutableList<MutableList<Int>> = mutableListOf()
+        if (root == null) return res
 
-    dfsLevel(1, root, res)
-    return res
-}
-
-fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
-    if (root == null) return
-
-    if (res.size < index) {      // 假设res是[ [1],[2,3] ]， index是3，就再插入一个空list放到res中
-        res.add(mutableListOf())
+        dfsLevel(1, root, res)
+        return res
     }
 
-    res[index - 1].add(root.`val`)   // 将当前节点的值加入到res中，index代表当前层，假设index是3，节点值是6。res是[ [1],[2,5],[3,4] ]，加入后res就变为 [ [1],[2,5],[3,4,6] ]
+    fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
+        if (root == null) return
 
-    if (root.left != null) {    // 递归的处理左子树，右子树，同时将层数index+1
-        dfsLevel(index + 1, root.left, res)
+        // 假设res是[[1],[2,3]]，index是3，就再插入一个空list放到res中
+        if (res.size < index) res.add(mutableListOf())
+
+        // 将当前节点的值加入到res中，index-1代表当前层，假设index-1是3-1=2，节点值是6。res是[[1],[2,5],[3,4]]，加入后res就变为[[1],[2,5],[3,4,6]]
+        res[index - 1].add(root.`val`)
+
+        // 递归的处理左子树，右子树，同时将层数index+1
+        if (root.left != null) dfsLevel(index + 1, root.left, res)
+
+        if (root.right != null) dfsLevel(index + 1, root.right, res)
     }
-    if (root.right != null) {
-        dfsLevel(index + 1, root.right, res)
-    }
-}
 
 2、迭代
-fun preorder(root: Node?): List<Int> {
-    val res: MutableList<Int> = mutableListOf()
-    val stack: Deque<Node?> = LinkedList()
+    fun preorder1(root: Node?): List<Int> {
+        val res: MutableList<Int> = mutableListOf()
+        val stack: Deque<Node?> = LinkedList()
 
-    if (root == null) return res else stack.push(root)
+        if (root == null) return res else stack.push(root)
 
-    while (!stack.isEmpty()) {
-        val p = stack.pop()    // 将根节点弹出
-        res.add(p!!.`val`)     // 加入到结果集合中
+        while (!stack.isEmpty()) {
+            // 将根节点弹出
+            val p = stack.pop()
+            // 加入到结果集合中
+            res.add(p!!.`val`)
 
-        for (i in p.children.size - 1 downTo 0) {   // 将该节点的子节点从右往左压入栈
-            stack.push(p.children[i])
+            // 将该节点的子节点从右往左压入栈
+            for (i in p.children.size - 1 downTo 0) {
+                stack.push(p.children[i])
+            }
         }
+        return res
     }
-    return res
-}
 
-fun postorder(root: Node?): List<Int> {
-    val res: MutableList<Int> = mutableListOf()
-    val stack: Deque<Node?> = LinkedList()
+    fun postorder1(root: Node?): List<Int> {
+        val res: MutableList<Int> = mutableListOf()
+        val stack: Deque<Node?> = LinkedList()
 
-    if (root == null) return res else stack.push(root)
+        if (root == null) return res else stack.push(root)
 
-    while (!stack.isEmpty()) {
-        val p = stack.pop()     // 将根节点弹出
-        res.add(p!!.`val`)      // 加入到结果集合中
+        while (!stack.isEmpty()) {
+            // 将根节点弹出
+            val node = stack.pop()
+            // 加入到结果集合中
+            res.add(node!!.`val`)
 
-        for (i in 0 until p.children.size) {  // 将该节点的子节点从左往右压入栈
-            stack.push(p.children[i])
+            // 将该节点的子节点从左往右压入栈
+            for (i in 0 until node.children.size) {
+                stack.push(node.children[i])
+            }
         }
+        // 最后将list反转
+        return res.reversed()
     }
-    return res.reversed()  // 最后将list反转
-}
 
 
 九、并查集
