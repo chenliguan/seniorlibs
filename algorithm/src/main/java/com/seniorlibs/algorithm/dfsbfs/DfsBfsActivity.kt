@@ -278,26 +278,27 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
     fun ladderLength(beginWord: String, endWord: String, wordList: List<String>): Int {
         if (!wordList.contains(endWord)) return 0
 
-        // 将beginWord加入list
+        // 1 先将 wordList 放到哈希表里，便于判断某个单词是否在 wordList 里
         val wordList = wordList as MutableList<String>
         wordList.add(beginWord)
+        val allWordSet: Set<String> = HashSet(wordList)
 
-        // 从两端BFS遍历要用的队列
+        // 2.1 创建一个队列，将新访问到的节点放入其中
         var queue1: Queue<String> = LinkedList()
         var queue2: Queue<String> = LinkedList()
-        // 两端已经遍历过的节点
+        // 2.2 已经访问过的 word 添加到 visited 哈希表里
         var visited1: MutableSet<String?> = HashSet()
         var visited2: MutableSet<String?> = HashSet()
         queue1.offer(beginWord)
         queue2.offer(endWord)
         visited1.add(beginWord)
         visited2.add(endWord)
-
+        // 2.3 计算已遍历节点总数
         var count = 0
-        val allWordSet: Set<String> = HashSet(wordList)
 
+        // 3.1 执行双向 BFS，左右交替扩散的步数之和为所求
         while (queue1.isNotEmpty() && queue2.isNotEmpty()) {
-            // 从AB两个方向的中，选择当前节点更少的队列，在另一个方向进行层序遍历
+            // 3.2 从AB两个方向的中，选择当前节点更少的队列，在另一个方向进行层序遍历（这种方式搜索的这一层单词数量会更小一些）
             if (queue1.size > queue2.size) {
                 val temp = queue1
                 queue1 = queue2
@@ -307,32 +308,34 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
                 visited2 = v
             }
 
-            // 开始遍历每一层的字符串
+            // 3.3 开始遍历每一层的每个字符串
             count++
             var size1: Int = queue1.size
             while (size1-- > 0) {
-                val s = queue1.poll()
-                val chars = s.toCharArray()
-                // 遍历一个字符串的每个字符，轮流替换后，对比
+
+                // 4.1 轮流替换一个字符串的每个字符后遍历
+                val chars = queue1.poll().toCharArray()
                 for (i in chars.indices) {
-                    // 保存第i位的原始字符
+                    // 4.2 保存第i位的字符
                     val temp = chars[i]
 
-                    // 用a~z替换当前字符，再对比新字符串。因为单词是由a~z这有限数量的字符组成的，可以遍历当前单词能转换成的所有单词，判断其是否包含在候选单词中
+                    // 4.3 用a~z替换当前字符，再对比新字符串，比较26次；
+                    // 因为单词是由a~z字符组成，可以遍历当前单词能转换成的所有单词，判断其是否包含在候选单词中
                     var ch = 'a'
                     while (ch <= 'z') {
                         chars[i] = ch
                         val newString = String(chars)
-                        // 已经访问过了，跳过
+                        // 4.4 已经访问过了，跳过
                         if (visited1.contains(newString)) {
                             ch++
                             continue
                         }
-                        // 两端遍历相遇，结束遍历，返回count
+
+                        // 4.5 两端遍历相遇，结束遍历，返回count
                         if (visited2.contains(newString)) {
                             return count + 1
                         }
-                        // 如果单词在列表中存在，将其添加到队列，并标记为已访问
+                        // 4.6 如果单词在列表中存在，将其添加到队列，并标记为已访问
                         if (allWordSet.contains(newString)) {
                             queue1.offer(newString)
                             visited1.add(newString)
@@ -340,7 +343,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
                         ch++
                     }
 
-                    // 恢复第i位的原始字符
+                    // 4.7 恢复第i位的字符，为其他字符替换准备
                     chars[i] = temp
                 }
             }
