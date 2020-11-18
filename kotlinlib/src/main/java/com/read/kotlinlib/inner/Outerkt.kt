@@ -19,43 +19,10 @@ class Outerkt {
 
     private val TAG = "Outerkt"
 
-    var count = 0
+    private var count = 0
 
     fun add() {
         count++
-    }
-
-    fun main() {
-        // 1、测试内部嵌套类
-        testInnerNested()
-    }
-
-    /**
-     * 1、测试内部嵌套类
-     */
-    private fun testInnerNested() {
-        // 1、
-        // 内部类
-        val innerClass = Outerkt().InnerClass()
-        val res = innerClass.getSomething()
-        LogUtils.e(TAG, "testInnerNested + 内部类1：$res")
-//        testInnerNested + 内部类1：2
-
-        val innerClass1 = InnerClass()
-        val res1 = innerClass1.getSomething()
-        LogUtils.e(TAG, "testInnerNested + 内部类2：$res1")
-//        testInnerNested + 内部类2：2
-
-        // 嵌套类
-        val nestedClass = NestedClass()
-        val value = nestedClass.getValue()
-        LogUtils.e(TAG, "testInnerNested + 嵌套类1：$value")
-//        testInnerNested + 嵌套类1：1
-
-        // 2、
-        // 在 Kotlin 中，外部类和嵌套类都不可以访问内部类的 private 变量：
-//        innerClass.number   // 编译器报错
-//        nestedClass.number  // 编译器报错
     }
 
     /**
@@ -67,11 +34,10 @@ class Outerkt {
         private val number = 1
 
         fun getSomething(): Int {
-            // 默认持有外部类的引用，直接访问外部类的方法属性
+            // 默认持有外部类的引用，直接访问外部类的方法属性。等价于:this@Outerkt.add()
             add()
-            // 也可以使用this@OutClass去访问外部类的属性和方法
-            this@Outerkt.add()
-            return this@Outerkt.count
+            // 等价于:this.number + this@Outerkt.count
+            return number + count
         }
     }
 
@@ -82,13 +48,47 @@ class Outerkt {
      */
     class NestedClass {
         private val number = 1
-
         fun getValue(): Int {
-//            add()  // 编译器报错
+            // add()  编译器直接报错
             // 嵌套类不持有外部类的引用，必须通过外部类的对象访问
             val outClass = Outerkt()
             outClass.add()
-            return outClass.count
+            // 等价于:this.number + outClass.count
+            return this.number + outClass.count
         }
+    }
+
+
+    fun main() {
+        // 1、测试内部嵌套类
+        testInnerNested()
+        // 2、测试外部类访问内部类的private
+        testInnerPrivate()
+    }
+
+    /**
+     * 1、测试内部嵌套类
+     */
+    private fun testInnerNested() {
+        // 内部类
+        val innerClass = Outerkt().InnerClass()  // InnerClass()
+        val res = innerClass.getSomething()
+        LogUtils.e(TAG, "testInnerNested + 内部类1：$res")
+        // testInnerNested + 内部类1：2
+
+        // 嵌套类
+        val nestedClass = NestedClass()
+        val value = nestedClass.getValue()
+        LogUtils.e(TAG, "testInnerNested + 嵌套类1：$value")
+        // testInnerNested + 嵌套类1：1
+    }
+
+    /**
+     * 2、测试外部类 不可以访问 内部类或嵌套类 的 private 变量
+     */
+    private fun testInnerPrivate() {
+        // 在 Kotlin 中，外部类 不可以访问 内部类或嵌套类 的 private 变量：
+        // Outerkt().InnerClass().number   编译器直接报错
+        // NestedClass().number            编译器直接报错
     }
 }
