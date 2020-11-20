@@ -10,6 +10,7 @@ import com.read.kotlinlib.basic.FlowFunActivity
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
 import com.read.kotlinlib.inner.*
+import com.read.kotlinlib.polymorphisn.Polymorphisn
 import com.read.kotlinlib.string.StringTest
 import com.seniorlibs.baselib.utils.LogUtils
 
@@ -94,6 +95,16 @@ class MainActivity : AppCompatActivity() {
     fun testGeneric(view: View?) {
         val genericTest = GenericTest()
         genericTest.genericErasure()
+    }
+
+    /**
+     * 多态的表现：分派
+     *
+     * @param view
+     */
+    fun polymorphisn(view: View?) {
+        val p = Polymorphisn()
+        p.main()
     }
 
     /**

@@ -64,7 +64,6 @@ class OuterClassKt {
         override fun run() {}
     }
 
-
     var foo: Foo = object : Foo() {
         override fun bar(): Int {
             return 0
