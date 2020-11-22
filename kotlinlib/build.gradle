@@ -16,7 +16,6 @@ android {
         versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner rootProject.ext.dependence.test_android_runner
-        consumerProguardFiles 'consumer-rules.pro'
     }
 
     dataBinding {
@@ -24,9 +23,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false   // 是否打开混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false  // 移除无用的resource文件
+            zipAlignEnabled true   // Zipalign优化
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true   // 是否打开混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true  // 移除无用的resource文件
+            zipAlignEnabled true   // Zipalign优化
         }
     }
 

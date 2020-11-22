@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.read.kotlinlib.R
-import com.read.kotlinlib.generic.GenericTest
+import com.read.kotlinlib.generic.GenericTestKt
 import com.seniorlibs.baselib.utils.LogUtils
 
 /**
@@ -72,8 +72,8 @@ class BasicActivity : AppCompatActivity() {
      * @param view
      */
     fun textGeneric(view: View?) {
-        val genericTest = GenericTest()
-        genericTest.genericErasure()
+        val genericTest = GenericTestKt()
+        genericTest.main()
     }
 
     fun testBasic() {

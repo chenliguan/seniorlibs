@@ -9,6 +9,7 @@ import com.read.kotlinlib.basic.CoroutineActivity
 import com.read.kotlinlib.basic.FlowFunActivity
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
+import com.read.kotlinlib.generic.GenericTestKt
 import com.read.kotlinlib.inner.*
 import com.read.kotlinlib.polymorphisn.Polymorphisn
 import com.read.kotlinlib.string.StringTest
@@ -93,8 +94,13 @@ class MainActivity : AppCompatActivity() {
      * @param view
      */
     fun testGeneric(view: View?) {
-        val genericTest = GenericTest()
-        genericTest.genericErasure()
+        // Kotlin泛型测试类
+        val genericKt = GenericTestKt()
+        genericKt.main()
+
+        // Java泛型测试类
+        val generic = GenericTest<Int>()
+        generic.main()
     }
 
     /**
