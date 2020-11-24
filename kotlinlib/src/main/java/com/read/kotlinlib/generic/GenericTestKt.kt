@@ -68,22 +68,22 @@ class GenericTestKt {
      * 上界不能往里存，只能往外取
      */
     fun testExtends() {
-        // 填写Apple的位置，级别一定要小于或等于Fruit
+        // 填写Fruit的位置，级别一定要Fruit或Fruit的子类；()可存放<>的子类
         val p1: Plate<out Fruit> = Plate<Fruit>(Apple())
         val p2: Plate<out Fruit> = Plate<Apple>(RedApple())
         // 检查不通过
 //        val p3: Plate<out Fruit> = Plate<Fruit>(Food())
 //        val p4: Plate<out Fruit> = Plate<Food>(Fruit())
-//        val p4: Plate<out Fruit> = Plate<Apple>(Beef())
+//        val p5: Plate<out Fruit> = Plate<Apple>(Beef())
 
         // 不能存入任何元素
-//        p1.set(Banana()) // Error
-//        p1.set(Fruit()) // Error
-//        p1.set(Apple()) // Error
-//        p1.set(Any()) // Error
+//        p1.set(Banana())
+//        p1.set(Fruit())
+//        p1.set(Apple())
+//        p1.set(Any())
 
         // 数据获取正常
-        // 但是他只能精确到Fruit或它的基类
+        // 但是他只能精确到Fruit或Fruit的父类
         val result1 : Fruit = p1.get()
         val result2 : Any = p1.get()
         // 数据获取错误
@@ -94,25 +94,25 @@ class GenericTestKt {
      * 下界不影响往里存，但往外取只能放在Object对象里
      */
     fun testSuper() {
-        // 填写Fruit的位置，级别一定要大于或等于Fruit
+        // 填写Fruit的位置，级别一定是Fruit或Fruit的父类；()可存放<>的子类
         val p1: Plate<in Fruit> = Plate<Fruit>(Fruit())
-        val p2: Plate<in Fruit> = Plate<Food>(Food())
-        val p3: Plate<in Fruit> = Plate<Food>(Fruit())
-        val p4: Plate<in Fruit> = Plate<Fruit>(Apple())
+        val p2: Plate<in Fruit> = Plate<Food>(Fruit())
+        val p3: Plate<in Fruit> = Plate<Fruit>(Apple())
         // 检查不通过
-//        val p3: Plate<in Fruit> = Plate<Fruit>(Beef())
-//        val p4: Plate<in Fruit> = Plate<Apple>(Apple())
+//        val p4: Plate<in Fruit> = Plate<Fruit>(Beef())
+//        val p5: Plate<in Fruit> = Plate<Apple>(Apple())
 
-        // 存入元素正常：因为元素是Fruit的基类，那往里存粒度比Fruit小的都可以
+        // 存入Fruit的子类都可以
         p1.set(Fruit())
         p1.set(Apple())
-        // 存入元素错误
-//        p1.set(Food()) // Error
+        // 存入Fruit的父类错误
+//        p1.set(Food())
 
-        // 读取出来的东西只能精确到Object类。
-//        val result1: Apple = p1.get() // Error
-//        val result2: Fruit = p1.get() // 会报错，一定要经过强制转化，因为返回的只是一个Object
-        val result3 = p1.get()!! // 返回一个Object数据我们已经属于快要丢失掉全部数据了，所以不适合读取
+        // 读取出来一定要经过强制转化，因为返回的只是一个Object
+//        val result1: Apple = p1.get()
+//        val result2: Fruit = p1.get()
+        // 返回一个Object数据，已经属于快要丢失掉全部数据了，所以不适合读取
+        val result3 = p1.get()!!
     }
 
     /**

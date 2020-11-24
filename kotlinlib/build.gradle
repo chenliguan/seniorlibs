@@ -24,9 +24,9 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false   // 是否打开混淆
+            minifyEnabled true   // 是否打开混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            shrinkResources false  // 移除无用的resource文件
+            shrinkResources true  // 移除无用的resource文件
             zipAlignEnabled true   // Zipalign优化
         }
         release {

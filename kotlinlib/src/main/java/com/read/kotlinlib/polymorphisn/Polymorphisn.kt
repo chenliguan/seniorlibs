@@ -35,4 +35,8 @@ class Polymorphisn {
     inner class SubClass : SuperClass() {
         override val name: String = "Sub"
     }
+
+    fun main(a: String?, b: Int?) : String {
+        return ""
+    }
 }

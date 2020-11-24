@@ -12,6 +12,7 @@ import java.util.Map;
  * Description: 泛型类
  */
 public abstract class GenericClass<T> {
+
     Class<T> type;
 
     public GenericClass() {
@@ -21,4 +22,41 @@ public abstract class GenericClass<T> {
     public List<Map<T, T>> getValue() {
         return null;
     }
+
+
+
+    class InnerNode<T> {
+        T node;
+
+        public InnerNode() {
+            this.node = null;
+        }
+
+        public T getNode() {
+            return node;
+        }
+    }
+
+//    @groovyx.ast.bytecode.Bytecode
+//    public Object getNode() {
+//        aload 0
+//        getfield com.read.kotlinlib.generic.GenericClass$InnerNode.node >> Object
+//        areturn
+//    }
+
+//    // access flags 0x1
+//    // signature ()TT;
+//    // declaration: T getNode()
+//    public getNode()Ljava/lang/Object;
+//     L0
+//      LINENUMBER 35 L0
+//      ALOAD 0
+//      GETFIELD com/read/kotlinlib/generic/GenericClass$InnerNode.node : Ljava/lang/Object;
+//      ARETURN
+//     L1
+//      LOCALVARIABLE this Lcom/read/kotlinlib/generic/GenericClass$InnerNode; L0 L1 0
+//      // signature Lcom/read/kotlinlib/generic/GenericClass<TT;>.InnerNode<TT;>;
+//      // declaration: com.read.kotlinlib.generic.GenericClass<T>.InnerNode<T>
+//      MAXSTACK = 1
+//      MAXLOCALS = 1
 }
