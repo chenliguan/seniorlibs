@@ -1,4 +1,4 @@
-package com.seniorlibs.lifecycle;
+package com.seniorlibs.lifecycle.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,20 +7,22 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class SecondActivity extends Activity {
-    private static final String TAG = "SecondActivity";
+import com.seniorlibs.lifecycle.R;
+
+public class ThirdActivity extends Activity {
+    private static final String TAG = "ThirdActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_third);
         findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(SecondActivity.this, ThirdActivity.class);
+                intent.setClass(ThirdActivity.this, MainActivity.class);
                 intent.putExtra("time", System.currentTimeMillis());
                 startActivity(intent);
             }

@@ -1,4 +1,4 @@
-package com.seniorlibs.lifecycle;
+package com.seniorlibs.lifecycle.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.seniorlibs.lifecycle.R;
 import com.seniorlibs.lifecycle.flag.ActivityFlagA;
 import com.seniorlibs.lifecycle.service.TestActivity;
 import com.seniorlibs.lifecycle.singletask.ActivityA;
-import com.seniorlibs.lifecycle.singletask.ActivityC;
 
 public class MainActivity extends Activity {
 

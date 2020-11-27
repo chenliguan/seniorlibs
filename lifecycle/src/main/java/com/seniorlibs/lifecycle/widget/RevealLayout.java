@@ -1,4 +1,4 @@
-package com.seniorlibs.lifecycle.ui;
+package com.seniorlibs.lifecycle.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;

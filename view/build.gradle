@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+// kotlin
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -13,6 +16,10 @@ android {
         versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner rootProject.ext.dependence.test_android_runner
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {

@@ -2,6 +2,10 @@ println "lifecycle.gradle start"
 
 apply plugin: 'com.android.application'
 
+// kotlin
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
