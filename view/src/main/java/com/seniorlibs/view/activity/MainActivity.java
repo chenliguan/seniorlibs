@@ -24,8 +24,7 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void button1(View v) {
-        Intent intent = new Intent(this, TestActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, TestActivity.class));
     }
 
     /**
@@ -34,8 +33,7 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void button2(View v) {
-        Intent intent = new Intent(this, CustomViewActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, CustomViewActivity.class));
     }
 
     /**
@@ -44,8 +42,7 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void button3(View v) {
-        Intent intent = new Intent(this, ScrollViewExActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, ScrollViewExActivity.class));
     }
 
     /**
@@ -54,8 +51,7 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void button4(View v) {
-        Intent intent = new Intent(this, RemoteViewsMainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, RemoteViewsMainActivity.class));
     }
 
     /**
@@ -64,9 +60,28 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void button5(View v) {
-        Intent intent = new Intent(this, PutAshActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, PutAshActivity.class));
     }
+
+    /**
+     * TabLayout + ViewPager + Fragment
+     *
+     * @param v
+     */
+    public void tabVPFragActivity(View v) {
+        startActivity(new Intent(this, TabVPFragActivity.class));
+    }
+
+    /**
+     * TabLayout + Fragment + FragmentTransaction hide/show
+     *
+     * @param v
+     */
+    public void tabAddFrgActivity(View v) {
+        startActivity(new Intent(this, TabAddFrgActivity.class));
+    }
+
+
 
     @Override
     protected void onPause() {

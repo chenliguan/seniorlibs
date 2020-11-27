@@ -52,50 +52,55 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
     // appcompat
-    api rootProject.ext.dependence.appcompat_v7
-    api rootProject.ext.dependence.support_v4
-    api rootProject.ext.dependence.support_v13
-    api rootProject.ext.dependence.recyclerview_v7
-    api rootProject.ext.dependence.constraintlayout
-    api rootProject.ext.dependence.palette
-    api rootProject.ext.dependence.cardview
+    api rootProject.dependence.appcompat_v7
+    api rootProject.dependence.support_v4
+    api rootProject.dependence.support_v13
+    api rootProject.dependence.recyclerview_v7
+    api rootProject.dependence.constraintlayout
+    api rootProject.dependence.palette
+    api rootProject.dependence.cardview
+    api rootProject.dependence.material
+    api rootProject.dependence.viewpager2
+    api rootProject.dependence.drawerlayout
+    api rootProject.dependence.fragment
 
     // kotlin
     api rootProject.dependence.kotlin_stdlib_jdk7
     api rootProject.dependence.kotlin_core
 
     // glide
-    api rootProject.ext.dependence.glide
-    annotationProcessor rootProject.ext.dependence.glide_annotation
-    api rootProject.ext.dependence.imageloader
+    api rootProject.dependence.glide
+    annotationProcessor rootProject.dependence.glide_annotation
+    api rootProject.dependence.imageloader
 
     // okhttp
-    api rootProject.ext.dependence.okhttp
-    api rootProject.ext.dependence.okio
+    api rootProject.dependence.okhttp
+    api rootProject.dependence.okio
     // retrofit
-    api rootProject.ext.dependence.retrofit2
-    api rootProject.ext.dependence.retrofit2_gson
-    api rootProject.ext.dependence.retrofit2_rxjava2
+    api rootProject.dependence.retrofit2
+    api rootProject.dependence.retrofit2_gson
+    api rootProject.dependence.retrofit2_rxjava2
     // rxJava
-    api rootProject.ext.dependence.rxandroid2
-    api rootProject.ext.dependence.rxjava2
+    api rootProject.dependence.rxandroid2
+    api rootProject.dependence.rxjava2
     // fastJson
-    api rootProject.ext.dependence.fastjson
+    api rootProject.dependence.fastjson
     // EventBus
-    api rootProject.ext.dependence.eventbus
+    api rootProject.dependence.eventbus
 
     // lifecycle
-    api rootProject.ext.dependence.lifecycle_runtime
-    api rootProject.ext.dependence.lifecycle_common
-    api rootProject.ext.dependence.lifecycle_extensions
+    api rootProject.dependence.lifecycle_runtime
+    api rootProject.dependence.lifecycle_common
+    api rootProject.dependence.lifecycle_extensions
     // viewModel
-    api rootProject.ext.dependence.lifecycle_viewmodel
+    api rootProject.dependence.lifecycle_viewmodel
     // liveData
-    api rootProject.ext.dependence.lifecycle_livedata
-    api rootProject.ext.dependence.fragment
+    api rootProject.dependence.lifecycle_livedata
+    api rootProject.dependence.fragment
 
     // 功能
-    api rootProject.ext.dependence.mmkv
+    api rootProject.dependence.mmkv
+    api rootProject.dependence.multidex
 }
 
 

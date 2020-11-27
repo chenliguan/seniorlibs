@@ -1,47 +1,49 @@
 <com.seniorlibs.view.widget.RevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/BaseMatchParent"
     android:layout_marginTop="12dp"
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/BaseMatchWrap"
         android:onClick="button1"
         android:text="View基础-测试测量结果"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/BaseMatchWrap"
         android:onClick="button2"
         android:text="继承于View和特定的ViewGroup(RelativeLayout)"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/BaseMatchWrap"
         android:onClick="button3"
         android:text="继承于ViewGroup派生特殊Layout-HorizontalScrollViewEx"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/BaseMatchWrap"
         android:onClick="button4"
         android:text="RemoteViews"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/BaseMatchWrap"
         android:onClick="button5"
         android:text="App页面置灰"
         android:textAllCaps="false" />
+
+    <Button
+        style="@style/BaseMatchWrap"
+        android:onClick="tabVPFragActivity"
+        android:text="TabLayout + ViewPager + Fragment"
+        android:textAllCaps="false" />
+
+    <Button
+        style="@style/BaseMatchWrap"
+        android:onClick="tabAddFrgActivity"
+        android:text="TabLayout + Fragment + FragmentTransaction hide/show"
+        android:textAllCaps="false" />
+
 </com.seniorlibs.view.widget.RevealLayout>

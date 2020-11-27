@@ -48,7 +48,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':baselib')
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
 
 println "lifecycle.gradle start"

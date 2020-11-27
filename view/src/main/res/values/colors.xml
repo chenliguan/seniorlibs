@@ -6,8 +6,12 @@
     <color name="gray_f0f0f0">#f0f0f0</color>
     <color name="default_color">#000000</color>
 
-
     <color name="orange">#FFA633</color>
     <color name="reveal_color">#1b000000</color>
     <color name="light_green">#0ac39e</color>
+
+    <color name="yellow">#F7ED58</color>
+    <color name="green">#64EB8D</color>
+    <color name="blue">#3E87E2</color>
+    <color name="purple">#B273F1</color>
 </resources>
