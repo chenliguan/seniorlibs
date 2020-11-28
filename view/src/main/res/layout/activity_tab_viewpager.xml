@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        style="@style/BaseMatchWrap"
+        android:onClick="toSetResultActivity"
+        android:text="跳转到SetResultActivity"
+        android:textAllCaps="false" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_tabs"
         android:layout_width="match_parent"

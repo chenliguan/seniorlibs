@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BaseMatchParent"
+    android:orientation="vertical"
+    tools:context=".activity.PutAshActivity">
+
+    <Button
+        style="@style/BaseMatchWrap"
+        android:onClick="setResult"
+        android:text="setResult"
+        android:textAllCaps="false" />
+
+</LinearLayout>

@@ -10,6 +10,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 
+import com.seniorlibs.baselib.utils.LogUtils;
 import com.seniorlibs.view.R;
 
 /**
@@ -32,8 +33,8 @@ public class TestActivity extends Activity implements OnClickListener {
     }
 
     private void beforeMeasureView() {
-        Log.d(TAG, "beforeMeasureView measure width= " + mButton2.getMeasuredWidth() + " height= " + mButton2.getMeasuredHeight());
-        Log.d(TAG, "beforeMeasureView layout width= " + mButton2.getWidth() + " height= " + mButton2.getHeight());
+        LogUtils.d(TAG, "beforeMeasureView measure width= " + mButton2.getMeasuredWidth() + " height= " + mButton2.getMeasuredHeight());
+        LogUtils.d(TAG, "beforeMeasureView layout width= " + mButton2.getWidth() + " height= " + mButton2.getHeight());
     }
 
     private void initView() {
@@ -46,7 +47,7 @@ public class TestActivity extends Activity implements OnClickListener {
         int widthMeasureSpec = MeasureSpec.makeMeasureSpec((1 << 30) - 1, MeasureSpec.AT_MOST);
         int heightMeasureSpec = MeasureSpec.makeMeasureSpec(100, MeasureSpec.EXACTLY);
         view.measure(widthMeasureSpec, heightMeasureSpec);
-        Log.d(TAG, "measureView, width= " + view.getMeasuredWidth() + " height= " + view.getMeasuredHeight());
+        LogUtils.d(TAG, "measureView, width= " + view.getMeasuredWidth() + " height= " + view.getMeasuredHeight());
     }
 
     @Override
@@ -73,7 +74,7 @@ public class TestActivity extends Activity implements OnClickListener {
                 int width = view.getMeasuredWidth();
                 int height = view.getMeasuredHeight();
 
-                Log.d(TAG, "ViewTreeObserver, width= " + width + " height= " + height);
+                LogUtils.d(TAG, "ViewTreeObserver, width= " + width + " height= " + height);
             }
         });
     }
@@ -84,15 +85,15 @@ public class TestActivity extends Activity implements OnClickListener {
         if (hasFocus) {
             int width = view.getMeasuredWidth();
             int height = view.getMeasuredHeight();
-            Log.d(TAG, "onWindowFocusChanged, width= " + width + " height= " + height);
+            LogUtils.d(TAG, "onWindowFocusChanged, width= " + width + " height= " + height);
         }
     }
 
     @Override
     public void onClick(View v) {
         if (v == view) {
-            Log.d(TAG, "measure width= " + mButton2.getMeasuredWidth() + " height= " + mButton2.getMeasuredHeight());
-            Log.d(TAG, "layout width= " + mButton2.getWidth() + " height= " + mButton2.getHeight());
+            LogUtils.d(TAG, "measure width= " + mButton2.getMeasuredWidth() + " height= " + mButton2.getMeasuredHeight());
+            LogUtils.d(TAG, "layout width= " + mButton2.getWidth() + " height= " + mButton2.getHeight());
         }
     }
 

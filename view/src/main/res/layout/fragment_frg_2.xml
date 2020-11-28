@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@color/orange"
         android:gravity="center"
-        android:text="Frg_2" />
+        android:text="Frg_2 跳转到SetResultActivity" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/frg_2_vp"
