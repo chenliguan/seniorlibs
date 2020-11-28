@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.thread.aqs.SemaphoreTest
 import com.seniorlibs.thread.asynctask.AsyncTaskTest
 import com.seniorlibs.thread.atomic.AtomicIntegerTest
+import com.seniorlibs.thread.basic.InterruptTest
 import com.seniorlibs.thread.collection.ArrayListTest
 import com.seniorlibs.thread.collection.HashSetTest
 import com.seniorlibs.thread.handler.HandlerActivity
@@ -34,12 +35,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.test_handler).setOnClickListener(this)
+//        findViewById<View>(R.id.test_handler).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.test_handler -> testHandler()
+//            R.id.test_handler -> testHandler()
         }
     }
 
@@ -122,7 +123,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 测试Handler
      */
-    private fun testHandler() {
+    fun testHandler(view: View) {
         HandlerActivity.actionStart(this)
+    }
+
+    /**
+     * 测试中断/停止线程
+     */
+    fun testInterrupt(view: View) {
+        InterruptTest.rawInterrupt()
+        InterruptTest.unInterrupt()
+        InterruptTest.supportInterrupt()
     }
 }

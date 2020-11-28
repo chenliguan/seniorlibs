@@ -66,6 +66,13 @@
         <Button
             android:id="@+id/test_handler"
             style="@style/BaseMatchWrap"
+            android:onClick="testHandler"
             android:text="测试Handler" />
+
+        <Button
+            android:id="@+id/test_interrupt"
+            style="@style/BaseMatchWrap"
+            android:onClick="testInterrupt"
+            android:text="测试中断/停止线程" />
     </LinearLayout>
 </ScrollView>
