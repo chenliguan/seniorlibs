@@ -133,6 +133,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     fun testInterrupt(view: View) {
         InterruptTest.rawInterrupt()
         InterruptTest.unInterrupt()
-        InterruptTest.supportInterrupt()
+        InterruptTest.supportInterrupted()
+        InterruptTest.supportIsInterrupted()
+        InterruptTest.volatileBoolean()
+        InterruptTest.volatileBooleanNot()
     }
 }
