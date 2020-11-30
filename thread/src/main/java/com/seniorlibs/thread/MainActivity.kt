@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.thread.aqs.SemaphoreTest
 import com.seniorlibs.thread.asynctask.AsyncTaskTest
 import com.seniorlibs.thread.atomic.AtomicIntegerTest
+import com.seniorlibs.thread.basic.DeadlockTest
 import com.seniorlibs.thread.basic.InterruptTest
 import com.seniorlibs.thread.collection.ArrayListTest
 import com.seniorlibs.thread.collection.HashSetTest
@@ -137,5 +138,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         InterruptTest.supportIsInterrupted()
         InterruptTest.volatileBoolean()
         InterruptTest.volatileBooleanNot()
+    }
+
+    /**
+     * 测试死锁
+     */
+    fun testDeadLock(view: View) {
+        DeadlockTest.deadLockTest()
     }
 }

@@ -74,5 +74,11 @@
             style="@style/BaseMatchWrap"
             android:onClick="testInterrupt"
             android:text="测试中断/停止线程" />
+
+        <Button
+            android:id="@+id/test_deadLock"
+            style="@style/BaseMatchWrap"
+            android:onClick="testDeadLock"
+            android:text="测试死锁" />
     </LinearLayout>
 </ScrollView>
