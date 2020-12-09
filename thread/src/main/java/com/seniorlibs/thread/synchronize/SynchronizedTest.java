@@ -17,6 +17,17 @@ public class SynchronizedTest {
 //        textSynchronizeLocalStatic();
     }
 
+    public void rawSynchronizedThis() {
+        synchronized (this) {
+            System.out.println("rawInterrupt 设置线程中断....");
+        }
+    }
+
+
+    public synchronized void rawSynchronized() {
+        System.out.println("rawInterrupt 设置线程中断....");
+    }
+
     /**
      * 验证synchronized代码块间的同步性
      */

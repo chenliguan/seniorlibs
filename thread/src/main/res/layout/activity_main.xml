@@ -47,6 +47,12 @@
 
         <Button
             style="@style/BaseMatchWrap"
+            android:onClick="testHashMap"
+            android:text="testHashMap"
+            android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
             android:onClick="testRejectedExecution"
             android:text="测试线程池"
             android:textAllCaps="false" />
@@ -73,7 +79,7 @@
             android:id="@+id/test_interrupt"
             style="@style/BaseMatchWrap"
             android:onClick="testInterrupt"
-            android:text="测试中断/停止线程" />
+            android:text="测试中断/停止线程 和 Java至少会创建几个线程呢？" />
 
         <Button
             android:id="@+id/test_deadLock"

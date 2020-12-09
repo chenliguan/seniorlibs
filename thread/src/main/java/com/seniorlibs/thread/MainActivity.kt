@@ -8,7 +8,9 @@ import com.seniorlibs.thread.asynctask.AsyncTaskTest
 import com.seniorlibs.thread.atomic.AtomicIntegerTest
 import com.seniorlibs.thread.basic.DeadlockTest
 import com.seniorlibs.thread.basic.InterruptTest
+import com.seniorlibs.thread.basic.ThreadNumTest
 import com.seniorlibs.thread.collection.ArrayListTest
+import com.seniorlibs.thread.collection.HashMapTest
 import com.seniorlibs.thread.collection.HashSetTest
 import com.seniorlibs.thread.handler.HandlerActivity
 import com.seniorlibs.thread.synchronize.SynchronizedTest
@@ -95,6 +97,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * 测试HashMap是否线程安全
+     *
+     * @param view
+     */
+    fun testHashMap(view: View?) {
+        HashMapTest.resizeBug()
+    }
+
+    /**
      * 测试线程池的拒绝策略：为什么线程池容量不够抛出异常rejectedExecution？
      *
      * @param view
@@ -129,7 +140,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 测试中断/停止线程
+     * 测试中断/停止线程 和 Java至少会创建几个线程呢？
      */
     fun testInterrupt(view: View) {
         InterruptTest.rawInterrupt()
@@ -138,6 +149,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         InterruptTest.supportIsInterrupted()
         InterruptTest.volatileBoolean()
         InterruptTest.volatileBooleanNot()
+
+        // 至少会创建几个线程呢
+        ThreadNumTest.numTest()
     }
 
     /**
