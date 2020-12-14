@@ -102,7 +102,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * @param view
      */
     fun testHashMap(view: View?) {
-        HashMapTest.resizeBug()
+        // 多线程下，扩容期间取出的值不准确
+//        HashMapTest.resizeBug()
+        // 为什么HashMap的"key"部分存放自定义的对象时，需要重写equals()和hashcode()方法？
+        HashMapTest.testHashConflict()
     }
 
     /**
