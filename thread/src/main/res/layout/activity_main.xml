@@ -17,8 +17,8 @@
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="atomicIntegerTest"
-            android:text="atomicIntegerTest"
+            android:onClick="atomicTest"
+            android:text="atomicTest"
             android:textAllCaps="false" />
 
         <Button

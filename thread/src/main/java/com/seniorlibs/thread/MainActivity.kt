@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.thread.aqs.SemaphoreTest
 import com.seniorlibs.thread.asynctask.AsyncTaskTest
 import com.seniorlibs.thread.atomic.AtomicIntegerTest
+import com.seniorlibs.thread.atomic.AtomicLongFieldUpdaterTest
 import com.seniorlibs.thread.basic.DeadlockTest
 import com.seniorlibs.thread.basic.InterruptTest
 import com.seniorlibs.thread.basic.ThreadNumTest
@@ -57,12 +58,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 测试原子性Integer
+     * 测试Atomic原子性
      *
      * @param view
      */
-    fun atomicIntegerTest(view: View?) {
+    fun atomicTest(view: View?) {
         AtomicIntegerTest.mainTest()
+        AtomicLongFieldUpdaterTest.mainTest()
     }
 
     /**
