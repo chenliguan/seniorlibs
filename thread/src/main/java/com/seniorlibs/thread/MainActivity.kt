@@ -3,6 +3,7 @@ package com.seniorlibs.thread
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.seniorlibs.thread.aqs.CountDownLatchTest
 import com.seniorlibs.thread.aqs.SemaphoreTest
 import com.seniorlibs.thread.asynctask.AsyncTaskTest
 import com.seniorlibs.thread.atomic.AtomicIntegerTest
@@ -83,10 +84,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun testAcquire(view: View?) {
         SemaphoreTest.testAcquire()
+        SemaphoreTest.testTryAcquire()
     }
 
-    fun testTryAcquire(view: View?) {
-        SemaphoreTest.testTryAcquire()
+    /**
+     * 测试CountDownLatch
+     *
+     * @param view
+     */
+    fun testCountDownLatch(view: View?) {
+        CountDownLatchTest.await()
+        CountDownLatchTest.countDown()
     }
 
     /**
