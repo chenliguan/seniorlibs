@@ -724,8 +724,8 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun coinChange(coins: IntArray, amount: Int): Int {
-        // 为啥dp数组初始化为 amount + 1 呢？因为凑成 amount 金额的数量最多只可能等于amount（全用1元面值的），
-        // 所以初始化为 amount + 1 就相当于初始化为正无穷，便于后续取最小值。
+        // 为啥dp数组初始化为amount + 1呢？因为凑成amount金额的数量最多只可能等于amount（全用1元面值的），
+        // 所以初始化为amount + 1就相当于初始化为正无穷，便于后续取最小值。
         val dp = IntArray(amount + 1)
         Arrays.fill(dp, amount + 1)
 
@@ -733,15 +733,18 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         dp[0] = 0
 
         // 外层 for 循环在遍历所有状态的所有取值
-        for (i in 1..amount) {
+        for (i in dp.indices) {
             // 内层 for 循环在遍历硬币的面值，求所有选择的最小值
             for (coin in coins) {
                 // 子问题无解，跳过
-                if (coin > i) continue
+                if (i < coin) continue
                 // dp：动态转移方程
-                if (coin <= i) dp[i] = Math.min(dp[i], i + dp[i - coin])
+                dp[i] = Math.min(dp[i], 1 + dp[i - coin])
             }
         }
+
+        // 没有任何一种硬币组合能组成总金额，返回-1
+        // 因为初始化值为amount + 1，所以dp[amount] > amount指初始化后未赋值，即是为匹配
         return if (dp[amount] > amount) -1 else dp[amount]
     }
 

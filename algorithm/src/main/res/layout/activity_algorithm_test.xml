@@ -10,10 +10,6 @@
     <Button
         android:id="@+id/btn_1"
         style="@style/BtnStyles"
-        android:text="1一鲍母A-Z的消息通过以下方式进行了编码" />
+        android:text="测试" />
 
-    <Button
-        android:id="@+id/btn_2"
-        style="@style/BtnStyles"
-        android:text="给定两个单词(beginWord 和endWord)和一个字典" />
 </LinearLayout>
