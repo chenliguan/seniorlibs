@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
+import com.seniorlibs.algorithm.db.DbActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 
@@ -48,27 +49,58 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
+                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib1(5)}")
+                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib2(5)}")
+                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib3(5)}")
+//                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib4(5)}")
             }
             else -> {
             }
         }
     }
 
-    fun coinChange(coins: IntArray, amount: Int): Int {
-        val dp = IntArray(amount + 1)
-        Arrays.fill(dp, amount + 1)
+    fun fib1(n: Int): Int {
+        if (n == 0) return 0
+        if (n == 1) return 1
+
+        return fib1(n - 1) + fib1(n - 2)
+    }
+
+    val cache = IntArray(31)
+
+    fun fib2(n: Int): Int {
+        if (n == 0) return 0
+        if (n == 1) return 1
+
+        cache[0] = 0
+        cache[1] = 1
+
+        return fib21(n)
+    }
+
+    fun fib21(n: Int): Int {
+        if (n == 0) return 0
+        if (n == 1) return 1
+
+        if (cache[n] != 0) return cache[n]
+
+        cache[n] = fib21(n - 1) + fib21(n - 2)
+        return cache[n]
+    }
+
+    fun fib3(n: Int): Int {
+        if (n == 0) return 0
+        if (n == 1) return 1
+
+        val dp = IntArray(31)
 
         dp[0] = 0
+        dp[1] = 1
 
-        for (i in dp.indices) {
-            for (coin in coins) {
-                if (i < coin) continue
-
-                dp[i] = Math.min(dp[i], 1 + dp[i - coin])
-            }
+        for (i in 2 until n + 1) {
+            dp[i] = dp[i - 1] + dp[i - 2]
         }
 
-        return if (dp[amount] > amount) -1 else dp[amount]
+        return dp[n]
     }
 }
