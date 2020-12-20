@@ -8,6 +8,8 @@
   （1）最优重复性：动态规划；
   （2）最近重复性：根据重复性的构造和分解，便有分治和回溯。
 
+5、递归算法的时间复杂度怎么计算？就是用：子问题个数（递归树中节点的总数） 乘以 解决一个子问题需要的时间。
+
 
 二、递归模板
 public void recur(int level, int param) {
@@ -61,84 +63,6 @@ public void recur(int level, int param) {
 回溯算法 采用试错 的思想，它尝试分步的去解决一个问题。在分步解决问题的过程中，当它通过尝试发现现有的分步答案不能得到有效的正确的解答的时候，
 它将取消上一步甚至是上几步的计算，再通过其它的可能的分步解答再次尝试寻找问题的答案。回溯法通常用最简单的递归方法来实现，在反复重复上述的步骤后可能出现两种情况：
 （1）找到一个可能存在的正确的答案；②在尝试了所有可能的分步方法后宣告该问题没有答案。
-
-
-五、动态规划
-1、特点
-动态规划和递归或者分治没有根本上的区别（关键看有无最优的子结构)
- 1.共性:找到重复子问题
- 2.差异性:最优子结构、中途可以淘太欠优解
-
-递归问题一含有重疊的子问题，操作重复
- 1.记忆化搜索(自顶而下)
- 2.动态规划(自底而上)
-
-常识：一般求解最值的问题都可以朝着动态规划的方向去想
-
-2、关键点：
- 1.根据最优子结构定义状态：dp[n] = bestOf(dp[n-1], dp[n-2], ...)
- 2.递推状态转移方程（DP方程）
-   一维：dp[i] = dp[n-1] + dp[n-2]
-   二维: dp[i,j] = dp[i+1], i] + dp[i][j+1] (且判断dp[i, j]是否空地)
- 3.考虑初始化（base case）
- 4.考虑输出
- 5.考虑优化空间
-
-3、DP顺推模板
-// 模板核心
-for 状态1 in 状态1的所有取值：
-    for 状态2 in 状态2的所有取值：
-        for ...
-            dp[状态1][状态2][...] = 择优(选择1，选择2...)
-
-// 模板例子
-public void fun(int level, int param) {
-    // base case：定义 dp 数组并初始化第 0 行和第 0 列。// 二维情况
-    dp = [][]
-
-    // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
-    for i = 0..M {
-        for j = 0..N {
-            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
-        }
-    }
-    return dp[M][N]
-}
-
-// 经典案例
-fun uniquePaths(m: Int, n: Int): Int {
-    if (m == 0 || n == 0) return 0
-
-    // base case：定义 dp 数组并初始化第 0 行和第 0 列。// 二维情况
-    val dp = Array(m) { IntArray(n) }
-    for (i in 0 until m) dp[i][0] = 1
-    for (j in 0 until n) dp[0][j] = 1
-
-    // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推。
-    for (i in 1 until m) {
-        for (j in 1 until n) {
-            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
-        }
-    }
-    return dp[m - 1][n - 1]
-}
-
-4、思考思路：想到动态规划，但又不知从何入手，可以试试这么思考：
- 1.大问题是什么？
- 2.规模小一点的子问题是什么？
- 3.它们之间有什么联系？
-
-5、大问题是一个字符串是否是回文串，那规模小一点的子问题呢？
- 一个字符串是回文串，它的首尾字符相同，且剩余子串也是一个回文串。所以，剩余子串是否为回文串，就是规模小一点的子问题，它的结果影响大问题的结果。
- 我们怎么去描述子问题呢？写出
- （1）base case：只有一个字母的时候肯定是回文子串，for (i in 0 until n) dp[i][i] = true
- （2）db方程：
-    // 如果s[i]==s[j]，说明只要dp[i+1][j-1]是回文子串，那么dp[i][j]也是回文子串；如果s[i]!=s[j]，说明dp[i][j]必定不是回文子串。
-    if(s.charAt(i) == s.charAt(j)){
-        dp[i][j] = dp[i+1][j-1]
-    } else {
-        dp[i][j] = false;
-    }
 
 
 六、二分查找代码模板
@@ -200,83 +124,90 @@ public int binarySearch(int[] array, int target) {
 
 
 八、DFS模板
-1、递归
-    /**
-     * 107. 二叉树的层次遍历 -- DFS深度遍历-递归
-     *
-     * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果当前行对应的 list 不存在，就加入一个空 list 进去。
-     *
-     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
-     * 空间复杂度：O(h)，h 是树的高度。
-     *
-     * @param root
-     * @return
-     */
-    fun levelOrder1(root: TreeNode?): List<List<Int>>? {
-        // 存放最终结果的集合
-        val res: MutableList<MutableList<Int>> = mutableListOf()
-        if (root == null) return res
 
-        dfsLevel(1, root, res)
-        return res
-    }
+1、不要小看这几行破代码，几乎所有二叉树的题目都是一套这个框架就出来了。
+void traverse(TreeNode root) {
+    // 前序遍历
+    traverse(root.left)
+    // 中序遍历
+    traverse(root.right)
+    // 后序遍历
+}
 
-    fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
-        if (root == null) return
+2、递归
+/**
+ * 107. 二叉树的层次遍历 -- DFS深度遍历-递归
+ * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果当前行对应的 list 不存在，就加入一个空 list 进去。
+ * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+ * 空间复杂度：O(h)，h 是树的高度。
+ * @param root
+ * @return
+*/
+fun levelOrder1(root: TreeNode?): List<List<Int>>? {
+    // 存放最终结果的集合
+    val res: MutableList<MutableList<Int>> = mutableListOf()
+    if (root == null) return res
 
-        // 假设res是[[1],[2,3]]，index是3，就再插入一个空list放到res中
-        if (res.size < index) res.add(mutableListOf())
+    dfsLevel(1, root, res)
+    return res
+}
 
-        // 将当前节点的值加入到res中，index-1代表当前层，假设index-1是3-1=2，节点值是6。res是[[1],[2,5],[3,4]]，加入后res就变为[[1],[2,5],[3,4,6]]
-        res[index - 1].add(root.`val`)
+fun dfsLevel(index: Int, root: TreeNode?, res: MutableList<MutableList<Int>>) {
+    if (root == null) return
 
-        // 递归的处理左子树，右子树，同时将层数index+1
-        if (root.left != null) dfsLevel(index + 1, root.left, res)
+    // 假设res是[[1],[2,3]]，index是3，就再插入一个空list放到res中
+    if (res.size < index) res.add(mutableListOf())
 
-        if (root.right != null) dfsLevel(index + 1, root.right, res)
-    }
+    // 将当前节点的值加入到res中，index-1代表当前层，假设index-1是3-1=2，节点值是6。res是[[1],[2,5],[3,4]]，加入后res就变为[[1],[2,5],[3,4,6]]
+    res[index - 1].add(root.`val`)
+
+    // 递归的处理左子树，右子树，同时将层数index+1
+    if (root.left != null) dfsLevel(index + 1, root.left, res)
+
+    if (root.right != null) dfsLevel(index + 1, root.right, res)
+}
 
 2、迭代
-    fun preorder1(root: Node?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()
-        val stack: Deque<Node?> = LinkedList()
+fun preorder1(root: Node?): List<Int> {
+    val res: MutableList<Int> = mutableListOf()
+    val stack: Deque<Node?> = LinkedList()
 
-        if (root == null) return res else stack.push(root)
+    if (root == null) return res else stack.push(root)
 
-        while (!stack.isEmpty()) {
-            // 将根节点弹出
-            val p = stack.pop()
-            // 加入到结果集合中
-            res.add(p!!.`val`)
+    while (!stack.isEmpty()) {
+        // 将根节点弹出
+        val p = stack.pop()
+        // 加入到结果集合中
+        res.add(p!!.`val`)
 
-            // 将该节点的子节点从右往左压入栈
-            for (i in p.children.size - 1 downTo 0) {
-                stack.push(p.children[i])
-            }
+        // 将该节点的子节点从右往左压入栈
+        for (i in p.children.size - 1 downTo 0) {
+            stack.push(p.children[i])
         }
-        return res
     }
+    return res
+}
 
-    fun postorder1(root: Node?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()
-        val stack: Deque<Node?> = LinkedList()
+fun postorder1(root: Node?): List<Int> {
+    val res: MutableList<Int> = mutableListOf()
+    val stack: Deque<Node?> = LinkedList()
 
-        if (root == null) return res else stack.push(root)
+    if (root == null) return res else stack.push(root)
 
-        while (!stack.isEmpty()) {
-            // 将根节点弹出
-            val node = stack.pop()
-            // 加入到结果集合中
-            res.add(node!!.`val`)
+    while (!stack.isEmpty()) {
+        // 将根节点弹出
+        val node = stack.pop()
+        // 加入到结果集合中
+        res.add(node!!.`val`)
 
-            // 将该节点的子节点从左往右压入栈
-            for (i in 0 until node.children.size) {
-                stack.push(node.children[i])
-            }
+        // 将该节点的子节点从左往右压入栈
+        for (i in 0 until node.children.size) {
+            stack.push(node.children[i])
         }
-        // 最后将list反转
-        return res.reversed()
     }
+    // 最后将list反转
+    return res.reversed()
+}
 
 
 九、并查集

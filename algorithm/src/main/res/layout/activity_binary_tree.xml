@@ -13,7 +13,7 @@
         android:text="589. N叉数的前序遍历" />
 
     <Button
-        android:id="@+id/btn_n_postorder "
+        android:id="@+id/btn_n_postorder"
         style="@style/BtnStyles"
         android:text="590. N叉数的后序遍历" />
 

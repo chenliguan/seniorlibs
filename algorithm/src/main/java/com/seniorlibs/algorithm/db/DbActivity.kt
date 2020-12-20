@@ -279,24 +279,23 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
+    private var cache = IntArray(31)
+
     fun fib2(n: Int): Int {
         if (n <= 0) return 0
         if (n == 1 || n == 2) return 1
 
-        val cache = IntArray(n + 1)
         cache[0] = 0
         cache[1] = 1
-
-        return fibs(n, cache)
+        return fibs(n)
     }
 
-    private fun fibs(n: Int, cache : IntArray): Int {
+    private fun fibs(n: Int): Int {
         // 如果 N 对应的斐波那契数存在，则返回
         if (cache[n] != 0) return cache[n]
 
         // 计算 N 对应的斐波那契数为 fb(N-1) + fb(N-2)
-        cache[n] = fibs(n - 1, cache) + fibs(n - 2, cache)
-
+        cache[n] = fibs(n - 1) + fibs(n - 2)
         return cache[n]
     }
 
@@ -711,13 +710,13 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 322. 零钱兑换
+     * 322. 零钱兑换   方式1：动态规划
      *
      * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
      * 空间复杂度：O(S)，DP数组需要开长度为总金额S的空间
      *
      * base case：dp[0] = 0
-     * DP方程：dp(n) = min{dp(n - coin) + 1}，coin ∈ coins、n > 0
+     * DP方程：dp[i] = Math.min(dp[i], i + dp[i - coin])，coin ∈ coins、n > 0
      *
      * https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-chen-li-guan/
      * @param coins
@@ -725,21 +724,22 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun coinChange(coins: IntArray, amount: Int): Int {
-        // 为啥dp数组初始化为amount+1呢，因为凑成amount金额的数最多只可能等于amount（全用1元面值的）
+        // 为啥dp数组初始化为 amount + 1 呢？因为凑成 amount 金额的数量最多只可能等于amount（全用1元面值的），
+        // 所以初始化为 amount + 1 就相当于初始化为正无穷，便于后续取最小值。
         val dp = IntArray(amount + 1)
         Arrays.fill(dp, amount + 1)
 
         // base case
         dp[0] = 0
+
         // 外层 for 循环在遍历所有状态的所有取值
-        for (n in 1..amount) {
-            // 内层 for 循环在遍历硬币的值
+        for (i in 1..amount) {
+            // 内层 for 循环在遍历硬币的面值，求所有选择的最小值
             for (coin in coins) {
-                // coins[j] > i -> 子问题无解，跳过
-                if (coin <= n) {
-                    // 求所有选择的最小值
-                    dp[n] = Math.min(dp[n], dp[n - coin] + 1)
-                }
+                // 子问题无解，跳过
+                if (coin > i) continue
+                // dp：动态转移方程
+                if (coin <= i) dp[i] = Math.min(dp[i], i + dp[i - coin])
             }
         }
         return if (dp[amount] > amount) -1 else dp[amount]
