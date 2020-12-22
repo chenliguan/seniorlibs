@@ -49,58 +49,32 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib1(5)}")
-                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib2(5)}")
-                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib3(5)}")
-//                LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib4(5)}")
+                LogUtils.e(TAG, "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}")
             }
             else -> {
             }
         }
     }
 
-    fun fib1(n: Int): Int {
-        if (n == 0) return 0
-        if (n == 1) return 1
 
-        return fib1(n - 1) + fib1(n - 2)
-    }
+    fun maxSubArray(nums: IntArray): Int {
+        val n = nums.size
+        val dp = IntArray(n)
 
-    val cache = IntArray(31)
+        // base case
+        dp[0] = nums[0]
 
-    fun fib2(n: Int): Int {
-        if (n == 0) return 0
-        if (n == 1) return 1
-
-        cache[0] = 0
-        cache[1] = 1
-
-        return fib21(n)
-    }
-
-    fun fib21(n: Int): Int {
-        if (n == 0) return 0
-        if (n == 1) return 1
-
-        if (cache[n] != 0) return cache[n]
-
-        cache[n] = fib21(n - 1) + fib21(n - 2)
-        return cache[n]
-    }
-
-    fun fib3(n: Int): Int {
-        if (n == 0) return 0
-        if (n == 1) return 1
-
-        val dp = IntArray(31)
-
-        dp[0] = 0
-        dp[1] = 1
-
-        for (i in 2 until n + 1) {
-            dp[i] = dp[i - 1] + dp[i - 2]
+        // db
+        for (i in 1 until n) {
+            // 要不自成一派，要不和前面合并
+            dp[i] = Math.max(nums[i], nums[i] + dp[i - 1])
         }
 
-        return dp[n]
+        var res = Int.MIN_VALUE
+        for (i in 0 until n) {
+            res = Math.max(res, dp[i])
+        }
+
+        return res
     }
 }

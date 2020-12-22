@@ -91,10 +91,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
             R.id.btn_max_sub_array -> {
-                LogUtils.e(
-                    TAG,
-                    "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}"
-                )
+                LogUtils.e(TAG, "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}")
             }
             R.id.btn_max_product -> {
                 LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
@@ -650,34 +647,43 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 53. 最大子序和   解法一：动态规划
+     * 53. 最大子序和（最大子数组）   解法一：动态规划
      *
      * 思想：数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
      *
      * base case：dp = nums[0]
      *
-     * DP方程：sum = max(sum + num[i], num[i])， db = max(db, sum)
+     * DP方程：dp[i] = Math.max(nums[i], nums[i] + dp[i - 1]);
      *
      * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
      * 空间复杂度：O(1)，只需要常数空间存放若干变量。
      *
+     * https://leetcode-cn.com/problems/maximum-subarray/solution/53-zui-da-zi-xu-he-by-chen-li-guan/
      * @param nums
      * @return
      */
     fun maxSubArray(nums: IntArray): Int {
-        // base case：dp = nums[0]。因为nums只有一个值而且是负数时，需要给dp初始值，否则dp=0就是最大值
-        var db = nums[0]
-        // nums只有一个值，这个sum都会赋值
-        var sum = 0
+        val n = nums.size
+        if (nums.isEmpty()) return 0
 
-        for (num in nums) {
-            // dp
-            sum = Math.max(sum + num, num)
-            db = Math.max(db, sum)
+        val dp = IntArray(n)
+        // base case 第一个元素前面没有子数组
+        dp[0] = nums[0]
+
+        // 状态转移方程
+        for (i in 1 until n) {
+            // 要么自成一派，要么和前面的子数组合并
+            dp[i] = Math.max(nums[i], nums[i] + dp[i - 1])
         }
-        return db
-    }
 
+        // 得到 nums 的最大子数组
+        var res = Int.MIN_VALUE
+        for (i in 0 until n) {
+            res = Math.max(res, dp[i])
+        }
+
+        return res
+    }
 
     /**
      * 152. 乘积最大子数组  解法一：动态规划
