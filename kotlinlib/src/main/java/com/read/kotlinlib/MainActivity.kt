@@ -3,6 +3,7 @@ package com.read.kotlinlib
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View
+import com.read.kotlinlib.annotation.AnnotationParser
 import com.read.kotlinlib.basic.AdvanceActivity
 import com.read.kotlinlib.basic.BasicActivity
 import com.read.kotlinlib.basic.CoroutineActivity
@@ -111,6 +112,15 @@ class MainActivity : AppCompatActivity() {
     fun polymorphisn(view: View?) {
         val p = Polymorphisn()
         p.main()
+    }
+
+    /**
+     * 注解
+     *
+     * @param view
+     */
+    fun testAnnotation(view: View?) {
+        AnnotationParser.main()
     }
 
     /**

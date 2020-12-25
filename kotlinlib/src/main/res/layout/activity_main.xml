@@ -35,6 +35,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="testAnnotation"
+        android:text="注解"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="testInner"
         android:text="内部类"
         android:textAllCaps="false"/>
