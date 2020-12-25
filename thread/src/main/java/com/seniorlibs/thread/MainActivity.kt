@@ -93,8 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * @param view
      */
     fun testCountDownLatch(view: View?) {
-        CountDownLatchTest.await()
-        CountDownLatchTest.countDown()
+        CountDownLatchTest.main()
     }
 
     /**
