@@ -125,6 +125,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(2^n)。树形递归的大小为2^n；
      * 空间复杂度：O(n)。递归树的深度可以达到n
      *
+     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
      * @param n
      * @return
      */
@@ -172,6 +173,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。树形递归的大小可以达到 n；
      * 空间复杂度：O(n)。递归树的深度可以达到 n
      *
+     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
      * @param n
      * @return
      */
@@ -254,6 +256,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(2^N)。这是计算斐波那契数最慢的方法。因为它需要指数的时间。
      * 空间复杂度：O(N)，在堆栈中需要与 N 成正比的空间大小。该堆栈跟踪 fib(N) 的函数调用，随着堆栈的不断增长如果没有足够的内存则会导致 StackOverflowError。
      *
+     * https://leetcode-cn.com/problems/fibonacci-number/solution/509-fei-bo-na-qi-shu-by-chen-li-guan/
      * @param n
      * @return
      */
@@ -316,16 +319,17 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fib3(n: Int): Int {
-        if (n <= 0) return 0
-        if (n == 1 || n == 2) return 1
+        if (n == 0) return 0
+        if (n == 1) return 1
 
-        val dp = IntArray(n + 1)
+        val size = n + 1
+        val dp = IntArray(size)
         // base case
         dp[0] = 0
         dp[1] = 1
 
         // dp
-        for (i in 2 until n + 1) {
+        for (i in 2 until size) {
             dp[i] = dp[i - 1] + dp[i - 2]
         }
 
@@ -664,19 +668,19 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun maxSubArray(nums: IntArray): Int {
         val n = nums.size
-        if (nums.isEmpty()) return 0
+        if (n == 0) return 0
 
         val dp = IntArray(n)
         // base case 第一个元素前面没有子数组
         dp[0] = nums[0]
 
-        // 状态转移方程
+        // dp状态转移方程
         for (i in 1 until n) {
             // 要么自成一派，要么和前面的子数组合并
             dp[i] = Math.max(nums[i], nums[i] + dp[i - 1])
         }
 
-        // 得到 nums 的最大子数组
+        // 计算最大子序和
         var res = Int.MIN_VALUE
         for (i in 0 until n) {
             res = Math.max(res, dp[i])
@@ -730,28 +734,27 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun coinChange(coins: IntArray, amount: Int): Int {
-        // 为啥dp数组初始化为amount + 1呢？因为凑成amount金额的数量最多只可能等于amount（全用1元面值的），
-        // 所以初始化为amount + 1就相当于初始化为正无穷，便于后续取最小值。
-        val dp = IntArray(amount + 1)
-        Arrays.fill(dp, amount + 1)
+        // 凑成amount金额的数量最多只可能等于amount（全用1元面值的），所以初始化为amount + 1就相当于初始化为正无穷，便于后续取最小值。
+        val n = amount + 1
+        val dp = IntArray(n)
+        Arrays.fill(dp, Int.MAX_VALUE)
 
         // base case
         dp[0] = 0
 
-        // 外层 for 循环在遍历所有状态的所有取值
-        for (i in dp.indices) {
-            // 内层 for 循环在遍历硬币的面值，求所有选择的最小值
+        // 状态 1...amount -> i：外层 for 循环在遍历所有状态的所有取值
+        for (i in 1 until n) {
+            // 选择：选择哪种硬币的面值 或 不选
             for (coin in coins) {
                 // 子问题无解，跳过
-                if (i < coin) continue
-                // dp：动态转移方程
-                dp[i] = Math.min(dp[i], 1 + dp[i - coin])
+                if (i - coin < 0) continue
+                // dp动态转移方程：求所有选择的最小值
+                if (dp[i - coin] < Int.MAX_VALUE) dp[i] = Math.min(dp[i], 1 + dp[i - coin])
             }
         }
 
         // 没有任何一种硬币组合能组成总金额，返回-1
-        // 因为初始化值为amount + 1，所以dp[amount] > amount指初始化后未赋值，即是为匹配
-        return if (dp[amount] > amount) -1 else dp[amount]
+        return if (dp[amount] < Int.MAX_VALUE) dp[amount] else -1
     }
 
 
