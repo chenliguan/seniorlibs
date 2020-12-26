@@ -33,6 +33,11 @@
         android:text="1143. 最长公共子序列" />
 
     <Button
+        android:id="@+id/btn_min_distance"
+        style="@style/BtnStyles"
+        android:text="583. 两个字符串的删除操作" />
+
+    <Button
         android:id="@+id/btn_minimum_total"
         style="@style/BtnStyles"
         android:text="120. 三角形最小路径和" />

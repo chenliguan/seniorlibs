@@ -83,6 +83,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_longest_common_sub_sequence -> {
                 LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
             }
+            R.id.btn_min_distance -> {
+                LogUtils.e(TAG, "583. 两个字符串的删除操作：${minDistance("ace", "abcde")}")
+            }
             R.id.btn_minimum_total -> {
                 val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal4(res)}")
@@ -515,31 +518,55 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
      * https://leetcode-cn.com/problems/longest-common-subsequence/solution/1143-zui-chang-gong-gong-zi-xu-lie-by-chen-li-guan/
-     * @param text1
-     * @param text2
+     * @param s1
+     * @param s2
      * @return
      */
-    fun longestCommonSubsequence(text1: String, text2: String): Int {
-        val m: Int = text1.length
-        val n: Int = text2.length
-        val c1: CharArray = text1.toCharArray()
-        val c2: CharArray = text2.toCharArray()
+    fun longestCommonSubsequence(s1: String, s2: String): Int {
+        if (s1.isEmpty() || s2.isEmpty()) return 0
 
-        val dp = Array(m + 1) { IntArray(n + 1) }
+        val m: Int = s1.length + 1
+        val n: Int = s2.length + 1
+        val dp = Array(m) { IntArray(n) }
 
-        /* dp默认0行或0列是0 */
-        for (i in 1..m) {
-            for (j in 1..n) {
-                if (c1[i - 1] == c2[j - 1]) {
-                    /* 如果末端相同，去找它们各往后退一格的值加1即可 */
-                    dp[i][j] = dp[i - 1][j - 1] + 1
+        // base case:  dp默认0行或0列是0，所以不需要设置了
+//        dp[0][..] = dp[..][0] = 0
+
+        // 外层 for 循环在遍历s1所有状态的所有取值
+        for (i in 1 until m) {
+            // 外层 for 循环在遍历s2所有状态的所有取值
+            for (j in 1 until n) {
+                // 现在 i 和 j 从 1 开始，所以要减一
+                if (s1[i - 1] == s2[j - 1]) {
+                    // 如果s1[i-1] == s2[j-1]，说明这个字符 s1[i-1]和s2[j-1] 一定在 最长公共子序列长度 中
+                    dp[i][j] = 1 + dp[i - 1][j - 1]
                 } else {
-                    /* 如果末端不同，要么是text1往后退一格，要么是text2往前退一格，两个的最大值 */
+                    // 如果s1[i-1] != s2[j-1]，s1[i-1] 和 s2[j-1] 至少有一个不在最长公共子序列长度 中，穷举三种情况的结果，取其中的最大结果
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
                 }
             }
         }
-        return dp[m][n]
+
+        return dp[m - 1][n - 1]
+    }
+
+    /**
+     * 583. 两个字符串的删除操作 解法一：动态规划（自底向上）
+     * 思路：计算将两个字符串变得相同的最少删除次数，那我们可以思考一下，最后这两个字符串会被删成什么样子？删除的结果不就是它俩的最长公共子序列嘛！
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     *
+     * @param word1
+     * @param word2
+     * @return
+     */
+    fun minDistance(word1: String, word2: String): Int {
+        if (word1.isEmpty() || word2.isEmpty()) return 0
+
+        // 那么，要计算删除的次数，就可以通过最长公共子序列的长度推导出来
+        val lcs = longestCommonSubsequence(word1, word2)
+        return word1.length - lcs + word2.length - lcs
     }
 
 
