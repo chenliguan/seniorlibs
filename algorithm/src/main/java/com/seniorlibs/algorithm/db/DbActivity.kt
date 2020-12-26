@@ -86,6 +86,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_min_distance -> {
                 LogUtils.e(TAG, "583. 两个字符串的删除操作：${minDistance("ace", "abcde")}")
             }
+            R.id.btn_minimum_delete_sum -> {
+                LogUtils.e(TAG, "712. 两个字符串的最小ASCII删除和：${minimumDeleteSum("ace", "abcde")}")
+            }
             R.id.btn_minimum_total -> {
                 val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal4(res)}")
@@ -527,6 +530,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
         val m: Int = s1.length + 1
         val n: Int = s2.length + 1
+        // dp数组宽高是s1.length+1和s2.length+1
         val dp = Array(m) { IntArray(n) }
 
         // base case:  dp默认0行或0列是0，所以不需要设置了
@@ -536,13 +540,13 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 1 until m) {
             // 外层 for 循环在遍历s2所有状态的所有取值
             for (j in 1 until n) {
-                // 现在 i 和 j 从 1 开始，所以要减一
+                // dp默认0行或0列是0，真实存值是从1行和1列开始，而s1和s2还是从0行或0列开始；现在i和j从1开始，所以s1要减1
                 if (s1[i - 1] == s2[j - 1]) {
                     // 如果s1[i-1] == s2[j-1]，说明这个字符 s1[i-1]和s2[j-1] 一定在 最长公共子序列长度 中
                     dp[i][j] = 1 + dp[i - 1][j - 1]
                 } else {
                     // 如果s1[i-1] != s2[j-1]，s1[i-1] 和 s2[j-1] 至少有一个不在最长公共子序列长度 中，穷举三种情况的结果，取其中的最大结果
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
+                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j])
                 }
             }
         }
@@ -552,21 +556,74 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 583. 两个字符串的删除操作 解法一：动态规划（自底向上）
-     * 思路：计算将两个字符串变得相同的最少删除次数，那我们可以思考一下，最后这两个字符串会被删成什么样子？删除的结果不就是它俩的最长公共子序列嘛！
+     *
+     * 思路：最后这两个字符串会被删成的结果不就是它俩的最长公共子序列！
+     * 先求出 最大的公共子序列值，两个字符串的删除操作次数 = 两个字符串的总长度 - 2 * 最大的公共子序列值。
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
-     * @param word1
-     * @param word2
+     * @param s1
+     * @param s2
      * @return
      */
-    fun minDistance(word1: String, word2: String): Int {
-        if (word1.isEmpty() || word2.isEmpty()) return 0
+    fun minDistance(s1: String, s2: String): Int {
+        if (s1.isEmpty() || s2.isEmpty()) return 0
 
         // 那么，要计算删除的次数，就可以通过最长公共子序列的长度推导出来
-        val lcs = longestCommonSubsequence(word1, word2)
-        return word1.length - lcs + word2.length - lcs
+        val lcs = longestCommonSubsequence(s1, s2)
+        return s1.length - lcs + s2.length - lcs
+    }
+
+    /**
+     * 712. 两个字符串的最小ASCII删除和 解法一：动态规划（自底向上）
+     *
+     * 思路：先求出 最大的公共子序列对应的ASCII值，两个字符串的最小ASCII删除和 = 两个字符串的总ASCII值 - 2 * 最大的公共子序列对应的ASCII值。
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     *
+     * @param s1
+     * @param s2
+     * @return
+     */
+    fun minimumDeleteSum(s1: String, s2: String): Int {
+        // 求出 最大的公共子序列对应的ASCII值，利用两个字符串的总ASCII值 - 2 * 最大的公共子序列对应的ASCII值
+        if (s1.isEmpty()) return getASCII(s2.toCharArray())
+        if (s2.isEmpty()) return getASCII(s1.toCharArray())
+
+        val m: Int = s1.length + 1
+        val n: Int = s2.length + 1
+        // dp数组宽高是s1.length+1和s2.length+1
+        val dp = Array(m) { IntArray(n) }
+
+        // base case:  dp默认0行或0列是0，所以不需要设置了
+//        dp[0][..] = dp[..][0] = 0
+
+        // 外层 for 循环在遍历s1所有状态的所有取值
+        for (i in 1 until m) {
+            // 外层 for 循环在遍历s2所有状态的所有取值
+            for (j in 1 until n) {
+                // dp默认0行或0列是0，真实存值是从1行和1列开始，而s1和s2还是从0行或0列开始；现在i和j从1开始，所以s1要减1
+                if (s1[i - 1] == s2[j - 1]) {
+                    // 如果s1[i-1] == s2[j-1]，说明这个字符 s1[i-1]和s2[j-1] 一定在 最长公共子序列长度 中，累加ASCII值
+                    dp[i][j] = s1.codePointAt(i - 1) + dp[i - 1][j - 1]
+                } else {
+                    // 如果s1[i-1] != s2[j-1]，s1[i-1] 和 s2[j-1] 至少有一个不在最长公共子序列长度 中，穷举三种情况的结果，取其中的最大结果
+                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j])
+                }
+            }
+        }
+
+        return getASCII(s1.toCharArray()) + getASCII(s2.toCharArray()) - 2 * dp[m - 1][n - 1]
+    }
+
+    fun getASCII(charArr: CharArray): Int {
+        var ret = 0
+        for (c in charArr) {
+            ret += c.toInt()
+        }
+        return ret
     }
 
 
