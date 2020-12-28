@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * @param view
      */
     fun atomicTest(view: View?) {
-        AtomicIntegerTest.mainTest()
+//        AtomicIntegerTest.mainTest()
         AtomicLongFieldUpdaterTest.mainTest()
     }
 

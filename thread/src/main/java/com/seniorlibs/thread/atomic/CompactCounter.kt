@@ -15,11 +15,14 @@ class CompactCounter {
     @Volatile
     private var counter: Long = 0
 
-    // 如果变量的名称不存在，会直接报错
-//  private val updater: AtomicLongFieldUpdater<CompactCounter> = AtomicLongFieldUpdater.newUpdater(CompactCounter::class.java, "countersssss")
-//  Caused by: java.lang.RuntimeException: java.lang.NoSuchFieldException: No field countersssss in class Lcom/seniorlibs/thread/atomic/CompactCounter;
+    /**
+     * 注意：如果变量的名称不存在，会直接报错
+     * private val updater: AtomicLongFieldUpdater<CompactCounter> = AtomicLongFieldUpdater.newUpdater(CompactCounter::class.java, "countersssss")
+     * 报错Caused by: java.lang.RuntimeException: java.lang.NoSuchFieldException: No field countersssss in class Lcom/seniorlibs/thread/atomic/CompactCounter;
+     */
 
-    private val updater: AtomicLongFieldUpdater<CompactCounter> = AtomicLongFieldUpdater.newUpdater(CompactCounter::class.java, "counter")
+    private val updater: AtomicLongFieldUpdater<CompactCounter> =
+        AtomicLongFieldUpdater.newUpdater(CompactCounter::class.java, "counter")
 
     fun increase() {
         updater.incrementAndGet(this)
