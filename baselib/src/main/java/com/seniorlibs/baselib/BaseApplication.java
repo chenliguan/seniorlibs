@@ -7,8 +7,13 @@ import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.seniorlibs.baselib.utils.DebugUtils;
 
 import java.io.File;
+
+import io.reactivex.exceptions.OnErrorNotImplementedException;
+import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
 
 public class BaseApplication extends Application {
 
@@ -37,5 +42,16 @@ public class BaseApplication extends Application {
                 .build();
 
         ImageLoader.getInstance().init(configuration);
+
+        if (!DebugUtils.isDebugMode) {
+            // 在Application设置RxJava全局异常监控
+            RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) throws Exception {
+                    // 错误上报：throwable.getCause()才能获取到真实的错误，如果是严重异常直接抛出
+//                    report(throwable instanceof OnErrorNotImplementedException ? throwable.getCause() : throwable);
+                }
+            });
+        }
     }
 }

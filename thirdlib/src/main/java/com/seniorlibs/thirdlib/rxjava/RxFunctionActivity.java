@@ -442,7 +442,7 @@ public class RxFunctionActivity extends AppCompatActivity {
      * 遇到错误时，发送1个新的Observable
      * <p>
      * 场景：onErrorResumeNext()拦截的错误 = Throwable；若需拦截Exception请用onExceptionResumeNext()
-     * 若onErrorResumeNext()拦截的错误 = Exception，则会将错误传递给观察者的onError方法
+     *     若onErrorResumeNext()拦截的错误 = Exception，则会将错误传递给观察者的onError方法
      *
      * @param view
      */

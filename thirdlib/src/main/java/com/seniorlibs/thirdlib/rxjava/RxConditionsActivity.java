@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.seniorlibs.baselib.utils.LogUtils;
@@ -157,6 +156,7 @@ public class RxConditionsActivity extends AppCompatActivity {
                         return (integer > 3);
                     }
                 }).subscribe(new Observer<Long>() {
+
             @Override
             public void onSubscribe(Disposable d) {
             }
@@ -387,7 +387,7 @@ public class RxConditionsActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(Integer value) {
-                        LogUtils.d(TAG, "接收到了事件"+ value  );
+                        LogUtils.d(TAG, "接收到了事件" + value);
                     }
 
                     @Override
