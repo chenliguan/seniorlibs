@@ -745,6 +745,7 @@ class BasicActivity : AppCompatActivity() {
         lateinit var age: String
 
         private val case: Int by lazy { 1 }
+        private val case1: Int by lazy(LazyThreadSafetyMode.PUBLICATION) { 1 }
 
         fun printCase() {
             println(case)

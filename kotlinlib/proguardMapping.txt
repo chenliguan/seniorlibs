@@ -12860,9 +12860,17 @@ com.read.kotlinlib.R$xml -> com.read.kotlinlib.R$xml:
 com.read.kotlinlib.annotation.AnnotationDemo -> com.read.kotlinlib.annotation.AnnotationDemo:
 com.read.kotlinlib.annotation.AnnotationParser -> com.read.kotlinlib.annotation.AnnotationParser:
 com.read.kotlinlib.annotation.AuthorAnno -> com.read.kotlinlib.annotation.AuthorAnno:
+com.read.kotlinlib.annotation.MyDocumentedTest -> com.read.kotlinlib.annotation.MyDocumentedTest:
+com.read.kotlinlib.annotation.MyDocumentedt -> com.read.kotlinlib.annotation.MyDocumentedt:
 com.read.kotlinlib.annotation.MyInherited -> com.read.kotlinlib.annotation.MyInherited:
 com.read.kotlinlib.annotation.MyInheritedB -> com.read.kotlinlib.annotation.MyInheritedB:
 com.read.kotlinlib.annotation.MyInheritedParent -> com.read.kotlinlib.annotation.MyInheritedParent:
+com.read.kotlinlib.annotation.Role -> com.read.kotlinlib.annotation.Role:
+com.read.kotlinlib.annotation.Roles -> com.read.kotlinlib.annotation.Roles:
+com.read.kotlinlib.annotation.RolesTest -> com.read.kotlinlib.annotation.RolesTest:
+com.read.kotlinlib.annotation.TypeUserTest -> com.read.kotlinlib.annotation.TypeUserTest:
+com.read.kotlinlib.annotation.TypeUserTest$isNotNull -> com.read.kotlinlib.annotation.TypeUserTest$isNotNull:
+com.read.kotlinlib.annotation.TypeUserTest$isParam -> com.read.kotlinlib.annotation.TypeUserTest$isParam:
 com.read.kotlinlib.basic.AdvanceActivity -> com.read.kotlinlib.basic.AdvanceActivity:
     android.view.View mRoot -> b
     com.read.kotlinlib.basic.AdvanceActivity$Companion Companion -> a
@@ -12967,8 +12975,11 @@ com.read.kotlinlib.basic.BasicActivity$Test -> com.read.kotlinlib.basic.BasicAct
     void sayMes(java.lang.String) -> a
 com.read.kotlinlib.basic.BasicActivity$TestCase -> com.read.kotlinlib.basic.BasicActivity$TestCase:
     kotlin.Lazy case$delegate -> a
+    kotlin.Lazy case1$delegate -> b
 com.read.kotlinlib.basic.BasicActivity$TestCase$case$2 -> com.read.kotlinlib.basic.BasicActivity$TestCase$case$2:
     com.read.kotlinlib.basic.BasicActivity$TestCase$case$2 INSTANCE -> b
+com.read.kotlinlib.basic.BasicActivity$TestCase$case1$2 -> com.read.kotlinlib.basic.BasicActivity$TestCase$case1$2:
+    com.read.kotlinlib.basic.BasicActivity$TestCase$case1$2 INSTANCE -> b
 com.read.kotlinlib.basic.BasicActivity$User -> com.read.kotlinlib.basic.BasicActivity$User:
     java.lang.String name -> a
     java.lang.String pwd -> b
@@ -13055,14 +13066,14 @@ com.read.kotlinlib.basic.CoroutineActivity -> com.read.kotlinlib.basic.Coroutine
     kotlinx.coroutines.CoroutineScope mainScope -> c
     com.read.kotlinlib.basic.CoroutineActivity$Companion Companion -> a
     void initView() -> d
-    void suspendLaunch() -> e
+    void suspend() -> e
     java.lang.Object concurrentSum(kotlin.coroutines.Continuation) -> b
     java.lang.Object doSomethingUsefulOne(kotlin.coroutines.Continuation) -> c
     java.lang.Object doSomethingUsefulTwo(kotlin.coroutines.Continuation) -> d
     java.lang.Object doWord(kotlin.coroutines.Continuation) -> a
     java.lang.ThreadLocal getThreadLocal() -> c
-    void destroyCoroutineScope() -> a
-    void doSomething() -> b
+    void destroyCoroutineScope() -> b
+    void doSomething() -> a
 com.read.kotlinlib.basic.CoroutineActivity$Companion -> com.read.kotlinlib.basic.CoroutineActivity$Companion:
     void actionStart(android.content.Context) -> a
 com.read.kotlinlib.basic.CoroutineActivity$Single -> com.read.kotlinlib.basic.CoroutineActivity$Single:
@@ -13291,7 +13302,16 @@ com.read.kotlinlib.basic.CoroutineActivity$doSomethingUsefulTwo$1 -> com.read.ko
     int label -> d
     java.lang.Object L$0 -> f
     java.lang.Object result -> c
+com.read.kotlinlib.basic.CoroutineActivity$doWord$1 -> com.read.kotlinlib.basic.CoroutineActivity$doWord$1:
+    com.read.kotlinlib.basic.CoroutineActivity this$0 -> e
+    int label -> d
+    java.lang.Object L$0 -> f
+    java.lang.Object result -> c
 com.read.kotlinlib.basic.CoroutineActivity$doWord$2 -> com.read.kotlinlib.basic.CoroutineActivity$doWord$2:
+    int label -> d
+    java.lang.Object L$0 -> c
+    kotlinx.coroutines.CoroutineScope p$ -> b
+com.read.kotlinlib.basic.CoroutineActivity$doWord2$2 -> com.read.kotlinlib.basic.CoroutineActivity$doWord2$2:
     int label -> d
     java.lang.Object L$0 -> c
     kotlinx.coroutines.CoroutineScope p$ -> b
@@ -13346,9 +13366,11 @@ com.read.kotlinlib.basic.CoroutineActivity$suspend$1$1 -> com.read.kotlinlib.bas
     java.lang.Object L$0 -> c
     kotlinx.coroutines.CoroutineScope p$ -> b
 com.read.kotlinlib.basic.CoroutineActivity$suspend$2 -> com.read.kotlinlib.basic.CoroutineActivity$suspend$2:
-    com.read.kotlinlib.basic.CoroutineActivity$suspend$1 $simpleDelay$1 -> e
-    int label -> d
+    com.read.kotlinlib.basic.CoroutineActivity$suspend$1 $simpleDelay$1 -> g
+    int label -> f
     java.lang.Object L$0 -> c
+    java.lang.Object L$1 -> d
+    java.lang.Object L$2 -> e
     kotlinx.coroutines.CoroutineScope p$ -> b
 com.read.kotlinlib.basic.CoroutineActivity$suspendLaunch$1 -> com.read.kotlinlib.basic.CoroutineActivity$suspendLaunch$1:
     com.read.kotlinlib.basic.CoroutineActivity this$0 -> d
@@ -13967,6 +13989,9 @@ com.read.kotlinlib.string.StringTest -> com.read.kotlinlib.string.StringTest:
     void store() -> a
 com.seniorlibs.baselib.BaseApplication -> com.seniorlibs.baselib.BaseApplication:
     void init() -> a
+com.seniorlibs.baselib.BaseApplication$1 -> com.seniorlibs.baselib.BaseApplication$1:
+    com.seniorlibs.baselib.BaseApplication this$0 -> a
+    void accept(java.lang.Throwable) -> a
 com.seniorlibs.baselib.BuildConfig -> com.seniorlibs.baselib.BuildConfig:
     boolean DEBUG -> a
 com.seniorlibs.baselib.R -> com.seniorlibs.baselib.R:
@@ -14005,6 +14030,7 @@ com.seniorlibs.baselib.utils.LogUtils -> com.seniorlibs.baselib.utils.LogUtils:
     void e(java.lang.String,java.lang.String) -> b
 com.seniorlibs.baselib.utils.NetworkUtils -> com.seniorlibs.baselib.utils.NetworkUtils:
 com.seniorlibs.baselib.utils.NetworkUtils$NETWORK_TYPE -> com.seniorlibs.baselib.utils.NetworkUtils$NETWORK_TYPE:
+com.seniorlibs.baselib.utils.RxJavaUtils -> com.seniorlibs.baselib.utils.RxJavaUtils:
 com.tencent.mmkv.BuildConfig -> com.tencent.mmkv.BuildConfig:
 com.tencent.mmkv.MMKV -> com.tencent.mmkv.MMKV:
     boolean gWantLogReDirecting -> h
@@ -24621,7 +24647,8 @@ io.reactivex.parallel.ParallelFlowable -> io.reactivex.parallel.ParallelFlowable
 io.reactivex.parallel.ParallelFlowableConverter -> io.reactivex.parallel.ParallelFlowableConverter:
 io.reactivex.parallel.ParallelTransformer -> io.reactivex.parallel.ParallelTransformer:
 io.reactivex.plugins.RxJavaPlugins -> io.reactivex.plugins.RxJavaPlugins:
-    boolean failNonBlockingScheduler -> u
+    boolean failNonBlockingScheduler -> v
+    boolean lockdown -> u
     io.reactivex.functions.BiFunction onCompletableSubscribe -> s
     io.reactivex.functions.BiFunction onFlowableSubscribe -> o
     io.reactivex.functions.BiFunction onMaybeSubscribe -> p
@@ -24668,6 +24695,7 @@ io.reactivex.plugins.RxJavaPlugins -> io.reactivex.plugins.RxJavaPlugins:
     java.lang.Runnable onSchedule(java.lang.Runnable) -> a
     org.reactivestreams.Subscriber onSubscribe(io.reactivex.Flowable,org.reactivestreams.Subscriber) -> a
     void onError(java.lang.Throwable) -> a
+    void setErrorHandler(io.reactivex.functions.Consumer) -> a
     void uncaught(java.lang.Throwable) -> c
 io.reactivex.processors.AsyncProcessor -> io.reactivex.processors.AsyncProcessor:
     java.lang.Object value -> f
@@ -25250,10 +25278,12 @@ kotlin.KotlinVersion$Companion -> kotlin.KotlinVersion$Companion:
 kotlin.LateinitKt -> kotlin.LateinitKt:
 kotlin.Lazy -> kotlin.Lazy:
 kotlin.LazyKt -> kotlin.LazyKt:
+    kotlin.Lazy lazy(kotlin.LazyThreadSafetyMode,kotlin.jvm.functions.Function0) -> a
     kotlin.Lazy lazy(kotlin.jvm.functions.Function0) -> a
 kotlin.LazyKt$WhenMappings -> kotlin.LazyKt$WhenMappings:
     int[] $EnumSwitchMapping$0 -> a
 kotlin.LazyKt__LazyJVMKt -> kotlin.LazyKt__LazyJVMKt:
+    kotlin.Lazy lazy(kotlin.LazyThreadSafetyMode,kotlin.jvm.functions.Function0) -> a
     kotlin.Lazy lazy(kotlin.jvm.functions.Function0) -> a
 kotlin.LazyKt__LazyKt -> kotlin.LazyKt__LazyKt:
 kotlin.LazyThreadSafetyMode -> kotlin.LazyThreadSafetyMode:
@@ -25309,6 +25339,7 @@ kotlin.ResultKt -> kotlin.ResultKt:
     void throwOnFailure(java.lang.Object) -> a
 kotlin.SafePublicationLazyImpl -> kotlin.SafePublicationLazyImpl:
     java.lang.Object _value -> d
+    java.lang.Object final -> e
     kotlin.jvm.functions.Function0 initializer -> c
     java.util.concurrent.atomic.AtomicReferenceFieldUpdater valueUpdater -> a
     kotlin.SafePublicationLazyImpl$Companion Companion -> b

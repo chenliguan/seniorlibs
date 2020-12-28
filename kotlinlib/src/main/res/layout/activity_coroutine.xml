@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="testKotlin"
-        android:text="kotlin简单测试"
+        android:text="协程测试"
         android:textAllCaps="false"/>
 
 </LinearLayout>

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import androidx.core.os.HandlerCompat.postDelayed
 import androidx.core.view.doOnPreDraw
 import com.read.kotlinlib.R
 import com.seniorlibs.baselib.utils.LogUtils
@@ -112,7 +111,7 @@ class CoroutineActivity : AppCompatActivity() {
      * @param view
      */
     fun testKotlin(view: View?) {
-        BasicActivity.actionStart(this)
+        testCoroutine()
     }
 
     /**
@@ -130,7 +129,7 @@ class CoroutineActivity : AppCompatActivity() {
         // 作用域构建器:coroutineScope
 //        coroutineScopes()
         // 提取函数重构：挂起函数
-        suspendLaunch()
+//        suspendLaunch()
         // kotlin的core-ktx库
 //        ktx()
         // 取消和超时
@@ -144,7 +143,7 @@ class CoroutineActivity : AppCompatActivity() {
         // 线程局部数据
 //        threadLocalData()
         // 挂起函数 suspend，演示了launch(Dispatchers.Main)-->通过withContext(Dispatchers.IO)——>切换到IO线程
-//        suspend()
+        suspend()
     }
 
     /**
@@ -173,7 +172,6 @@ class CoroutineActivity : AppCompatActivity() {
 //        07-30 15:07:58.756 27267-27267/com.seniorlibs.app D/kotlin + CoroutineActivity :: End main
 //        07-30 15:07:59.757 27267-27795/com.seniorlibs.app D/kotlin + CoroutineActivity :: Hello World Thread-8434
 
-
 //        GlobalScope.launch { // 在后台启动一个新的协程并继续，
 //            delay(1000L) // 非阻塞的等待 1 秒钟（默认时间单位是毫秒）
 //            LogUtils.d(TAG, "launch World! 在延迟后打印输出") // 在延迟后打印输出
@@ -197,6 +195,7 @@ class CoroutineActivity : AppCompatActivity() {
             LogUtils.d(TAG, "launchRunBlocking World! 在延迟后打印输出") // 在延迟后打印输出
         }
         LogUtils.d(TAG, "launchRunBlocking Hello, 协程已在等待时主线程还在继续") // 协程已在等待时主线程还在继续
+
         runBlocking {     // 显式使用 runBlocking 协程构建器来阻塞：主线程
             delay(2000L)  // ……我们延迟 2 秒来保证 JVM 的存活
         }
@@ -335,7 +334,10 @@ class CoroutineActivity : AppCompatActivity() {
             GlobalScope.launch {
                 // 开启协程后，先打印一下进程名称和进程id
                 // 这一行会在内嵌 launch 之前输出
-                LogUtils.d(TAG, "threadName = " + Thread.currentThread().name + " threadId = " + Thread.currentThread().id)
+                LogUtils.d(
+                    TAG,
+                    "threadName = " + Thread.currentThread().name + " threadId = " + Thread.currentThread().id
+                )
                 delay(1000L)
             }
         }
@@ -364,12 +366,19 @@ class CoroutineActivity : AppCompatActivity() {
     // suspend 修饰的挂起函数。挂起的含义就是：暂时切走，稍后在切回来；就是切换线程，不过在执行完毕会切换回来。
     // 什么时候需要自定义挂起函数：耗时(特殊：等待)
     // 怎么写挂起函数：添加关键字 suspend，内部代码使用 withContext 获取他挂起函数包裹
-    private suspend fun doWord() {
+    private suspend fun doWord(): Int {  // 写法1
         // withContext使用新CoroutineContext-->中Dispatchers.IO的dispatcher，将[块]的执行转移到 不同的线程，如果指定了一个新的调度程序，并返回到原始的调度程序
         withContext(Dispatchers.IO) {
             delay(5000L)
             LogUtils.d(TAG, "suspendLaunch World! ${Thread.currentThread()}")
         }
+        return 1
+    }
+
+    private suspend fun doWord2(): Int = withContext(Dispatchers.IO) { // 写法2
+        delay(5000L)
+        LogUtils.d(TAG, "suspendLaunch World! ${Thread.currentThread()}")
+        return@withContext 1
     }
 
     /**
@@ -390,12 +399,12 @@ class CoroutineActivity : AppCompatActivity() {
         }
 
         mRoot.viewTreeObserver.addOnPreDrawListener(
-                object : ViewTreeObserver.OnPreDrawListener {
-                    override fun onPreDraw(): Boolean {
-                        // ...
-                        return true
-                    }
-                })
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    // ...
+                    return true
+                }
+            })
 
         mRoot.doOnPreDraw {
             // ...
@@ -520,7 +529,10 @@ class CoroutineActivity : AppCompatActivity() {
                     withContext(NonCancellable) {
                         LogUtils.d(TAG, "job: I'm running finally")
                         delay(1000L)
-                        LogUtils.d(TAG, "job: And I've just delayed for 1 sec because I'm non-cancellable")
+                        LogUtils.d(
+                            TAG,
+                            "job: And I've just delayed for 1 sec because I'm non-cancellable"
+                        )
                     }
                 }
             }
@@ -597,7 +609,10 @@ class CoroutineActivity : AppCompatActivity() {
                     doSomethingUsefulTwo()
                 }
                 // 使用.await()在一个延期的值上得到它的最终结果，但是Deferred也是一个Job，所以如果需要的话，你可以取消它
-                LogUtils.d(TAG, "testAsync2 async 并发 The answer is ${jobOne.await() + jobTwo.await()}")
+                LogUtils.d(
+                    TAG,
+                    "testAsync2 async 并发 The answer is ${jobOne.await() + jobTwo.await()}"
+                )
             }
             LogUtils.d(TAG, "testAsync2 async 并发 Completed in $time ms")
         }
@@ -618,7 +633,10 @@ class CoroutineActivity : AppCompatActivity() {
                 // 执行一些计算
 //                jobOne.start() // 启动第一个
 //                jobTwo.start() // 启动第二个
-                LogUtils.d(TAG, "testAsync3 The answer is ${jobOne.await() + jobTwo.await()}") // 相当于 顺序
+                LogUtils.d(
+                    TAG,
+                    "testAsync3 The answer is ${jobOne.await() + jobTwo.await()}"
+                ) // 相当于 顺序
             }
             LogUtils.d(TAG, "testAsync3 Completed in $time ms")
         }
@@ -683,7 +701,10 @@ class CoroutineActivity : AppCompatActivity() {
         runBlocking<Unit> {
             // 运行在父协程的上下文中，即 runBlocking 主协程
             launch {
-                LogUtils.d(TAG, "main runBlocking: I'm working in thread ${Thread.currentThread().name}")
+                LogUtils.d(
+                    TAG,
+                    "main runBlocking: I'm working in thread ${Thread.currentThread().name}"
+                )
             }
             // Dispatchers.Unconfined 协程调度器在调用它的线程启动了一个协程，但它仅仅只是运行到第一个挂起点。挂起后，它恢复线程中的协程，而这完全由被调用的挂起函数来决定
             // 不受限的——将工作在主线程中：适用于执行不消耗 CPU 时间的任务，以及不更新局限于特定线程的任何共享数据（如UI）的协程
@@ -696,7 +717,10 @@ class CoroutineActivity : AppCompatActivity() {
             }
             // 将使它获得一个新的线程池，一个专用的线程池是一种非常昂贵的资源
             launch(newSingleThreadContext("MyOwnThread")) {
-                LogUtils.d(TAG, "newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}")
+                LogUtils.d(
+                    TAG,
+                    "newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}"
+                )
             }
         }
 //        kotlin + CoroutineActivity :: Unconfined: I'm working in thread main
@@ -739,7 +763,10 @@ class CoroutineActivity : AppCompatActivity() {
                     delay(100)
                     LogUtils.d(TAG, "job2: I am a child of the request coroutine")
                     delay(1000)
-                    LogUtils.d(TAG, "job2: I will not execute this line if my parent request is cancelled") // 不执行了
+                    LogUtils.d(
+                        TAG,
+                        "job2: I will not execute this line if my parent request is cancelled"
+                    ) // 不执行了
                 }
             }
             delay(500)
@@ -763,7 +790,10 @@ class CoroutineActivity : AppCompatActivity() {
                         LogUtils.d(TAG, "Coroutine $i is done")
                     }
                 }
-                LogUtils.d(TAG, "request: I'm done and I don't explicitly join my children that are still active")
+                LogUtils.d(
+                    TAG,
+                    "request: I'm done and I don't explicitly join my children that are still active"
+                )
             }
 //            parentJob.join() // 等待请求的完成，包括其所有子协程
             LogUtils.d(TAG, "Now processing of the request is complete")
@@ -788,7 +818,10 @@ class CoroutineActivity : AppCompatActivity() {
                 LogUtils.d(TAG, "${Thread.currentThread()} Computing v2")
                 6
             }
-            LogUtils.d(TAG, "${Thread.currentThread()} The answer for v1 / v2 = ${v1.await() / v2.await()}")
+            LogUtils.d(
+                TAG,
+                "${Thread.currentThread()} The answer for v1 / v2 = ${v1.await() / v2.await()}"
+            )
 
             launch(Dispatchers.Default + CoroutineName("test")) {
                 LogUtils.d(TAG, "${Thread.currentThread()} I'm working in thread")
@@ -801,9 +834,18 @@ class CoroutineActivity : AppCompatActivity() {
 //        Thread[DefaultDispatcher-worker-3,5,main] I'm working in thread
     }
 
+
     /**
      * 通过协程作用域，管理协程的生命周期
      */
+
+    /**
+     * 通过创建一个 作用域：CoroutineScope 实例来管理协程的生命周期，并使它与 activity 的生命周期相关联。
+     * 作用域：CoroutineScope 可以通过 CoroutineScope() 创建，或者通过 MainScope() 工厂函数创建
+     */
+    private val mainScope =
+        CoroutineScope(Dispatchers.Default)  // private val mainScope = MainScope()
+
     private fun coroutineScopeLife() {
         runBlocking<Unit> {
             LogUtils.d(TAG, "Launched coroutines")
@@ -817,17 +859,6 @@ class CoroutineActivity : AppCompatActivity() {
 //        kotlin + CoroutineActivity :: destroyCoroutineScope，取消协程作用域
     }
 
-    // 通过创建一个 作用域：CoroutineScope 实例来管理协程的生命周期，并使它与 activity 的生命周期相关联。
-    // 作用域：CoroutineScope 可以通过 CoroutineScope() 创建，或者通过 MainScope() 工厂函数创建
-    private val mainScope = CoroutineScope(Dispatchers.Default)
-//    private val mainScope = MainScope()
-
-    // Activity 类结束时取消
-    fun destroyCoroutineScope() {
-        mainScope.cancel()
-        LogUtils.d(TAG, "destroyCoroutineScope，取消协程作用域")
-    }
-
     fun doSomething() {
         // 在示例中启动了 10 个协程，且每个都工作了不同的时长
         repeat(100) { i ->
@@ -838,21 +869,40 @@ class CoroutineActivity : AppCompatActivity() {
         }
     }
 
+    // Activity类结束时取消协程作用域
+    fun destroyCoroutineScope() {
+        mainScope.cancel()
+        LogUtils.d(TAG, "destroyCoroutineScope，取消协程作用域")
+    }
+
+
     /**
      * 线程局部数据
      */
     private fun threadLocalData() {
         runBlocking<Unit> {
             threadLocal.set("main")
-            LogUtils.d(TAG, "Pre-main, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'")
+            LogUtils.d(
+                TAG,
+                "Pre-main, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
+            )
             val job = launch(Dispatchers.Default + threadLocal.asContextElement(value = "launch")) {
-                LogUtils.d(TAG, "Launch start, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'")
+                LogUtils.d(
+                    TAG,
+                    "Launch start, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
+                )
                 // 将当前协同程序分派器的线程(或线程池)分配给其他要运行的协程
                 yield()
-                LogUtils.d(TAG, "After yield, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'")
+                LogUtils.d(
+                    TAG,
+                    "After yield, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
+                )
             }
             job.join()
-            LogUtils.d(TAG, "Post-main, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'")
+            LogUtils.d(
+                TAG,
+                "Post-main, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
+            )
         }
 //        Pre-main, current thread: Thread[main,5,main], thread local value: 'main'
 //        Launch start, current thread: Thread[DefaultDispatcher-worker-5,5,main], thread local value: 'launch'
@@ -867,29 +917,44 @@ class CoroutineActivity : AppCompatActivity() {
      * 计算过程阻塞运行该代码的主线程 当这些值由异步代码计算时，我们可以使用 suspend 修饰符标记函数 simple，这样它就可以在不阻塞的情况下执行其工作并将结果作为列表返回：
      */
     private fun suspend() {
+        LogUtils.d(TAG, "suspend start")
         // suspend 修饰的挂起函数。挂起的含义就是：暂时切走，稍后在切回来；就是切换线程，不过在执行完毕会切换回来。
         // 什么时候需要自定义挂起函数：耗时(特殊：等待)
         // 怎么写挂起函数：添加关键字 suspend，内部代码使用 withContext 获取他挂起函数包裹
-        suspend fun simpleDelay(): Unit {
+        suspend fun simpleDelay(): Int {
+            LogUtils.d(TAG, "simpleDelay1 ${Thread.currentThread().name}")
             // withContext使用新CoroutineContext-->中Dispatchers.IO的dispatcher，将[块]的执行转移到 不同的线程，如果指定了一个新的调度程序，并返回到原始的调度程序
             withContext(Dispatchers.IO) {
-                LogUtils.d(TAG, "simpleDelay1 ${Thread.currentThread().name}")
-                delay(10000) // 假装我们在这里做了一些异步的事情
-                LogUtils.d(TAG, "simpleDelay2 ${Thread.currentThread().name}")
+                LogUtils.d(TAG, "simpleDelay withContext1 ${Thread.currentThread().name}")
+                // 假装我们在这里做了一些异步的事情
+                delay(3000)
+                LogUtils.d(TAG, "simpleDelay withContext2 ${Thread.currentThread().name}")
             }
+            LogUtils.d(TAG, "simpleDelay2 ${Thread.currentThread().name}")
+            return 11111
         }
 
-        LogUtils.d(TAG, "suspend0")
+        LogUtils.d(TAG, "suspend middle")
 //        runBlocking<Unit> { } // 注意：runBlocking{ }是会阻塞当前线程来等待
         GlobalScope.launch(Dispatchers.Main) {
-            LogUtils.e(TAG, "I'm working in thread ${Thread.currentThread().name}")
-            simpleDelay()
+            LogUtils.e(TAG, "I'm working1 in thread ${Thread.currentThread().name}")
+            // 挂起函数（子线程）执行完后，返回结果，再在协程中（主线程）获取其值
+            val result = simpleDelay()
+            LogUtils.e(TAG, "I'm working2 result：${result} in thread ${Thread.currentThread().name}")
+            LogUtils.e(TAG, "I'm working2 in thread ${Thread.currentThread().name}")
         }
         LogUtils.d(TAG, "suspend over")
-//        07-30 14:42:02.539 26103-26103/com.seniorlibs.app D/kotlin + CoroutineActivity :: suspend0
-//        07-30 14:42:02.540 26103-26103/com.seniorlibs.app D/kotlin + CoroutineActivity :: suspend over
-//        07-30 14:42:02.566 26103-26103/com.seniorlibs.app E/kotlin + CoroutineActivity :: I'm working in thread main
-//        07-30 14:42:02.567 26103-26288/com.seniorlibs.app D/kotlin + CoroutineActivity :: simpleDelay1 DefaultDispatcher-worker-1
-//        07-30 14:42:12.569 26103-26290/com.seniorlibs.app D/kotlin + CoroutineActivity :: simpleDelay2 DefaultDispatcher-worker-3
+
+//        CoroutineActivity :: suspend start
+//        CoroutineActivity :: suspend middle
+//        CoroutineActivity :: suspend over
+
+//        CoroutineActivity :: I'm working1 in thread main
+//        CoroutineActivity :: simpleDelay1 main
+//        CoroutineActivity :: simpleDelay withContext1 DefaultDispatcher-worker-1
+//        CoroutineActivity :: simpleDelay withContext2 DefaultDispatcher-worker-1
+//        CoroutineActivity :: simpleDelay2 main
+//        CoroutineActivity :: I'm working2 result：11111 in thread main
+//        CoroutineActivity :: I'm working2 in thread main
     }
 }
