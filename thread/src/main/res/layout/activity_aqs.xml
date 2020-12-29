@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BaseMatchParent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        style="@style/BaseMatchWrap"
+        android:orientation="vertical">
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testAcquire"
+            android:text="测试Semaphore"
+            android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testCountDownLatch"
+            android:text="测试CountDownLatch"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</ScrollView>

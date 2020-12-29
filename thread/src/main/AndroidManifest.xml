@@ -22,6 +22,11 @@
         <activity android:name=".threadpool.ThreadPoolManagerActivity" />
 
         <activity android:name=".handler.HandlerActivity" />
+
+        <activity android:name=".aqs.AqsActivity" />
+
+        <activity android:name=".collection.CollectionActivity" />
+
     </application>
 
 </manifest>

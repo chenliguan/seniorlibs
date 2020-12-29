@@ -33,5 +33,10 @@
             style="@style/BaseMatchWrap"
             android:onClick="idleHandler"
             android:text="IdleHandler的原理" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="idleHandler2"
+            android:text="IdleHandler的原理2" />
     </LinearLayout>
 </ScrollView>

@@ -23,32 +23,14 @@
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="testWriteArrayListError"
-            android:text="testWriteArrayListError"
+            android:onClick="testAQS"
+            android:text="测试AQS"
             android:textAllCaps="false" />
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="testAcquire"
-            android:text="测试Semaphore"
-            android:textAllCaps="false" />
-
-        <Button
-            style="@style/BaseMatchWrap"
-            android:onClick="testCountDownLatch"
-            android:text="测试CountDownLatch"
-            android:textAllCaps="false" />
-
-        <Button
-            style="@style/BaseMatchWrap"
-            android:onClick="testHashSet"
-            android:text="testHashSet"
-            android:textAllCaps="false" />
-
-        <Button
-            style="@style/BaseMatchWrap"
-            android:onClick="testHashMap"
-            android:text="testHashMap"
+            android:onClick="testCollection"
+            android:text="测试Collection/Map"
             android:textAllCaps="false" />
 
         <Button

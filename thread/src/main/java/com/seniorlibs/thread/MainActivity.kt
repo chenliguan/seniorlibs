@@ -3,17 +3,13 @@ package com.seniorlibs.thread
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.seniorlibs.thread.aqs.CountDownLatchTest
-import com.seniorlibs.thread.aqs.SemaphoreTest
+import com.seniorlibs.thread.aqs.AqsActivity
 import com.seniorlibs.thread.asynctask.AsyncTaskTest
-import com.seniorlibs.thread.atomic.AtomicIntegerTest
 import com.seniorlibs.thread.atomic.AtomicLongFieldUpdaterTest
 import com.seniorlibs.thread.basic.DeadlockTest
 import com.seniorlibs.thread.basic.InterruptTest
 import com.seniorlibs.thread.basic.ThreadNumTest
-import com.seniorlibs.thread.collection.ArrayListTest
-import com.seniorlibs.thread.collection.HashMapTest
-import com.seniorlibs.thread.collection.HashSetTest
+import com.seniorlibs.thread.collection.CollectionActivity
 import com.seniorlibs.thread.handler.HandlerActivity
 import com.seniorlibs.thread.synchronize.SynchronizedTest
 import com.seniorlibs.thread.threadpool.ThreadPoolManagerActivity
@@ -69,52 +65,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 测试ArrayList和Collections.synchronizedList(new ArrayList<>());
+     * 测试AQS
      *
      * @param view
      */
-    fun testWriteArrayListError(view: View?) {
-        ArrayListTest.testWriteArrayListError()
+    fun testAQS(view: View?) {
+        AqsActivity.actionStart(this)
     }
 
     /**
-     * 测试Semaphore
+     * 测试CollectionActivity
      *
      * @param view
      */
-    fun testAcquire(view: View?) {
-        SemaphoreTest.testAcquire()
-        SemaphoreTest.testTryAcquire()
-    }
-
-    /**
-     * 测试CountDownLatch
-     *
-     * @param view
-     */
-    fun testCountDownLatch(view: View?) {
-        CountDownLatchTest.main()
-    }
-
-    /**
-     * 测试HashSet是否线程安全
-     *
-     * @param view
-     */
-    fun testHashSet(view: View?) {
-        HashSetTest.main()
-    }
-
-    /**
-     * 测试HashMap是否线程安全
-     *
-     * @param view
-     */
-    fun testHashMap(view: View?) {
-        // 多线程下，扩容期间取出的值不准确
-//        HashMapTest.resizeBug()
-        // 为什么HashMap的"key"部分存放自定义的对象时，需要重写equals()和hashcode()方法？
-        HashMapTest.testHashConflict()
+    fun testCollection(view: View?) {
+        CollectionActivity.actionStart(this)
     }
 
     /**

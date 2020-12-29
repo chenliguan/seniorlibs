@@ -265,8 +265,8 @@ class HandlerActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     fun idleHandler(view: View) {
         val handler = MyHandler(Looper.getMainLooper())
-        handler.sendMessageDelayed(obtainSyncMessage(0x140, "延迟一秒处理的消息1"), 1000)
-        handler.sendMessageDelayed(obtainSyncMessage(0x140, "延迟一秒处理的消息2"), 1000)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "延迟1秒处理的消息1"), 1000)
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "延迟1秒处理的消息2"), 1000)
         // 发送3个空闲消息，每个消息耗时1000ms，总3000ms；进入空闲消息处理后，上面的2个延时1000ms的消息必须在3个空闲消息处理完后才被执行
         handler.looper.queue.addIdleHandler(mIdleHandler)
         handler.sendMessage(obtainSyncMessage(0x140, "立即执行的同步消息"))  // 优先在空闲消息前处理了
@@ -277,8 +277,27 @@ class HandlerActivity : AppCompatActivity() {
 //        15:43:29.722 : 空闲时做一些骚操作 0
 //        15:43:30.722 : 空闲时做一些骚操作 1
 //        15:43:31.723 : 空闲时做一些骚操作 2
-//        15:43:31.728 : 接收同步信息：延迟一秒处理的消息1
-//        15:43:31.728 : 接收同步信息：延迟一秒处理的消息2
+//        15:43:31.728 : 接收同步信息：延迟1秒处理的消息1
+//        15:43:31.728 : 接收同步信息：延迟1秒处理的消息2
+    }
+
+    /**
+     * IdleHandler的原理2
+     */
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun idleHandler2(view : View) {
+        val handler = MyHandler(Looper.getMainLooper())
+        handler.sendMessageDelayed(obtainSyncMessage(0x140, "延迟10秒处理的消息3"), 6000)
+        if (handler.looper.queue.isIdle) {
+            handler.looper.queue.addIdleHandler(mIdleHandler)
+        }
+        handler.postDelayed(Runnable {
+            handler.looper.queue.addIdleHandler(mIdleHandler)
+        }, 2000)
+
+//        13:52:37.704 : 空闲时做一些骚操作 3
+//        13:52:39.706 : 空闲时做一些骚操作 4
+//        13:52:42.707 r: 接收同步信息：延迟10秒处理的消息3
     }
 
     var num: Int = 0
