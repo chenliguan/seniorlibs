@@ -38,22 +38,46 @@ class AqsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-//        findViewById<View>(R.id.test_handler).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-//            R.id.test_handler -> testHandler()
         }
     }
 
     /**
-     * 测试Semaphore
+     * 测试ReentrantLock的lock()和Unlock()
      *
      * @param view
      */
-    fun testAcquire(view: View?) {
+    fun lockAndUnlock(view: View?) {
+        ReentrantLockTest.lockAndUnlock()
+    }
+
+     /**
+     * 测试fair()和unfair()分别是公平锁和非公平锁
+     *
+     * @param view
+     */
+    fun fairAndUnFair(view: View?) {
+        ReentrantLockTest.fairAndUnFair()
+    }
+
+    /**
+     * 测试Semaphore的acquire()
+     *
+     * @param view
+     */
+    fun testSemaphoreAcquire(view: View?) {
         SemaphoreTest.testAcquire()
+    }
+
+    /**
+     * 测试Semaphore的tryAcquire
+     *
+     * @param view
+     */
+    fun testSemaphoreTryAcquire(view: View?) {
         SemaphoreTest.testTryAcquire()
     }
 
@@ -64,5 +88,14 @@ class AqsActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun testCountDownLatch(view: View?) {
         CountDownLatchTest.main()
+    }
+
+    /**
+     * 测试CyclicBarrier
+     *
+     * @param view
+     */
+    fun testCyclicBarrier(view: View?) {
+        CyclicBarrierTest.main()
     }
 }

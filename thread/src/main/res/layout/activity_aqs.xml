@@ -11,8 +11,26 @@
 
         <Button
             style="@style/BaseMatchWrap"
-            android:onClick="testAcquire"
-            android:text="测试Semaphore"
+            android:onClick="lockAndUnlock"
+            android:text="测试ReentrantLock的lock()和Unlock()"
+            android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="fairAndUnFair"
+            android:text="测试fair()和unfair()分别是公平锁和非公平锁"
+            android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testSemaphoreAcquire"
+            android:text="测试信号量的Acquire"
+            android:textAllCaps="false" />
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testSemaphoreTryAcquire"
+            android:text="测试信号量的TryAcquire"
             android:textAllCaps="false" />
 
         <Button
@@ -21,5 +39,10 @@
             android:text="测试CountDownLatch"
             android:textAllCaps="false" />
 
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="testCyclicBarrier"
+            android:text="测试CyclicBarrier"
+            android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>
