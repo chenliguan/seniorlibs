@@ -2,8 +2,8 @@ package com.seniorlibs.thread.threadpool;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
@@ -61,10 +61,9 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
     /**
      * 测试Future的get方法
      * <p>
-     * D/TagThreadPoolManagerActivity: future.isDone() ：false
-     * D/TagThreadPoolManagerActivity: future.get() ：1176208690
-     * D/TagThreadPoolManagerActivity: future.isDone() ：true
-     *
+     * 12-31 21:56:33.097 future.isDone() ：false
+     * 12-31 21:56:36.099 future.get() ：-1871828148
+     * 12-31 21:56:36.099 future.isDone() ：true
      * @param view
      */
     public void futureGet(View view) {
@@ -176,12 +175,12 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
     /**
      * newSingleThreadExecutor
      * <p>
-     * D/TagThreadPoolManagerActivity: new Random().nextInt()：519240209 Thread.currentThread().getName()：pool-1-thread-1
-     * D/TagThreadPoolManagerActivity: new Random().nextInt()：-2126627150 Thread.currentThread().getName()：pool-1-thread-1
-     * D/TagThreadPoolManagerActivity: new Random().nextInt()：739670292 Thread.currentThread().getName()：pool-1-thread-1
-     * D/TagThreadPoolManagerActivity: new Random().nextInt()：-1463648297 Thread.currentThread().getName()：pool-1-thread-1
-     * D/TagThreadPoolManagerActivity: service.shutdownNow().size()：995
-     * D/TagThreadPoolManagerActivity: new Random().nextInt()：1246144705 Thread.currentThread().getName()：pool-1-thread-1
+     * new Random().nextInt()：519240209 Thread.currentThread().getName()：pool-1-thread-1
+     * new Random().nextInt()：-2126627150 Thread.currentThread().getName()：pool-1-thread-1
+     * new Random().nextInt()：739670292 Thread.currentThread().getName()：pool-1-thread-1
+     * new Random().nextInt()：-1463648297 Thread.currentThread().getName()：pool-1-thread-1
+     * service.shutdownNow().size()：995
+     * new Random().nextInt()：1246144705 Thread.currentThread().getName()：pool-1-thread-1
      *
      * @param view
      */
@@ -213,6 +212,17 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
         ExecutorService service = Executors.newCachedThreadPool();
         for (int i = 0; i < 1000; i++) {
             service.execute(new MyTask());
+        }
+    }
+
+    /**
+     * forkJoinPool
+     *
+     * @param view
+     */
+    public void forkJoinPool(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ForkJoinPoolTest.main();
         }
     }
 
@@ -265,45 +275,47 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
      */
     public void execute(View view) {
         for (int i = 0; i < 10; i++) {
-            ThreadPoolManager.getIoExecutor().execute(new SynchronizedTask());
-//            ThreadPoolManager.getIoExecutor().execute(new NoSynchronizedTask());
+            ThreadPoolManager.getInstance().executeIo(new SynchronizedTask());
+//            ThreadPoolManager.getInstance().executeIo(new NoSynchronizedTask());
         }
     }
 
     /**
      * 使用synchronized (mObject)
      *
-     * 06-30 22:54:04.976 31617-31759/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:05.977 31617-31759/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:05.977 31617-31760/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:05.977 31617-31759/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：92925069 Thread.currentThread().getName()：ThreadPoolManager IO #1
-     * 06-30 22:54:06.977 31617-31760/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:06.978 31617-31760/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：1273086139 Thread.currentThread().getName()：ThreadPoolManager IO #2
-     * 06-30 22:54:06.978 31617-31762/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:07.978 31617-31762/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:07.978 31617-31762/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：-997762178 Thread.currentThread().getName()：ThreadPoolManager IO #4
-     * 06-30 22:54:07.979 31617-31761/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:08.979 31617-31761/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:08.979 31617-31761/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：585922746 Thread.currentThread().getName()：ThreadPoolManager IO #3
-     * 06-30 22:54:08.980 31617-31763/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:09.980 31617-31763/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:09.980 31617-31763/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：400717021 Thread.currentThread().getName()：ThreadPoolManager IO #5
-     * 06-30 22:54:09.980 31617-31764/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:10.981 31617-31764/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:10.981 31617-31765/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:10.981 31617-31764/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：71301610 Thread.currentThread().getName()：ThreadPoolManager IO #6
-     * 06-30 22:54:11.981 31617-31765/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:11.982 31617-31765/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：-190038207 Thread.currentThread().getName()：ThreadPoolManager IO #7
-     * 06-30 22:54:11.982 31617-31767/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:12.983 31617-31767/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:12.983 31617-31766/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:12.983 31617-31767/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：-1385380908 Thread.currentThread().getName()：ThreadPoolManager IO #9
-     * 06-30 22:54:13.983 31617-31766/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:13.984 31617-31768/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask前
-     * 06-30 22:54:13.984 31617-31766/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：-720720717 Thread.currentThread().getName()：ThreadPoolManager IO #8
-     * 06-30 22:54:14.984 31617-31768/com.seniorlibs.thread D/TagThreadPoolManagerActivity: MyTask后
-     * 06-30 22:54:14.984 31617-31768/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：2068460253 Thread.currentThread().getName()：ThreadPoolManager IO #10   * 06-30 22:44:42.587 27454-27512/com.seniorlibs.thread E/TagThreadPoolManagerActivity: new Random().nextInt()：435409437 Thread.currentThread().getName()：ThreadPoolManager IO #5
+     * MyTask前
+     * MyTask后
+     * MyTask前
+     * new Random().nextInt()：92925069 Thread.currentThread().getName()：ThreadPoolManager IO #1
+     * MyTask后
+     * new Random().nextInt()：1273086139 Thread.currentThread().getName()：ThreadPoolManager IO #2
+     * MyTask前
+     * MyTask后
+     * new Random().nextInt()：-997762178 Thread.currentThread().getName()：ThreadPoolManager IO #4
+     * MyTask前
+     * MyTask后
+     * new Random().nextInt()：585922746 Thread.currentThread().getName()：ThreadPoolManager IO #3
+     * MyTask前
+     * MyTask后
+     * new Random().nextInt()：400717021 Thread.currentThread().getName()：ThreadPoolManager IO #5
+     * MyTask前
+     * MyTask后
+     * MyTask前
+     * new Random().nextInt()：71301610 Thread.currentThread().getName()：ThreadPoolManager IO #6
+     * MyTask后
+     * new Random().nextInt()：-190038207 Thread.currentThread().getName()：ThreadPoolManager IO #7
+     * MyTask前
+     * MyTask后
+     * MyTask前
+     * new Random().nextInt()：-1385380908 Thread.currentThread().getName()：ThreadPoolManager IO #9
+     * MyTask后
+     * MyTask前
+     * new Random().nextInt()：-720720717 Thread.currentThread().getName()：ThreadPoolManager IO #8
+     * MyTask后
+     * new Random().nextInt()：2068460253 Thread.currentThread().getName()：ThreadPoolManager IO #10
+     * new Random().nextInt()：435409437 Thread.currentThread().getName()：ThreadPoolManager IO #5
      */
+
     public class SynchronizedTask implements Runnable {
         @Override
         public void run() {
@@ -371,7 +383,7 @@ public class ThreadPoolManagerActivity extends AppCompatActivity {
     }
 
     /**
-     * shutdown
+     * 关闭线程池
      *
      * @param view
      */

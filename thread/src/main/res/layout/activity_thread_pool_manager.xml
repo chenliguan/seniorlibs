@@ -52,6 +52,18 @@
 
         <Button
             style="@style/BaseMatchWrap"
+            android:onClick="newScheduledThreadPool"
+            android:text="newScheduledThreadPool"
+            android:textAllCaps="false"/>
+
+        <Button
+            style="@style/BaseMatchWrap"
+            android:onClick="forkJoinPool"
+            android:text="forkJoinPool"
+            android:textAllCaps="false"/>
+
+        <Button
+            style="@style/BaseMatchWrap"
             android:onClick="execute"
             android:text="execute"
             android:textAllCaps="false"/>
