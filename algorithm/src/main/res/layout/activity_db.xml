@@ -68,6 +68,11 @@
         android:text="221. 最大正方形" />
 
     <Button
+        android:id="@+id/btn_longest_palindrome_sub_seq"
+        style="@style/BtnStyles"
+        android:text="516. 最长回文子序列" />
+
+    <Button
         android:id="@+id/btn_count_sub_strings"
         style="@style/BtnStyles"
         android:text="647. 回文子串" />

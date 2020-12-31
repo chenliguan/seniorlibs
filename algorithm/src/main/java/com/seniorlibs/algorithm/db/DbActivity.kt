@@ -42,14 +42,18 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_fib).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
+
         findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
         findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
+
+        findViewById<View>(R.id.btn_longest_palindrome_sub_seq).setOnClickListener(this)
+        findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
+
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
         findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
         findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
-        findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
-        findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -80,6 +84,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles(paths)}")
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles1(paths)}")
             }
+
             R.id.btn_longest_common_sub_sequence -> {
                 LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
             }
@@ -89,6 +94,17 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_minimum_delete_sum -> {
                 LogUtils.e(TAG, "712. 两个字符串的最小ASCII删除和：${minimumDeleteSum("ace", "abcde")}")
             }
+
+            R.id.btn_longest_palindrome_sub_seq -> {
+                LogUtils.e(TAG, "516. 最长回文子序列：${longestPalindromeSubseq("bbcbab")}")
+            }
+            R.id.btn_count_sub_strings -> {
+                LogUtils.e(TAG, "647. 回文子串：${countSubstrings("baba")}")
+            }
+            R.id.btn_longest_palindrome -> {
+                LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("baba")}")
+            }
+
             R.id.btn_minimum_total -> {
                 val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal4(res)}")
@@ -112,12 +128,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 )
                 LogUtils.e(TAG, "221. 最大正方形1：${maximalSquare(paths)}")
                 LogUtils.e(TAG, "221. 最大正方形2：${maximalSquare2(paths)}")
-            }
-            R.id.btn_count_sub_strings -> {
-                LogUtils.e(TAG, "647. 回文子串：${countSubstrings("baba")}")
-            }
-            R.id.btn_longest_palindrome -> {
-                LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("baba")}")
             }
             else -> {
             }
@@ -163,7 +173,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return funs(n, cache)
     }
 
-    private fun funs(n: Int, cache : IntArray): Int {
+    private fun funs(n: Int, cache: IntArray): Int {
         // 如果 N 对应的楼梯数存在，则返回
         if (cache[n] != 0) return cache[n]
 
@@ -628,6 +638,150 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 516. 最长回文子序列
+     *
+     * 时间复杂度：O(n^2)，
+     * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
+     *
+     * https://leetcode-cn.com/problems/longest-palindromic-subsequence/solution/516-zui-chang-hui-wen-zi-xu-lie-by-chen-vz944/
+     * @param s
+     * @return
+     */
+    fun longestPalindromeSubseq(s: String): Int {
+        val n = s.length
+        // dp 数组全部初始化为 0
+        val dp = Array(n) { IntArray(n) }
+
+        // base case
+        for (i in 0 until n) dp[i][i] = 1
+
+        // 反着遍历保证正确的状态转移
+        for (i in n - 1 downTo 0) {
+            for (j in i + 1 until n) {
+                // 状态转移方程 db
+                if (s[i] == s[j]) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2
+                    LogUtils.d(TAG, "s[i]：" + s[i] + "  i：" + i)
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1])
+                }
+            }
+        }
+
+        // 整个 s 的最长回文子串长度
+        return dp[0][n - 1]
+    }
+
+    /**
+     * 647. 回文子串  动态规划
+     *
+     * "回文串”是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串、
+     * "abc"："a", "b", "c"
+     * "aaa"："a", "a", "a", "aa", "aa", "aaa"
+     * "baba"："b", "a", "b", "a", "bab", "aba"
+     * "leveel"："l", "e", "v", "e", "e", "l", "l", "le"
+     *
+     * 思路：
+     * base case；只有一个字母的时候肯定是回文子串
+     *      for (i in 0 until n) dp[i][i] = true
+     *
+     * dp：
+     * 如果s[i]==s[j]，说明只要dp[i+1][j-1]是回文子串，那么dp[i][j]也是回文子串；
+     * 如果s[i]!=s[j]，说明dp[i][j]必定不是回文子串。
+     *
+     * if(s.charAt(i) == s.charAt(j)){
+     *    dp[i][j] = dp[i+1][j-1]
+     * } else {
+     *    dp[i][j] = false;
+     * }
+     *
+     * 时间复杂度：O(n^2)，
+     * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
+     *
+     * https://leetcode-cn.com/problems/palindromic-substrings/solution/647-hui-wen-zi-chuan-by-chen-li-guan/
+     * @param s
+     * @return
+     */
+    fun countSubstrings(s: String): Int {
+        if (s.isEmpty()) return 0
+
+        // base case：只有一个字母的时候肯定是回文子串，数量是s.length
+        val n = s.length
+        var count = s.length
+        val dp = Array(n) { BooleanArray(n) }
+        // 单个字符
+        for (i in 0 until n) dp[i][i] = true
+
+        // 为什么从右下角遍历：因为在填dp表时，(i, j) 位置的值依赖于（i+1,j-1），也就是当前位置的左下方。
+        // 显然如果从上往下遍历，左下方的值就完全没有初始化，当然当前位置也会是错误的。但是从右下角遍历就保证了左下方的所有值都已经计算好了。
+        // db：j>=i，所以只用填右半张表，左半默认false
+        for (i in n - 2 downTo 0) {
+            for (j in i + 1 until n) {
+                if (s[i] == s[j]) {
+                    if (j - i < 3) {
+                        // j - i == 1：中间没有字符，一定是回文子串。如：aaa->aa(i=0,j=1),aa(i=1,j=2)
+                        // j - i == 2：中间只有1个字符，即去掉两头，剩下中间部分只有1个字符，显然是回文。如：baba->bab(i=0,j=2),aba(i=1,j=3)
+                        // 所以：s[i] == s[j]成立和j - i < 3前提下，直接可以下结论：dp[i][j] = true
+                        dp[i][j] = true
+                    } else {
+                        // j - i >= 3：多于3个字符
+                        dp[i][j] = dp[i + 1][j - 1]
+                    }
+                } else {
+                    dp[i][j] = false
+                }
+
+                if (dp[i][j]) {
+                    count++
+                }
+            }
+        }
+        return count
+    }
+
+    /**
+     * 5. 最长回文子串
+     *
+     * 时间复杂度：O(n^2)，
+     * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
+     *
+     * https://leetcode-cn.com/problems/longest-palindromic-substring/solution/5-zui-chang-hui-wen-zi-chuan-by-chen-li-guan/
+     */
+    fun longestPalindrome(s: String): String {
+        if (s.length < 2) return s
+
+        // base case：只有一个字母的时候肯定是回文子串，数量是s.length
+        val n = s.length
+        var maxLen = 1
+        var begin = 0
+        val dp = Array(n) { BooleanArray(n) }
+        for (i in 0 until n) dp[i][i] = true
+
+        // db
+        for (i in n - 2 downTo 0) {
+            for (j in i + 1 until n) {
+                if (s[i] == s[j]) {
+                    if (j - i < 3) {
+                        dp[i][j] = true
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1]
+                    }
+                } else {
+                    dp[i][j] = false
+                }
+
+                // 只要 dp[i][j] == true 成立，就表示子串 s[i..j] 是回文，此时记录回文长度和起始位置
+                if (dp[i][j] && j - i + 1 > maxLen) {
+                    maxLen = j - i + 1
+                    begin = i
+                }
+            }
+        }
+        return s.substring(begin, begin + maxLen)
+    }
+
+
+    /**
      * 120. 三角形最小路径和  解法一：暴力递归(自顶向下)，导致 超时
      * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
      *
@@ -666,7 +820,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        return dfs1(triangle, res,0, 0)
+        return dfs1(triangle, res, 0, 0)
     }
 
     private fun dfs1(triangle: List<List<Int>>, res: Array<IntArray>, i: Int, j: Int): Int {
@@ -675,7 +829,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (res[i][j] != -1) return res[i][j]
 
         // 该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
-        res[i][j] = Math.min(dfs1(triangle, res,i + 1, j), dfs1(triangle, res,i + 1, j + 1)) + triangle[i][j]
+        res[i][j] = Math.min(
+            dfs1(triangle, res, i + 1, j),
+            dfs1(triangle, res, i + 1, j + 1)
+        ) + triangle[i][j]
 
         return res[i][j]
     }
@@ -925,113 +1082,5 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return max * max
-    }
-
-
-    /**
-     * 647. 回文子串  动态规划
-     *
-     * "回文串”是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串、
-     * "abc"："a", "b", "c"
-     * "aaa"："a", "a", "a", "aa", "aa", "aaa"
-     * "baba"："b", "a", "b", "a", "bab", "aba"
-     * "leveel"："l", "e", "v", "e", "e", "l", "l", "le"
-     *
-     * 思路：
-     * base case；只有一个字母的时候肯定是回文子串
-     *      for (i in 0 until n) dp[i][i] = true
-     *
-     * dp：
-     * 如果s[i]==s[j]，说明只要dp[i+1][j-1]是回文子串，那么dp[i][j]也是回文子串；
-     * 如果s[i]!=s[j]，说明dp[i][j]必定不是回文子串。
-     *
-     * if(s.charAt(i) == s.charAt(j)){
-     *    dp[i][j] = dp[i+1][j-1]
-     * } else {
-     *    dp[i][j] = false;
-     * }
-     *
-     * 时间复杂度：O(n^2)，
-     * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
-     *
-     * https://leetcode-cn.com/problems/palindromic-substrings/solution/647-hui-wen-zi-chuan-by-chen-li-guan/
-     * @param s
-     * @return
-     */
-    fun countSubstrings(s: String): Int {
-        if (s.isEmpty()) return 0
-
-        // base case：只有一个字母的时候肯定是回文子串，数量是s.length
-        val n = s.length
-        var count = s.length
-        val dp = Array(n) { BooleanArray(n) }
-        // 单个字符
-        for (i in 0 until n) dp[i][i] = true
-
-        // 为什么从右下角遍历：因为在填dp表时，(i, j) 位置的值依赖于（i+1,j-1），也就是当前位置的左下方。
-        // 显然如果从上往下遍历，左下方的值就完全没有初始化，当然当前位置也会是错误的。但是从右下角遍历就保证了左下方的所有值都已经计算好了。
-        // db：j>=i，所以只用填右半张表，左半默认false
-        for (i in n - 2 downTo 0) {
-            for (j in i + 1 until n) {
-                if (s[i] == s[j]) {
-                    if (j - i < 3) {
-                        // j - i == 1：中间没有字符，一定是回文子串。如：aaa->aa(i=0,j=1),aa(i=1,j=2)
-                        // j - i == 2：中间只有1个字符，即去掉两头，剩下中间部分只有1个字符，显然是回文。如：baba->bab(i=0,j=2),aba(i=1,j=3)
-                        // 所以：s[i] == s[j]成立和j - i < 3前提下，直接可以下结论：dp[i][j] = true
-                        dp[i][j] = true
-                    } else {
-                        // j - i >= 3：多于3个字符
-                        dp[i][j] = dp[i + 1][j - 1]
-                    }
-                } else {
-                    dp[i][j] = false
-                }
-
-                if (dp[i][j]) {
-                    count++
-                }
-            }
-        }
-        return count
-    }
-
-    /**
-     * 5. 最长回文子串
-     *
-     * 时间复杂度：O(n^2)，
-     * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
-     *
-     */
-    fun longestPalindrome(s: String): String {
-        if (s.length < 2) return s
-
-        // base case：只有一个字母的时候肯定是回文子串，数量是s.length
-        val n = s.length
-        var maxLen = 1
-        var begin = 0
-        val dp = Array(n) { BooleanArray(n) }
-        for (i in 0 until n) dp[i][i] = true
-
-        // db
-        for (i in n - 2 downTo 0) {
-            for (j in i + 1 until n) {
-                if (s[i] == s[j]) {
-                    if (j - i < 3) {
-                        dp[i][j] = true
-                    } else {
-                        dp[i][j] = dp[i + 1][j - 1]
-                    }
-                } else {
-                    dp[i][j] = false
-                }
-
-                // 只要 dp[i][j] == true 成立，就表示子串 s[i..j] 是回文，此时记录回文长度和起始位置
-                if (dp[i][j] && j - i + 1 > maxLen) {
-                    maxLen = j - i + 1
-                    begin = i
-                }
-            }
-        }
-        return s.substring(begin, begin + maxLen)
     }
 }

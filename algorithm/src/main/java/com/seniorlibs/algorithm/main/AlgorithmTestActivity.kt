@@ -49,10 +49,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(
-                    DbActivity.TAG,
-                    "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}"
-                )
+                LogUtils.e(TAG, "516. 最长回文子序列：${longestPalindromeSubseq("bbbab")}")
             }
             else -> {
             }
@@ -60,26 +57,24 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    fun longestCommonSubsequence(s1: String, s2: String): Int {
-        if (s1.isEmpty() || s2.isEmpty()) return 0
+    fun longestPalindromeSubseq(s: String): Int {
+        val m = s.length
 
-        val m = s1.length + 1
-        val n = s2.length + 1
+        val dp = Array(m) { IntArray(m) }
 
-        val dp = Array(m) {IntArray(n)}
-        // base case dp[0][...] = dp[...][0] = 0
+        // base case
+        for (i in 0 until m) dp[i][i] = 1
 
-        // dp
-        for (i in 1 until m) {
-            for (j in 1 until m) {
-                if (s1[i - 1] == s2[j - 1]) {
-                    dp[i][j] = 1 + dp[i - 1][j - 1]
+        for (i in m - 1 downTo 0) {
+            for (j in i + 1 until m) {
+                if (s[i] == s[j]) {
+                    dp[i][j] = dp[i+1][j-1] + 2
                 } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
+                    dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1])
                 }
             }
         }
 
-        return dp[m - 1][n - 1]
+        return dp[0][m-1]
     }
 }
