@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.seniorlibs.view.R;
+import com.seniorlibs.view.widget.PieImageView;
 
 /**
  * 测试自定义view
@@ -11,6 +12,8 @@ import com.seniorlibs.view.R;
 public class CustomViewActivity extends Activity {
 
     private static final String TAG = "CustomViewActivity";
+
+    private PieImageView pieImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,7 @@ public class CustomViewActivity extends Activity {
     }
 
     private void initView() {
-
+        pieImageView = findViewById(R.id.pie_image_view);
+        pieImageView.setProgress(45);
     }
 }

@@ -1,29 +1,143 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
-    <com.seniorlibs.view.widget.CircleView
-        android:id="@+id/circleView1"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_margin="20dp"
-        android:background="@color/orange"
-        android:padding="10dp"
-        app:circle_color="#d0d0d0"
-        app:circle_height="200dp"
-        app:circle_width="200dp" />
-
-    <com.seniorlibs.view.widget.LineLayout
-        android:id="@+id/ll_clear_cache"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:backgroundColor="@color/gray_f0f0f0"
-        app:endText="清理么"
-        app:srcHeight="24dp"
-        app:srcWidth="24dp"
-        app:textColor="@color/default_color"
-        app:titleText="清理缓存" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.seniorlibs.view.widget.CircleView
+            android:id="@+id/circleView1"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_margin="20dp"
+            android:background="@color/orange"
+            android:padding="10dp"
+            app:circle_color="#d0d0d0"
+            app:circle_height="200dp"
+            app:circle_width="200dp" />
+
+        <com.seniorlibs.view.widget.LineLayout
+            android:id="@+id/ll_clear_cache"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:backgroundColor="@color/gray_f0f0f0"
+            app:endText="清理么"
+            app:srcHeight="24dp"
+            app:srcWidth="24dp"
+            app:textColor="@color/default_color"
+            app:titleText="清理缓存" />
+
+        <com.seniorlibs.view.widget.PieImageView
+            android:id="@+id/pie_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#ccbbbb" />
+
+        <com.seniorlibs.view.widget.FlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#bbbbbb">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="#ff0501"
+                android:text="123456789" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="999999" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="999999" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="88888888" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="7777777" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="66" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="666666666" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="555555" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="55555555" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="4444444" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="333333333" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="3333" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#ff0501"
+                android:text="22222222" />
+
+        </com.seniorlibs.view.widget.FlowLayout>
+    </LinearLayout>
+</ScrollView>
