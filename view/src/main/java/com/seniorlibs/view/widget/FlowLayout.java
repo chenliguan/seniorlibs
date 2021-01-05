@@ -182,8 +182,10 @@ public class FlowLayout extends ViewGroup {
                 int topChild = mTop + lp.topMargin;
                 int rightChild = leftChild + childView.getMeasuredWidth();
                 int bottomChild = topChild + childView.getMeasuredHeight();
+
                 // 四个参数分别表示View的左上角和右下角
                 childView.layout(leftChild, topChild, rightChild, bottomChild);
+
                 mLeft += lp.leftMargin + childView.getMeasuredWidth() + lp.rightMargin;
             }
             mLeft = 0;

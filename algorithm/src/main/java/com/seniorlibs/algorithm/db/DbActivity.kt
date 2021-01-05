@@ -752,22 +752,27 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
         // base case：只有一个字母的时候肯定是回文子串，数量是s.length
         val n = s.length
+        // 记录最长回文子串最长长度
         var maxLen = 1
+        // 记录最长回文子串起始位置
         var begin = 0
+        // 第一维参数表示起始坐标，第二维参数表示终点坐标
         val dp = Array(n) { BooleanArray(n) }
+
+        // base case
         for (i in 0 until n) dp[i][i] = true
 
         // db
         for (i in n - 2 downTo 0) {
             for (j in i + 1 until n) {
-                if (s[i] == s[j]) {
-                    if (j - i < 3) {
-                        dp[i][j] = true
-                    } else {
-                        dp[i][j] = dp[i + 1][j - 1]
-                    }
+                if (j - i < 2) {
+                    // 子字符串长度小于 2 的时候单独处理
+                    // j - i == 0：一个字符，一定是回文子串。如：a(i=1,j=1)=true;
+                    // j - i == 1：中间只有1个字符，如：aa(i=0,j=1)=true; ab=false
+                    dp[i][j] = s[i] == s[j]
                 } else {
-                    dp[i][j] = false
+                    // 假设子串 str[i+1 ... j-1] 是/否回文子串，如果 str[i] 等于 str[j]，那大规模的 str[i ... j] 也是/否回文子串
+                    dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j])
                 }
 
                 // 只要 dp[i][j] == true 成立，就表示子串 s[i..j] 是回文，此时记录回文长度和起始位置
