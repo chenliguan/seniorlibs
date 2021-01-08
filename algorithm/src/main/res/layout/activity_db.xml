@@ -52,20 +52,6 @@
         style="@style/BtnStyles"
         android:text="53. 最大子序和" />
 
-    <Button
-        android:id="@+id/btn_max_product"
-        style="@style/BtnStyles"
-        android:text="152. 乘积最大子数组" />
-
-    <Button
-        android:id="@+id/btn_coin_change"
-        style="@style/BtnStyles"
-        android:text="322. 零钱兑换" />
-
-    <Button
-        android:id="@+id/btn_maximal_square"
-        style="@style/BtnStyles"
-        android:text="221. 最大正方形" />
 
     <Button
         android:id="@+id/btn_longest_palindrome_sub_seq"
@@ -81,5 +67,26 @@
         android:id="@+id/btn_longest_palindrome"
         style="@style/BtnStyles"
         android:text="5. 最长回文子串" />
+
+    <Button
+        android:id="@+id/btn_min_edit_distance"
+        style="@style/BtnStyles"
+        android:text="72. 最长编辑距离" />
+
+
+    <Button
+        android:id="@+id/btn_max_product"
+        style="@style/BtnStyles"
+        android:text="152. 乘积最大子数组" />
+
+    <Button
+        android:id="@+id/btn_coin_change"
+        style="@style/BtnStyles"
+        android:text="322. 零钱兑换" />
+
+    <Button
+        android:id="@+id/btn_maximal_square"
+        style="@style/BtnStyles"
+        android:text="221. 最大正方形" />
 
 </LinearLayout>

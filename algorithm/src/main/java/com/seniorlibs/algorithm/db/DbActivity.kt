@@ -50,6 +50,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_longest_palindrome_sub_seq).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_edit_distance).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
         findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
@@ -99,10 +100,13 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "516. 最长回文子序列：${longestPalindromeSubseq("bbcbab")}")
             }
             R.id.btn_count_sub_strings -> {
-                LogUtils.e(TAG, "647. 回文子串：${countSubstrings("baba")}")
+                LogUtils.e(TAG, "647. 回文子串：${countSubstrings("abbc")}")
             }
             R.id.btn_longest_palindrome -> {
-                LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("baba")}")
+                LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("abbc")}")
+            }
+            R.id.btn_min_edit_distance -> {
+                LogUtils.e(TAG, "72. 编辑距离：${minEditDistance("horse", "ros")}")
             }
 
             R.id.btn_minimum_total -> {
@@ -113,7 +117,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
             R.id.btn_max_sub_array -> {
-                LogUtils.e(TAG, "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}")
+                LogUtils.e(
+                    TAG,
+                    "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}"
+                )
             }
             R.id.btn_max_product -> {
                 LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
@@ -681,20 +688,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * "baba"："b", "a", "b", "a", "bab", "aba"
      * "leveel"："l", "e", "v", "e", "e", "l", "l", "le"
      *
-     * 思路：
-     * base case；只有一个字母的时候肯定是回文子串
-     *      for (i in 0 until n) dp[i][i] = true
-     *
-     * dp：
-     * 如果s[i]==s[j]，说明只要dp[i+1][j-1]是回文子串，那么dp[i][j]也是回文子串；
-     * 如果s[i]!=s[j]，说明dp[i][j]必定不是回文子串。
-     *
-     * if(s.charAt(i) == s.charAt(j)){
-     *    dp[i][j] = dp[i+1][j-1]
-     * } else {
-     *    dp[i][j] = false;
-     * }
-     *
      * 时间复杂度：O(n^2)，
      * 空间复杂度：O(n^2)：在填表的过程中，只参考了右上方的数值。事实上可以优化，但是增加了代码编写和理解的难度，丢失可读和可解释性，在这里不优化空间。
      *
@@ -703,39 +696,36 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun countSubstrings(s: String): Int {
-        if (s.isEmpty()) return 0
-
         // base case：只有一个字母的时候肯定是回文子串，数量是s.length
         val n = s.length
+        // 记录回文子串数量
         var count = s.length
+        // 第一维参数表示起始坐标，第二维参数表示终点坐标
         val dp = Array(n) { BooleanArray(n) }
-        // 单个字符
+
+        // base case
         for (i in 0 until n) dp[i][i] = true
 
-        // 为什么从右下角遍历：因为在填dp表时，(i, j) 位置的值依赖于（i+1,j-1），也就是当前位置的左下方。
-        // 显然如果从上往下遍历，左下方的值就完全没有初始化，当然当前位置也会是错误的。但是从右下角遍历就保证了左下方的所有值都已经计算好了。
-        // db：j>=i，所以只用填右半张表，左半默认false
-        for (i in n - 2 downTo 0) {
+        // 反着遍历保证正确的状态转移
+        for (i in n - 1 downTo 0) {
             for (j in i + 1 until n) {
-                if (s[i] == s[j]) {
-                    if (j - i < 3) {
-                        // j - i == 1：中间没有字符，一定是回文子串。如：aaa->aa(i=0,j=1),aa(i=1,j=2)
-                        // j - i == 2：中间只有1个字符，即去掉两头，剩下中间部分只有1个字符，显然是回文。如：baba->bab(i=0,j=2),aba(i=1,j=3)
-                        // 所以：s[i] == s[j]成立和j - i < 3前提下，直接可以下结论：dp[i][j] = true
-                        dp[i][j] = true
-                    } else {
-                        // j - i >= 3：多于3个字符
-                        dp[i][j] = dp[i + 1][j - 1]
-                    }
+                // 状态转移方程 db
+                if (j - i < 2) {
+                    // 子字符串长度小于 2 的时候单独处理
+                    // j - i == 0：一个字符，一定是回文子串。如：a(i=1,j=1)=true; j - i == 1：中间只有1个字符，如：aa(i=0,j=1)=true; ab=false
+                    dp[i][j] = s[i] == s[j]
                 } else {
-                    dp[i][j] = false
+                    // 假设子串 s[i+1..j-1] 是/否回文子串，如果 s[i] == s[j]，那更大规模的 s[i..j] 也是/否回文子串
+                    dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j])
                 }
 
                 if (dp[i][j]) {
+                    // 如果 s[i..j] 是回文子串，count + 1
                     count++
                 }
             }
         }
+
         return count
     }
 
@@ -748,8 +738,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * https://leetcode-cn.com/problems/longest-palindromic-substring/solution/5-zui-chang-hui-wen-zi-chuan-by-chen-li-guan/
      */
     fun longestPalindrome(s: String): String {
-        if (s.length < 2) return s
-
         // base case：只有一个字母的时候肯定是回文子串，数量是s.length
         val n = s.length
         // 记录最长回文子串最长长度
@@ -762,27 +750,76 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         // base case
         for (i in 0 until n) dp[i][i] = true
 
-        // db
-        for (i in n - 2 downTo 0) {
+        // 反着遍历保证正确的状态转移
+        for (i in n - 1 downTo 0) {
             for (j in i + 1 until n) {
+                // 状态转移方程 db
                 if (j - i < 2) {
                     // 子字符串长度小于 2 的时候单独处理
-                    // j - i == 0：一个字符，一定是回文子串。如：a(i=1,j=1)=true;
-                    // j - i == 1：中间只有1个字符，如：aa(i=0,j=1)=true; ab=false
+                    // j - i == 0：一个字符，一定是回文子串。如：a(i=1,j=1)=true; j - i == 1：中间只有1个字符，如：aa(i=0,j=1)=true; ab=false
                     dp[i][j] = s[i] == s[j]
                 } else {
-                    // 假设子串 str[i+1 ... j-1] 是/否回文子串，如果 str[i] 等于 str[j]，那大规模的 str[i ... j] 也是/否回文子串
+                    // 假设子串 s[i+1..j-1] 是/否回文子串，如果 s[i] == s[j]，那更大规模的 s[i..j] 也是/否回文子串
                     dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j])
                 }
 
-                // 只要 dp[i][j] == true 成立，就表示子串 s[i..j] 是回文，此时记录回文长度和起始位置
-                if (dp[i][j] && j - i + 1 > maxLen) {
+                if (dp[i][j] && (j - i + 1) > maxLen) {
+                    // 如果 s[i..j] 是回文子串，并且长度大于 max，则刷新最长回文子串
                     maxLen = j - i + 1
                     begin = i
                 }
             }
         }
+
         return s.substring(begin, begin + maxLen)
+    }
+
+
+    /**
+     * 72. 编辑距离
+     *
+     * 时间复杂度 ：O(mn)，其中 mm 为 word1 的长度，nn 为 word2 的长度。
+     * 空间复杂度 ：O(mn)，我们需要大小为 O(mn)O(mn) 的 DD 数组来记录状态值。
+     *
+     * @param word1
+     * @param word2
+     * @return
+     */
+    fun minEditDistance(word1: String, word2: String): Int {
+        val m = word1.length + 1
+        val n = word2.length + 1
+
+        val dp = Array(m) { IntArray(n) }
+
+        // base case
+        for (i in 0 until m) dp[i][0] = i
+        for (j in 0 until n) dp[0][j] = j
+
+        // dp
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (word1[i - 1] == word2[j - 1]) {
+                    // s1[i]和s2[j]，啥都不做
+                    dp[i][j] = dp[i - 1][j - 1]
+                } else {
+                    dp[i][j] = min(
+                        // s1[i]插入一个和s2[j]一样的字符，s2[j]就被匹配了，前移j，继续跟i对比。操作数+1
+                        dp[i][j - 1] + 1,
+                        // 把 s1[i]这个字符删掉，前移i，继续跟j对比。操作数+1
+                        dp[i - 1][j] + 1,
+                        // 把s1[i]替换成s2[j]，它俩就匹配了，同时前移i，j，继续对比。操作数+1
+                        dp[i - 1][j - 1] + 1
+                    )
+                }
+            }
+        }
+
+        // 返回 s1[0..m-1] 和 s2[0..n-1] 的最小编辑距离
+        return dp[m - 1][n - 1]
+    }
+
+    fun min(a: Int, b: Int, c: Int): Int {
+        return Math.min(a, Math.min(b, c))
     }
 
 

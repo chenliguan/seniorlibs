@@ -49,7 +49,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(TAG, "516. 最长回文子序列：${longestPalindromeSubseq("bbbab")}")
+                LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("abbc")}")
             }
             else -> {
             }
@@ -57,7 +57,33 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    fun longestPalindromeSubseq(s: String): Int {
-        return 0;
+    fun longestPalindrome(s: String): String {
+        val n = s.length
+        var begin = 0
+        var maxLen = 1
+        val dp = Array(n) { kotlin.BooleanArray(n)}
+
+        // base case
+        for (i in 0 until n) dp[i][i] = true
+
+        // 反着遍历
+        for (i in n - 1 downTo 0) {
+            for (j in i + 1 until n) {
+                if (j - i < 2) {
+                    dp[i][j] = s[i] == s[j]
+                } else {
+                    dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j])
+                }
+
+                // 记录
+                if (dp[i][j] && (j - i + 1 > maxLen)) {
+                    maxLen = j - i + 1
+                    begin = i
+                }
+            }
+        }
+
+        return s.substring(begin, begin + maxLen)
     }
+
 }
