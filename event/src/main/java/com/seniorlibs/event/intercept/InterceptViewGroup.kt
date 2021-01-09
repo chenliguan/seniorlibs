@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.FrameLayout
-import com.g.event.utils.EventUtils
+import com.seniorlibs.event.utils.EventUtils
 import com.seniorlibs.baselib.utils.LogUtils
 
 class InterceptViewGroup(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {

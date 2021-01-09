@@ -1,4 +1,4 @@
-package com.g.event.utils
+package com.seniorlibs.event.utils
 
 import android.app.ActivityManager
 import android.content.Context
@@ -52,16 +52,16 @@ object EventUtils {
     fun getAction(action : Int) : String {
         when (action) {
             MotionEvent.ACTION_DOWN -> {
-                return "MotionEvent.ACTION_DOWN"
+                return "DOWN"
             }
             MotionEvent.ACTION_UP -> {
-                return "MotionEvent.ACTION_UP"
+                return "UP"
             }
             MotionEvent.ACTION_MOVE -> {
-                return "MotionEvent.ACTION_MOVE"
+                return "MOVE"
             }
             MotionEvent.ACTION_CANCEL -> {
-                return "MotionEvent.ACTION_CANCEL"
+                return "CANCEL"
             }
             else -> {
                 return ""

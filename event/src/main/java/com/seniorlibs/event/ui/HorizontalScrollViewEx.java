@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
-import com.g.event.utils.EventUtils;
+import com.seniorlibs.event.utils.EventUtils;
 
 /**
  * 滑动冲突场景1-外部拦截

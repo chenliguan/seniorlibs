@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatButton
-import com.g.event.utils.EventUtils.getAction
+import com.seniorlibs.event.utils.EventUtils.getAction
 import com.seniorlibs.baselib.utils.LogUtils
 
 class MyButton(context: Context, attrs: AttributeSet) : AppCompatButton(context, attrs) {

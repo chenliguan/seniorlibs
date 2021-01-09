@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.g.event.utils.EventUtils;
+import com.seniorlibs.event.utils.EventUtils;
 import com.seniorlibs.event.R;
 import com.seniorlibs.event.ui.HorizontalScrollViewEx;
 

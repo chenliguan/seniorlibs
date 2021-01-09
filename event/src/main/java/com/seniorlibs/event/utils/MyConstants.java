@@ -1,4 +1,4 @@
-package com.g.event.utils;
+package com.seniorlibs.event.utils;
 
 import android.os.Environment;
 

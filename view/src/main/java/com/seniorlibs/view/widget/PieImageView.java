@@ -54,7 +54,7 @@ public class PieImageView extends View {
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint.setStyle(Paint.Style.STROKE);
         mCirclePaint.setStrokeWidth(dpToPixel(2, getContext()));
-        mCirclePaint.setColor(Color.argb(120, 0xff, 0xff, 0xff));
+        mCirclePaint.setColor(Color.argb(120, 0x11, 0x33, 0xff));
         mBound = new RectF();
     }
 
@@ -91,6 +91,7 @@ public class PieImageView extends View {
             canvas.drawCircle(mBound.centerX(), mBound.centerY(), mBound.height() / 2, mCirclePaint);
         }
     }
+
 
     private float scale = 0;
 

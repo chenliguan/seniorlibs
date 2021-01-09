@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
     <!-- 通用 -->
     <color name="system_bg">#F6F6F6</color>
     <color name="divider3_color">#ebebeb</color>
@@ -31,6 +35,6 @@
     <color name="gray_D0D0D0">#D0D0D0</color>
 
     <!-- 黄橙色 -->
-    <color name="yellow_776245">#776245</color>
+    <color name="yellow_776245">#736245</color>
 
 </resources>

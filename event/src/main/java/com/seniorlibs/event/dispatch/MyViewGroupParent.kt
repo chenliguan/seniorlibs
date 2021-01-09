@@ -4,23 +4,28 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.FrameLayout
-import android.widget.LinearLayout
+import com.seniorlibs.event.utils.EventUtils
 import com.seniorlibs.baselib.utils.LogUtils
 
+/**
+ * 暂不使用
+ */
 class MyViewGroupParent(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        LogUtils.i(DispatchActivity.TAG, "MyViewGroupParent dispatchTouchEvent")
-        return super.dispatchTouchEvent(ev)
+    private val TAG = "DispatchActivityTag"
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        LogUtils.i(TAG,"ViewGroupParent ：dispatchTouchEvent --> ${EventUtils.getAction(event.action)}")
+        return super.dispatchTouchEvent(event)
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        LogUtils.i(DispatchActivity.TAG, "MyViewGroupParent onTouchEvent")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        LogUtils.i(TAG, "ViewGroupParent ：onTouchEvent --> ${EventUtils.getAction(event.action)}")
         return super.onTouchEvent(event)
     }
 
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        LogUtils.i(DispatchActivity.TAG, "MyViewGroupParent onInterceptTouchEvent")
-        return super.onInterceptTouchEvent(ev)
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        LogUtils.i(TAG, "ViewGroupParent ：onInterceptTouchEvent --> ${EventUtils.getAction(event.action)}")
+        return super.onInterceptTouchEvent(event)
     }
 }
