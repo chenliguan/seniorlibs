@@ -10,17 +10,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.seniorlibs.event.cancel.MyButton
-            android:id="@+id/green"
+        <com.seniorlibs.event.cancel.CancelView
+            android:id="@+id/green1"
             android:layout_width="300dp"
             android:layout_height="200dp"
-            android:background="@color/yellow_776245"
-            android:text="验证cancel事件"
+            android:background="@color/colorPrimary"
             android:textAllCaps="false"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2000dp" />
+        <com.seniorlibs.event.cancel.CancelView
+            android:id="@+id/green2"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="100dp"
+            android:textAllCaps="false"/>
+
+        <com.seniorlibs.event.cancel.CancelView
+            android:id="@+id/green3"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="100dp"
+            android:textAllCaps="false"/>
     </LinearLayout>
 </com.seniorlibs.event.cancel.MyScrollView>
 

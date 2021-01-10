@@ -17,7 +17,6 @@
             android:id="@+id/yellow"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:clickable="true"
             android:background="@color/colorAccent"
             tools:ignore="MissingClass" />
 

@@ -13,6 +13,10 @@ class DispatchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dispatch)
+
+//        findViewById<TextView>(R.id.yellow).setOnClickListener {
+//            LogUtils.i(TAG,"Activity ：setOnClickListener")
+//        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
