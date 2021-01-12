@@ -11,8 +11,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.seniorlibs.lifecycle.R;
+import com.seniorlibs.lifecycle.allowtaskreparenting.FirstA;
 import com.seniorlibs.lifecycle.flag.ActivityFlagA;
-import com.seniorlibs.lifecycle.service.TestActivity;
+import com.seniorlibs.lifecycle.service.ServiceTestActivity;
 import com.seniorlibs.lifecycle.singletask.ActivityA;
 
 public class MainActivity extends Activity {
@@ -41,7 +42,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-//                Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                // Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setAction("com.ryg.charpter_1.c");
                 intent.putExtra("time", System.currentTimeMillis());
@@ -78,7 +79,17 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, TestActivity.class);
+                intent.setClass(MainActivity.this, ServiceTestActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btnAllowTaskReparenting = findViewById(R.id.btn_allowTaskReparenting);
+        btnAllowTaskReparenting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, FirstA.class);
                 startActivity(intent);
             }
         });

@@ -3,19 +3,17 @@ package com.seniorlibs.lifecycle.flag;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.seniorlibs.lifecycle.R;
-import com.seniorlibs.lifecycle.singletask.ActivityC;
 
 public class ActivityFlagC extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activitya);
+        setContentView(R.layout.activity_a);
 
         Button button = (Button) findViewById(R.id.btn_click);
         button.setText("我是ActivityFlagC，跳转ActivityFlagA");

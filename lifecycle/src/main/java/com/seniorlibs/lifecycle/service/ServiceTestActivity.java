@@ -20,7 +20,7 @@ import com.seniorlibs.lifecycle.R;
  * Modify:
  * Description: 测试四大组件-服务
  */
-public class TestActivity extends Activity implements View.OnClickListener {
+public class ServiceTestActivity extends Activity implements View.OnClickListener {
 
     public static final String TAG = TestService.TAG + " + TestActivity";
 

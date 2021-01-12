@@ -3,20 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open activity C" />
+        android:onClick="button1"
+        android:text="打开 activity C"
+        android:textAllCaps="false" />
 
     <EditText
         android:id="@+id/editText1"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="A"
-        android:ems="10" >
+        android:ems="10"
+        android:text="A">
+
         <requestFocus />
     </EditText>
 
@@ -25,19 +28,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="测试singleTask，从下一个ActivityA开始，现在跳转ActivityA" />
+        android:onClick="button2"
+        android:text="测试singleTask，从下一个ActivityA开始，现在跳转ActivityA"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="测试标志位，从下一个ActivityFlagA开始，现在跳转ActivityFlagA" />
+        android:onClick="button3"
+        android:text="测试标志位，从下一个ActivityFlagA开始，现在跳转ActivityFlagA"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btn_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="启动测试服务Activity" />
+        android:onClick="btnService"
+        android:text="启动测试服务Activity"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_allowTaskReparenting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:onClick="btnAllowTaskReparenting"
+        android:text="测试：taskAffinity + allowTaskReparenting"
+        android:textAllCaps="false" />
 </LinearLayout>

@@ -13,7 +13,7 @@ public class ActivityB extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activitya);
+        setContentView(R.layout.activity_a);
 
         Button button = (Button) findViewById(R.id.btn_click);
         button.setText("1：我是ActivityB，跳转ActivityD（对应后台栈顶）");

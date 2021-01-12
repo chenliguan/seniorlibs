@@ -8,14 +8,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.seniorlibs.lifecycle.R;
-import com.seniorlibs.lifecycle.singletask.ActivityC;
 
 public class ActivityFlagA extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activitya);
+        setContentView(R.layout.activity_a);
 
         Log.e("ActivityFlagA-Flag", "onCreate");
 
