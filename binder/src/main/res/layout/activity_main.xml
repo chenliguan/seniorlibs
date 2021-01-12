@@ -9,43 +9,57 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open activity B" />
+        android:text="跳转 activity B"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open MessengerActivity" />
+        android:text="跳转 MessengerActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open BookManagerActivity" />
+        android:text="跳转 BookManagerActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open MyAidlManagerActivity" />
+        android:text="跳转 MyAidlManagerActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open ProviderActivity" />
+        android:text="跳转 ProviderActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open TCPClientActivity" />
+        android:text="跳转 TCPClientActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open BinderPoolActivity" />
+        android:text="跳转 BinderPoolActivity"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="通过 Binder 传递数据的限制"
+        android:textAllCaps="false" />
 
     <EditText
         android:id="@+id/editText1"

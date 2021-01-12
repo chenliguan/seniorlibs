@@ -123,8 +123,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState");
-        outState.putString("extra_test", "test");
+        String content = "test";
+        Log.d(TAG, "onSaveInstanceState extra_test:" + content);
+        outState.putString("extra_test", content);
     }
     
     @Override

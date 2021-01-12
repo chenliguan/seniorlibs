@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.button5).setOnClickListener(this);
         findViewById(R.id.button6).setOnClickListener(this);
         findViewById(R.id.button7).setOnClickListener(this);
+        findViewById(R.id.button8).setOnClickListener(this);
     }
 
     @Override
@@ -89,9 +90,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 intent7.setClass(MainActivity.this, BinderPoolActivity.class);
                 startActivity(intent7);
                 break;
+            case R.id.button8:
+                Intent intent8 = new Intent();
+                // 传递Bean中的数据
+                intent8.putExtra("bean", new Bean());
+                intent8.setClass(MainActivity.this, BinderPoolActivity.class);
+                startActivity(intent8);
+                break;
             default:
                 break;
         }
+    }
+
+    static class Bean implements Serializable {
+        private transient byte[] data = new byte[ 1024* 1024];
+        String str = "data string";
     }
 
     /**
