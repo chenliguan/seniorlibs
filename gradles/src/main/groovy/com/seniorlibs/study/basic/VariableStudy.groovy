@@ -314,8 +314,25 @@ println str.collect() { temp ->  // [T, H, E,  , 2, 3]
 
 /************************************* 闭包进阶 **************************************/
 
-// 闭包的三个重要变量：this,owner,delegate
-class Delegate {
+// 闭包的三个重要变量：this,owner,delegate。在闭包内调用方法时，由他们来确定使用哪个对象来处理。
+// 默认 delegate 和 owner 是相等的，但是 delegate 是可以修改的，功能非常强大。
+
+// 1.this在Closure中可以是thisObject, 指向的是直接定义这个Closure的Class
+
+// 2.owner指向的是直接定义Closure的Class（这里的Class包括Closure），这就和thisObject有区别了;
+// 比如：ClassA中定义了ClosureA，ClosureA中定义了ClosureB，那么在ClosureB中 获取到的thisObject是ClassA，获取到的owner是ClosureA
+
+// 3.delegate 代理。默认是从delegate中去取的，如果delegate取不到，再从owner中取
+
+//public Closure(Object owner, Object thisObject) {
+//    this.resolveStrategy = 0; // 默认OWNER_FIRST
+//    this.owner = owner;
+//    this.delegate = owner;
+//    this.thisObject = thisObject;
+//    ......
+//}
+
+class Me {
 }
 
 class Person {
@@ -349,25 +366,30 @@ class Person {
             // 代表任意修改的对象
             println "innerClouser delegate：" + delegate
         }
-        Delegate d = new Delegate()
-        innerClouser.delegate = d
         innerClouser.call()
     }
 }
 
 def p = new Person()
+
+Me d = new Me()
+// 设置委托
+p.classClouser.delegate = d
 p.classClouser.call()
 //classClouser this：Person@73a1e9a9
 //classClouser owner：Person@73a1e9a9
-//classClouser delegate：Person@73a1e9a9
+//classClouser delegate：Me@1e178745
+
 Person.say()
 //method classClouser this：class Person
 //method classClouser owner：class Person
 //method classClouser delegate：class Person
+
 p.nestClouser.call()
 //innerClouser this：Person@73a1e9a9
 //innerClouser owner：Person$_closure2@65fb9ffc
-//innerClouser delegate：Delegate@3e694b3f
+//innerClouser delegate：Person$_closure2@65fb9ffc
+
 
 // 闭包的委托策略
 class Student {
@@ -387,13 +409,18 @@ class Teacher {
 }
 
 // 定义了构造函数，直接赋值
-// def student = new Student("委托")
-// 没定义构造函数，必须指定属性:赋值
-def student = new Student(name: "委托1")
-def teacher = new Teacher(name: "委托2")
+def student = new Student(name: "委托")
+println student.toString()   // My name is 委托
+
+// 通过闭包的委托策略修改对象
+def studentDe = new Student(name: "委托1")
+student.pretty.delegate = studentDe
+// 委托模式优先
+student.pretty.resolveStrategy = Closure.DELEGATE_FIRST
 println student.toString()   // My name is 委托1
 
 // 通过闭包的委托策略修改对象
+def teacher = new Teacher(name: "委托2")
 student.pretty.delegate = teacher
 student.pretty.resolveStrategy = Closure.DELEGATE_FIRST
 println student.toString()   // My name is 委托2

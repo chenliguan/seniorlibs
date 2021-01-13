@@ -785,9 +785,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param word2
      * @return
      */
-    fun minEditDistance(word1: String, word2: String): Int {
-        val m = word1.length + 1
-        val n = word2.length + 1
+    fun minEditDistance(s1: String, s2: String): Int {
+        val m = s1.length + 1
+        val n = s2.length + 1
 
         val dp = Array(m) { IntArray(n) }
 
@@ -798,14 +798,14 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         // dp
         for (i in 1 until m) {
             for (j in 1 until n) {
-                if (word1[i - 1] == word2[j - 1]) {
-                    // s1[i]和s2[j]，啥都不做
+                if (s1[i - 1] == s2[j - 1]) {
+                    // s1[i]和s2[j] 跳过 ，啥都不做
                     dp[i][j] = dp[i - 1][j - 1]
                 } else {
                     dp[i][j] = min(
-                        // s1[i]插入一个和s2[j]一样的字符，s2[j]就被匹配了，前移j，继续跟i对比。操作数+1
+                        // s1中插入一个和s2[j]一样的字符，s2[j]就被匹配了，前移j，继续跟i对比。操作数+1
                         dp[i][j - 1] + 1,
-                        // 把 s1[i]这个字符删掉，前移i，继续跟j对比。操作数+1
+                        // 把s1[i]这个字符删掉，前移i，继续跟j对比。操作数+1
                         dp[i - 1][j] + 1,
                         // 把s1[i]替换成s2[j]，它俩就匹配了，同时前移i，j，继续对比。操作数+1
                         dp[i - 1][j - 1] + 1

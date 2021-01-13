@@ -13366,11 +13366,9 @@ com.read.kotlinlib.basic.CoroutineActivity$suspend$1$1 -> com.read.kotlinlib.bas
     java.lang.Object L$0 -> c
     kotlinx.coroutines.CoroutineScope p$ -> b
 com.read.kotlinlib.basic.CoroutineActivity$suspend$2 -> com.read.kotlinlib.basic.CoroutineActivity$suspend$2:
-    com.read.kotlinlib.basic.CoroutineActivity$suspend$1 $simpleDelay$1 -> g
-    int label -> f
+    com.read.kotlinlib.basic.CoroutineActivity$suspend$1 $simpleDelay$1 -> e
+    int label -> d
     java.lang.Object L$0 -> c
-    java.lang.Object L$1 -> d
-    java.lang.Object L$2 -> e
     kotlinx.coroutines.CoroutineScope p$ -> b
 com.read.kotlinlib.basic.CoroutineActivity$suspendLaunch$1 -> com.read.kotlinlib.basic.CoroutineActivity$suspendLaunch$1:
     com.read.kotlinlib.basic.CoroutineActivity this$0 -> d
