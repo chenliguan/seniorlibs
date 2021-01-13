@@ -49,7 +49,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("abbc")}")
+                LogUtils.e(TAG, "72. 编辑距离：${minDistance("horse", "ros")}")
             }
             else -> {
             }
@@ -57,33 +57,50 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    fun longestPalindrome(s: String): String {
-        val n = s.length
-        var begin = 0
-        var maxLen = 1
-        val dp = Array(n) { kotlin.BooleanArray(n)}
+    fun minDistance(s1: String, s2: String): Int {
+
+        val m = s1.length + 1
+        val n = s2.length + 1
+
+        val dp = Array(m) { IntArray(n) }
 
         // base case
-        for (i in 0 until n) dp[i][i] = true
+        for (i in 0 until m) dp[i][0] = i
+        for (j in 0 until n) dp[0][j] = j
 
-        // 反着遍历
-        for (i in n - 1 downTo 0) {
-            for (j in i + 1 until n) {
-                if (j - i < 2) {
-                    dp[i][j] = s[i] == s[j]
+        // dp
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (s1[i] == s2[j]) {
+                    // s1[i]和s2[j]都跳过，啥都不做
+                    dp[i][j] = dp[i-1][j-1]
                 } else {
-                    dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j])
-                }
-
-                // 记录
-                if (dp[i][j] && (j - i + 1 > maxLen)) {
-                    maxLen = j - i + 1
-                    begin = i
+                    // 操作数 + 1
+                    dp[i][j] = min(
+                        // s1中插入一个和s2[j]一样的字符，j前移
+                        dp[i][j - 1] + 1,
+                        // 删除s1[i]，和s2[j]匹配，i前移
+                        dp[i - 1][j] + 1,
+                        // 替换s1[i]为s2[j]，i,j一起前移
+                        dp[i - 1][j - 1] + 1
+                    )
                 }
             }
         }
 
-        return s.substring(begin, begin + maxLen)
+        return dp[m - 1][n - 1]
     }
 
+    fun min(a : Int, b : Int, c : Int) : Int {
+        return Math.min(a, Math.min(b, c))
+    }
 }
+
+
+
+
+
+
+
+
+
