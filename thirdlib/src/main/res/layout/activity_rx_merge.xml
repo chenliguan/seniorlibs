@@ -37,5 +37,26 @@
             android:onClick="mergeArray"
             android:text="mergeArray()"
             android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="concatWithError"
+            android:text="concat/merge->若其中1个被观察者发出onError事件，则会马上终止其他被观察者继续发送事件"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="concatArrayDelayError"
+            android:text="concatArrayDelayError->onError事件推迟到其他被观察者发送事件结束后才触发"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="concatWithErrorAndOnErrorResumeNext"
+            android:text="concatWithError 和 OnErrorResumeNext"
+            android:textAllCaps="false"/>
     </LinearLayout>
 </ScrollView>

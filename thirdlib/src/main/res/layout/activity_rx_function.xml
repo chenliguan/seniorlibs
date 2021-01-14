@@ -62,6 +62,13 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onErrorResumeNextAndDoOnError"
+            android:text="对比 onErrorResumeNext 和 doOnError()"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onExceptionResumeNext"
             android:text="onExceptionResumeNext()"
             android:textAllCaps="false"/>

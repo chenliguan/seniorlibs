@@ -13876,6 +13876,13 @@ com.read.kotlinlib.generic.GenericTestKt$Plate -> com.read.kotlinlib.generic.Gen
 com.read.kotlinlib.generic.GenericTestKt$Pork -> com.read.kotlinlib.generic.GenericTestKt$Pork:
 com.read.kotlinlib.generic.GenericTestKt$RedApple -> com.read.kotlinlib.generic.GenericTestKt$RedApple:
     com.read.kotlinlib.generic.GenericTestKt this$0 -> d
+com.read.kotlinlib.grammar.Father -> com.read.kotlinlib.grammar.Father:
+    void talking() -> a
+com.read.kotlinlib.grammar.GrammarActivity -> com.read.kotlinlib.grammar.GrammarActivity:
+    com.read.kotlinlib.grammar.GrammarActivity$Companion Companion -> a
+com.read.kotlinlib.grammar.GrammarActivity$Companion -> com.read.kotlinlib.grammar.GrammarActivity$Companion:
+com.read.kotlinlib.grammar.Son -> com.read.kotlinlib.grammar.Son:
+    void talking() -> a
 com.read.kotlinlib.inner.Constructor -> com.read.kotlinlib.inner.Constructor:
 com.read.kotlinlib.inner.Constructor$InnerClass -> com.read.kotlinlib.inner.Constructor$InnerClass:
     com.read.kotlinlib.inner.Constructor this$0 -> a

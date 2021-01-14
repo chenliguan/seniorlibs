@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 
@@ -584,10 +586,12 @@ public class RxJavaActivity extends AppCompatActivity {
      */
     public void textMerge(View view) {
         // merge()：组合多个被观察者（≤4个）一起发送数据
-        // 注：串行执行
+        // 注：并行执行
         Observable.merge(
-                Observable.intervalRange(0, 1, 0, 1, TimeUnit.MILLISECONDS), // 从0开始发送、共发送3个数据、第1次事件延迟发送时间 = 1s、间隔时间 = 1s
-                Observable.intervalRange(10, 1, 0, 1, TimeUnit.MILLISECONDS)) // 从10开始发送、共发送3个数据、第1次事件延迟发送时间 = 1s、间隔时间 = 1s
+                // 从0开始发送、共发送3个数据、第1次事件延迟发送时间 = 0s、间隔时间 = 1s
+                Observable.intervalRange(0, 1, 0, 1, TimeUnit.MILLISECONDS),
+                // 从10开始发送、共发送3个数据、第1次事件延迟发送时间 = 0s、间隔时间 = 1s
+                Observable.intervalRange(10, 1, 0, 1, TimeUnit.MILLISECONDS))
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -619,9 +623,9 @@ public class RxJavaActivity extends AppCompatActivity {
      */
     public void textConcat(View view) {
         Observable.concat(
-                // 从0开始发送、共发送3个数据、第1次事件延迟发送时间 = 1s、间隔时间 = 1s
+                // 从0开始发送、共发送8个数据、第1次事件延迟发送时间 = 0s、间隔时间 = 1s
                 Observable.intervalRange(1, 8, 0, 1, TimeUnit.SECONDS),
-                // 从2开始发送、共发送3个数据、第1次事件延迟发送时间 = 1s、间隔时间 = 1s
+                // 从10开始发送、共发送8个数据、第1次事件延迟发送时间 = 1s、间隔时间 = 1s
                 Observable.intervalRange(10, 8, 0, 1, TimeUnit.SECONDS))
 
                 .flatMap(new Function<Long, ObservableSource<Long>>() {

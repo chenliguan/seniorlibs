@@ -309,7 +309,7 @@ public class RxFunctionActivity extends AppCompatActivity {
                         LogUtils.e(TAG, "doOnComplete: ");
                     }
                 })
-                // 5. Observable发送错误事件时调用
+                // 5. Observable发送错误事件时调用，不拦截，会回调 onError
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
@@ -382,7 +382,7 @@ public class RxFunctionActivity extends AppCompatActivity {
     }
 
     /**
-     * 遇到错误时，发送1个特殊事件 & 正常终止，可捕获在它之前发生的异常
+     * 遇到错误时，发送1个特殊事件 & 正常终止，可捕获在它之前发生的异常。注意：拦截错误，不会再回调 onError
      * <p>
      * 场景：发送事件过程中，遇到错误时的处理机制
      *
@@ -439,7 +439,7 @@ public class RxFunctionActivity extends AppCompatActivity {
     }
 
     /**
-     * 遇到错误时，发送1个新的Observable
+     * 遇到错误时，发送1个新的Observable。注意：拦截错误，不会再回调 onError
      * <p>
      * 场景：onErrorResumeNext()拦截的错误 = Throwable；若需拦截Exception请用onExceptionResumeNext()
      *     若onErrorResumeNext()拦截的错误 = Exception，则会将错误传递给观察者的onError方法
@@ -459,10 +459,9 @@ public class RxFunctionActivity extends AppCompatActivity {
                     @Override
                     public ObservableSource<? extends Integer> apply(@NonNull Throwable throwable) throws Exception {
                         // 1. 捕捉错误异常
-                        LogUtils.e(TAG, "在onErrorResumeNext处理了错误: " + throwable.toString());
+                        LogUtils.e(TAG, "在onErrorResumeNext拦截了错误: " + throwable.toString());
                         // 2. 发生错误事件后，发送一个新的被观察者 & 发送事件序列
                         return Observable.just(11, 22);
-
                     }
                 })
                 .subscribe(new Observer<Integer>() {
@@ -498,7 +497,74 @@ public class RxFunctionActivity extends AppCompatActivity {
     }
 
     /**
-     * 遇到错误时，发送1个旧的Observable
+     * 遇到错误时，发送1个新的Observable。注意：拦截错误，不会再回调 onError
+     * <p>
+     * 场景：onErrorResumeNext()拦截的错误 = Throwable；若需拦截Exception请用onExceptionResumeNext()
+     *     若onErrorResumeNext()拦截的错误 = Exception，则会将错误传递给观察者的onError方法
+     *
+     * @param view
+     */
+    public void onErrorResumeNextAndDoOnError(View view) {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Throwable("发生错误了"));
+            }
+        })
+                // Observable发送错误事件时调用，不拦截，还会回调 onError
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        LogUtils.e(TAG, "在doOnError打印了错误: " + throwable.toString());
+                    }
+                })
+                // 拦截错误，不会再回调 onError
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Integer>>() {
+                    @Override
+                    public ObservableSource<? extends Integer> apply(@NonNull Throwable throwable) throws Exception {
+                        // 1. 捕捉错误异常
+                        LogUtils.e(TAG, "在onErrorResumeNext拦截了错误: " + throwable.toString());
+                        // 2. 发生错误事件后，发送一个新的被观察者 & 发送事件序列
+                        return Observable.just(11, 22);
+                    }
+                })
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer value) {
+                        LogUtils.d(TAG, "接收到了事件" + value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.d(TAG, "对Error事件作出响应");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.d(TAG, "对Complete事件作出响应");
+                    }
+                });
+
+        /**
+         * 03-22 15:01:45.754 24847-24847/com.seniorlibs.thirdlib D/ RxFunctionActivity: 接收到了事件1
+         * 03-22 15:01:45.754 24847-24847/com.seniorlibs.thirdlib D/ RxFunctionActivity: 接收到了事件2
+         * 03-22 15:01:45.754 24847-24847/com.seniorlibs.thirdlib E/ RxFunctionActivity: 在doOnError打印了错误: java.lang.Throwable: 发生错误了
+         * 03-22 15:01:45.754 24847-24847/com.seniorlibs.thirdlib E/ RxFunctionActivity: 在onErrorReturn处理了错误: java.lang.Throwable: 发生错误了
+         * 03-22 15:01:45.757 24847-24847/com.seniorlibs.thirdlib D/ RxFunctionActivity: 接收到了事件11
+         * 03-22 15:01:45.757 24847-24847/com.seniorlibs.thirdlib D/ RxFunctionActivity: 接收到了事件22
+         * 03-22 15:01:45.757 24847-24847/com.seniorlibs.thirdlib D/ RxFunctionActivity: 对Complete事件作出响应
+         */
+    }
+
+    /**
+     * 遇到错误时，发送1个旧的Observable。注意：拦截错误，不会再回调 onError
      * <p>
      * 场景：若onErrorResumeNext()拦截的错误 = Exception；若需拦截Throwable请用onErrorResumeNext()
      * 若onExceptionResumeNext()拦截的错误 = Throwable，则会将错误传递给观察者的onError方法
