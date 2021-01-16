@@ -111,16 +111,15 @@ public class RxFunctionActivity extends AppCompatActivity {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 LogUtils.d(TAG, "1.1 第一次指定被观察者Observable生产事件的线程： " + Thread.currentThread().getName());
-
                 emitter.onNext(1);
                 emitter.onNext(2);
                 emitter.onNext(3);
                 emitter.onComplete();
             }
         })
-                // 1.1 第一次指定被观察者Observable生产事件的线程 = 新线程（只有第一次指定有效，其余的指定线程无效）
+                // 1.1 第一次指定被观察者Observable执行的线程 = 新线程（只有第一次指定有效，其余的指定线程无效）
                 .subscribeOn(Schedulers.newThread())
-                // 1.2 第二次指定被观察者Observable线程 = 主线程（无效）
+                // 1.2 第二次指定被观察者Observable执行的线程 = 主线程（无效）
                 .subscribeOn(Schedulers.newThread())
 
                 // 2.1 第一次指定观察者Observer接收 & 响应事件的线程 = 主线程（有效）
@@ -159,18 +158,18 @@ public class RxFunctionActivity extends AppCompatActivity {
                 });
 
         /**
-         * 03-22 14:25:15.435 21356-21356/com.seniorlibs.thirdlib D/ RxFunctionActivity: 开始采用subscribe连接
-         * 03-22 14:25:15.438 21356-21523/com.seniorlibs.thirdlib D/ RxFunctionActivity: 1.1 第一次指定被观察者Observable生产事件的线程： RxNewThreadScheduler-2
-         * 03-22 14:25:15.453 21356-21356/com.seniorlibs.thirdlib D/ RxFunctionActivity: 2.1 第一次观察者Observer的线程是： main
-         * 03-22 14:25:15.454 21356-21356/com.seniorlibs.thirdlib D/ RxFunctionActivity: 2.1 第一次观察者Observer的线程是： main
-         * 03-22 14:25:15.454 21356-21356/com.seniorlibs.thirdlib D/ RxFunctionActivity: 2.1 第一次观察者Observer的线程是： main
-         * 03-22 14:25:15.455 21356-21524/com.seniorlibs.thirdlib D/ RxFunctionActivity: 对Next事件1作出响应
-         * 03-22 14:25:15.455 21356-21524/com.seniorlibs.thirdlib D/ RxFunctionActivity: 2.2 第二次观察者Observer的线程是： RxNewThreadScheduler-3
-         * 03-22 14:25:15.455 21356-21524/com.seniorlibs.thirdlib D/ RxFunctionActivity: 对Next事件2作出响应
-         * 03-22 14:25:15.455 21356-21524/com.seniorlibs.thirdlib D/ RxFunctionActivity: 2.2 第二次观察者Observer的线程是： RxNewThreadScheduler-3
-         * 03-22 14:25:15.455 21356-21524/com.seniorlibs.thirdlib D/ RxFunctionActivity: 对Next事件3作出响应
-         * 03-22 14:25:15.455 21356-21524/com.seniorlibs.thirdlib D/ RxFunctionActivity: 2.2 第二次观察者Observer的线程是： RxNewThreadScheduler-3
-         * 03-22 14:25:15.455 21356-21524/com.seniorlibs.thirdlib D/ RxFunctionActivity: 对Complete事件作出响应
+         *          开始采用subscribe连接
+         *          1.1 第一次指定被观察者Observable生产事件的线程： RxNewThreadScheduler-2
+         *          2.1 第一次观察者Observer的线程是： main
+         *          2.1 第一次观察者Observer的线程是： main
+         *          2.1 第一次观察者Observer的线程是： main
+         *          对Next事件1作出响应
+         *          2.2 第二次观察者Observer的线程是： RxNewThreadScheduler-3
+         *          对Next事件2作出响应
+         *          2.2 第二次观察者Observer的线程是： RxNewThreadScheduler-3
+         *          对Next事件3作出响应
+         *          2.2 第二次观察者Observer的线程是： RxNewThreadScheduler-3
+         *          对Complete事件作出响应
          */
     }
 
