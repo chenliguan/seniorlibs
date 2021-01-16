@@ -40,6 +40,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_rob).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob_2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_can_partition).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_1).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_2).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_3).setOnClickListener(this)
@@ -62,6 +63,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_rob_2 -> {
                 LogUtils.e(TAG, "213. 打家劫舍 II：${robTwo(intArrayOf(2, 7, 9, 3, 1))}")
+            }
+            R.id.btn_can_partition -> {
+                LogUtils.e(TAG, "416. 分割等和子集：${canPartition(intArrayOf(1, 5, 11, 5))}")
+                LogUtils.e(TAG, "416. 分割等和子集1：${canPartition1(intArrayOf(1, 5, 11, 5))}")
             }
             R.id.btn_max_profit_1 -> {
                 LogUtils.e(TAG, "121. 买卖股票的最佳时机 11：${maxProfit11(intArrayOf(7, 1, 5, 3, 6, 4))}")
@@ -251,6 +256,92 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             rob11(Arrays.copyOfRange(nums, 1, nums.size)),
             rob11(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
+    }
+
+
+    /**
+     * 416. 分割等和子集   动态规划
+     *
+     * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和的一半，需要计算出所有的状态，每个状态在进行转移时的时间复杂度为 O(1)O(1)。
+     * 空间复杂度：O(n * m)，其中 n 是数组的长度。空间复杂度取决于 dp 数组，在不进行空间优化的情况下，空间复杂度是 O(n * m)，
+     *                      在进行空间优化的情况下，空间复杂度可以降到 O(m)。
+     * @param nums
+     * @return
+     */
+    fun canPartition(nums: IntArray): Boolean {
+        var sum = 0
+        for (num in nums) sum += num
+
+        // 和为奇数时，不可能划分成两个和相等的集合
+        if (sum % 2 != 0) return false
+
+        val m = nums.size + 1
+        val n = sum / 2 + 1
+        val dp = Array(m) { BooleanArray(n) }
+
+        // base case：
+        // dp[...][0] = true：表示背包容量为0时，背包已经被装满了。
+        // dp[0][1...j] = false：表示没有物品，背包容量 > 0 时，不可能被装满；
+        for (i in 0 until m) dp[i][0] = true
+        for (j in 1 until n) dp[0][j] = false
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (j - nums[i - 1] < 0) {
+                    // 背包容量不足，不能装入第i个物品，所以状态和没装第i个物品相同
+                    dp[i][j] = dp[i - 1][j]
+                } else {
+                    // 选择不装入背包，状态和没装第i个物品相同
+                    // 选择装入，装了第i个物品，就要看背包的剩余重量 j - nums[i-1] 限制下是否能够被恰好装满
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j-nums[i-1]]
+                }
+            }
+        }
+
+        // 对于前 m - 1 个物品，当前背包的容量为 n - 1 = sum/2（分割成了两个子集）
+        return dp[m - 1][n - 1]
+    }
+
+    /**
+     * 416. 分割等和子集   动态规划-->状态压缩
+     *
+     * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和的一半，需要计算出所有的状态，每个状态在进行转移时的时间复杂度为 O(1)O(1)。
+     * 空间复杂度：O(n * m)，其中 n 是数组的长度。空间复杂度取决于 dp 数组，在不进行空间优化的情况下，空间复杂度是 O(n * m)，
+     *                      在进行空间优化的情况下，空间复杂度可以降到 O(m)。
+     * @param nums
+     * @return
+     */
+    fun canPartition1(nums: IntArray): Boolean {
+        var sum = 0
+        for (num in nums) sum += num
+
+        // 和为奇数时，不可能划分成两个和相等的集合
+        if (sum % 2 != 0) return false
+
+        val m = nums.size + 1
+        val n = sum / 2 + 1
+        val dp = BooleanArray(n)
+
+        // base case：
+        // dp[1...j] = false：表示没有物品，背包容量 > 0 时，不可能被装满；
+        // dp[0] = true：表示背包容量为0时，背包已经被装满了
+        for (j in 0 until n) dp[j] = false
+        dp[0] = true
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in n - 1 downTo 1) {
+                if (j - nums[i - 1] >= 0) {
+                    // 选择不装入背包，状态和没装第i个物品相同
+                    // 选择装入，装了第i个物品，就要看背包的剩余重量 j - nums[i-1] 限制下是否能够被恰好装满
+                    dp[j] = dp[j] || dp[j - nums[i - 1]]
+                }
+            }
+        }
+
+        // 对于前 m - 1 个物品，当前背包的容量为 n - 1 = sum/2（分割成了两个子集）
+        return dp[n - 1]
     }
 
 

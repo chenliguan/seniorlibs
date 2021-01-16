@@ -17,6 +17,11 @@
         style="@style/BtnStyles"
         android:text="213. 打家劫舍 II" />
 
+    <Button
+        android:id="@+id/btn_can_partition"
+        style="@style/BtnStyles"
+        android:text="416. 分割等和子集" />
+
 
     <Button
         android:id="@+id/btn_max_profit_1"
