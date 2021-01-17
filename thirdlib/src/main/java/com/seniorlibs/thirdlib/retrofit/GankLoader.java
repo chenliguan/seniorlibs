@@ -12,7 +12,12 @@ import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 /**
- * 干货集中营api https://gank.io/api
+ * Author: chen
+ * Version: 1.0.0
+ * Date: 2020/1/3
+ * Mender:
+ * Modify:
+ * Description: 干货集中营api https://gank.io/api
  */
 public class GankLoader extends ObjectLoader {
 

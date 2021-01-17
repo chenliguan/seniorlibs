@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.seniorlibs.thirdlib.R;
 
@@ -56,6 +59,7 @@ public class GankActivity extends Activity {
         StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(new MyItemDecoration());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new GanKAdapter();
         recyclerView.setAdapter(mAdapter);
     }

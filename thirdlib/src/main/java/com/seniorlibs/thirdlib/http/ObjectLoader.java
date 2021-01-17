@@ -1,13 +1,16 @@
 package com.seniorlibs.thirdlib.http;
 
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- *
- * 将一些重复的操作提出来，放到父类以免Loader 里每个接口都有重复代码
+ * Author: chen
+ * Version: 1.0.0
+ * Date: 2020/1/3
+ * Mender:
+ * Modify:
+ * Description: 将一些重复的操作提出来，放到父类以免Loader 里每个接口都有重复代码
  */
 public class ObjectLoader {
     /**
@@ -19,7 +22,6 @@ public class ObjectLoader {
     protected <T> Observable<T> observe(Observable<T> observable) {
         return observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
-
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -322,6 +322,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和的一半，需要计算出所有的状态，每个状态在进行转移时的时间复杂度为 O(1)O(1)。
      * 空间复杂度：O(n * m)，其中 n 是数组的长度。空间复杂度取决于 dp 数组，在不进行空间优化的情况下，空间复杂度是 O(n * m)，
      *                      在进行空间优化的情况下，空间复杂度可以降到 O(m)。
+     *
+     * https://leetcode-cn.com/problems/partition-equal-subset-sum/solution/416-fen-ge-deng-he-zi-ji-by-chen-li-guan-ahv7/
      * @param nums
      * @return
      */

@@ -7,6 +7,14 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Author: chen
+ * Version: 1.0.0
+ * Date: 2020/1/3
+ * Mender:
+ * Modify:
+ * Description: Retrofit封装管理类
+ */
 public class RetrofitServiceManager {
 
     /**

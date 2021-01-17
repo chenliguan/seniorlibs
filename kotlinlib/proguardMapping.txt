@@ -13977,10 +13977,8 @@ com.read.kotlinlib.model.People -> com.read.kotlinlib.model.People:
     int getAge() -> d
     java.lang.String getName() -> c
 com.read.kotlinlib.polymorphisn.Polymorphisn -> com.read.kotlinlib.polymorphisn.Polymorphisn:
-    com.read.kotlinlib.polymorphisn.Polymorphisn$Companion Companion -> a
     void printHello(com.read.kotlinlib.polymorphisn.Polymorphisn$SuperClass) -> a
     void main() -> a
-com.read.kotlinlib.polymorphisn.Polymorphisn$Companion -> com.read.kotlinlib.polymorphisn.Polymorphisn$Companion:
 com.read.kotlinlib.polymorphisn.Polymorphisn$SubClass -> com.read.kotlinlib.polymorphisn.Polymorphisn$SubClass:
     com.read.kotlinlib.polymorphisn.Polymorphisn this$0 -> d
     java.lang.String name -> c

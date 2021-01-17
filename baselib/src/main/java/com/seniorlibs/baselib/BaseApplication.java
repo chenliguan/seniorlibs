@@ -15,6 +15,14 @@ import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/**
+ * Author: chen
+ * Version: 1.0.0
+ * Date: 2020/1/3
+ * Mender:
+ * Modify:
+ * Description: BaseApplication
+ */
 public class BaseApplication extends Application {
 
     private static final int MEMORY_SIZE = 5 * 1024 * 1024;
