@@ -84,12 +84,24 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "188. 买卖股票的最佳时机 41：${maxProfit41(2, intArrayOf(7, 1, 5, 3, 6, 4))}")
             }
             R.id.btn_max_profit_5 -> {
-                LogUtils.e(TAG, "309. 买卖股票的最佳时机含冷冻期 51：${maxProfit51(intArrayOf(7, 1, 5, 3, 6, 4))}")
-                LogUtils.e(TAG, "309. 买卖股票的最佳时机含冷冻期 52：${maxProfit52(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                LogUtils.e(
+                    TAG,
+                    "309. 买卖股票的最佳时机含冷冻期 51：${maxProfit51(intArrayOf(7, 1, 5, 3, 6, 4))}"
+                )
+                LogUtils.e(
+                    TAG,
+                    "309. 买卖股票的最佳时机含冷冻期 52：${maxProfit52(intArrayOf(7, 1, 5, 3, 6, 4))}"
+                )
             }
             R.id.btn_max_profit_6 -> {
-                LogUtils.e(TAG, "714. 买卖股票的最佳时机含手续费 61：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4), 1)}")
-                LogUtils.e(TAG, "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}")
+                LogUtils.e(
+                    TAG,
+                    "714. 买卖股票的最佳时机含手续费 61：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
+                )
+                LogUtils.e(
+                    TAG,
+                    "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
+                )
             }
             else -> {
             }
@@ -280,9 +292,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         val dp = Array(m) { BooleanArray(n) }
 
         // base case：
-        // dp[...][0] = true：表示背包容量为0时，背包已经被装满了。
-        // dp[0][1...j] = false：表示没有物品，背包容量 > 0 时，不可能被装满；
+        // dp[0...i][0] = true：表示背包容量为 0 时，背包都是装满的；
         for (i in 0 until m) dp[i][0] = true
+        // dp[0][1...j] = false：表示没有物品，背包容量 > 0 时，不可能被装满；
         for (j in 1 until n) dp[0][j] = false
 
         // dp 方程
@@ -292,14 +304,15 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                     // 背包容量不足，不能装入第i个物品，所以状态和没装第i个物品相同
                     dp[i][j] = dp[i - 1][j]
                 } else {
+                    // 背包容量充足：
                     // 选择不装入背包，状态和没装第i个物品相同
-                    // 选择装入，装了第i个物品，就要看背包的剩余重量 j - nums[i-1] 限制下是否能够被恰好装满
-                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j-nums[i-1]]
+                    // 选择装入背包，装了第i个物品，就要看背包的剩余(j - nums[i-1])的重量可否被(i - 1)个物品装满；可以，那么把第i个物品装进去，也可装满背包j的重量
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]]
                 }
             }
         }
 
-        // 对于前 m - 1 个物品，当前背包的容量为 n - 1 = sum/2（分割成了两个子集）
+        // 表示 前 m - 1 个物品是否可以将容量为 n - 1 = sum/2（分割成了两个子集）的背包装满
         return dp[m - 1][n - 1]
     }
 
@@ -325,22 +338,23 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // base case：
         // dp[1...j] = false：表示没有物品，背包容量 > 0 时，不可能被装满；
-        // dp[0] = true：表示背包容量为0时，背包已经被装满了
-        for (j in 0 until n) dp[j] = false
+        for (j in 1 until n) dp[j] = false
+        // dp[0] = true：表示背包容量为 0 时，背包都是装满的；
         dp[0] = true
 
         // dp 方程
         for (i in 1 until m) {
             for (j in n - 1 downTo 1) {
                 if (j - nums[i - 1] >= 0) {
+                    // 背包容量充足：
                     // 选择不装入背包，状态和没装第i个物品相同
-                    // 选择装入，装了第i个物品，就要看背包的剩余重量 j - nums[i-1] 限制下是否能够被恰好装满
+                    // 选择装入背包，装了第i个物品，就要看背包的剩余(j - nums[i-1])的重量可否被(i - 1)个物品装满；可以，那么把第i个物品装进去，也可装满背包j的重量
                     dp[j] = dp[j] || dp[j - nums[i - 1]]
                 }
             }
         }
 
-        // 对于前 m - 1 个物品，当前背包的容量为 n - 1 = sum/2（分割成了两个子集）
+        // 表示 前 m - 1 个物品是否可以将容量为 n - 1 = sum/2（分割成了两个子集）的背包装满
         return dp[n - 1]
     }
 
@@ -353,9 +367,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     总状态数: n*K*2种状态
 
     for 0 <= i < n:
-        for 1 <= k <= K:
-            for s in {0, 1}:
-                dp[i][k][s] = max(buy, sell, rest)
+    for 1 <= k <= K:
+    for s in {0, 1}:
+    dp[i][k][s] = max(buy, sell, rest)
 
     2、状态转移框架分析
 
@@ -711,7 +725,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * @param prices
      * @return
      */
-    fun maxProfit61(prices: IntArray, fee : Int): Int {
+    fun maxProfit61(prices: IntArray, fee: Int): Int {
         if (prices.isEmpty()) return 0
 
         // base case：
@@ -743,7 +757,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * @param prices
      * @return
      */
-    fun maxProfit62(prices: IntArray, fee : Int): Int {
+    fun maxProfit62(prices: IntArray, fee: Int): Int {
         if (prices.isEmpty()) return 0
 
         // base case:
