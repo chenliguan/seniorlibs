@@ -22,6 +22,11 @@
         style="@style/BtnStyles"
         android:text="416. 分割等和子集" />
 
+     <Button
+        android:id="@+id/btn_change_tow"
+        style="@style/BtnStyles"
+        android:text="518. 零钱兑换 II" />
+
 
     <Button
         android:id="@+id/btn_max_profit_1"

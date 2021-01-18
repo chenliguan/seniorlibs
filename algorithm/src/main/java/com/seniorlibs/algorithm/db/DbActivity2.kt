@@ -41,6 +41,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_rob).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob_2).setOnClickListener(this)
         findViewById<View>(R.id.btn_can_partition).setOnClickListener(this)
+        findViewById<View>(R.id.btn_change_tow).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_1).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_2).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_3).setOnClickListener(this)
@@ -67,6 +68,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             R.id.btn_can_partition -> {
                 LogUtils.e(TAG, "416. 分割等和子集：${canPartition(intArrayOf(1, 5, 11, 5))}")
                 LogUtils.e(TAG, "416. 分割等和子集1：${canPartition1(intArrayOf(1, 5, 11, 5))}")
+            }
+            R.id.btn_change_tow -> {
+                LogUtils.e(TAG, "518. 零钱兑换 II：${changeII(5, intArrayOf(1, 2, 5))}")
+                LogUtils.e(TAG, "518. 零钱兑换 II 2：${changeII2(5, intArrayOf(1, 2, 5))}")
             }
             R.id.btn_max_profit_1 -> {
                 LogUtils.e(TAG, "121. 买卖股票的最佳时机 11：${maxProfit11(intArrayOf(7, 1, 5, 3, 6, 4))}")
@@ -358,6 +363,89 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // 表示 前 m - 1 个物品是否可以将容量为 n - 1 = sum/2（分割成了两个子集）的背包装满
         return dp[n - 1]
+    }
+
+    /**
+     * 518. 零钱兑换 II 动态规划
+     *
+     * 时间复杂度 O(n * amount)
+     * 空间复杂度 O(n * amount)
+     *
+     * https://leetcode-cn.com/problems/coin-change-2/solution/518-ling-qian-dui-huan-ii-by-chen-li-gua-zykf/
+     * @param amount
+     * @param coins
+     * @return
+     */
+    fun changeII(amount: Int, coins: IntArray): Int {
+        val m = coins.size + 1
+        val n = amount + 1
+        val dp = Array(m) { IntArray(n) }
+
+        // base case
+        // dp[0...i][0] = 1，表示凑出的金额为 0，那么什么都不做就是唯一的一种凑法
+        for (i in 0 until m) dp[i][0] = 1
+        // dp[0][1...j] = 0，表示不使用任何硬币面值，就无法凑出任何金额
+        for (j in 1 until n) dp[0][j] = 0
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (j - coins[i - 1] < 0) {
+                    // 背包容量装不下当前硬币 coins[i]，选择不装入
+                    dp[i][j] = dp[i - 1][j]
+                } else {
+                    // 背包容量装得下。dp[i][j] 是「共有多少种凑法」，值是以下 选择装和不装 的结果之和
+                    // 选择不装入 coins[i] 这个面值的硬币，继承之前的结果，所以状态和不使用第i个硬币相同
+                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何凑出金额 j - coins[i-1]。
+                    //    如果背包的剩余 [j-coins[i-1] 的金额可以被这个面值的硬币装满，那么把这个面值的硬币装进去，也可装满背包 j 的重量
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]]
+                }
+            }
+        }
+
+        // 只使用前 i 个硬币的面值，当背包容量为 j 时，有 dp[i][j] 种方法可以装满背包
+        // m - 1 为 coins 数组的大小，背包容量为 amount
+        return dp[m - 1][amount]
+    }
+
+    /**
+     * 518. 零钱兑换 II 2 动态规划--空间压缩
+     *
+     * 时间复杂度 O(n * amount)
+     * 空间复杂度 O(amount)
+     *
+     * https://leetcode-cn.com/problems/coin-change-2/solution/518-ling-qian-dui-huan-ii-by-chen-li-gua-zykf/
+     * @param amount
+     * @param coins
+     * @return
+     */
+    fun changeII2(amount: Int, coins: IntArray): Int {
+        val m = coins.size + 1
+        val n = amount + 1
+        val dp = IntArray(n)
+
+        // base case
+        // dp[0][1...j] = 0，表示不使用任何硬币面值，就无法凑出任何金额
+        for (j in 1 until n) dp[j] = 0
+        // ddp[0] = 1，表示凑出的金额为 0，那么什么都不做就是唯一的一种凑法
+        dp[0] = 1
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (j - coins[i - 1] >= 0) {
+                    // 背包容量装得下。dp[i][j] 是「共有多少种凑法」，值是以下 选择装和不装 的结果之和
+                    // 选择不装入 coins[i] 这个面值的硬币，继承之前的结果，所以状态和不使用第i个硬币相同
+                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何凑出金额 j - coins[i-1]。
+                    //    如果背包的剩余 [j-coins[i-1] 的金额可以被这个面值的硬币装满，那么把这个面值的硬币装进去，也可装满背包 j 的重量
+                    dp[j] = dp[j] + dp[j - coins[i - 1]]
+                }
+            }
+        }
+
+        // 只使用前 i 个硬币的面值，当背包容量为 j 时，有 dp[i][j] 种方法可以装满背包
+        // m - 1 为 coins 数组的大小，背包容量为 amount
+        return dp[amount]
     }
 
 
