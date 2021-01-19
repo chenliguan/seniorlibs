@@ -80,11 +80,6 @@
         android:text="152. 乘积最大子数组" />
 
     <Button
-        android:id="@+id/btn_coin_change"
-        style="@style/BtnStyles"
-        android:text="322. 零钱兑换" />
-
-    <Button
         android:id="@+id/btn_maximal_square"
         style="@style/BtnStyles"
         android:text="221. 最大正方形" />

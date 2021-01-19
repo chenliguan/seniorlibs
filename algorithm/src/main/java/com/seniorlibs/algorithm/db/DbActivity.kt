@@ -125,9 +125,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_max_product -> {
                 LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
             }
-            R.id.btn_coin_change -> {
-                LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
-            }
             R.id.btn_maximal_square -> {
                 val paths = arrayOf(
                     charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
@@ -999,45 +996,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             db = Math.max(db, imax)
         }
         return db
-    }
-
-
-    /**
-     * 322. 零钱兑换   方式1：动态规划
-     *
-     * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
-     * 空间复杂度：O(S)，DP数组需要开长度为总金额S的空间
-     *
-     * base case：dp[0] = 0
-     * DP方程：dp[i] = Math.min(dp[i], i + dp[i - coin])，coin ∈ coins、n > 0
-     *
-     * https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-chen-li-guan/
-     * @param coins
-     * @param amount
-     * @return
-     */
-    fun coinChange(coins: IntArray, amount: Int): Int {
-        // 凑成amount金额的数量最多只可能等于amount（全用1元面值的），所以初始化为amount + 1就相当于初始化为正无穷，便于后续取最小值。
-        val n = amount + 1
-        val dp = IntArray(n)
-        Arrays.fill(dp, Int.MAX_VALUE)
-
-        // base case
-        dp[0] = 0
-
-        // 状态 1...amount -> i：外层 for 循环在遍历所有状态的所有取值
-        for (i in 1 until n) {
-            // 选择：选择哪种硬币的面值 或 不选
-            for (coin in coins) {
-                // 子问题无解，跳过
-                if (i - coin < 0) continue
-                // dp动态转移方程：求所有选择的最小值
-                if (dp[i - coin] < Int.MAX_VALUE) dp[i] = Math.min(dp[i], 1 + dp[i - coin])
-            }
-        }
-
-        // 没有任何一种硬币组合能组成总金额，返回-1
-        return if (dp[amount] < Int.MAX_VALUE) dp[amount] else -1
     }
 
 

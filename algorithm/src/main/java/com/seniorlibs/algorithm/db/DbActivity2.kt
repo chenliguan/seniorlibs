@@ -41,7 +41,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_rob).setOnClickListener(this)
         findViewById<View>(R.id.btn_rob_2).setOnClickListener(this)
         findViewById<View>(R.id.btn_can_partition).setOnClickListener(this)
-        findViewById<View>(R.id.btn_change_tow).setOnClickListener(this)
+        findViewById<View>(R.id.btn_change_II).setOnClickListener(this)
+        findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_1).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_2).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_3).setOnClickListener(this)
@@ -69,9 +70,13 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "416. 分割等和子集：${canPartition(intArrayOf(1, 5, 11, 5))}")
                 LogUtils.e(TAG, "416. 分割等和子集1：${canPartition1(intArrayOf(1, 5, 11, 5))}")
             }
-            R.id.btn_change_tow -> {
+            R.id.btn_change_II -> {
                 LogUtils.e(TAG, "518. 零钱兑换 II：${changeII(5, intArrayOf(1, 2, 5))}")
                 LogUtils.e(TAG, "518. 零钱兑换 II 2：${changeII2(5, intArrayOf(1, 2, 5))}")
+            }
+            R.id.btn_coin_change -> {
+                LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
+                LogUtils.e(TAG, "322. 零钱兑换 1：${coinChange1(intArrayOf(1, 2, 5), 11)}")
             }
             R.id.btn_max_profit_1 -> {
                 LogUtils.e(TAG, "121. 买卖股票的最佳时机 11：${maxProfit11(intArrayOf(7, 1, 5, 3, 6, 4))}")
@@ -344,10 +349,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         val dp = BooleanArray(n)
 
         // base case：
-        // dp[1...j] = false：表示没有物品，背包容量 > 0 时，不可能被装满；
-        for (j in 1 until n) dp[j] = false
         // dp[0] = true：表示背包容量为 0 时，背包都是装满的；
         dp[0] = true
+        // dp[1...j] = false：表示没有物品，背包容量 > 0 时，不可能被装满；
+        for (j in 1 until n) dp[j] = false
 
         // dp 方程
         for (i in 1 until m) {
@@ -382,9 +387,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         val dp = Array(m) { IntArray(n) }
 
         // base case
-        // dp[0...i][0] = 1，表示凑出的金额为 0，那么什么都不做就是唯一的一种凑法
+        // dp[0...i][0] = 1，表示有硬币面值，容量为0时，存在一个什么都不做的方法装满
         for (i in 0 until m) dp[i][0] = 1
-        // dp[0][1...j] = 0，表示不使用任何硬币面值，就无法凑出任何金额
+        // dp[0][1...j] = 0，表示没有硬币面值，容量>0时，没有方法装满
         for (j in 1 until n) dp[0][j] = 0
 
         // dp 方程
@@ -396,16 +401,15 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 } else {
                     // 背包容量装得下。dp[i][j] 是「共有多少种凑法」，值是以下 选择装和不装 的结果之和
                     // 选择不装入 coins[i] 这个面值的硬币，继承之前的结果，所以状态和不使用第i个硬币相同
-                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何凑出金额 j - coins[i-1]。
-                    //    如果背包的剩余 [j-coins[i-1] 的金额可以被这个面值的硬币装满，那么把这个面值的硬币装进去，也可装满背包 j 的重量
+                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何剩余重量 j - coins[i-1]。
+                    //    如果这个面值的硬币可以装满 剩余重量 [j-coins[i-1]；那么把这个面值的硬币装进去，也可装满背包 j 的总重量
                     dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]]
                 }
             }
         }
 
-        // 只使用前 i 个硬币的面值，当背包容量为 j 时，有 dp[i][j] 种方法可以装满背包
-        // m - 1 为 coins 数组的大小，背包容量为 amount
-        return dp[m - 1][amount]
+        // 前 m - 1 个硬币的面值，当背包容量为 n - 1 时，有多少种方法装满背包
+        return dp[m - 1][n - 1]
     }
 
     /**
@@ -425,10 +429,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         val dp = IntArray(n)
 
         // base case
-        // dp[0][1...j] = 0，表示不使用任何硬币面值，就无法凑出任何金额
-        for (j in 1 until n) dp[j] = 0
-        // ddp[0] = 1，表示凑出的金额为 0，那么什么都不做就是唯一的一种凑法
+        // dp[0] = 1，表示有硬币面值，容量为0时，存在一个什么都不做的方法装满
         dp[0] = 1
+        // dp[0][1...j] = 0，表示没有硬币面值，容量>0时，没有方法装满
+        for (j in 1 until n) dp[j] = 0
 
         // dp 方程
         for (i in 1 until m) {
@@ -436,16 +440,109 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 if (j - coins[i - 1] >= 0) {
                     // 背包容量装得下。dp[i][j] 是「共有多少种凑法」，值是以下 选择装和不装 的结果之和
                     // 选择不装入 coins[i] 这个面值的硬币，继承之前的结果，所以状态和不使用第i个硬币相同
-                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何凑出金额 j - coins[i-1]。
-                    //    如果背包的剩余 [j-coins[i-1] 的金额可以被这个面值的硬币装满，那么把这个面值的硬币装进去，也可装满背包 j 的重量
+                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何剩余重量 j - coins[i-1]。
+                    //    如果这个面值的硬币可以装满 剩余重量 [j-coins[i-1]；那么把这个面值的硬币装进去，也可装满背包 j 的总重量
                     dp[j] = dp[j] + dp[j - coins[i - 1]]
                 }
             }
         }
 
-        // 只使用前 i 个硬币的面值，当背包容量为 j 时，有 dp[i][j] 种方法可以装满背包
-        // m - 1 为 coins 数组的大小，背包容量为 amount
-        return dp[amount]
+        // 前 m - 1 个硬币的面值，当背包容量为 n - 1 时，有多少种方法装满背包
+        return dp[n - 1]
+    }
+
+
+    /**
+     * 322. 零钱兑换   方式1：动态规划
+     *
+     * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
+     * 空间复杂度：O(Sn)，DP数组需要开长度为总金额S n的空间
+     *
+     * https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-chen-li-guan/
+     * @param coins
+     * @param amount
+     * @return
+     */
+    fun coinChange(coins: IntArray, amount: Int): Int {
+        val m = coins.size + 1
+        val n = amount + 1
+
+        // 表示的凑成总金额为 n 所需的最少的硬币个数
+        val dp = Array(m) { IntArray(n) }
+
+        // base case
+        // dp[0...i][0] = 1，表示有硬币面值，容量为0时，装满最多的硬币数为 0
+        for (i in 0 until m) dp[i][0] = 0
+        // dp[0][1...j] = 0，表示没有硬币面值，容量>0时，没有方法装满。最多的硬币数就是全部使用面值 1 的硬币进行换，amount + 1 是不可能达到的换取数量，于是使用其进行填充
+        for (j in 1 until n) dp[0][j] = n
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (j - coins[i - 1] < 0) {
+                    // 背包容量装不下当前硬币 coins[i]，选择不装入
+                    dp[i][j] = dp[i - 1][j]
+                } else {
+                    // 背包容量装得下。dp[i][j] 是「凑成总金额为 n 所需的最少的硬币个数」，值是以下 选择装和不装 结果的最小值
+                    // 选择不装入 coins[i] 这个面值的硬币，继承之前的结果，所以状态和不使用第i个硬币相同
+                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何剩余重量 j - coins[i-1]。
+                    //    如果这个面值的硬币可以装满 剩余重量 [j-coins[i-1]；那么把这个面值的硬币装进去，也可装满背包 j 的总重量。硬币数 + 1
+                    dp[i][j] = Math.min(dp[i - 1][j], 1 + dp[i][j - coins[i - 1]])
+                }
+
+            }
+        }
+
+        // 没有任何一种硬币组合能组成总金额，返回-1
+        if (dp[m - 1][n - 1] == amount + 1) dp[m - 1][n - 1] = -1
+
+        // 前 m - 1 个硬币的面值，当背包容量为 n - 1 时，所需的最少的硬币个数
+        return dp[m - 1][n - 1]
+    }
+
+    /**
+     * 322. 零钱兑换1   方式1：动态规划
+     *
+     * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
+     * 空间复杂度：O(S)，DP数组需要开长度为总金额S的空间
+     *
+     * https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-chen-li-guan/
+     * @param coins
+     * @param amount
+     * @return
+     */
+    fun coinChange1(coins: IntArray, amount: Int): Int {
+        val m = coins.size + 1
+        val n = amount + 1
+
+        // 表示的凑成总金额为 n 所需的最少的硬币个数
+        val dp = IntArray(n)
+
+        // base case
+        // dp[0...i][0] = 1，表示有硬币面值，容量为0时，装满最多的硬币数为 0
+        for (i in 0 until m) dp[0] = 0
+        // dp[0][1...j] = 0，表示没有硬币面值，容量>0时，没有方法装满。最多的硬币数就是全部使用面值 1 的硬币进行换，amount + 1 是不可能达到的换取数量，于是使用其进行填充
+        for (j in 1 until n) dp[j] = n
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (j - coins[i - 1] >= 0) {
+                    // 背包容量装得下。dp[i][j] 是「凑成总金额为 n 所需的最少的硬币个数」，值是以下 选择装和不装 结果的最小值
+                    // 选择不装入 coins[i] 这个面值的硬币，继承之前的结果，所以状态和不使用第i个硬币相同
+                    // 选择装入 coins[i] 这个面值的硬币，那么关注如何剩余重量 j - coins[i-1]。
+                    //    如果这个面值的硬币可以装满 剩余重量 [j-coins[i-1]；那么把这个面值的硬币装进去，也可装满背包 j 的总重量。硬币数 + 1
+                    dp[j] = Math.min(dp[j], 1 + dp[j - coins[i - 1]])
+                }
+
+            }
+        }
+
+        // 没有任何一种硬币组合能组成总金额，返回-1
+        if (dp[n - 1] == amount + 1) dp[n - 1] = -1
+
+        // 前 m - 1 个硬币的面值，当背包容量为 n - 1 时，所需的最少的硬币个数
+        return dp[n - 1]
     }
 
 
