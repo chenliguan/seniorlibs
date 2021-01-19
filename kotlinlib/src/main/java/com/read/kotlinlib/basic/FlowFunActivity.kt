@@ -261,7 +261,7 @@ class FlowFunActivity : AppCompatActivity() {
 
 
     /**
-     * 高阶函数
+     * 高阶函数是将函数用作参数或返回值的函数
      */
     private fun higherFun() {
         // 1、将函数用作函数参数的情况的高阶函数（sumBy函数的源码）
@@ -434,11 +434,18 @@ class FlowFunActivity : AppCompatActivity() {
         return sum
     }
 
+
+
+    // 2、将函数用作一个函数的返回值的高阶函数
+    // 注意1：如果 T.run() 删除了 T. 后变成 run()，本质变成一个内联函数：inline run()
+
+    // 注意2.1：T.run() 本质是在run的参数添加 T，变成 run(t:T)；
+    // 注意2.2：block: T.() 本质是在block的参数添加 T，变成 block.invoke(t:T)
+
     /**
-     * 2、将函数用作一个函数的返回值的高阶函数
      * （1）run(block: () -> R): R：接受一个无参且返回类型为R的函数作为参数，返回值为一个函数block()。this代表的是外部类的实例
      */
-    fun <R> run(block: () -> R): R {
+    inline fun <R> run0(block: () -> R): R {
         return block()
     }
 
@@ -450,8 +457,33 @@ class FlowFunActivity : AppCompatActivity() {
         return block()
     }
 
+    /**
+     *（3）block: T.() 改为 block: ()
+     */
+    fun <T, R> T.run1(block: () -> R): R {
+        return block()
+    }
+
+    //   public final Object run0(@NotNull Function0 block) {
+    //      int $i$f$run2 = 0;
+    //      Intrinsics.checkParameterIsNotNull(block, "block");
+    //      return block.invoke();
+    //   }
+    //
+    //   public final Object run(Object $this$run, @NotNull Function1 block) {
+    //      Intrinsics.checkParameterIsNotNull(block, "block");
+    //      return block.invoke($this$run);   // invoke($this$run)
+    //   }
+    //
+    //   public final Object run1(Object $this$run1, @NotNull Function0 block) {
+    //      Intrinsics.checkParameterIsNotNull(block, "block");
+    //      return block.invoke();  // invoke()
+    //   }
+
+
+
     // 3、with函数的返回值指定了receiver为接收者
-    fun <T, R> with(receiver: T, block: T.() -> R): R {
+    inline fun <T, R> with(receiver: T, block: T.() -> R): R {
         return receiver.block()
     }
 
