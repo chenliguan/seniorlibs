@@ -195,12 +195,11 @@ clouser3.call('groovy3')  // Hello groovy3
 
 // 闭包总会返回一个值，返回值是闭包的最后一条语句的值（默认返回null）
 def clouser4 = { name ->
-//    println "Hello ${name}"
-    // 等于：return "Hello ${name}"
-    "Hello ${name}"
+//    println "Hello ${name}"  // (1)等价于：return null
+    "Hello ${name}"            // (2)等价于：return "Hello ${name}"
 }
-def result5 = clouser4.call('groovy4') // 闭包返回值：null ； Hello groovy4
-println "闭包返回值：" + result5
+def result5 = clouser4.call('groovy4')
+println "闭包返回值：" + result5   // 闭包返回值：(1) null ，(2) Hello groovy4
 
 // 当闭包有多个参数
 def clouser5 = { name, age ->
@@ -425,6 +424,56 @@ student.pretty.delegate = teacher
 student.pretty.resolveStrategy = Closure.DELEGATE_FIRST
 println student.toString()   // My name is 委托2
 
+
+/************************************ 模拟：url "localhost" ***************************************/
+
+class Book {
+    String name
+
+    void setName(String url) {
+        name = url
+    }
+
+    void name(String url) {
+        name = url
+    }
+
+    String getName() {
+        return name
+    }
+}
+
+Book book = new Book(name: "d")
+book.setName("sssss")
+println "book0 ${book.getName()}"
+
+/**
+ * 模拟：
+ * maven { MavenArtifactRepository mavenArtifactRepository ->
+ *      mavenArtifactRepository.name "youku"  // 等价于：setName("youku"), name "youku"
+ *}*/
+def clouserBook = { Book it ->  // 等于： it ->
+    println "book1 ${it}"
+
+    it.setName("1111111111")
+    println "book2 ${it.getName()}"
+
+    it.name = "aaaaaaaaaaaaaaaaa"
+    println "book3 ${it.getName()}"
+    it.setName "dddddddddddddddddddddddddd"
+    println "book4 ${it.getName()}"
+    it.name "kkkkkkkkkkkkkkkkkkkkkkkkk"
+    println "book5 ${it.getName()}"
+}
+clouserBook.call(book)
+
+//打印结果
+//book0 sssss
+//book1 Book@6f10d5b6
+//book2 1111111111
+//book3 aaaaaaaaaaaaaaaaa
+//book4 dddddddddddddddddddddddddd
+//book5 kkkkkkkkkkkkkkkkkkkkkkkkk
 
 /***************************************** 列表和数组 ********************************************/
 // List：链表，其底层对应Java中的List接口，一般用ArrayList作为真正的实现类。
