@@ -472,12 +472,12 @@ class FlowFunActivity : AppCompatActivity() {
     //
     //   public final Object run(Object $this$run, @NotNull Function1 block) {
     //      Intrinsics.checkParameterIsNotNull(block, "block");
-    //      return block.invoke($this$run);   // invoke($this$run)
+    //      return block.invoke($this$run);   // block($this$run)
     //   }
     //
     //   public final Object run1(Object $this$run1, @NotNull Function0 block) {
     //      Intrinsics.checkParameterIsNotNull(block, "block");
-    //      return block.invoke();  // invoke()
+    //      return block.invoke();  // block()
     //   }
 
 

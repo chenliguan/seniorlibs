@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View
 import com.read.kotlinlib.annotation.AnnotationParser
-import com.read.kotlinlib.basic.AdvanceActivity
-import com.read.kotlinlib.basic.BasicActivity
-import com.read.kotlinlib.basic.CoroutineActivity
-import com.read.kotlinlib.basic.FlowFunActivity
+import com.read.kotlinlib.basic.*
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
 import com.read.kotlinlib.generic.GenericTestKt
@@ -183,5 +180,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun testAdvance(view: View?) {
         AdvanceActivity.actionStart(this)
+    }
+
+    /**
+     * kotlin定义组件化接口
+     *
+     * @param view
+     */
+    fun testComponentInterface(view: View?) {
+        ComponentActivity.actionStart(this)
     }
 }

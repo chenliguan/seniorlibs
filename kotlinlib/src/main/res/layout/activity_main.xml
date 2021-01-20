@@ -73,4 +73,11 @@
         android:onClick="testAdvance"
         android:text="进阶总结"
         android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testComponentInterface"
+        android:text="kotlin定义组件化接口"
+        android:textAllCaps="false"/>
 </LinearLayout>

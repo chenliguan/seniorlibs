@@ -12884,9 +12884,6 @@ com.read.kotlinlib.basic.AdvanceActivity$SingletonHolder -> com.read.kotlinlib.b
     kotlin.jvm.functions.Function0 INSTANCE -> a
 com.read.kotlinlib.basic.AdvanceActivity$SingletonHolder$INSTANCE$1 -> com.read.kotlinlib.basic.AdvanceActivity$SingletonHolder$INSTANCE$1:
     com.read.kotlinlib.basic.AdvanceActivity$SingletonHolder$INSTANCE$1 INSTANCE -> b
-com.read.kotlinlib.basic.AdvanceActivity$sumBy$1 -> com.read.kotlinlib.basic.AdvanceActivity$sumBy$1:
-    com.read.kotlinlib.basic.AdvanceActivity$sumBy$1 INSTANCE -> b
-    int invoke(java.lang.CharSequence,char) -> a
 com.read.kotlinlib.basic.BasicActivity -> com.read.kotlinlib.basic.BasicActivity:
     java.lang.String stringRepresentation -> b
     com.read.kotlinlib.basic.BasicActivity$Companion Companion -> a
@@ -13060,6 +13057,15 @@ com.read.kotlinlib.basic.BasicActivity$extension$sum1$1 -> com.read.kotlinlib.ba
 com.read.kotlinlib.basic.BasicActivity$list$StringContainer -> com.read.kotlinlib.basic.BasicActivity$list$StringContainer:
     java.util.List values -> a
     java.util.List getValues() -> a
+com.read.kotlinlib.basic.ComponentActivity -> com.read.kotlinlib.basic.ComponentActivity:
+    com.read.kotlinlib.basic.ComponentActivity$Companion Companion -> a
+com.read.kotlinlib.basic.ComponentActivity$Companion -> com.read.kotlinlib.basic.ComponentActivity$Companion:
+    void actionStart(android.content.Context) -> a
+com.read.kotlinlib.basic.ComponentActivity$SingletonHolder -> com.read.kotlinlib.basic.ComponentActivity$SingletonHolder:
+    com.read.kotlinlib.basic.ComponentActivity$SingletonHolder INSTANCE -> b
+    kotlin.jvm.functions.Function0 INSTANCE -> a
+com.read.kotlinlib.basic.ComponentActivity$SingletonHolder$INSTANCE$1 -> com.read.kotlinlib.basic.ComponentActivity$SingletonHolder$INSTANCE$1:
+    com.read.kotlinlib.basic.ComponentActivity$SingletonHolder$INSTANCE$1 INSTANCE -> b
 com.read.kotlinlib.basic.CoroutineActivity -> com.read.kotlinlib.basic.CoroutineActivity:
     android.view.View mRoot -> b
     java.lang.ThreadLocal threadLocal -> d
@@ -13500,12 +13506,10 @@ com.read.kotlinlib.basic.FlowFunActivity -> com.read.kotlinlib.basic.FlowFunActi
     void testException() -> g
     void testFun() -> b
     int sumBy(java.lang.CharSequence,kotlin.jvm.functions.Function2) -> a
-    java.lang.Object apply(java.lang.Object,kotlin.jvm.functions.Function1) -> c
-    java.lang.Object let(java.lang.Object,kotlin.jvm.functions.Function1) -> d
+    java.lang.Object apply(java.lang.Object,kotlin.jvm.functions.Function1) -> b
+    java.lang.Object let(java.lang.Object,kotlin.jvm.functions.Function1) -> c
     java.lang.Object run(java.lang.Object,kotlin.jvm.functions.Function1) -> a
-    java.lang.Object run(kotlin.jvm.functions.Function0) -> a
-    java.lang.Object takeIf(java.lang.Object,kotlin.jvm.functions.Function1) -> e
-    java.lang.Object with(java.lang.Object,kotlin.jvm.functions.Function1) -> b
+    java.lang.Object takeIf(java.lang.Object,kotlin.jvm.functions.Function1) -> d
     kotlinx.coroutines.channels.ReceiveChannel filter(kotlinx.coroutines.CoroutineScope,kotlinx.coroutines.channels.ReceiveChannel,int) -> a
     kotlinx.coroutines.channels.ReceiveChannel produceNumbers(kotlinx.coroutines.CoroutineScope) -> a
     kotlinx.coroutines.channels.ReceiveChannel square(kotlinx.coroutines.CoroutineScope,kotlinx.coroutines.channels.ReceiveChannel) -> a
@@ -13696,6 +13700,7 @@ com.read.kotlinlib.basic.FlowFunActivity$flowOfAsFlow$1$invokeSuspend$$inlined$c
 com.read.kotlinlib.basic.FlowFunActivity$flowOfAsFlow$1$invokeSuspend$$inlined$collect$4 -> com.read.kotlinlib.basic.FlowFunActivity$flowOfAsFlow$1$invokeSuspend$$inlined$collect$4:
 com.read.kotlinlib.basic.FlowFunActivity$higherFun$1 -> com.read.kotlinlib.basic.FlowFunActivity$higherFun$1:
     com.read.kotlinlib.basic.FlowFunActivity$higherFun$1 INSTANCE -> b
+    void invoke(com.read.kotlinlib.basic.FlowFunActivity) -> a
 com.read.kotlinlib.basic.FlowFunActivity$higherFun$10 -> com.read.kotlinlib.basic.FlowFunActivity$higherFun$10:
     com.read.kotlinlib.basic.FlowFunActivity$higherFun$10 INSTANCE -> b
     java.lang.String invoke(java.lang.String) -> a
@@ -13719,9 +13724,6 @@ com.read.kotlinlib.basic.FlowFunActivity$higherFun$19 -> com.read.kotlinlib.basi
     void invoke(int) -> a
 com.read.kotlinlib.basic.FlowFunActivity$higherFun$2 -> com.read.kotlinlib.basic.FlowFunActivity$higherFun$2:
     com.read.kotlinlib.basic.FlowFunActivity$higherFun$2 INSTANCE -> b
-    void invoke(java.lang.String) -> a
-com.read.kotlinlib.basic.FlowFunActivity$higherFun$3 -> com.read.kotlinlib.basic.FlowFunActivity$higherFun$3:
-    com.read.kotlinlib.basic.FlowFunActivity$higherFun$3 INSTANCE -> b
     void invoke(java.lang.String) -> a
 com.read.kotlinlib.basic.FlowFunActivity$higherFun$4 -> com.read.kotlinlib.basic.FlowFunActivity$higherFun$4:
     com.read.kotlinlib.basic.FlowFunActivity$higherFun$4 INSTANCE -> b
@@ -13816,6 +13818,14 @@ com.read.kotlinlib.basic.FlowFunActivity$testCloseChannel$2 -> com.read.kotlinli
     java.lang.Object L$1 -> d
     kotlinx.coroutines.CoroutineScope p$ -> b
     kotlinx.coroutines.channels.Channel $channel -> f
+com.read.kotlinlib.basic.Func -> com.read.kotlinlib.basic.Func:
+    com.read.kotlinlib.basic.Func INSTANCE -> b
+    kotlin.jvm.functions.Function1 funcGetName -> a
+    java.lang.String getName(java.lang.String) -> a
+    kotlin.jvm.functions.Function1 getFuncGetName() -> a
+com.read.kotlinlib.basic.Func$funcGetName$1 -> com.read.kotlinlib.basic.Func$funcGetName$1:
+    com.read.kotlinlib.basic.Func$funcGetName$1 INSTANCE -> b
+    java.lang.String invoke(java.lang.String) -> a
 com.read.kotlinlib.basic.InlineName -> com.read.kotlinlib.basic.InlineName:
     java.lang.String str -> b
     com.read.kotlinlib.basic.InlineName$Companion Companion -> a

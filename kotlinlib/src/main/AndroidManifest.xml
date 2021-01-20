@@ -29,6 +29,9 @@
 
         <activity
             android:name=".basic.AdvanceActivity" />
+
+        <activity
+            android:name=".basic.ComponentActivity" />
     </application>
 
 </manifest>
