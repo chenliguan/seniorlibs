@@ -71,7 +71,7 @@
     <Button
         android:id="@+id/btn_min_edit_distance"
         style="@style/BtnStyles"
-        android:text="72. 最长编辑距离" />
+        android:text="72. 编辑距离" />
 
 
     <Button

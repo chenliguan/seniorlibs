@@ -70,6 +70,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "416. 分割等和子集：${canPartition(intArrayOf(1, 5, 11, 5))}")
                 LogUtils.e(TAG, "416. 分割等和子集1：${canPartition1(intArrayOf(1, 5, 11, 5))}")
             }
+            R.id.btn_find_target_sum_ways -> {
+                LogUtils.e(TAG, "494. 目标和：${findTargetSumWays(intArrayOf(1,1,1,1,1), 3)}")
+                LogUtils.e(TAG, "494. 目标和1：${findTargetSumWays1(intArrayOf(1,1,1,1,1), 3)}")
+            }
             R.id.btn_change_II -> {
                 LogUtils.e(TAG, "518. 零钱兑换 II：${changeII(5, intArrayOf(1, 2, 5))}")
                 LogUtils.e(TAG, "518. 零钱兑换 II 2：${changeII2(5, intArrayOf(1, 2, 5))}")
@@ -370,6 +374,127 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         return dp[n - 1]
     }
 
+
+    /**
+     * 494. 目标和  备注：这是 0-1背包问题的分割等和子集 和 完全背包问题的零钱兑换 II 的聚合题目
+     *
+     * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和 + 目标值 和的一半
+     * 空间复杂度：O(n * m)，
+     *
+     * @param nums
+     * @param S
+     * @return
+     */
+    fun findTargetSumWays(nums: IntArray, target: Int): Int {
+        var sum = 0
+        for (num in nums) sum += num
+
+        // 和比目标值小 或者 和为奇数时，不可能存在合法的子集划分
+        if (sum < target || (sum + target) % 2 != 0) return 0
+
+        // 推出 sum+ = (sum + target) / 2，也就是把原问题转化成：nums 中存在几个+子集，使得+子集中元素的和为 sum+ = (target + sum) / 2 （装满）
+        val sumA = (sum + target) / 2
+        return subsets(nums, sumA)
+    }
+
+    /**
+     * 计算 nums 中有几个子集的和为 sum
+     *
+     * @param nums
+     * @param sum
+     * @return
+     */
+    fun subsets(nums: IntArray, sum: Int): Int {
+        val m = nums.size + 1
+        val n = sum + 1
+        val dp = Array(m) { IntArray(n) }
+
+        // base case
+        // 同于一般的背包问题，数组中是含有0值的，在考虑第i个数nums[i-1]时，若nums[i-1]=0且j=0,i!=0, dp[i][0]是不为1的。
+        // 因为dp[i-1][j-nums[i-1]] = dp[i-1][j]；因此，选或不选nums[i-1]都能将容量为0的背包装满，因此不能将dp[i][0]全部初始化为1，)
+        // 只能将dp[0][0]初始化为1；以及for(j in 0 until n)从0开始，因为nums[i-1]会等于0。
+
+        // 区别 零钱兑换 II 中的 dp[i][0] = 1
+        dp[0][0] = 1
+        // dp[0][1...j] = 0，表示没有物品，容量>0时，没有方法装满
+        for (j in 1 until n) dp[0][j] = 0
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in 0 until n) {
+                if (j - nums[i - 1] < 0) {
+                    // 背包的空间不足，只能选择不装物品 i
+                    dp[i][j] = dp[i - 1][j]
+                } else {
+                    // 两种选择的结果之和
+                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]]
+                }
+            }
+        }
+
+        // 前 m - 1 个子集，当背包容量为 n - 1 时，有多少种方法装满背包
+        return dp[m - 1][n - 1]
+    }
+
+    /**
+     * 494. 目标和  状态压缩  备注：这是 0-1背包问题的分割等和子集 和 完全背包问题的零钱兑换 II 的聚合题目
+     *
+     * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和 + 目标值 和的一半
+     * 空间复杂度：O(n)，
+     *
+     * @param nums
+     * @param S
+     * @return
+     */
+    fun findTargetSumWays1(nums: IntArray, target: Int): Int {
+        var sum = 0
+        for (num in nums) sum += num
+
+        // 和比目标值小 或者 和为奇数时，不可能存在合法的子集划分
+        if (sum < target || (sum + target) % 2 == 1) return 0
+
+        // 推出 sum+ = (target + sum) / 2，也就是把原问题转化成：nums 中存在几个+子集，使得+子集中元素的和为 sum+ = (target + sum) / 2 （装满）
+        val sumA = (target + sum) / 2
+        return subsets1(nums, sumA)
+    }
+
+    /**
+     * 计算 nums 中有几个子集的和为 sum
+     *
+     * @param nums
+     * @param sum
+     * @return
+     */
+    fun subsets1(nums: IntArray, sum: Int): Int {
+        val m = nums.size + 1
+        val n = sum + 1
+        val dp =  IntArray(n)
+
+        // base case
+        // 同于一般的背包问题，数组中是含有0值的，在考虑第i个数nums[i-1]时，若nums[i-1]=0且j=0,i!=0, dp[i][0]是不为1的。
+        // 因为dp[i-1][j-nums[i-1]] = dp[i-1][j]；因此，选或不选nums[i-1]都能将容量为0的背包装满，因此不能将dp[i][0]全部初始化为1，)
+        // 只能将dp[0][0]初始化为1；以及for(j in 0 until n)从0开始，因为nums[i-1]会等于0。
+
+        // 区别 零钱兑换 II 中的 dp[i][0] = 1
+        dp[0] = 1
+        // dp[0][1...j] = 0，表示没有物品，容量>0时，没有方法装满
+        for (j in 1 until n) dp[j] = 0
+
+        // dp 方程
+        for (i in 1 until m) {
+            for (j in n - 1 downTo 0) {
+                if (j - nums[i - 1] >= 0) {
+                    // 两种选择的结果之和
+                    dp[j] = dp[j] + dp[j - nums[i - 1]]
+                }
+            }
+        }
+
+        // 前 m - 1 个子集，当背包容量为 n - 1 时，有多少种方法装满背包
+        return dp[n - 1]
+    }
+
+
     /**
      * 518. 零钱兑换 II 动态规划
      *
@@ -453,7 +578,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 322. 零钱兑换   方式1：动态规划
+     * 322. 零钱兑换   方式：动态规划
      *
      * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
      * 空间复杂度：O(Sn)，DP数组需要开长度为总金额S n的空间
@@ -467,13 +592,13 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         val m = coins.size + 1
         val n = amount + 1
 
-        // 表示的凑成总金额为 n 所需的最少的硬币个数
+        // dp[i][j]表示凑成总金额为 n 所需的最少的硬币个数
         val dp = Array(m) { IntArray(n) }
 
         // base case
-        // dp[0...i][0] = 1，表示有硬币面值，容量为0时，装满最多的硬币数为 0
+        // dp[0...i][0] = 0，表示凑成总金额为 0 所需的最少的硬币个数是 0
         for (i in 0 until m) dp[i][0] = 0
-        // dp[0][1...j] = 0，表示没有硬币面值，容量>0时，没有方法装满。最多的硬币数就是全部使用面值 1 的硬币进行换，amount + 1 是不可能达到的换取数量，于是使用其进行填充
+        // dp[0][1...j] = n，表示凑成总金额为 n 所需的最多的硬币个数是 n = amount + 1，方便求最小值。（n 表示全部使用面值 1 的硬币进行换，是不可能达到的换取数量）
         for (j in 1 until n) dp[0][j] = n
 
         // dp 方程
@@ -494,14 +619,14 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         }
 
         // 没有任何一种硬币组合能组成总金额，返回-1
-        if (dp[m - 1][n - 1] == amount + 1) dp[m - 1][n - 1] = -1
+        if (dp[m - 1][n - 1] == n) dp[m - 1][n - 1] = -1
 
         // 前 m - 1 个硬币的面值，当背包容量为 n - 1 时，所需的最少的硬币个数
         return dp[m - 1][n - 1]
     }
 
     /**
-     * 322. 零钱兑换1   方式1：动态规划
+     * 322. 零钱兑换1   方式：动态规划--状态压缩
      *
      * 时间复杂度：O(Sn)，其中S是金额，n是面额数。一共需要计算O(S)个状态；对于每个状态，每次需要枚举n个面额来转移状态，所以一共需要O(Sn)的时间复杂度；
      * 空间复杂度：O(S)，DP数组需要开长度为总金额S的空间
@@ -515,13 +640,13 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         val m = coins.size + 1
         val n = amount + 1
 
-        // 表示的凑成总金额为 n 所需的最少的硬币个数
+        // dp[j]表示凑成总金额为 n 所需的最少的硬币个数
         val dp = IntArray(n)
 
         // base case
-        // dp[0...i][0] = 1，表示有硬币面值，容量为0时，装满最多的硬币数为 0
+        // dp[0...i][0] = 0，表示凑成总金额为 0 所需的最少的硬币个数是 0
         for (i in 0 until m) dp[0] = 0
-        // dp[0][1...j] = 0，表示没有硬币面值，容量>0时，没有方法装满。最多的硬币数就是全部使用面值 1 的硬币进行换，amount + 1 是不可能达到的换取数量，于是使用其进行填充
+        // dp[0][1...j] = n，表示凑成总金额为 n 所需的最多的硬币个数是 n = amount + 1，方便求最小值。（n 表示全部使用面值 1 的硬币进行换，是不可能达到的换取数量）
         for (j in 1 until n) dp[j] = n
 
         // dp 方程

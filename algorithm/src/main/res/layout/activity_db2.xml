@@ -22,6 +22,12 @@
         style="@style/BtnStyles"
         android:text="416. 分割等和子集" />
 
+    <Button
+        android:id="@+id/btn_find_target_sum_ways"
+        style="@style/BtnStyles"
+        android:text="494. 目标和" />
+
+
      <Button
         android:id="@+id/btn_change_II"
         style="@style/BtnStyles"
