@@ -22,7 +22,9 @@ import java.util.List;
  * Description: 干货集中营Adapter
  */
 public class GanKAdapter extends RecyclerView.Adapter {
+
     private List<GankEntry> mGankEntries;
+    private int position;
 
     public void setData(List<GankEntry> gankEntries) {
         mGankEntries = gankEntries;
@@ -41,6 +43,9 @@ public class GanKAdapter extends RecyclerView.Adapter {
         ImageLoader.getInstance().displayImage(entry.url, viewHolder.mImageView);
         viewHolder.descText.setText(entry.desc);
         viewHolder.authorText.setText(entry.who);
+        
+//        setHasStableIds(true);
+//        hasStableIds();
     }
 
     @Override
@@ -60,4 +65,28 @@ public class GanKAdapter extends RecyclerView.Adapter {
             authorText = (TextView) itemView.findViewById(R.id.author);
         }
     }
+
+
+    /**
+     * 注意getItemId的使用
+     */
+
+    // Adapter.setHasStableIds(true);
+    // mAdapter.hasStableIds()
+    // 当设置了以上的 开关后，detachAndScrapAttachedViews -> scrapOrRecycleView 的 recycler.scrapView(view);
+    // 将缓存到 mAttachedScrap，最后直接使用，不需要创建，绑定数据，非常优化喔！！
+    @Override
+    public long getItemId(int position) {
+        GankEntry data = mGankEntries.get(position);
+        return (data._id).hashCode();
+    }
+
+    // 当你的标题栏被修改了，调用 notifydatasetchanged 刷新.
+    // 如果没有被更新，就会使用缓存，相当的优化.
+
+    // 或者一般这样写
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
 }

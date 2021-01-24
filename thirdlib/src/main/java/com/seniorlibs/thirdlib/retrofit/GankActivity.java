@@ -62,6 +62,8 @@ public class GankActivity extends Activity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new GanKAdapter();
         recyclerView.setAdapter(mAdapter);
+
+//        mAdapter.createViewHolder(recyclerView, 1);
     }
 
     /**

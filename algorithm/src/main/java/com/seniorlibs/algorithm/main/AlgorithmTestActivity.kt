@@ -60,90 +60,54 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 518. 零钱兑换 II 动态规划
+     * 494. 目标和  状态压缩  备注：这是 0-1背包问题的分割等和子集 和 完全背包问题的零钱兑换 II 的聚合题目
      *
-     * 时间复杂度 O(n * amount)
-     * 空间复杂度 O(n * amount)
+     * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和 + 目标值 和的一半
+     * 空间复杂度：O(n)，
      *
-     * https://leetcode-cn.com/problems/coin-change-2/solution/518-ling-qian-dui-huan-ii-by-chen-li-gua-zykf/
-     * @param amount
-     * @param coins
+     * @param nums
+     * @param S
      * @return
      */
-    fun changeII(amount: Int, coins: IntArray): Int {
+    fun findTargetSumWays1(nums: IntArray, target: Int): Int {
+        var sum = 0
+        for (num in nums) sum += num
 
-        val m = coins.size + 1
-        val n = amount + 1
+        if (sum < target || (sum + target) % 2 != 0) return 0
 
-        // dp 定义：只使用前 i 个硬币的面值，当背包容量为 j 时，有 dp[i][j] 种方法装满背包
-        val dp = Array(m) { IntArray(n) }
-
-        // base case
-        // 有硬币，容量为0时，存在一个方法装满
-        for (i in 0 until m) dp[i][0] = 1
-        // 没有硬币，容量>0时，没有方法装满
-        for (j in 1 until n) dp[0][j] = 0
-
-        // dp 方程
-        for (i in 1 until m) {
-            for (j in 1 until n) {
-                if (j - coins[i - 1] < 0) {
-                    // 背包容量装不下第 i 个硬币的面值，不装入，同步前一个硬币的状态
-                    dp[i][j] = dp[i - 1][j]
-                } else {
-                    // 背包容量装得下第 i 个硬币的面值，以下情况的和
-                    // 选择不装入，同步前一个硬币的状态
-                    // 选择装入，看剩余重量 j - coins[i - 1]，如果i在剩余重量中可以装满，i装入后也可以装满。
-                    // 不是 i - 1，因为 完全背包问题，可以重复选
-                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]]
-                }
-            }
-        }
-
-        // 前 m - 1 个硬币的面值，当背包容量为 n - 1 时，有多少种方法装满背包
-        return dp[m - 1][n - 1]
+        val j = (sum + target) / 2
+        return subsets1(nums, j)
     }
 
     /**
-     * 518. 零钱兑换 II 2 动态规划--空间压缩
+     * 计算 nums 中有几个子集的和为 sum
      *
-     * 时间复杂度 O(n * amount)
-     * 空间复杂度 O(amount)
-     *
-     * https://leetcode-cn.com/problems/coin-change-2/solution/518-ling-qian-dui-huan-ii-by-chen-li-gua-zykf/
-     * @param amount
-     * @param coins
+     * @param nums
+     * @param sum
      * @return
      */
-    fun changeII2(amount: Int, coins: IntArray): Int {
-        val m = coins.size + 1
-        val n = amount + 1
+    fun subsets1(nums: IntArray, sum: Int): Int {
+        val m = nums.size + 1
+        val n = sum + 1
 
-        // dp 定义：只使用前 i 个硬币的面值，当背包容量为 j 时，有 dp[i][j] 种方法装满背包
-        val dp = IntArray(n)
+        val dp = Array(m) { IntArray(n) }
 
         // base case
-        // 没有硬币，容量>0时，没有方法装满
-        for (j in 1 until n) dp[j] = 0
-        // 有硬币，容量为0时，存在一个方法装满
-        dp[0] = 1
+        dp[0][0] = 1
+        for (j in 1 until n) dp[0][j] = 0
 
-
-        // dp 方程
+        // dp
         for (i in 1 until m) {
-            for (j in 1 until n) {
-                if (j - coins[i - 1] >= 0) {
-                    // 背包容量装得下第 i 个硬币的面值，以下情况的和
-                    // 选择不装入，同步前一个硬币的状态
-                    // 选择装入，看剩余重量 j - coins[i - 1]，如果i在剩余重量中可以装满，i装入后也可以装满。
-                    // 不是 i - 1，因为 完全背包问题，可以重复选
-                    dp[j] = dp[j] + dp[j - coins[i - 1]]
+            for (j in 0 until n) {
+                if (j - nums[i - 1] < 0) {
+                    dp[i][j] = dp[i - 1][j]
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]]
                 }
             }
         }
 
-        // 前 m - 1 个硬币的面值，当背包容量为 n - 1 时，有多少种方法装满背包
-        return dp[n - 1]
+        return dp[m - 1][n - 1]
     }
 }
 

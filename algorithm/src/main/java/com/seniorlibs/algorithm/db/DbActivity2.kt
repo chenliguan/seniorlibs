@@ -64,7 +64,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "198. 打家劫舍22：${rob22(intArrayOf(2, 7, 9, 3, 1))}")
             }
             R.id.btn_rob_2 -> {
-                LogUtils.e(TAG, "213. 打家劫舍 II：${robTwo(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "213. 打家劫舍 II：${robII(intArrayOf(2, 7, 9, 3, 1))}")
             }
             R.id.btn_can_partition -> {
                 LogUtils.e(TAG, "416. 分割等和子集：${canPartition(intArrayOf(1, 5, 11, 5))}")
@@ -274,7 +274,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * @param nums
      * @return
      */
-    fun robTwo(nums: IntArray): Int {
+    fun robII(nums: IntArray): Int {
         if (nums.isEmpty()) return 0
         if (nums.size == 1) return nums[0]
 
