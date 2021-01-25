@@ -125,19 +125,11 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 198. 打家劫舍  解法1.1：动态规划（记住）
-     * 1、思想：对于第i(i>2)间房屋，有两个选项：
-     *  1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和；
-     *  2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的最高总金额。
-     * base case：
-     *    dp[0] = nums[0]               // 只有1间房屋，则偷窃该房屋
-     *    dp[1] = max(nums[0],nums[1])  // 只有2间房屋，选择其中金额较高的房屋进行偷窃
-     * DP方程：val a = dp[i - 2] + nums[i]
-     *        val b = dp[i - 1]
-     *        dp[i] = Math.max(a, b)
-     * 2、
+     *
      * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
      * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
-     * 3、https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
+     *
+     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
      * @param nums
      * @return
      */
@@ -145,34 +137,31 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         if (nums.isEmpty()) return 0
         if (nums.size == 1) return nums[0]
 
-        // base case：dp[0]=只有一间房屋，则偷窃该房屋；dp[1]=只有两间房屋，选择其中金额较高的房屋进行偷窃
+        // dp 定义：前 i 间房屋可偷窃最高的金额
         val dp = IntArray(nums.size)
+
+        // base case：dp[0]=只有一间房屋，则偷窃该房屋；
+        //            dp[1]=只有两间房屋，选择其中金额较高的房屋进行偷窃
         dp[0] = nums[0]
         dp[1] = Math.max(nums[0], nums[1])
 
-        // dp方程：
+        // dp方程
         for (i in 2 until nums.size) {
-            // 1.偷第i间房屋，就不能偷第i−1间房屋，偷窃总金额为：前i−2间房屋的最高总金额 + 第i间房屋的金额 之和
-            // 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的最高总金额
-            // 3.选择其中金额较高的房屋进行偷窃
-            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])
+            // 对于第i(i>2)间房屋，有两个选项：
+            // 1.偷第i间房屋，就不能偷第i−1间房屋，总金额为：第i间房屋的金额 + 前i−2间房屋的总金额
+            // 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的总金额
+            dp[i] = Math.max(nums[i] + dp[i - 2], dp[i - 1])
         }
         return dp[nums.size - 1]
     }
 
     /**
-     * 198. 打家劫舍  解法1.2：动态规划（空间优化）
-     * 1、思想：对于第k(k>2)间房屋，有两个选项：
-     *  1.偷窃第k间房屋，那么就不能偷窃第k−1间房屋，偷窃总金额为前k−2间房屋的最高总金额与第k间房屋的金额之和；
-     *  2.不偷窃第k间房屋，偷窃总金额为前k−1间房屋的最高总金额。
-     * base case：
-     *    pre = nums[0]                // 只有一间房屋，则偷窃该房屋
-     *    cur = max(nums[0], nums[1])  // 只有两间房屋，选择其中金额较高的房屋进行偷窃
-     * DP方程：cur = max(pre + nums[i], cur)
-     * 2、
+     * 198. 打家劫舍  解法1.2：动态规划（空间优化）（记住）
+     *
      * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
      * 空间复杂度：O(1)，分别使用两个滚动变量，将一维数组状态优化到常数大小。
-     * 3、https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
+     *
+     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
      * @param nums
      * @return
      */
@@ -181,20 +170,21 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         if (nums.size == 1) return nums[0]
 
         // base case
-        var dp_i_0 = nums[0]
-        var dp_i_1 = Math.max(nums[0], nums[1])
+        var pre = nums[0]
+        var cur = Math.max(nums[0], nums[1])
 
         // dp
         for (i in 2 until nums.size) {
-            val temp = dp_i_1
-            dp_i_1 = Math.max(dp_i_0 + nums[i], dp_i_1)
-            dp_i_0 = temp
+            // 记录当前 i-1 时的值 temp = cur，在下一次遍历时就等于 i-2 的值了
+            val temp = cur
+            cur = Math.max(nums[i] + pre, cur)
+            pre = temp
         }
-        return dp_i_1
+        return cur
     }
 
     /**
-     * 198. 打家劫舍  解法2.1：动态规划（思路优化）（记住）
+     * 198. 打家劫舍  解法2.1：动态规划（思路优化）
      * 1、思路：按二维的0/1背包问题思路结局，更加通用
      * 2、
      * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
@@ -206,8 +196,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     fun rob21(nums: IntArray): Int {
         if (nums.isEmpty()) return 0
 
-        // base case：dp[0][0] = 0，第1天不偷窃房屋；dp[0][1]，第1天偷窃房屋
         val dp = Array(nums.size) { IntArray(2) }
+
+        // base case：dp[0][0] = 0，第1天不偷窃房屋；dp[0][1]，第1天偷窃房屋
         dp[0][0] = 0
         dp[0][1] = nums[0]
 
