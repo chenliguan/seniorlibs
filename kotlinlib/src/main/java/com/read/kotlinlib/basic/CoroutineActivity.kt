@@ -6,9 +6,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.view.doOnPreDraw
+import com.nostra13.universalimageloader.core.ImageLoader
 import com.read.kotlinlib.R
 import com.seniorlibs.baselib.utils.LogUtils
 import kotlinx.coroutines.*
@@ -87,6 +89,7 @@ class CoroutineActivity : AppCompatActivity() {
     }
 
     lateinit var mRoot: View
+    lateinit var mIvImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +106,7 @@ class CoroutineActivity : AppCompatActivity() {
 
     private fun initView() {
         mRoot = findViewById<View>(R.id.ll_coroutine)
+        mIvImage = findViewById<ImageView>(R.id.iv_image)
     }
 
     /**
@@ -940,7 +944,10 @@ class CoroutineActivity : AppCompatActivity() {
             LogUtils.e(TAG, "I'm working1 in thread ${Thread.currentThread().name}")
             // 挂起函数（子线程）执行完后，返回结果，再在协程中（主线程）获取其值
             val result = simpleDelay()
-            LogUtils.e(TAG, "I'm working2 result：${result} in thread ${Thread.currentThread().name}")
+            LogUtils.e(
+                TAG,
+                "I'm working2 result：${result} in thread ${Thread.currentThread().name}"
+            )
             LogUtils.e(TAG, "I'm working2 in thread ${Thread.currentThread().name}")
         }
         LogUtils.d(TAG, "suspend over")
@@ -959,4 +966,51 @@ class CoroutineActivity : AppCompatActivity() {
 //        01-14 14:59:33.125 CoroutineActivity :: I'm working2 result：11111 in thread main
 //        01-14 14:59:33.125 CoroutineActivity :: I'm working2 in thread main
     }
+
+
+    /**
+     * 协程切换线程获取图片
+     *
+     * @param view
+     */
+    fun testImage(view: View?) {
+        LogUtils.d(TAG, "testImage 开始： ${Thread.currentThread().name}")
+
+        // 在主线程开启协程
+        val scope = CoroutineScope(Dispatchers.Default)
+        // 1.👈 在 UI 线程开始
+        scope.launch(Dispatchers.Main) {
+            // 2.👈 切换到 IO 线程，并在执行完成后切回 UI 线程
+            val url = getImageUrl()
+            // 4.👈 回到 UI 线程更新 UI
+            ImageLoader.getInstance().displayImage(url, mIvImage)
+        }
+
+        // 不阻塞主线程
+        LogUtils.d(TAG, "testImage 结束： ${Thread.currentThread().name}")
+    }
+
+    /**
+     * 挂起函数
+     *
+     * @return
+     */
+    suspend fun getImageUrl(): String {
+        var url = ""
+        withContext(Dispatchers.IO) {
+            LogUtils.d(TAG, "testImage 切到子线程： ${Thread.currentThread().name}")
+            // 3.👈 将会运行在 IO 线程
+            url = "https://mmbiz.qpic.cn/mmbiz_jpg/AcTPSZQQ6D0TtiaYoQzElnygYvTwTnQJDEj6fiaO9GbTR0FVzYicl3OQQ8FxdtUHY59IjetUjkkcCZCxNjLdAteVQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1"
+            Thread.sleep(4000)
+            LogUtils.d(TAG, "testImage 子线程中获取图片： ${Thread.currentThread().name}")
+        }
+        return url
+    }
+
+    /**
+     * 16:28:06.228 :: testImage 开始： main
+     * 16:28:06.228 :: testImage 结束： main
+     * 16:28:06.237 :: testImage 切到子线程： DefaultDispatcher-worker-6
+     * 16:28:10.237 :: testImage 子线程中获取图片： DefaultDispatcher-worker-6
+     */
 }
