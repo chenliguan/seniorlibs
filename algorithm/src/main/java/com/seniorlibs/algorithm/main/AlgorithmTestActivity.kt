@@ -50,8 +50,8 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(TAG, "518. 零钱兑换 II：${changeII(5, intArrayOf(1, 2, 5))}")
-                LogUtils.e(TAG, "518. 零钱兑换 II 2：${changeII2(5, intArrayOf(1, 2, 5))}")
+                val paths = arrayOf(intArrayOf(1, 3, 1), intArrayOf(1, 5, 1), intArrayOf(4, 2, 1))
+                LogUtils.e(TAG, "64. 最小路径和：${minPathSum(paths)}")
             }
             else -> {
             }
@@ -60,50 +60,36 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 494. 目标和  状态压缩  备注：这是 0-1背包问题的分割等和子集 和 完全背包问题的零钱兑换 II 的聚合题目
+     * 64. 最小路径和
      *
-     * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和 + 目标值 和的一半
-     * 空间复杂度：O(n)，
+     * 时间复杂度：O(mn)；
+     * 空间复杂度：O(mn)；
      *
-     * @param nums
-     * @param S
+     * @param grid
      * @return
      */
-    fun findTargetSumWays1(nums: IntArray, target: Int): Int {
-        var sum = 0
-        for (num in nums) sum += num
+    fun minPathSum(grid: Array<IntArray>): Int {
+        if (grid.isEmpty() || grid[0].isEmpty()) return 0
 
-        if (sum < target || (sum + target) % 2 != 0) return 0
+        val m = grid.size
+        val n = grid[0].size
 
-        val j = (sum + target) / 2
-        return subsets1(nums, j)
-    }
-
-    /**
-     * 计算 nums 中有几个子集的和为 sum
-     *
-     * @param nums
-     * @param sum
-     * @return
-     */
-    fun subsets1(nums: IntArray, sum: Int): Int {
-        val m = nums.size + 1
-        val n = sum + 1
-
-        val dp = Array(m) { IntArray(n) }
+        // dp定义：向下走m步，以及向右走n步，路径上的数字最小和
+        val dp = Array(m) {IntArray(n)}
 
         // base case
-        dp[0][0] = 1
-        for (j in 1 until n) dp[0][j] = 0
-
-        // dp
+        dp[0][0] = grid[0][0]
         for (i in 1 until m) {
-            for (j in 0 until n) {
-                if (j - nums[i - 1] < 0) {
-                    dp[i][j] = dp[i - 1][j]
-                } else {
-                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]]
-                }
+            dp[i][0] = dp[i - 1][0] + grid[i][0]
+        }
+        for (j in 1 until n) {
+            dp[0][j] = dp[0][j - 1] + grid[0][j]
+        }
+
+        // dp方程
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
             }
         }
 

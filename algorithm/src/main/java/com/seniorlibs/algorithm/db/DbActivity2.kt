@@ -250,18 +250,15 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 213. 打家劫舍 II  解法一：动态规划（空间优化）
-     * 1、思想：环状排列意味着第一个房子和最后一个房子中只能选择一个偷窃，因此可以把此环状排列房间问题约化为两个单排排列房间子问题：
+     * 思想：环状排列意味着第一个房子和最后一个房子中只能选择一个偷窃，因此可以把此环状排列房间问题约化为两个单排排列房间子问题：
      *  1.在不偷窃第一个房子的情况下（即nums[0]），最大金额是p1；
      *  2.在不偷窃最后一个房子的情况下（即nums[n-1]），最大金额是p2；
      *  3.综合偷窃最大金额： 为以上两种情况的较大值，即 max(p1, p2)。
-     * base case：
-     *    pre = 0            // pre(0) -- cur(1) -- num(2)
-     *    cur = 0
-     * DP方程：cur = max(pre + num, cur)
-     * 2、
+     *
      * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
      * 空间复杂度：O(1)，不使用滚动数组，只存储前两间房屋的最高总金额，而不需要存储整个数组的结果，因此空间复杂度是O(1)；
-     * 3、https://leetcode-cn.com/problems/house-robber-ii/solution/213-da-jia-jie-she-ii-by-chen-li-guan/
+     *
+     * https://leetcode-cn.com/problems/house-robber-ii/solution/213-da-jia-jie-she-ii-by-chen-li-guan/
      * @param nums
      * @return
      */
@@ -270,7 +267,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         if (nums.size == 1) return nums[0]
 
         return Math.max(
+            // 不偷第一个房子
             rob11(Arrays.copyOfRange(nums, 1, nums.size)),
+            // 不偷最后一个房子
             rob11(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
     }

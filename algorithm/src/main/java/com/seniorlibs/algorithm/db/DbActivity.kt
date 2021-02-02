@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
-import java.util.*
 
 
 /**
@@ -42,9 +41,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_fib).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_path_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
-        findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_longest_palindrome_sub_seq).setOnClickListener(this)
@@ -53,7 +53,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_min_edit_distance).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
-        findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
         findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
     }
 
@@ -85,7 +84,17 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles(paths)}")
                 LogUtils.e(TAG, "63. 不同路径 II：${uniquePathsWithObstacles1(paths)}")
             }
-
+            R.id.btn_min_path_sum -> {
+                val paths = arrayOf(intArrayOf(1, 3, 1), intArrayOf(1, 5, 1), intArrayOf(4, 2, 1))
+                LogUtils.e(TAG, "64. 最小路径和：${minPathSum(paths)}")
+            }
+            R.id.btn_minimum_total -> {
+                val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal4(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal1(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal2(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
+            }
             R.id.btn_longest_common_sub_sequence -> {
                 LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
             }
@@ -107,14 +116,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_min_edit_distance -> {
                 LogUtils.e(TAG, "72. 编辑距离：${minEditDistance("horse", "ros")}")
-            }
-
-            R.id.btn_minimum_total -> {
-                val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
-                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal4(res)}")
-                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal1(res)}")
-                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal2(res)}")
-                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
             R.id.btn_max_sub_array -> {
                 LogUtils.e(
@@ -390,13 +391,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
-     * base case：定义 dp 数组并初始化第 0 行和第 0 列 的值为 1
-     *    f(0) = 1
-     *    f(1) = 1
-     *    f(2) = 2
-     *
-     * DP方程：dp(i,j) = dp(i-1, j) + dp(i, j-1)
-     *
      * https://leetcode-cn.com/problems/unique-paths/solution/62-bu-tong-lu-jing-by-chen-li-guan/
      * @param m
      * @param n
@@ -405,8 +399,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
-        // base case：定义 dp 数组并初始化第 0 行和第 0 列 的值为 1
+        // dp 定义：向下走 m 步，以及向右走 n 步，的不同路径和
         val dp = Array(m) { IntArray(n) }
+
+        // base case：
         for (i in 0 until m) dp[i][0] = 1
         for (j in 0 until n) dp[0][j] = 1
 
@@ -416,6 +412,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
             }
         }
+
         return dp[m - 1][n - 1]
     }
 
@@ -435,11 +432,13 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     fun uniquePaths1(m: Int, n: Int): Int {
         if (m == 0 || n == 0) return 0
 
-        // base case：定义 dp 数组并初始化第 1 列。
+        // dp 定义：向下走 m 步，以及向右走 n 步，的不同路径和
         val dp = IntArray(n)
+
+        // base case：
         for (j in 0 until n) dp[j] = 1
 
-        // dp：根据状态转移方程 dp[j] = [j] + [j - 1] 进行递推。
+        // dp 方程：
         for (i in 1 until m) {
             for (j in 1 until n) {
                 dp[j] += dp[j - 1]
@@ -457,36 +456,38 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
      * https://leetcode-cn.com/problems/unique-paths-ii/solution/63-bu-tong-lu-jing-ii-by-chen-li-guan-2/
-     * @param obstacleGrid
+     * @param grid
      * @return
      */
-    fun uniquePathsWithObstacles(obstacleGrid: Array<IntArray>): Int {
-        if (obstacleGrid.isEmpty() || obstacleGrid[0].isEmpty()) return 0
+    fun uniquePathsWithObstacles(grid: Array<IntArray>): Int {
+        if (grid.isEmpty() || grid[0].isEmpty()) return 0
 
-        val m: Int = obstacleGrid.size
-        val n: Int = obstacleGrid[0].size
+        val m = grid.size
+        val n = grid[0].size
 
-        // base case：定义 dp 数组并初始化第 0 行和第 0 列
+        // dp 定义：向下走 m 步，以及向右走 n 步，的不同路径和
         val dp = Array(m) { IntArray(n) }
-        // 一旦遇到值为1的情况，后面的都不会被赋值成1了，都是默认值0
+
+        // base case：一旦遇到值为1的情况，后面的都不会被赋值成1了，都是默认值0
         for (i in 0 until m) {
-            if (obstacleGrid[i][0] == 1) break
+            if (grid[i][0] == 1) break
             dp[i][0] = 1
         }
         for (j in 0 until n) {
-            if (obstacleGrid[0][j] == 1) break
+            if (grid[0][j] == 1) break
             dp[0][j] = 1
         }
 
-        // dp：根据状态转移方程 dp[i][j] = dp[i - 1][j] + dp[i][j - 1] 进行递推
+        // dp 方程：
         for (i in 1 until m) {
             for (j in 1 until n) {
                 // 1是障碍物，0是非障碍物，0才往下迭代
-                if (obstacleGrid[i][j] == 0) {
+                if (grid[i][j] == 0) {
                     dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
                 }
             }
         }
+
         return dp[m - 1][n - 1]
     }
 
@@ -497,34 +498,192 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(n)，使用了空间大小为n的数组
      *
      * https://leetcode-cn.com/problems/unique-paths-ii/solution/63-bu-tong-lu-jing-ii-by-chen-li-guan-2/
-     * @param obstacleGrid
+     * @param grid
      * @return
      */
-    fun uniquePathsWithObstacles1(obstacleGrid: Array<IntArray>): Int {
-        if (obstacleGrid.isEmpty() || obstacleGrid[0].isEmpty()) return 0
+    fun uniquePathsWithObstacles1(grid: Array<IntArray>): Int {
+        if (grid.isEmpty() || grid[0].isEmpty()) return 0
 
-        val m: Int = obstacleGrid.size
-        val n: Int = obstacleGrid[0].size
+        val m: Int = grid.size
+        val n: Int = grid[0].size
 
         // base case：定义 dp 数组并初始化第 1 列
         val dp = IntArray(n)
-        dp[0] = if (obstacleGrid[0][0] == 0) 1 else 0
+        dp[0] = if (grid[0][0] == 0) 1 else 0
 
-        // db：dp[j] = dp[j] + dp[j - 1]
+        // db：
         for (i in 0 until m) {
-            for (j in 0 until n) {
+            for (j in 1 until n) {
                 // 处理[0][1]的情况，从0开始
-                if (obstacleGrid[i][j] == 1) {
+                if (grid[i][j] == 1) {
                     dp[j] = 0
                     continue
                 }
 
-                if (j > 0 && obstacleGrid[i][j] == 0) {
+                if (grid[i][j] == 0) {
                     dp[j] = dp[j] + dp[j - 1]
                 }
             }
         }
+
         return dp[n - 1]
+    }
+
+
+    /**
+     * 64. 最小路径和
+     *
+     * 时间复杂度：O(mn)；
+     * 空间复杂度：O(mn)；
+     *
+     * https://leetcode-cn.com/problems/minimum-path-sum/solution/64-zui-xiao-lu-jing-he-by-chen-li-guan-51x8/
+     * @param grid
+     * @return
+     */
+    fun minPathSum(grid: Array<IntArray>): Int {
+        if (grid.isEmpty() || grid[0].isEmpty()) return 0
+
+        val m = grid.size
+        val n = grid[0].size
+
+        // dp定义：向下走m步，以及向右走n步，路径上的数字最小和
+        val dp = Array(m) {IntArray(n)}
+
+        // base case
+        dp[0][0] = grid[0][0]
+        for (i in 1 until m) {
+            dp[i][0] = dp[i - 1][0] + grid[i][0]
+        }
+        for (j in 1 until n) {
+            dp[0][j] = dp[0][j - 1] + grid[0][j]
+        }
+
+        // dp方程
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
+            }
+        }
+
+        return dp[m - 1][n - 1]
+    }
+
+
+    /**
+     * 120. 三角形最小路径和  解法一：暴力递归(自顶向下)，导致 超时
+     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
+     *
+     * 时间复杂度：O(2^n)，它需要指数的时间。n为三角形的行数。
+     * 空间复杂度：O(mn)，在堆栈中需要与 n 成正比的空间大小。n为三角形的行数。
+     *
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal1(triangle: List<List<Int>>): Int {
+        return dfs(triangle, 0, 0)
+    }
+
+    private fun dfs(triangle: List<List<Int>>, i: Int, j: Int): Int {
+        if (i == triangle.size) return 0
+
+        return Math.min(dfs(triangle, i + 1, j), dfs(triangle, i + 1, j + 1)) + triangle[i][j]
+    }
+
+    /**
+     * 120. 三角形最小路径和  解法二：备忘录递归(自顶向下)，解法一递归的升级版（记住）
+     *
+     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值。比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n^2)，n为三角形的行数。
+     *
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal2(triangle: List<List<Int>>): Int {
+        val res = Array(triangle.size) { IntArray(triangle.size) }
+        for (i in triangle.indices) {
+            for (j in triangle.indices) {
+                res[i][j] = -1
+            }
+        }
+
+        return dfs1(triangle, res, 0, 0)
+    }
+
+    private fun dfs1(triangle: List<List<Int>>, res: Array<IntArray>, i: Int, j: Int): Int {
+        if (i == triangle.size) return 0
+
+        if (res[i][j] != -1) return res[i][j]
+
+        // 该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
+        res[i][j] = Math.min(
+            dfs1(triangle, res, i + 1, j),
+            dfs1(triangle, res, i + 1, j + 1)
+        ) + triangle[i][j]
+
+        return res[i][j]
+    }
+
+    /**
+     * 120. 三角形最小路径和  解法一：动态规划（自底向上）（记住）
+     *
+     * 注意：当计算三角形的最后一行时，需要额外一行辅助计算(默认值时0)，因此数组长度是n + 1。自底往上，计算的结果是dp[0][0]，因此是倒序遍历。
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n^2)，n为三角形的行数。
+     *
+     * https://leetcode-cn.com/problems/triangle/solution/120-san-jiao-xing-zui-xiao-lu-jing-he-by-chen-li-g/
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal3(triangle: List<List<Int>>): Int {
+        val n = triangle.size + 1
+
+        // dp的定义：向下走到相邻的结点上 ———— 正下方(i+1,j) 和 右下方(i+1,j+1) 的最小路径和
+        val dp = Array(n) { IntArray(n) }
+
+        // base case：
+        for (j in 0 until n) {
+            dp[j][0] = 0
+        }
+
+        // dp的定义：三角形
+        for (i in n - 2 downTo 0) {
+            for (j in 0 until triangle[i].size) {
+                dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
+            }
+        }
+        return dp[0][0]
+    }
+
+    /**
+     * 120. 三角形最小路径和  解法二：动态规划(自底向上)，空间优化
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n)，n为三角形的行数。
+     *
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal4(triangle: List<List<Int>>): Int {
+        val n = triangle.size + 1
+
+        // dp的定义：向下走到相邻的结点上 ———— 正下方(i+1,j) 和 右下方(i+1,j+1) 的最小路径和
+        val dp = IntArray(n)
+
+        // base case：
+        for (j in 0 until n) {
+            dp[j] = 0
+        }
+
+        // dp的定义：三角形
+        for (i in n - 2 downTo 0) {
+            for (j in 0 until triangle[i].size) {
+                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j]
+            }
+        }
+        return dp[0]
     }
 
 
@@ -819,115 +978,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return Math.min(a, Math.min(b, c))
     }
 
-
-    /**
-     * 120. 三角形最小路径和  解法一：暴力递归(自顶向下)，导致 超时
-     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
-     *
-     * 时间复杂度：O(2^n)，它需要指数的时间。n为三角形的行数。
-     * 空间复杂度：O(mn)，在堆栈中需要与 n 成正比的空间大小。n为三角形的行数。
-     *
-     * @param triangle
-     * @return
-     */
-    fun minimumTotal1(triangle: List<List<Int>>): Int {
-        return dfs(triangle, 0, 0)
-    }
-
-    private fun dfs(triangle: List<List<Int>>, i: Int, j: Int): Int {
-        if (i == triangle.size) return 0
-
-        return Math.min(dfs(triangle, i + 1, j), dfs(triangle, i + 1, j + 1)) + triangle[i][j]
-    }
-
-    /**
-     * 120. 三角形最小路径和  解法二：备忘录递归(自顶向下)，解法一递归的升级版（记住）
-     *
-     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值。比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
-     *
-     * 时间复杂度：O(n^2)，n为三角形的行数。
-     * 空间复杂度：O(n^2)，n为三角形的行数。
-     *
-     * @param triangle
-     * @return
-     */
-    fun minimumTotal2(triangle: List<List<Int>>): Int {
-        val res = Array(triangle.size) { IntArray(triangle.size) }
-        for (i in triangle.indices) {
-            for (j in triangle.indices) {
-                res[i][j] = -1
-            }
-        }
-
-        return dfs1(triangle, res, 0, 0)
-    }
-
-    private fun dfs1(triangle: List<List<Int>>, res: Array<IntArray>, i: Int, j: Int): Int {
-        if (i == triangle.size) return 0
-
-        if (res[i][j] != -1) return res[i][j]
-
-        // 该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
-        res[i][j] = Math.min(
-            dfs1(triangle, res, i + 1, j),
-            dfs1(triangle, res, i + 1, j + 1)
-        ) + triangle[i][j]
-
-        return res[i][j]
-    }
-
-    /**
-     * 120. 三角形最小路径和  解法一：动态规划（自底向上）（记住）
-     *
-     * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值。从三角形的最后一行-->往上，每一行的最右-->左 开始递推
-     *
-     * 步骤：计算dp[i][j]时，只用到了下一行的dp[i + 1][j]和dp[i + 1][j + 1]。当计算三角形的最后一行时，需要额外一行辅助计算(默认值时0)，因此数组长度是n + 1。
-     *
-     * 注意：本题的（自底向上）和其他题的区别，是从第n-1行开始计算，所以要倒着来。
-     *
-     * 时间复杂度：O(n^2)，n为三角形的行数。
-     * 空间复杂度：O(n^2)，n为三角形的行数。
-     *
-     * base case：定义dp二维数组，大小是n+1，并初始化值为0
-     * DP方程：dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
-     *
-     * https://leetcode-cn.com/problems/triangle/solution/120-san-jiao-xing-zui-xiao-lu-jing-he-by-chen-li-g/
-     * @param triangle
-     * @return
-     */
-    fun minimumTotal3(triangle: List<List<Int>>): Int {
-        val n = triangle.size
-        // base case：dp[i][j]表示从点(i, j)到底边的最小路径和
-        val dp = Array(n + 1) { IntArray(n + 1) }
-
-        // DP方程：从三角形的最后一行-->往上，每一行的最右-->左 开始递推
-        for (i in n - 1 downTo 0) {
-            for (j in triangle[i].size - 1 downTo 0) {
-                dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
-            }
-        }
-        return dp[0][0]
-    }
-
-    /**
-     * 120. 三角形最小路径和  解法二：动态规划(自底向上)，空间优化
-     *
-     * 时间复杂度：O(n^2)，n为三角形的行数。
-     * 空间复杂度：O(n)，n为三角形的行数。
-     *
-     * @param triangle
-     * @return
-     */
-    fun minimumTotal4(triangle: List<List<Int>>): Int {
-        val n = triangle.size
-        val dp = IntArray(n + 1)
-        for (i in n - 1 downTo 0) {
-            for (j in triangle[i].size - 1 downTo 0) {
-                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j]
-            }
-        }
-        return dp[0]
-    }
 
 
     /**

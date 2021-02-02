@@ -28,6 +28,16 @@
         android:text="63. 不同路径 II" />
 
     <Button
+        android:id="@+id/btn_min_path_sum"
+        style="@style/BtnStyles"
+        android:text="64. 最小路径和" />
+
+    <Button
+        android:id="@+id/btn_minimum_total"
+        style="@style/BtnStyles"
+        android:text="120. 三角形最小路径和" />
+
+    <Button
         android:id="@+id/btn_longest_common_sub_sequence"
         style="@style/BtnStyles"
         android:text="1143. 最长公共子序列" />
@@ -41,11 +51,6 @@
         android:id="@+id/btn_minimum_delete_sum"
         style="@style/BtnStyles"
         android:text="712. 两个字符串的最小ASCII删除和" />
-
-    <Button
-        android:id="@+id/btn_minimum_total"
-        style="@style/BtnStyles"
-        android:text="120. 三角形最小路径和" />
 
     <Button
         android:id="@+id/btn_max_sub_array"
