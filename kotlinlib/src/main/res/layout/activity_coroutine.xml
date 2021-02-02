@@ -18,4 +18,11 @@
         android:layout_height="200dp"
         android:onClick="testImage"
         android:layout_marginTop="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="threadPool"
+        android:text="开启无数协程不卡的原因：实现了类似线程池"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

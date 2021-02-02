@@ -1013,4 +1013,48 @@ class CoroutineActivity : AppCompatActivity() {
      * 16:28:06.237 :: testImage 切到子线程： DefaultDispatcher-worker-6
      * 16:28:10.237 :: testImage 子线程中获取图片： DefaultDispatcher-worker-6
      */
+
+
+    /**
+     * 开启无数协程不卡的原因：实现了类似线程池
+     *
+     * @param view
+     */
+    fun threadPool(view: View?) {
+        // 在没有开启协程前，先打印一下进程名称和进程id
+        LogUtils.d(TAG, "Main: threadName = " + Thread.currentThread().name + " threadId = " + Thread.currentThread().id)
+
+        // 循环20次
+        repeat(20) {
+            GlobalScope.launch {
+                //开启协程后，先打印一下进程名称和进程id
+                LogUtils.d(TAG, "IO: threadName = " + Thread.currentThread().name + " threadId = " + Thread.currentThread().id)
+                delay(2000L)
+            }
+        }
+    }
+
+    /**
+    Main: threadName = main threadId = 1
+    IO: threadName = DefaultDispatcher-worker-3 threadId = 7281
+    IO: threadName = DefaultDispatcher-worker-1 threadId = 7279
+    IO: threadName = DefaultDispatcher-worker-4 threadId = 7283
+    IO: threadName = DefaultDispatcher-worker-4 threadId = 7283
+    IO: threadName = DefaultDispatcher-worker-5 threadId = 7284
+    IO: threadName = DefaultDispatcher-worker-4 threadId = 7283
+    IO: threadName = DefaultDispatcher-worker-2 threadId = 7280
+    IO: threadName = DefaultDispatcher-worker-5 threadId = 7284
+    IO: threadName = DefaultDispatcher-worker-4 threadId = 7283
+    IO: threadName = DefaultDispatcher-worker-5 threadId = 7284
+    IO: threadName = DefaultDispatcher-worker-2 threadId = 7280
+    IO: threadName = DefaultDispatcher-worker-4 threadId = 7283
+    IO: threadName = DefaultDispatcher-worker-5 threadId = 7284
+    IO: threadName = DefaultDispatcher-worker-2 threadId = 7280
+    IO: threadName = DefaultDispatcher-worker-4 threadId = 7283
+    IO: threadName = DefaultDispatcher-worker-5 threadId = 7284
+    IO: threadName = DefaultDispatcher-worker-2 threadId = 7280
+    IO: threadName = DefaultDispatcher-worker-4 threadId = 7283
+    IO: threadName = DefaultDispatcher-worker-5 threadId = 7284
+    IO: threadName = DefaultDispatcher-worker-1 threadId = 7279
+     */
 }
