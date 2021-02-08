@@ -1031,21 +1031,38 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun maxProduct(nums: IntArray): Int {
-        var db = Int.MIN_VALUE
-        var imax = 1
-        var imin = 1
-        for (x in nums) {
-            if (x < 0) {
-                val tmp = imax
-                imax = imin
-                imin = tmp
-            }
+        val n = nums.size
+        if (n == 0) return 0
 
-            imax = Math.max(imax * x, x)
-            imin = Math.min(imin * x, x)
-            db = Math.max(db, imax)
+        // 当选中第 i 状态时，以 nums[i] 结尾的连续子数组的最值，计算最大值还是最小值由 j 来表示，j 就两个状态值；
+        // dp[i][0]：以 nums[i] 结尾的连续子数组的最小值。dp[i][1]：以 nums[i] 结尾的连续子数组的最大值
+        val dp = Array(n) { IntArray(2) }
+
+        // base case，由于 nums[i] 必须被选取，那么
+        dp[0][0] = nums[0]
+        dp[0][1] = nums[0]
+
+        // dp 方程
+        for (i in 1 until n) {
+            if (nums[i] >= 0) {
+                // 正数 * 前面的最小值 依然是最小值；
+                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][0])
+                // 正数 * 前面的最大值 依然是最大值；（同一个正数）
+                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][1])
+            } else {
+                // 负数 * 前面的最大值 变成了最小值；
+                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][1])
+                // 负数 * 前面的最小值 变成最大值；（同一个负数）
+                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][0])
+            }
         }
-        return db
+
+        // 只关心最大值，需要遍历 dp[i][1]，计算最大的值
+        var res = Int.MIN_VALUE
+        for (i in 0 until n) {
+            res = Math.max(res, dp[i][1])
+        }
+        return res
     }
 
 

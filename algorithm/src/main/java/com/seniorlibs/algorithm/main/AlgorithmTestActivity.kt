@@ -50,8 +50,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                val paths = arrayOf(intArrayOf(1, 3, 1), intArrayOf(1, 5, 1), intArrayOf(4, 2, 1))
-                LogUtils.e(TAG, "64. 最小路径和：${minPathSum(paths)}")
+                LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
             }
             else -> {
             }
@@ -60,40 +59,49 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 64. 最小路径和
+     * 152. 乘积最大子数组  解法一：动态规划
      *
-     * 时间复杂度：O(mn)；
-     * 空间复杂度：O(mn)；
+     * DP方程：imax = max(imax * num[i], num[i])， imin = min(imin * num[i], num[i]), db = max(db, imax)
      *
-     * @param grid
+     * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
+     * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
+     *
+     * @param nums
      * @return
      */
-    fun minPathSum(grid: Array<IntArray>): Int {
-        if (grid.isEmpty() || grid[0].isEmpty()) return 0
+    fun maxProduct(nums: IntArray): Int {
+        val n = nums.size
+        if (n == 0) return 0
 
-        val m = grid.size
-        val n = grid[0].size
-
-        // dp定义：向下走m步，以及向右走n步，路径上的数字最小和
-        val dp = Array(m) {IntArray(n)}
+        // dp定义
+        val dp = Array(n) { IntArray(2) }
 
         // base case
-        dp[0][0] = grid[0][0]
-        for (i in 1 until m) {
-            dp[i][0] = dp[i - 1][0] + grid[i][0]
-        }
-        for (j in 1 until n) {
-            dp[0][j] = dp[0][j - 1] + grid[0][j]
-        }
+        dp[0][0] = nums[0]
+        dp[0][1] = nums[0]
 
         // dp方程
-        for (i in 1 until m) {
-            for (j in 1 until n) {
-                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
+        for (i in 1 until n) {
+            if (nums[i] >= 0) {
+                // 正数 * 最小值 = 最小值
+                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][0])
+                // 正数 * 最大值 = 最大值
+                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][1])
+            } else {
+                // 负数 * 最大值 = 最小值
+                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][1])
+                // 负数 * 最小值 = 最大值
+                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][0])
             }
         }
 
-        return dp[m - 1][n - 1]
+        // 最大值
+        var max = Int.MIN_VALUE
+        for (i in 0 until n) {
+            max = Math.max(max, dp[i][1])
+        }
+
+        return max
     }
 }
 
