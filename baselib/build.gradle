@@ -87,6 +87,8 @@ dependencies {
     api rootProject.dependence.fastjson
     // EventBus
     api rootProject.dependence.eventbus
+    // vlayout
+    api rootProject.dependence.vlayout
 
     // lifecycle
     api rootProject.dependence.lifecycle_runtime

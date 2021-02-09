@@ -46,4 +46,10 @@
         android:text="TabLayout + Fragment + FragmentTransaction hide/show"
         android:textAllCaps="false" />
 
+    <Button
+        style="@style/BaseMatchWrap"
+        android:onClick="layoutActivity"
+        android:text="RecyclerView 缓存使用测试"
+        android:textAllCaps="false" />
+
 </com.seniorlibs.view.widget.RevealLayout>

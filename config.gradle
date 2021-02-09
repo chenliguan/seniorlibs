@@ -58,6 +58,8 @@ ext {
             'fastjson'            : 'com.alibaba:fastjson:1.1.71.android',
             // EventBus
             'eventbus'            : 'org.greenrobot:eventbus:3.2.0',
+            // vlayout
+            'vlayout'             : 'com.alibaba.android:vlayout:1.2.8@aar',
 
             // lifecycle
             'lifecycle_runtime'   : "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle_version}",

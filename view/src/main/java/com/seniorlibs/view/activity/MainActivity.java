@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.seniorlibs.view.R;
+import com.seniorlibs.view.recycledview.LayoutActivity;
 import com.seniorlibs.view.remoteviews.RemoteViewsMainActivity;
 
 public class MainActivity extends Activity {
@@ -81,7 +82,14 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, TabAddFrgActivity.class));
     }
 
-
+    /**
+     * RecyclerView 缓存使用测试
+     *
+     * @param v
+     */
+    public void layoutActivity(View v) {
+        startActivity(new Intent(this, LayoutActivity.class));
+    }
 
     @Override
     protected void onPause() {
