@@ -78,11 +78,15 @@
         style="@style/BtnStyles"
         android:text="72. 编辑距离" />
 
-
     <Button
         android:id="@+id/btn_max_product"
         style="@style/BtnStyles"
         android:text="152. 乘积最大子数组" />
+
+    <Button
+        android:id="@+id/btn_length_of_LIS"
+        style="@style/BtnStyles"
+        android:text="300. 最长递增子序列" />
 
     <Button
         android:id="@+id/btn_maximal_square"

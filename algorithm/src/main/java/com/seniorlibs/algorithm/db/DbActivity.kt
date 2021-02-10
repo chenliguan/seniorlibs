@@ -51,8 +51,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_edit_distance).setOnClickListener(this)
-
         findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
+        findViewById<View>(R.id.btn_length_of_LIS).setOnClickListener(this)
+
         findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
     }
 
@@ -125,6 +126,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_max_product -> {
                 LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
+            }
+
+            R.id.btn_length_of_LIS -> {
+                LogUtils.e(TAG, "300. 最长递增子序列：${lengthOfLIS(intArrayOf(10,9,2,5,3,7,101,18))}")
             }
             R.id.btn_maximal_square -> {
                 val paths = arrayOf(
@@ -983,12 +988,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 53. 最大子序和（最大子数组）   解法一：动态规划
      *
-     * 思想：数组nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
-     *
-     * base case：dp = nums[0]
-     *
-     * DP方程：dp[i] = Math.max(nums[i], nums[i] + dp[i - 1]);
-     *
      * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
      * 空间复杂度：O(1)，只需要常数空间存放若干变量。
      *
@@ -1020,13 +1019,12 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 152. 乘积最大子数组  解法一：动态规划
-     *
-     * DP方程：imax = max(imax * num[i], num[i])， imin = min(imin * num[i], num[i]), db = max(db, imax)
+     * 152. 乘积最大子数组  解法：动态规划
      *
      * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
      * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
      *
+     * https://leetcode-cn.com/problems/maximum-product-subarray/solution/152-cheng-ji-zui-da-zi-shu-zu-by-chen-li-7gd0/
      * @param nums
      * @return
      */
@@ -1064,6 +1062,45 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
         return res
     }
+
+
+    /**
+     * 300. 最长递增子序列  解法：动态规划
+     *
+     * 时间复杂度：O(N^2)，这里 NN 是数组的长度，写了两个 for 循环；
+     * 空间复杂度：O(N)，要使用和输入数组长度相等的状态数组，因此空间复杂度是 O(N)。
+     *
+     * https://leetcode-cn.com/problems/longest-increasing-subsequence/
+     * @param nums
+     * @return
+     */
+    fun lengthOfLIS(nums: IntArray): Int {
+        val n = nums.size
+        if (n == 0) return 0
+
+        // dp定义
+        val dp = IntArray(n)
+
+        // base case
+        for (i in 0 until n) dp[i] = 1
+
+        // dp方程
+        for (i in 0 until n) {
+            for (j in 0 until i) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1)
+                }
+            }
+        }
+
+        // 只关心最大值，需要遍历 dp[i]，计算最大的值
+        var res = 0
+        for (i in 0 until n) {
+            res = Math.max(res, dp[i])
+        }
+        return res
+    }
+
 
 
     /**

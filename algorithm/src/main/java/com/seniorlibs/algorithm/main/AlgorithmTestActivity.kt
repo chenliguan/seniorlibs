@@ -50,7 +50,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
+                LogUtils.e(TAG, "300. 最长递增子序列：${lengthOfLIS(intArrayOf(10,9,2,5,3,7,101,18))}")
             }
             else -> {
             }
@@ -58,50 +58,43 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+
     /**
-     * 152. 乘积最大子数组  解法一：动态规划
+     * 300. 最长递增子序列  解法：动态规划
      *
-     * DP方程：imax = max(imax * num[i], num[i])， imin = min(imin * num[i], num[i]), db = max(db, imax)
+     * 时间复杂度：O(N^2)，这里 NN 是数组的长度，写了两个 for 循环；
+     * 空间复杂度：O(N)，要使用和输入数组长度相等的状态数组，因此空间复杂度是 O(N)。
      *
-     * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
-     * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
-     *
+     * https://leetcode-cn.com/problems/longest-increasing-subsequence/
      * @param nums
      * @return
      */
-    fun maxProduct(nums: IntArray): Int {
+    fun lengthOfLIS(nums: IntArray): Int {
         val n = nums.size
         if (n == 0) return 0
 
-        // dp定义
-        val dp = Array(n) { IntArray(2) }
+        // dp定义：表示以nums[i]结尾的最长递增子序列
+        val dp = IntArray(n)
 
         // base case
-        dp[0][0] = nums[0]
-        dp[0][1] = nums[0]
+        for (i in 0 until n) dp[i] = 1
 
         // dp方程
-        for (i in 1 until n) {
-            if (nums[i] >= 0) {
-                // 正数 * 最小值 = 最小值
-                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][0])
-                // 正数 * 最大值 = 最大值
-                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][1])
-            } else {
-                // 负数 * 最大值 = 最小值
-                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][1])
-                // 负数 * 最小值 = 最大值
-                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][0])
+        for (i in 0 until n) {
+            for (j in 0 until i) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1)
+                }
             }
         }
 
-        // 最大值
-        var max = Int.MIN_VALUE
+        // 计算最大值
+        var res = Int.MIN_VALUE
         for (i in 0 until n) {
-            max = Math.max(max, dp[i][1])
+            res = Math.max(res, dp[i])
         }
 
-        return max
+        return res
     }
 }
 
