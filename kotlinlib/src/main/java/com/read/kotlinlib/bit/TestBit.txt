@@ -1,0 +1,79 @@
+Classfile /C:/Users/Administrator/Desktop/刻意学习/byte/test/Test.class
+  Last modified 2021-2-11; size 415 bytes
+  MD5 checksum 8abfc8319312293e2ab08c4e8078e2e6
+  Compiled from "Test.java"
+public class Test implements java.io.Serializable,java.lang.Cloneable
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #6.#21         // java/lang/Object."<init>":()V
+   #2 = Fieldref           #5.#22         // Test.num:I
+   #3 = String             #23            // abc
+   #4 = Fieldref           #5.#24         // Test.str:Ljava/lang/String;
+   #5 = Class              #25            // Test
+   #6 = Class              #26            // java/lang/Object
+   #7 = Class              #27            // java/io/Serializable
+   #8 = Class              #28            // java/lang/Cloneable
+   #9 = Utf8               num
+  #10 = Utf8               I
+  #11 = Utf8               str
+  #12 = Utf8               Ljava/lang/String;
+  #13 = Utf8               <init>
+  #14 = Utf8               ()V
+  #15 = Utf8               Code
+  #16 = Utf8               LineNumberTable
+  #17 = Utf8               add
+  #18 = Utf8               (I)I
+  #19 = Utf8               SourceFile
+  #20 = Utf8               Test.java
+  #21 = NameAndType        #13:#14        // "<init>":()V
+  #22 = NameAndType        #9:#10         // num:I
+  #23 = Utf8               abc
+  #24 = NameAndType        #11:#12        // str:Ljava/lang/String;
+  #25 = Utf8               Test
+  #26 = Utf8               java/lang/Object
+  #27 = Utf8               java/io/Serializable
+  #28 = Utf8               java/lang/Cloneable
+{
+  public Test();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: iconst_1
+         6: putfield      #2                  // Field num:I
+         9: aload_0
+        10: ldc           #3                  // String abc
+        12: putfield      #4                  // Field str:Ljava/lang/String;
+        15: return
+      LineNumberTable:
+        line 3: 0
+        line 4: 4
+        line 5: 9
+
+  public int add(int);
+    descriptor: (I)I
+    flags: ACC_PUBLIC
+    Code:
+      stack=3, locals=3, args_size=2
+         0: bipush        10
+         2: istore_2
+         3: aload_0
+         4: aload_0
+         5: getfield      #2                  // Field num:I
+         8: iload_1
+         9: iadd
+        10: putfield      #2                  // Field num:I
+        13: aload_0
+        14: getfield      #2                  // Field num:I
+        17: ireturn
+      LineNumberTable:
+        line 8: 0
+        line 9: 3
+        line 10: 13
+}
+SourceFile: "Test.java"
