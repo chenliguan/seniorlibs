@@ -28,15 +28,18 @@ public class LifecycleClassVisitor extends ClassVisitor implements Opcodes {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         // System.out.println("LifecycleClassVisitor : visitMethod : " + name);
+
+        // 负责解析方法的信息并进行具体的字节码操作
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
+
         // 匹配FragmentActivity
         if ("android/support/v4/app/FragmentActivity".equals(this.mClassName)) {
             if ("onCreate".equals(name) ) {
                 // 处理onCreate
                 System.out.println("LifecycleClassVisitor : change method ----> " + name);
-
                 // LifecycleOnCreateMethodVisitor处理在OnCreate的入口和出口插入字节码
                 return new LifecycleOnCreateMethodVisitor(mv);
+
             } else if ("onDestroy".equals(name)) {
                 // 处理onDestroy
                 System.out.println("LifecycleClassVisitor : change method ----> " + name);

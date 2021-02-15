@@ -22,7 +22,7 @@ class TestPlugin extends Transform implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        //registerTransform
+        // registerTransform
         def android = project.extensions.getByType(AppExtension)
         android.registerTransform(this)
     }
@@ -56,20 +56,24 @@ class TestPlugin extends Transform implements Plugin<Project> {
     void transform(@NonNull TransformInvocation transformInvocation) {
         println '--------------- TestPlugin visit start --------------- '
         def startTime = System.currentTimeMillis()
+        // inputs 中是传过来的输入流，其中有两种格式，一种是 jar 包格式，一种是 directory（目录格式）
         Collection<TransformInput> inputs = transformInvocation.inputs
+        // outputProvider 获取到输出目录，最后将修改的文件复制到输出目录
         TransformOutputProvider outputProvider = transformInvocation.outputProvider
         // 删除之前的输出
-        if (outputProvider != null)
+        if (outputProvider != null) {
             outputProvider.deleteAll()
-        // 遍历inputs,通过参数inputs可以拿到所有的class文件
-        // inputs中包括directoryInputs和jarInputs，directoryInputs为文件夹中的class文件，而jarInputs为jar包中的class文件。
+        }
+
+        // 一、遍历项目中所有的 .class 文件，找到目标 .class 文件
+        // inputs 包括：文件夹中的class文件 directoryInputs 和 jar包中的class文件 jarInputs
         inputs.each { TransformInput input ->
-            // 遍历directoryInputs
+            // 遍历 directoryInputs
             input.directoryInputs.each { DirectoryInput directoryInput ->
                 handleDirectoryInput(directoryInput, outputProvider)
             }
 
-            // 遍历jarInputs
+            // 遍历 jarInputs
             input.jarInputs.each { JarInput jarInput ->
                 handleJarInputs(jarInput, outputProvider)
             }
@@ -93,18 +97,15 @@ class TestPlugin extends Transform implements Plugin<Project> {
                 def name = file.name
                 if (checkClassFile(name)) {
                     println '----------- deal with "class" file <' + name + '> -----------'
-                    // 1、处理class文件
-                    // （1）先通过ClassReader读入Class文件的原始字节码
+                    // （1）负责解析编译过的 .class 字节码文件，并将所有字节码传递给 ClassWriter
                     ClassReader classReader = new ClassReader(file.bytes)
-                    // （2）使用ClassWriter类基于不同的Visitor类进行修改
+                    // （2）继承自 ClassVisitor，负责将生成或修改后的字节码输出为 byte 数组
                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
-                    // （3）用于访问class的工具，在visitMethod()里对类名和方法名进行判断，需要处理在MethodVisitor插入字节码
-                    ClassVisitor cv = new LifecycleClassVisitor(classWriter)
+                    // （3）负责解析 .class 文件结构，当解析到变量、方法时，它会自动调用 FieldVisitor 或者 MethodVisitor 方法，进一步解析方法的信息并进行具体的字节码操作
+                    ClassVisitor classVisitor = new LifecycleClassVisitor(classWriter)
                     // （4）按照标志同意修改
-                    classReader.accept(cv, ClassReader.EXPAND_FRAMES)
-
-                    // 2、替换
-                    // （1）从classWriter得到class修改后的byte流code，然后通过流的写入覆盖原来的class文件
+                    classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
+                    // （5）从 classWriter 得到 class 修改后的字节流，然后通过流的写入覆盖原来的 class 文件
                     byte[] code = classWriter.toByteArray()
                     FileOutputStream fos = new FileOutputStream(file.parentFile.absolutePath + File.separator + name)
                     fos.write(code)
@@ -112,6 +113,7 @@ class TestPlugin extends Transform implements Plugin<Project> {
                 }
             }
         }
+
         // 处理完输入文件之后，要把输出给下一个任务
         def dest = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
         FileUtils.copyDirectory(directoryInput.file, dest)
