@@ -14913,6 +14913,21 @@ com.read.kotlinlib.inner.Outerkt$InnerClass -> com.read.kotlinlib.inner.Outerkt$
 com.read.kotlinlib.inner.Outerkt$NestedClass -> com.read.kotlinlib.inner.Outerkt$NestedClass:
     int number -> a
     int getValue() -> a
+com.read.kotlinlib.jvm.JvmActivity -> com.read.kotlinlib.jvm.JvmActivity:
+    com.read.kotlinlib.jvm.JvmActivity$Companion Companion -> a
+com.read.kotlinlib.jvm.JvmActivity$Companion -> com.read.kotlinlib.jvm.JvmActivity$Companion:
+    void actionStart(android.content.Context) -> a
+com.read.kotlinlib.jvm.JvmActivity$SingletonHolder -> com.read.kotlinlib.jvm.JvmActivity$SingletonHolder:
+    com.read.kotlinlib.jvm.JvmActivity$SingletonHolder INSTANCE -> b
+    kotlin.jvm.functions.Function0 INSTANCE -> a
+com.read.kotlinlib.jvm.JvmActivity$SingletonHolder$INSTANCE$1 -> com.read.kotlinlib.jvm.JvmActivity$SingletonHolder$INSTANCE$1:
+    com.read.kotlinlib.jvm.JvmActivity$SingletonHolder$INSTANCE$1 INSTANCE -> b
+com.read.kotlinlib.jvm.OomError -> com.read.kotlinlib.jvm.OomError:
+    void main() -> a
+com.read.kotlinlib.jvm.StackOver -> com.read.kotlinlib.jvm.StackOver:
+    int number -> a
+    void main() -> a
+    void method() -> b
 com.read.kotlinlib.model.People -> com.read.kotlinlib.model.People:
     int age -> b
     java.lang.String name -> a
@@ -14933,8 +14948,14 @@ com.read.kotlinlib.polymorphisn.Polymorphisn$SuperClass -> com.read.kotlinlib.po
     java.lang.String name -> a
     java.lang.String getName() -> a
 com.read.kotlinlib.string.StringTest -> com.read.kotlinlib.string.StringTest:
-    void intern() -> b
-    void store() -> a
+    void intern1() -> e
+    void intern2() -> f
+    void intern3() -> g
+    void intern4() -> h
+    void store1() -> a
+    void store2() -> b
+    void store3() -> c
+    void store4() -> d
 com.seniorlibs.baselib.BaseApplication -> com.seniorlibs.baselib.BaseApplication:
     void init() -> a
 com.seniorlibs.baselib.BaseApplication$1 -> com.seniorlibs.baselib.BaseApplication$1:

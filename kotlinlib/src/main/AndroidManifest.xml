@@ -3,12 +3,12 @@
     package="com.read.kotlinlib">
 
     <application
-        tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -18,20 +18,17 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".basic.BasicActivity" />
+        <activity android:name=".basic.BasicActivity" />
 
-        <activity
-            android:name=".basic.CoroutineActivity" />
+        <activity android:name=".basic.CoroutineActivity" />
 
-        <activity
-            android:name=".basic.FlowFunActivity" />
+        <activity android:name=".basic.FlowFunActivity" />
 
-        <activity
-            android:name=".basic.AdvanceActivity" />
+        <activity android:name=".basic.AdvanceActivity" />
 
-        <activity
-            android:name=".basic.ComponentActivity" />
+        <activity android:name=".basic.ComponentActivity" />
+
+        <activity android:name=".jvm.JvmActivity" />
     </application>
 
 </manifest>

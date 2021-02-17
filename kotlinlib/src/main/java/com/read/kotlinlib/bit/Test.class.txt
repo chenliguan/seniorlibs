@@ -1,10 +1,0 @@
-漱壕   4 
-  	   	       num I str Ljava/lang/String; <init> ()V Code LineNumberTable add (I)I 
-SourceFile 	Test.java 
-  	 
- abc   Test java/lang/Object java/io/Serializable java/lang/Cloneable !        	 
-          
-      0     *?*?*??             	         2     
-=**?`?*??            	 
- 
-      

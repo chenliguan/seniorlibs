@@ -9,6 +9,7 @@ import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.generic.GenericTest
 import com.read.kotlinlib.generic.GenericTestKt
 import com.read.kotlinlib.inner.*
+import com.read.kotlinlib.jvm.JvmActivity
 import com.read.kotlinlib.polymorphisn.Polymorphisn
 import com.read.kotlinlib.string.StringTest
 import com.seniorlibs.baselib.utils.LogUtils
@@ -83,7 +84,6 @@ class MainActivity : AppCompatActivity() {
      */
     fun testString(view: View?) {
         val stringTest = StringTest()
-        stringTest.store()
     }
 
     /**
@@ -189,5 +189,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun testComponentInterface(view: View?) {
         ComponentActivity.actionStart(this)
+    }
+
+    /**
+     * 虚拟机
+     *
+     * @param view
+     */
+    fun testJVM(view: View?) {
+        JvmActivity.actionStart(this)
     }
 }
