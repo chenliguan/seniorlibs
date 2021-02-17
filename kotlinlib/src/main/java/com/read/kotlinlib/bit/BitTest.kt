@@ -179,4 +179,13 @@ class BitTest {
         b[1] = (c.toInt() and 0xFF).toByte()
         return b
     }
+
+
+    /**
+     * 测试数组的最大值
+     */
+    fun testCharMax() {
+        // Integer 的 int MAX_VALUE = 2147483647;
+        val value = CharArray(2147483647)
+    }
 }
