@@ -20,6 +20,7 @@ import com.seniorlibs.baselib.utils.LogUtils
 class JvmActivity : AppCompatActivity() {
 
     companion object {
+
         const val TAG = "kotlin + JvmActivity : "
 
         fun actionStart(context: Context?) {
@@ -58,5 +59,51 @@ class JvmActivity : AppCompatActivity() {
      */
     fun testOomError(view: View?) {
         OomError.main()
+    }
+
+
+    /**
+     * 验证虚拟机栈（栈帧中的局部变量）中引用的对象作为 GC Root
+     *
+     * @param view
+     */
+    fun testGCRootLocalVariable(view: View?) {
+        GCRootLocalVariable.main()
+    }
+
+    /**
+     * 测试成员变量是否可作为 GC Root
+     *
+     * @param view
+     */
+    fun testGCRootClassVariable(view: View?) {
+        GCRootClassVariable.main()
+    }
+
+    /**
+     * 验证方法区中的静态变量引用的对象作为 GC Root
+     *
+     * @param view
+     */
+    fun testGCRootStaticVariable(view: View?) {
+        GCRootStaticVariable.main()
+    }
+
+    /**
+     * 验证活跃线程作为 GC Root
+     *
+     * @param view
+     */
+    fun testGCRootThread(view: View?) {
+        GCRootThread.main()
+    }
+
+    /**
+     * 测试 MinorGC
+     *
+     * @param view
+     */
+    fun testMinorGCTest(view: View?) {
+        MinorGCTest.main()
     }
 }

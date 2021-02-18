@@ -19,4 +19,40 @@
         android:text="内存溢出"
         android:textAllCaps="false"/>
 
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testGCRootLocalVariable"
+        android:text="验证虚拟机栈（栈帧中的局部变量）中引用的对象作为 GC Root"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testGCRootClassVariable"
+        android:text="测试成员变量是否可作为 GC Root"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testGCRootStaticVariable"
+        android:text="验证方法区中的静态变量引用的对象作为 GC Root"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testGCRootThread"
+        android:text="验证活跃线程作为 GC Root"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testMinorGCTest"
+        android:text="测试 MinorGC"
+        android:textAllCaps="false"/>
 </LinearLayout>
