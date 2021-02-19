@@ -50,7 +50,11 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(TAG, "300. 最长递增子序列：${lengthOfLIS(intArrayOf(10,9,2,5,3,7,101,18))}")
+                val paths = arrayOf(
+                    charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
+                    charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
+                )
+                LogUtils.e(TAG, "221. 最大正方形1：${maximalSquare(paths)}")
             }
             else -> {
             }
@@ -60,41 +64,48 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 300. 最长递增子序列  解法：动态规划
+     * 221. 最大正方形 解法一：动态规划
      *
-     * 时间复杂度：O(N^2)，这里 NN 是数组的长度，写了两个 for 循环；
-     * 空间复杂度：O(N)，要使用和输入数组长度相等的状态数组，因此空间复杂度是 O(N)。
+     * 思想：以(i,j)为根据点，它最大的正方形的边长取决于(上, 左, 左上)边长最短的那一个
      *
-     * https://leetcode-cn.com/problems/longest-increasing-subsequence/
-     * @param nums
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
+     *
+     * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
+     * @param matrix
      * @return
      */
-    fun lengthOfLIS(nums: IntArray): Int {
-        val n = nums.size
-        if (n == 0) return 0
+    fun maximalSquare(matrix: Array<CharArray>): Int {
+        if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
 
-        // dp定义：表示以nums[i]结尾的最长递增子序列
-        val dp = IntArray(n)
+        val m = matrix.size + 1
+        val n = matrix[0].size + 1
+
+        // dp定义
+        val dp = Array(m) {IntArray(n)}
 
         // base case
-        for (i in 0 until n) dp[i] = 1
 
         // dp方程
-        for (i in 0 until n) {
-            for (j in 0 until i) {
-                if (nums[i] > nums[j]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1)
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i - 1][j]), dp[i][j - 1]) + 1
+                } else {
+                    dp[i][j] = 0
                 }
             }
         }
 
-        // 计算最大值
-        var res = Int.MIN_VALUE
-        for (i in 0 until n) {
-            res = Math.max(res, dp[i])
+        // 计算最大边长
+        var res = 0
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                res = Math.max(res, dp[i][j])
+            }
         }
 
-        return res
+        return res * res
     }
 }
 

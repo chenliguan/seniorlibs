@@ -1111,10 +1111,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，使用了空间大小为mn的数组
      *
-     * base case：第 0 行和第 0 列，同步 matrix
-     *
-     * DP方程：dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
-     *
      * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
      * @param matrix
      * @return
@@ -1122,25 +1118,31 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     fun maximalSquare(matrix: Array<CharArray>): Int {
         if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
 
-        val m = matrix.size
-        val n = matrix[0].size
-        var max = 0
+        val m = matrix.size + 1
+        val n = matrix[0].size + 1
 
         // 初始化base case：定义 dp 数组，相当于已经预处理新增第一行、第一行均为0
-        val dp = Array(m + 1) { IntArray(n + 1) }
+        val dp = Array(m) { IntArray(n) }
 
-        // 根据状态转移方程 dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1 进行递推
-        for (i in 1..m) {
-            for (j in 1..n) {
+        // 根据状态转移方程：dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1，进行递推
+        for (i in 1 until m) {
+            for (j in 1 until n) {
                 if (matrix[i - 1][j - 1] == '1') {
                     dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i - 1][j]), dp[i][j - 1]) + 1
-                    max = Math.max(dp[i][j], max)
                 } else {
                     dp[i][j] = 0
                 }
             }
         }
-        return max * max
+
+        // 遍历 dp[i][j]，计算最大的值
+        var res = 0
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                res = Math.max(res, dp[i][j])
+            }
+        }
+        return res * res
     }
 
     /**
@@ -1150,10 +1152,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(n)，使用了空间大小为n的数组
-     *
-     * base case：第 0 行和第 0 列，同步 matrix
-     *
-     * DP方程：dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
      *
      * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
      * @param matrix
