@@ -10,6 +10,7 @@ import com.read.kotlinlib.generic.GenericTest
 import com.read.kotlinlib.generic.GenericTestKt
 import com.read.kotlinlib.inner.*
 import com.read.kotlinlib.jvm.JvmActivity
+import com.read.kotlinlib.memory.MemoryActivity
 import com.read.kotlinlib.polymorphisn.Polymorphisn
 import com.read.kotlinlib.string.StringTest
 import com.seniorlibs.baselib.utils.LogUtils
@@ -198,5 +199,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun testJVM(view: View?) {
         JvmActivity.actionStart(this)
+    }
+
+    /**
+     * 内存优化
+     *
+     * @param view
+     */
+    fun testMemory(view: View?) {
+        MemoryActivity.actionStart(this)
     }
 }

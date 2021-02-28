@@ -68,7 +68,7 @@ class JvmActivity : AppCompatActivity() {
      * @param view
      */
     fun testGCRootLocalVariable(view: View?) {
-        GCRootLocalVariable.main()
+//        GCRootLocalVariable.main()
     }
 
     /**
@@ -77,7 +77,7 @@ class JvmActivity : AppCompatActivity() {
      * @param view
      */
     fun testGCRootClassVariable(view: View?) {
-        GCRootClassVariable.main()
+//        GCRootClassVariable.main()
     }
 
     /**
@@ -86,7 +86,7 @@ class JvmActivity : AppCompatActivity() {
      * @param view
      */
     fun testGCRootStaticVariable(view: View?) {
-        GCRootStaticVariable.main()
+//        GCRootStaticVariable.main()
     }
 
     /**
@@ -95,7 +95,7 @@ class JvmActivity : AppCompatActivity() {
      * @param view
      */
     fun testGCRootThread(view: View?) {
-        GCRootThread.main()
+//        GCRootThread.main()
     }
 
     /**
@@ -104,6 +104,6 @@ class JvmActivity : AppCompatActivity() {
      * @param view
      */
     fun testMinorGCTest(view: View?) {
-        MinorGCTest.main()
+//        MinorGCTest.main()
     }
 }

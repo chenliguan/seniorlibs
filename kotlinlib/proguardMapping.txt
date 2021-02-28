@@ -14914,34 +14914,20 @@ com.read.kotlinlib.inner.Outerkt$NestedClass -> com.read.kotlinlib.inner.Outerkt
     int number -> a
     int getValue() -> a
 com.read.kotlinlib.jvm.GCRootClassVariable -> com.read.kotlinlib.jvm.GCRootClassVariable:
-    byte[] memory -> c
-    com.read.kotlinlib.jvm.GCRootClassVariable classVariable -> d
     int _10MB -> b
     java.lang.String TAG -> a
-    void main() -> a
-    void printMemory() -> b
 com.read.kotlinlib.jvm.GCRootLocalVariable -> com.read.kotlinlib.jvm.GCRootLocalVariable:
     byte[] memory -> c
     int _10MB -> b
     java.lang.String TAG -> a
-    void main() -> a
-    void method() -> b
-    void printMemory() -> c
 com.read.kotlinlib.jvm.GCRootStaticVariable -> com.read.kotlinlib.jvm.GCRootStaticVariable:
-    byte[] memory -> d
-    com.read.kotlinlib.jvm.GCRootStaticVariable staticVariable -> c
     int _10MB -> b
     java.lang.String TAG -> a
-    void main() -> a
-    void printMemory() -> b
 com.read.kotlinlib.jvm.GCRootThread -> com.read.kotlinlib.jvm.GCRootThread:
     byte[] memory -> c
     int _10MB -> b
     java.lang.String TAG -> a
-    void main() -> a
-    void printMemory() -> b
 com.read.kotlinlib.jvm.GCRootThread$AsyncTask -> com.read.kotlinlib.jvm.GCRootThread$AsyncTask:
-    com.read.kotlinlib.jvm.GCRootThread gcRootThread -> a
 com.read.kotlinlib.jvm.JvmActivity -> com.read.kotlinlib.jvm.JvmActivity:
     com.read.kotlinlib.jvm.JvmActivity$Companion Companion -> a
 com.read.kotlinlib.jvm.JvmActivity$Companion -> com.read.kotlinlib.jvm.JvmActivity$Companion:
@@ -14953,14 +14939,40 @@ com.read.kotlinlib.jvm.JvmActivity$SingletonHolder$INSTANCE$1 -> com.read.kotlin
     com.read.kotlinlib.jvm.JvmActivity$SingletonHolder$INSTANCE$1 INSTANCE -> b
 com.read.kotlinlib.jvm.MinorGCTest -> com.read.kotlinlib.jvm.MinorGCTest:
     java.lang.String TAG -> a
-    void main() -> b
-    void testAllocation() -> a
 com.read.kotlinlib.jvm.OomError -> com.read.kotlinlib.jvm.OomError:
     void main() -> a
+com.read.kotlinlib.jvm.SoftReference2Test -> com.read.kotlinlib.jvm.SoftReference2Test:
+    int CACHE_INITIAL_CAPACITY -> b
+    int removedSoftRefs -> a
+    java.lang.ref.ReferenceQueue referenceQueue -> d
+    java.util.Set cache -> c
+com.read.kotlinlib.jvm.SoftReference2Test$SoftObject -> com.read.kotlinlib.jvm.SoftReference2Test$SoftObject:
+    byte[] data -> a
+com.read.kotlinlib.jvm.SoftReferenceNormal -> com.read.kotlinlib.jvm.SoftReferenceNormal:
+com.read.kotlinlib.jvm.SoftReferenceNormal$SoftObject -> com.read.kotlinlib.jvm.SoftReferenceNormal$SoftObject:
+    byte[] data -> a
+com.read.kotlinlib.jvm.SoftReferenceTest -> com.read.kotlinlib.jvm.SoftReferenceTest:
+    int CACHE_INITIAL_CAPACITY -> a
+    java.util.Set cache -> b
+com.read.kotlinlib.jvm.SoftReferenceTest$SoftObject -> com.read.kotlinlib.jvm.SoftReferenceTest$SoftObject:
+    byte[] data -> a
 com.read.kotlinlib.jvm.StackOver -> com.read.kotlinlib.jvm.StackOver:
     int number -> a
     void main() -> a
     void method() -> b
+com.read.kotlinlib.memory.MemoryActivity -> com.read.kotlinlib.memory.MemoryActivity:
+    com.read.kotlinlib.memory.MemoryActivity$Companion Companion -> a
+com.read.kotlinlib.memory.MemoryActivity$Companion -> com.read.kotlinlib.memory.MemoryActivity$Companion:
+    void actionStart(android.content.Context) -> a
+com.read.kotlinlib.memory.MemoryActivity$SingletonHolder -> com.read.kotlinlib.memory.MemoryActivity$SingletonHolder:
+    com.read.kotlinlib.memory.MemoryActivity$SingletonHolder INSTANCE -> b
+    kotlin.jvm.functions.Function0 INSTANCE -> a
+com.read.kotlinlib.memory.MemoryActivity$SingletonHolder$INSTANCE$1 -> com.read.kotlinlib.memory.MemoryActivity$SingletonHolder$INSTANCE$1:
+    com.read.kotlinlib.memory.MemoryActivity$SingletonHolder$INSTANCE$1 INSTANCE -> b
+com.read.kotlinlib.memory.MemoryShakeTest -> com.read.kotlinlib.memory.MemoryShakeTest:
+    android.os.Handler mHandler -> a
+    void onClick() -> a
+com.read.kotlinlib.memory.MemoryShakeTest$mHandler$1 -> com.read.kotlinlib.memory.MemoryShakeTest$mHandler$1:
 com.read.kotlinlib.model.People -> com.read.kotlinlib.model.People:
     int age -> b
     java.lang.String name -> a

@@ -29,6 +29,8 @@
         <activity android:name=".basic.ComponentActivity" />
 
         <activity android:name=".jvm.JvmActivity" />
+
+        <activity android:name=".memory.MemoryActivity" />
     </application>
 
 </manifest>
