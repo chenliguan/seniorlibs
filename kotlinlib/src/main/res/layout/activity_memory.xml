@@ -16,7 +16,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="testMemoryLeak"
-        android:text="模拟内存泄漏"
+        android:text="模拟静态变量引起的内存泄露"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testThreadLeak"
+        android:text="模拟存活线程引起的内存泄露"
         android:textAllCaps="false"/>
 
 </LinearLayout>

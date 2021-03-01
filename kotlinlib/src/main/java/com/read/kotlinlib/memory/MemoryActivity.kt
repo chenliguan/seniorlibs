@@ -52,11 +52,20 @@ class MemoryActivity : AppCompatActivity() {
     }
 
     /**
-     * 模拟内存泄漏
+     * 模拟静态变量引起的内存泄露
      *
      * @param view
      */
     fun testMemoryLeak(view: View?) {
+        MemoryLeakActivity.actionStart(this)
+    }
 
+    /**
+     * 模拟存活线程引起的内存泄露
+     *
+     * @param view
+     */
+    fun testThreadLeak(view: View?) {
+        ThreadLeakActivity.actionStart(this)
     }
 }
