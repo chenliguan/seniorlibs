@@ -52,7 +52,9 @@ class HandlerLeakActivity : AppCompatActivity() {
     }
 
     private fun clickHandler() {
-        mHandler.sendEmptyMessageDelayed(0x123, 3000)
+        mHandler.sendEmptyMessageDelayed(0x123, 10000)
+        mHandler.sendEmptyMessageDelayed(0x123, 30000)
+        mHandler.sendEmptyMessageDelayed(0x123, 60000)
     }
 
     override fun onDestroy() {
@@ -65,7 +67,7 @@ class HandlerLeakActivity : AppCompatActivity() {
             when (msg.what) {
                 0x123 -> {
                     // 模拟10秒的耗时
-                    Thread.sleep(10000)
+                    Thread.sleep(3000)
                 }
             }
         }
