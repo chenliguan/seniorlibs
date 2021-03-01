@@ -31,6 +31,10 @@
         <activity android:name=".jvm.JvmActivity" />
 
         <activity android:name=".memory.MemoryActivity" />
+
+        <activity android:name=".memory.MemoryLeakActivity" />
+
+        <activity android:name=".memory.ThreadLeakActivity" />
     </application>
 
 </manifest>

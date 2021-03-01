@@ -52,6 +52,9 @@ dependencies {
     implementation 'org.openjdk.jol:jol-core:0.9'
     implementation 'androidx.appcompat:appcompat:1.0.0'
 
+    // 因为LeakCanary应该只在调试版本中运行
+    debugImplementation rootProject.dependence.leakcanary
+
     // test
     testImplementation rootProject.ext.dependence.test_junit
     androidTestImplementation rootProject.ext.dependence.test_runner

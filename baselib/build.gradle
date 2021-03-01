@@ -103,6 +103,8 @@ dependencies {
     // 功能
     api rootProject.dependence.mmkv
     api rootProject.dependence.multidex
+    // 因为LeakCanary应该只在调试版本中运行
+    debugImplementation rootProject.dependence.leakcanary
 }
 
 

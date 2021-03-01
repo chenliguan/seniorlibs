@@ -73,6 +73,7 @@ ext {
             // 功能
             mmkv                  : "com.tencent:mmkv-static:1.2.2",
             multidex              : "com.android.support:multidex:2.0.0",
+            leakcanary            : "com.squareup.leakcanary:leakcanary-android:2.6",
 
             // test
             'test_junit'          : 'androidx.test.ext:junit:1.1.0',
