@@ -61,11 +61,11 @@ class MemoryActivity : AppCompatActivity() {
     }
 
     /**
-     * 模拟存活线程引起的内存泄露
+     * 模拟非静态 Handler 引起的内存泄露
      *
      * @param view
      */
-    fun testThreadLeak(view: View?) {
-        ThreadLeakActivity.actionStart(this)
+    fun testHandlerLeak(view: View?) {
+        HandlerLeakActivity.actionStart(this)
     }
 }

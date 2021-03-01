@@ -35,6 +35,8 @@
         <activity android:name=".memory.MemoryLeakActivity" />
 
         <activity android:name=".memory.ThreadLeakActivity" />
+
+        <activity android:name=".memory.HandlerLeakActivity" />
     </application>
 
 </manifest>
