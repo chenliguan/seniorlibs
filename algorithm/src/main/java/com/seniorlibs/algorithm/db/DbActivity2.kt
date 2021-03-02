@@ -661,7 +661,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    /**
+  /**
     1、用一个三维数组就可以装下这几种状态的全部组合：dp[i][k][0 or 1] (0<=i<=n-1,1<=k<=K)
      * i为天数
      * k为最多交易次数
@@ -696,7 +696,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     DP方程：
     dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
     dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
-     */
+  */
 
     /**
      * 121. 买卖股票的最佳时机 1 -- 最低点买入，最高点卖出 核心：k=1  解法1：动态规划
@@ -724,13 +724,15 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     fun maxProfit11(prices: IntArray): Int {
         if (prices.isEmpty()) return 0
 
+        val m = prices.size;
+        val dp = Array(m) { IntArray(2) }
+
         // base case：
-        val dp = Array(prices.size) { IntArray(2) }
         dp[0][0] = 0
         dp[0][1] = -prices[0]
 
         // dp方程：
-        for (i in 1 until prices.size) {
+        for (i in 1 until m) {
             // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
 
@@ -738,7 +740,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             dp[i][1] = Math.max(dp[i - 1][1], 0 - prices[i])
         }
 
-        return dp[prices.size - 1][0]
+        return dp[m - 1][0]
     }
 
 

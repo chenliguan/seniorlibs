@@ -34,6 +34,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_algorithm_test)
 
+        lifecycle
         initView()
         initData()
     }
@@ -50,11 +51,8 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                val paths = arrayOf(
-                    charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
-                    charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
-                )
-                LogUtils.e(TAG, "221. 最大正方形1：${maximalSquare(paths)}")
+                LogUtils.e(TAG, "121. 买卖股票的最佳时机 11：${maxProfit11(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                LogUtils.e(TAG, "121. 买卖股票的最佳时机 12：${maxProfit12(intArrayOf(7, 1, 5, 3, 6, 4))}")
             }
             else -> {
             }
@@ -63,49 +61,47 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-    /**
-     * 221. 最大正方形 解法一：动态规划
-     *
-     * 思想：以(i,j)为根据点，它最大的正方形的边长取决于(上, 左, 左上)边长最短的那一个
-     *
-     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
-     *
-     * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
-     * @param matrix
-     * @return
-     */
-    fun maximalSquare(matrix: Array<CharArray>): Int {
-        if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
+    fun maxProfit11(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
 
-        val m = matrix.size + 1
-        val n = matrix[0].size + 1
-
-        // dp定义
-        val dp = Array(m) {IntArray(n)}
+        val m = prices.size
+        val dp = Array(m) {IntArray(2)}
 
         // base case
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
 
-        // dp方程
+        // dp
         for (i in 1 until m) {
-            for (j in 1 until n) {
-                if (matrix[i - 1][j - 1] == '1') {
-                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i - 1][j]), dp[i][j - 1]) + 1
-                } else {
-                    dp[i][j] = 0
-                }
-            }
+            // 今天不持有股：昨天没有股，今天选择休息；昨天有股，今天选择卖出；（现金增加）
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股：昨天有股，今天选择休息；昨天没有股，今天选择买入；（现金减少）
+            dp[i][1] = Math.max(dp[i - 1][1], 0 - prices[i])
         }
 
-        // 计算最大边长
-        var res = 0
+        return dp[m - 1][0]
+    }
+
+    fun maxProfit12(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        val m = prices.size
+
+        // base case
+        var dp_0_0 = 0
+        var dp_0_1 = -prices[0]
+
+        // dp
         for (i in 1 until m) {
-            for (j in 1 until n) {
-                res = Math.max(res, dp[i][j])
-            }
+            // 今天不持有股：昨天没有股，今天选择休息；昨天有股，今天选择卖出；（现金增加）
+            dp_0_0 = Math.max(dp_0_0, dp_0_1 + prices[i])
+
+            // 今天持有股：昨天有股，今天选择休息；昨天没有股，今天选择买入；（现金减少）
+            dp_0_1 = Math.max(dp_0_1, 0 - prices[i])
         }
 
-        return res * res
+        return dp_0_0
     }
 }
 
