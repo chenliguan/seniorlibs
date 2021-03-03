@@ -67,7 +67,7 @@ class HandlerLeakActivity : AppCompatActivity() {
             when (msg.what) {
                 0x123 -> {
                     // 模拟10秒的耗时
-                    Thread.sleep(3000)
+                    Thread.sleep(2000)
                 }
             }
         }

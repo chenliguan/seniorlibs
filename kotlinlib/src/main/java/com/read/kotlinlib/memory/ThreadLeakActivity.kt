@@ -54,7 +54,8 @@ class ThreadLeakActivity : AppCompatActivity() {
                 super.run()
                 while (true) {
                     try {
-//                        initBitmap(ImageView(this@ThreadLeakActivity))  // 注释后：LeakCanary排查不到泄漏。但是MAT可以排查到。
+                        // 注释后：LeakCanary 和 Memory Profiler 可能排查不到泄漏，但是 MAT 可以排查到。
+//                        initBitmap(ImageView(this@ThreadLeakActivity))
                         println("Thread running!!")
                         sleep(300)
                     } catch (e: InterruptedException) {
