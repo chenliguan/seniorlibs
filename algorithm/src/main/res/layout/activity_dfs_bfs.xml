@@ -10,7 +10,7 @@
     <Button
         android:id="@+id/btn_level_order_bottom"
         style="@style/BtnStyles"
-        android:text="107. 二叉树的层次遍历 II" />
+        android:text="107. 二叉树的层序遍历 II" />
 
     <Button
         android:id="@+id/btn_largest_values"

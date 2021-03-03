@@ -66,11 +66,11 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
 
                 LogUtils.e(
                     BinaryTreeActivity.TAG,
-                    "107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代：${levelOrder(node)}"
+                    "107. 二叉树的层序遍历 -- 方法一：BFS广度遍历-迭代：${levelOrder(node)}"
                 )
                 LogUtils.e(
                     BinaryTreeActivity.TAG,
-                    "107. 二叉树的层次遍历 -- 方法二：DFS深度遍历-递归：${levelOrder1(node)}"
+                    "107. 二叉树的层序遍历 -- 方法二：DFS深度遍历-递归：${levelOrder1(node)}"
                 )
             }
             R.id.btn_largest_values -> {
@@ -111,7 +111,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 107. 二叉树的层次遍历 -- 方法一：BFS广度遍历-迭代
+     * 107. 二叉树的层序遍历 -- 方法一：BFS广度遍历-迭代
      *
      * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
      * 空间复杂度：O(n)，队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)。
@@ -124,13 +124,13 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
         val res: MutableList<List<Int>> = mutableListOf()
         val queue: Queue<TreeNode> = LinkedList()
 
-        // 1.2 根节点不==null，将根节点放入其中
+        // 1.2 根节点不==null，将根节点放入队列
         if (root == null) return res else queue.offer(root)
 
-        // 2.1 遍历每一层前，下层的队列不为空，继续遍历
+        // 2.1 遍历每一层前，当前层的队列不为空，继续遍历
         while (queue.isNotEmpty()) {
             val list: MutableList<Int> = mutableListOf()
-            // 2.2 将这一层的元素全部取出，因为长度已确定，不会遍历新加入的左右节点
+            // 2.2 将这一层的元素全部取出（因为长度已确定，不会遍历新加入的左右节点）
             for (i in 0 until queue.size) {
                 val node = queue.poll()
                 // 2.3 添加遍历后的元素到集合中
@@ -141,7 +141,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
                 if (node.right != null) queue.offer(node.right)
             }
 
-            // 4 赋值到集合中
+            // 4 将结果的集合赋值到大集合中
             res.add(list)
         }
 
@@ -150,7 +150,7 @@ class DfsBfsActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 107. 二叉树的层次遍历 -- DFS深度遍历-递归
+     * 107. 二叉树的层序遍历 -- DFS深度遍历-递归
      *
      * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果当前行对应的 list 不存在，就加入一个空 list 进去。
      *
