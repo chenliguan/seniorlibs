@@ -36,4 +36,9 @@
         android:id="@+id/btn_longest_common_prefix"
         style="@style/BtnStyles"
         android:text="14. 最长公共前缀" />
+
+    <Button
+        android:id="@+id/btn_str_str"
+        style="@style/BtnStyles"
+        android:text="28. 实现 strStr()" />
 </LinearLayout>

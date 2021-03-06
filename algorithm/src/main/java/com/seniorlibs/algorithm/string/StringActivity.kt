@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.baselib.utils.LogUtils
 
 /**
@@ -43,6 +42,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string2).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_common_prefix).setOnClickListener(this)
+        findViewById<View>(R.id.btn_str_str).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -70,7 +70,16 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "541. 反转字符串2：${reverseStr("abcdefg", 2)}")
             }
             R.id.btn_longest_common_prefix -> {
-                LogUtils.d(TAG, "14. 最长公共前缀：${longestCommonPrefix(arrayOf("flower","flow","flight"))}")
+                LogUtils.d(
+                    TAG,
+                    "14. 最长公共前缀：${longestCommonPrefix(arrayOf("flower", "flow", "flight"))}"
+                )
+            }
+            R.id.btn_str_str -> {
+                LogUtils.d(TAG, "28. 实现 strStr()：${strStr2("hello", "ll")}")
+
+                LogUtils.d(TAG, "28. 实现 strStr()：${strStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD")}")
+//                LogUtils.d(TAG, "28. 实现 strStr()：${strStr("aabaaabaaac", "aabaaac")}")
             }
             else -> {
             }
@@ -191,7 +200,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             if (digit < 0 || digit > 9) break
 
             // 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判断乘以 10 以后是否越界
-            if (total > Int.MAX_VALUE / 10 || (total == Int.MAX_VALUE / 10 && digit > Int.MAX_VALUE % 10))  {
+            if (total > Int.MAX_VALUE / 10 || (total == Int.MAX_VALUE / 10 && digit > Int.MAX_VALUE % 10)) {
                 return if (sign == 1) Int.MAX_VALUE else Int.MIN_VALUE
             }
 
@@ -290,5 +299,121 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return strs[0]
+    }
+
+    /**
+     * 28. 实现 strStr()    解法一：暴力法。最主要的问题是，如果字符串中重复的字符比较多，该算法就显得很蠢
+     * haystack = "hello", needle = "ll"
+     *
+     * 时间复杂度：O(mn)，嵌套 for 循环。
+     * 空间复杂度：O(1)。
+     *
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    fun strStr2(haystack: String, needle: String): Int {
+        val m = haystack.length
+        val n = needle.length
+
+        for (i in 0..m - n) {
+            var j = 0
+            while (j < n) {
+                if (needle[j] != haystack[i + j]) break
+                j++
+            }
+            // needle 全都匹配了
+            if (j == n) return i
+        }
+        // haystack 中不存在 needle 子串
+        return -1
+    }
+
+    /**
+     * 28. 实现 strStr()    解法二：KMP
+     * haystack = "hello", needle = "ll"
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    fun strStr(haystack: String, needle: String): Int {
+        // 两种特殊情况
+        if (needle.isEmpty()) return 0
+        if (haystack.isEmpty()) return -1
+
+        // char 数组
+        val haystackArray = haystack.toCharArray()
+        val needleArray = needle.toCharArray()
+        // 长度
+        val m = haystackArray.size
+        val n = needleArray.size
+        // 返回下标
+        return kmp(haystackArray, m, needleArray, n)
+    }
+
+    /**
+     * 第二步：根据 next 数组直接匹配
+     *
+     * @param haystack
+     * @param m
+     * @param needle
+     * @param n
+     * @return
+     */
+    fun kmp(haystack: CharArray, m: Int, needle: CharArray, n: Int): Int {
+        // 获取 next 数组
+        val next = next(needle, n)
+        var j = 0
+        // 注意 i 就从0开始
+        for (i in 0 until m) {
+            // 不匹配
+            while (j > 0 && haystack[i] != needle[j]) {
+                // 移动位数 = 已匹配的字符数 - 最后一个匹配字符对应的部分匹配值 -> j = j - (j - next[j - 1])
+                // 寻找 j 之前匹配的位置 = 已匹配的字符数 - 移动位数 = j = j - (j - next[j - 1]) = next[j - 1]
+                j = next[j - 1]
+            }
+            // 如果相同就将指针同时后移一下，比较下个字符
+            if (haystack[i] == needle[j]) {
+                j++
+            }
+            // 遍历完整个模式串，返回模式串的起点下标
+            if (j == n) {
+                return i - n + 1
+            }
+        }
+        return -1
+    }
+
+    /**
+     * 第一步：构建 next 数组（部分匹配表）
+     *
+     * @param needle
+     * @param len
+     * @return
+     */
+    fun next(needle: CharArray, n: Int): IntArray {
+        // 定义 next 数组
+        val next = IntArray(n)
+        // 初始化
+        next[0] = 0
+        // 快慢指针 i 和 j
+        var i = 0
+        for (j in 1 until n) {
+            // 当前后缀不相同时（needle[i + 1] != needle[j]），则回溯，找 next[i]
+            // eg：aabaaac : aabaa -> aa ；aabaaa -> needle[2]!=needle[5]，i=next[1]=0，needle[i+1=1]==needle[5]，aa
+            while (i > 0 && needle[i] != needle[j]) {
+                i = next[i - 1]
+            }
+            // 找到相同的前后缀（needle[i + 1] == needle[j]）：已知 [0,i-1] 的最长前后缀；然后 k - 1 又和 i 相同，最长前后缀加 1
+            if (needle[i] == needle[j]) {
+                i++
+            }
+            next[j] = i
+        }
+        return next
     }
 }
