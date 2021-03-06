@@ -41,6 +41,9 @@ public class GCRootClassVariable {
         System.out.println(TAG + " total is " + Runtime.getRuntime().totalMemory() / 1024 / 1024 + " M, ");
     }
 
+//    javac GCRootStaticVariable.java
+//    java -Xms250m GCRootStaticVariable
+
 //    GCRoot start
 //    GCRoot free is 240 M, GCRoot total is 243 M,
 //    GCRoot GC end
