@@ -40,6 +40,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_achieve_trie).setOnClickListener(this)
         findViewById<View>(R.id.btn_exist).setOnClickListener(this)
         findViewById<View>(R.id.btn_num_is_lands).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_area_of_island).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_circle_num).setOnClickListener(this)
     }
 
@@ -86,24 +87,34 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                 grid1[3] = charArrayOf('0', '0', '0', '0', '0')
                 LogUtils.e(TAG, "200. 岛屿数量——方法二：广度优先遍历BFS：${numIslands1(grid1)}")
             }
+            R.id.btn_max_area_of_island -> {
+//                [[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]
+                val grid = arrayOf(
+                    intArrayOf(1, 1, 0, 0, 0),
+                    intArrayOf(1, 1, 0, 0, 0),
+                    intArrayOf(0, 0, 0, 1, 1),
+                    intArrayOf(0, 0, 0, 1, 1)
+                )
+                LogUtils.e(TAG, "695. 岛屿的最大面积——方法一：深度优先遍历DFS：${maxAreaOfIsland(grid)}")
+            }
             R.id.btn_find_circle_num -> {
                 val grid: Array<IntArray> = Array(3) { intArrayOf() }
-                grid[0] = intArrayOf(1,1,0)
-                grid[1] = intArrayOf(1,1,0)
-                grid[2] = intArrayOf(0,0,1)
+                grid[0] = intArrayOf(1, 1, 0)
+                grid[1] = intArrayOf(1, 1, 0)
+                grid[2] = intArrayOf(0, 0, 1)
                 val unionFind = FindCircleNum()
                 LogUtils.e(TAG, "547. 朋友圈——方法三：并查集（最优解）：${unionFind.findCircleNum(grid)}")
 
                 val grid1: Array<IntArray> = Array(3) { intArrayOf() }
-                grid1[0] = intArrayOf(1,1,0)
-                grid1[1] = intArrayOf(1,1,0)
-                grid1[2] = intArrayOf(0,0,1)
+                grid1[0] = intArrayOf(1, 1, 0)
+                grid1[1] = intArrayOf(1, 1, 0)
+                grid1[2] = intArrayOf(0, 0, 1)
                 LogUtils.e(TAG, "547. 朋友圈——方法一：深度优先遍历DFS：${findCircleNum2(grid1)}")
 
                 val grid2: Array<IntArray> = Array(3) { intArrayOf() }
-                grid2[0] = intArrayOf(1,1,0)
-                grid2[1] = intArrayOf(1,1,0)
-                grid2[2] = intArrayOf(0,0,1)
+                grid2[0] = intArrayOf(1, 1, 0)
+                grid2[1] = intArrayOf(1, 1, 0)
+                grid2[2] = intArrayOf(0, 0, 1)
                 LogUtils.e(TAG, "547. 朋友圈——方法二：广度优先遍历BFS：${findCircleNum3(grid2)}")
             }
             else -> {
@@ -248,6 +259,41 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * 695. 岛屿的最大面积
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
+     *
+     * https://leetcode-cn.com/problems/max-area-of-island/solution/695-dao-yu-de-zui-da-mian-ji-by-chen-li-sft4r/
+     * @param grid
+     * @return
+     */
+    fun maxAreaOfIsland(grid: Array<IntArray>): Int {
+        var max = 0
+        for (i in grid.indices) {
+            for (j in grid[0].indices) {
+                if (grid[i][j] == 1) {
+                    max = Math.max(max, areaDfs(grid, i, j, 0))
+                }
+            }
+        }
+        return max
+    }
+
+    private fun areaDfs(grid: Array<IntArray>, i: Int, j: Int, value: Int): Int {
+        var result = value
+        if (i >= 0 && i < grid.size && j >= 0 && j < grid[0].size && grid[i][j] == 1) {
+            grid[i][j] = 0
+            result = value + 1
+            result = areaDfs(grid, i + 1, j, result)
+            result = areaDfs(grid, i, j + 1, result)
+            result = areaDfs(grid, i - 1, j, result)
+            result = areaDfs(grid, i, j - 1, result)
+        }
+
+        return result
+    }
 
     /**
      * 547. 朋友圈——方法2：深度优先遍历DFS

@@ -97,6 +97,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。只遍历了一遍字符串。
      * 空间复杂度：O(n)。用到了数组来存储字符串中每个元素出现的次数。
      *
+     * https://leetcode-cn.com/problems/to-lower-case/solution/709-zhuan-huan-cheng-xiao-xie-zi-mu-by-chen-li-gua/
      * @param str
      * @return
      */
@@ -120,6 +121,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 大写变小写、小写变小写：字符 |= 32;  A -> 65 | 32 转为二进制 -> 0100 0001 | 0010 0000 = 0110 0001 = 97 = a
      * 大写变大写、小写变大写：字符 &= 33;  a -> 97 & 33 转为二进制 -> 0110 0001 & 0010 0001 = 0010 0001 = 33 = a
      *
+     * https://leetcode-cn.com/problems/to-lower-case/solution/709-zhuan-huan-cheng-xiao-xie-zi-mu-by-chen-li-gua/
      * @param str
      * @return
      */
@@ -139,6 +141,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。只遍历了一遍字符串，同时散列表中查找操作是常数时间复杂度的。
      * 空间复杂度：O(n)。用到了散列表来存储字符串中每个元素出现的次数。
      *
+     * https://leetcode-cn.com/problems/first-unique-character-in-a-string/solution/387-zi-fu-chuan-zhong-de-di-yi-ge-wei-yi-zi-fu--11/
      * @param s
      * @return
      */
@@ -169,6 +172,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，其中n为字符串的长度。我只需要依次处理所有的字符，处理每个字符需要的时间为O(1)。
      * 空间复杂度：O(1)，自动机的状态只需要常数空间存储
      *
+     * https://leetcode-cn.com/problems/string-to-integer-atoi/solution/8-zi-fu-chuan-zhuan-huan-zheng-shu-atoi-by-chen-li/
      * @param str
      * @return
      */
@@ -219,6 +223,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，其中n为字符数组的长度，一共执行了n/2次的交换；
      * 空间复杂度：O(1),只使用了常数空间来存放若干变量。
      *
+     * https://leetcode-cn.com/problems/reverse-string/solution/344-fan-zhuan-zi-fu-chuan-by-chen-li-guan/
      * @param s
      */
     fun reverseString(s: CharArray): Unit {
@@ -244,6 +249,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，其中n是 s 的大小。我们建立一个辅助数组，用来翻转 s 的一半字符。
      * 空间复杂度：O(n)，a 的大小。
      *
+     * https://leetcode-cn.com/problems/reverse-string-ii/solution/541-fan-zhuan-zi-fu-chuan-ii-by-chen-li-guan/
      * @param s
      * @param k
      * @return
@@ -281,6 +287,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(mn)，其中m是字符串数组中的字符串的平均长度，n是字符串的数量。最坏情况下，字符串数组中的每个字符串的每个字符都会被比较一次。
      * 空间复杂度：O(1)。使用的额外空间复杂度为常数。
      *
+     * https://leetcode-cn.com/problems/longest-common-prefix/solution/14-zui-chang-gong-gong-qian-zhui-by-chen-li-guan/
      * @param strs
      * @return
      */
@@ -308,6 +315,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(mn)，嵌套 for 循环。
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/implement-strstr/solution/28-shi-xian-strstr-by-chen-li-guan-53hk/
      * @param haystack
      * @param needle
      * @return
@@ -336,6 +344,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。
      * 空间复杂度：O(n)。
      *
+     * https://leetcode-cn.com/problems/implement-strstr/solution/28-shi-xian-strstr-by-chen-li-guan-53hk/
      * @param haystack
      * @param needle
      * @return
