@@ -28,6 +28,11 @@
         android:text="104.二叉树的最小深度" />
 
     <Button
+        android:id="@+id/btn_has_path_sum"
+        style="@style/BtnStyles"
+        android:text="112. 路径总和" />
+
+    <Button
         android:id="@+id/btn_preorder"
         style="@style/BtnStyles"
         android:text="144. 二叉树的前序遍历" />

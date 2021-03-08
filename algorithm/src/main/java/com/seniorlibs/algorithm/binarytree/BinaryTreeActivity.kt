@@ -44,6 +44,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_n_postorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_depth).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_depth).setOnClickListener(this)
+        findViewById<View>(R.id.btn_has_path_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_ineorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
@@ -111,6 +112,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "111. 二叉树的最小深度：${minDepth(node)}") // 3
                 LogUtils.e(TAG, "111. 二叉树的最小深度1：${minDepth1(node)}") // 3
+            }
+            R.id.btn_has_path_sum -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "112. 路径总和：${hasPathSum(node, 22)}")
             }
             R.id.btn_preorder -> {
                 list.clear()
@@ -411,6 +423,37 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return level
+    }
+
+
+    /**
+     * 112. 路径总和
+     * 思想：一直向下找到叶子节点，同时判断节点的左右子树同时为空才是叶子节点
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(height)，其中height是树的高度。空间复杂度主要取决于递归时栈空间的开销；
+     *
+     * @param root
+     * @param sum
+     * @return
+     */
+    fun hasPathSum(root: TreeNode?, sum: Int): Boolean {
+        // 1.递归终结条件（最先写）
+        if (root == null) return false
+
+        // 2.处理当前层逻辑
+        if (root.left == null && root.right == null) {
+            return root.`val` == sum
+        }
+
+        // 3.下探到下一层，关键：sum - root.`val`
+        val left = hasPathSum(root.left, sum - root.`val`)
+
+        val right = hasPathSum(root.right, sum - root.`val`)
+
+        return left || right
+
+        // 4.清理恢复当前层
     }
 
     /**
