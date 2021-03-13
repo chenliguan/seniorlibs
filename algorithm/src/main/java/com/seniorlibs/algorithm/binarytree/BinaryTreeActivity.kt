@@ -124,6 +124,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "112. 路径总和：${hasPathSum(node, 22)}")
             }
+            R.id.btn_path_sum -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "113. 路径总和 II：${pathSum(node, 22)}")
+            }
             R.id.btn_preorder -> {
                 list.clear()
                 val node = TreeNode(1)
@@ -433,6 +444,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
      * 空间复杂度：O(height)，其中height是树的高度。空间复杂度主要取决于递归时栈空间的开销；
      *
+     * https://leetcode-cn.com/problems/path-sum/solution/112-lu-jing-zong-he-by-chen-li-guan-yi5m/
      * @param root
      * @param sum
      * @return
@@ -455,6 +467,54 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         // 4.清理恢复当前层
     }
+
+
+    /**
+     * 113. 路径总和 II
+     * 思想：一直向下找到叶子节点，同时判断节点的左右子树同时为空才是叶子节点
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：取决于结果列表的长度。
+     *
+     * https://leetcode-cn.com/problems/path-sum-ii/solution/113-lu-jing-zong-he-ii-by-chen-li-guan-mx4f/
+     * @param root
+     * @param sum
+     * @return
+     */
+    fun pathSum(root: TreeNode?, sum: Int): List<List<Int>> {
+        val result: MutableList<List<Int>> = mutableListOf()
+
+        dfs(root, sum, mutableListOf(), result)
+
+        return result
+    }
+
+    fun dfs(root: TreeNode?, sum: Int, list: MutableList<Int>, result: MutableList<List<Int>>) {
+        if (root == null) return
+
+        list.add(root.`val`)
+
+        // 如果到达叶子节点，就不能往下走了，直接 return
+        if (root.left == null && root.right == null) {
+            // 如果到达叶子节点，并且 sum 等于叶子节点的值，说明找到了一组，要把它放到 result 中
+            if (sum == root.`val`) {
+                result.add(ArrayList(list))
+            }
+
+            // 把最后加入的结点值给移除掉，因为下一步直接 return 了，不会再走最后一行的 remove 了
+            list.removeAt(list.size - 1)
+            // 到叶子节点之后直接返回，因为在往下就走不动了
+            return
+        }
+
+        // 如果没到达叶子节点，就继续从它的左右两个子节点往下找，注意 sum 要减去当前节点的值
+        dfs(root.left, sum - root.`val`, list, result)
+        dfs(root.right, sum - root.`val`, list, result)
+
+        // 要理解递归的本质，当递归往下传递的时候他最后还是会往回走，把这个值使用完之后还要把它给移除，这就是回溯
+        list.removeAt(list.size - 1)
+    }
+    
 
     /**
      * 144. 二叉树的前序遍历：递归

@@ -33,6 +33,11 @@
         android:text="112. 路径总和" />
 
     <Button
+        android:id="@+id/btn_path_sum"
+        style="@style/BtnStyles"
+        android:text="113. 路径总和 II" />
+
+    <Button
         android:id="@+id/btn_preorder"
         style="@style/BtnStyles"
         android:text="144. 二叉树的前序遍历" />

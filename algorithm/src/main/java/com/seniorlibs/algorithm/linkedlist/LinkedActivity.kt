@@ -258,7 +258,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(n+m)，其中n和m分别为两个链表的长度。递归调用mergeTwoLists时需要消耗栈空间，栈空间的大小取决于递归调用的深度。
      *                  结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)。
      *
-     * https://leetcode-cn.com/problems/linked-list-cycle/solution/21-he-bing-liang-ge-you-xu-lian-biao-by-chen-li-gu/
+     * https://leetcode-cn.com/problems/merge-two-sorted-lists/solution/21-he-bing-liang-ge-you-xu-lian-biao-by-j3c2y/
      * @param l1
      * @param l2
      * @return
