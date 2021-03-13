@@ -6,7 +6,7 @@ package com.seniorlibs.algorithm.trie
  * Date: 2020/10/21
  * Mender:
  * Modify:
- * Description: 并查集
+ * Description: 并查集常用来解决连通性的问题，即将一个图中连通的部分划分出来。并查集不关心节点有哪些儿子，只关心节点的根是谁。
  */
 class FindCircleNum {
 
@@ -16,15 +16,17 @@ class FindCircleNum {
     /**
      * 初始化
      *
-     * @param M
+     * @param board
      */
-    fun init(M: Array<IntArray>) {
+    fun init(board: Array<IntArray>) {
         // 一开始互不连通
-        count = M.size
+        count = board.size
         // M.siz 为图的节点总数
-        parent = IntArray(M.size)
+        parent = IntArray(board.size)
         // 父节点指针初始指向自己
-        for (i in M.indices) parent[i] = i
+        for (i in board.indices) {
+            parent[i] = i
+        }
     }
 
     /**
@@ -33,18 +35,19 @@ class FindCircleNum {
      * 时间复杂度：O(n^3)，访问整个矩阵一次，并查集操作需要最坏O(n)时间；
      * 空间复杂度：O(n)，parent大小为n；
      *
-     * @param M
+     * @param board
      * @return
      */
-    fun findCircleNum(M: Array<IntArray>): Int {
-        init(M)
+    fun findCircleNum(board: Array<IntArray>): Int {
+        // 初始化
+        init(board)
 
-        // 遍历i,j查找
-        for (i in M.indices) {
-            for (j in M.indices) {
-                // M[i][j] = 1，表示已知第i个和j个学生互为朋友关系，否则为不知道。然后把互为朋友关的学生合并在一个朋友圈中
-                if (M[i][j] == 1 && i != j) {
-                    // 如果某两个节点被连通，它们一定拥有相同的根节点，则让其中的任意一个节点的根节点接到另一个节点的根节点上
+        // 遍历i, j查找
+        for (i in board.indices) {
+            for (j in board.indices) {
+                // board[i][j] = 1，表示已知第i个和j个学生互为朋友关系，否则为不知道。然后把互为朋友圈的学生合并在一个朋友圈中
+                if (board[i][j] == 1 && i != j) {
+                    // 合并
                     union(i, j)
                 }
             }
@@ -69,8 +72,18 @@ class FindCircleNum {
         return x
     }
 
+    fun find1(x: Int): Int {
+        // 根节点的 parent[x] == x
+        var x = x
+        while (parent[x] != x) {
+            x = parent[x]
+        }
+        return x
+    }
+
     /**
-     * 合并
+     * 合并：通过 find 函数找到 u，v 的根节点 root_u, root_v。
+     *      如果两者的根节点不相同，则将 root_u 的父节点设为 root_v。如果相同，则无需任何操作
      *
      * @param p
      * @param q

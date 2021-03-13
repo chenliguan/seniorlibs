@@ -51,8 +51,13 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.e(TAG, "121. 买卖股票的最佳时机 11：${maxProfit11(intArrayOf(7, 1, 5, 3, 6, 4))}")
-                LogUtils.e(TAG, "121. 买卖股票的最佳时机 12：${maxProfit12(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                val grid = arrayOf(
+                    charArrayOf('X','X','X','X'),
+                    charArrayOf('X','O','O','X'),
+                    charArrayOf('X','X','O','X'),
+                    charArrayOf('X','O','X','X')
+                )
+                LogUtils.e(TAG, "130. 被围绕的区域——方法一：深度优先遍历DFS：${solve(grid)}")
             }
             else -> {
             }
@@ -60,49 +65,55 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * 130. 被围绕的区域
+     *
+     * 边界上的 O 要特殊处理，只要把边界上的 O 特殊处理了，那么剩下的 O 替换成 X 就可以了。问题转化为，如何寻找和边界联通的 O。
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
+     *
+     * @param board
+     */
+    fun solve(board: Array<CharArray>) {
+        if (board.isEmpty()) return
 
-    fun maxProfit11(prices: IntArray): Int {
-        if (prices.isEmpty()) return 0
+        val m = board.size
+        val n = board[0].size
 
-        val m = prices.size
-        val dp = Array(m) {IntArray(2)}
-
-        // base case
-        dp[0][0] = 0
-        dp[0][1] = -prices[0]
-
-        // dp
-        for (i in 1 until m) {
-            // 今天不持有股：昨天没有股，今天选择休息；昨天有股，今天选择卖出；（现金增加）
-            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
-
-            // 今天持有股：昨天有股，今天选择休息；昨天没有股，今天选择买入；（现金减少）
-            dp[i][1] = Math.max(dp[i - 1][1], 0 - prices[i])
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                val isEdge = (i == 0 || j == 0 || i == m - 1 || j == n - 1)
+                if (isEdge && board[i][j] == 'O') {
+                    dfs(board, i, j)
+                }
+            }
         }
 
-        return dp[m - 1][0]
-    }
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X'
+                }
 
-    fun maxProfit12(prices: IntArray): Int {
-        if (prices.isEmpty()) return 0
-
-        val m = prices.size
-
-        // base case
-        var dp_0_0 = 0
-        var dp_0_1 = -prices[0]
-
-        // dp
-        for (i in 1 until m) {
-            // 今天不持有股：昨天没有股，今天选择休息；昨天有股，今天选择卖出；（现金增加）
-            dp_0_0 = Math.max(dp_0_0, dp_0_1 + prices[i])
-
-            // 今天持有股：昨天有股，今天选择休息；昨天没有股，今天选择买入；（现金减少）
-            dp_0_1 = Math.max(dp_0_1, 0 - prices[i])
+                if (board[i][j] == '#') {
+                    board[i][j] = 'O'
+                }
+            }
         }
 
-        return dp_0_0
     }
+
+    private fun dfs(board: Array<CharArray>, i: Int, j: Int) {
+        if (i >= 0 && j >= 0 && i <= board.size - 1 && j <= board[0].size - 1 && board[i][j] == 'O') {
+            board[i][j] = '#'
+            dfs(board, i - 1, j)
+            dfs(board, i + 1, j)
+            dfs(board, i, j - 1)
+            dfs(board, i, j + 1)
+        }
+    }
+
 }
 
 

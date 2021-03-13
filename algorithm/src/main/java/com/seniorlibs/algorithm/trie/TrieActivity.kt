@@ -88,7 +88,6 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "200. 岛屿数量——方法二：广度优先遍历BFS：${numIslands1(grid1)}")
             }
             R.id.btn_max_area_of_island -> {
-//                [[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]
                 val grid = arrayOf(
                     intArrayOf(1, 1, 0, 0, 0),
                     intArrayOf(1, 1, 0, 0, 0),
@@ -96,6 +95,15 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                     intArrayOf(0, 0, 0, 1, 1)
                 )
                 LogUtils.e(TAG, "695. 岛屿的最大面积——方法一：深度优先遍历DFS：${maxAreaOfIsland(grid)}")
+            }
+            R.id.btn_surround_area -> {
+                val grid = arrayOf(
+                    charArrayOf('X','X','X','X'),
+                    charArrayOf('X','O','O','X'),
+                    charArrayOf('X','X','O','X'),
+                    charArrayOf('X','O','X','X')
+                )
+                LogUtils.e(TAG, "130. 被围绕的区域——方法一：深度优先遍历DFS：${solve(grid)}")
             }
             R.id.btn_find_circle_num -> {
                 val grid: Array<IntArray> = Array(3) { intArrayOf() }
@@ -269,31 +277,87 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * @param grid
      * @return
      */
-    fun maxAreaOfIsland(grid: Array<IntArray>): Int {
+    fun maxAreaOfIsland(board: Array<IntArray>): Int {
         var max = 0
-        for (i in grid.indices) {
-            for (j in grid[0].indices) {
-                if (grid[i][j] == 1) {
-                    max = Math.max(max, areaDfs(grid, i, j, 0))
+        val m = board.size
+        val n: Int = board[0].size
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                if (board[i][j] == 1) {
+                    max = Math.max(max, areaDfs(board, i, j, 0))
                 }
             }
         }
         return max
     }
 
-    private fun areaDfs(grid: Array<IntArray>, i: Int, j: Int, value: Int): Int {
+    private fun areaDfs(board: Array<IntArray>, i: Int, j: Int, value: Int): Int {
         var result = value
-        if (i >= 0 && i < grid.size && j >= 0 && j < grid[0].size && grid[i][j] == 1) {
-            grid[i][j] = 0
+        if (i >= 0 && i < board.size && j >= 0 && j < board[0].size && board[i][j] == 1) {
+            board[i][j] = 0
             result = value + 1
-            result = areaDfs(grid, i + 1, j, result)
-            result = areaDfs(grid, i, j + 1, result)
-            result = areaDfs(grid, i - 1, j, result)
-            result = areaDfs(grid, i, j - 1, result)
+            result = areaDfs(board, i + 1, j, result)
+            result = areaDfs(board, i, j + 1, result)
+            result = areaDfs(board, i - 1, j, result)
+            result = areaDfs(board, i, j - 1, result)
         }
 
         return result
     }
+
+
+    /**
+     * 130. 被围绕的区域
+     *
+     * 边界上的 O 要特殊处理，只要把边界上的 O 特殊处理了，那么剩下的 O 替换成 X 就可以了。问题转化为，如何寻找和边界联通的 O。
+     *
+     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
+     * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
+     *
+     * @param board
+     */
+    fun solve(board: Array<CharArray>) {
+        if (board.isEmpty()) return
+
+        val m = board.size
+        val n = board[0].size
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                // 1 从边缘开始 dfs 搜索 O，都替换为 #
+                val isEdge = i == 0 || j == 0 || i == m - 1 || j == n - 1
+                if (isEdge && board[i][j] == 'O') {
+                    edgeDfs(board, i, j)
+                }
+            }
+        }
+
+        // 2 待搜索结束之后
+        for (i in 0 until m) {
+            for (j in 0 until n) {
+                // 2.1 遇到 O 替换为 X（和边界不连通的 O）
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X'
+                }
+                // 2.2 遇到 #，替换回 O，表示和边界连通的 O
+                if (board[i][j] == '#') {
+                    board[i][j] = 'O'
+                }
+            }
+        }
+    }
+
+    fun edgeDfs(board: Array<CharArray>, i: Int, j: Int) {
+        if (i >= 0 && i < board.size && j >= 0 && j < board[0].size && board[i][j] == 'O') {
+            board[i][j] = '#'
+            edgeDfs(board, i - 1, j) // 上
+            edgeDfs(board, i + 1, j) // 下
+            edgeDfs(board, i, j - 1) // 左
+            edgeDfs(board, i, j + 1) // 右
+        }
+
+        // board[i][j] == '#' 说明已经搜索过了.
+    }
+
 
     /**
      * 547. 朋友圈——方法2：深度优先遍历DFS
@@ -304,6 +368,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n^2)，整个矩阵都要被遍历，大小为n^2；
      * 空间复杂度：O(n)，visited数组的大小。
      *
+     * https://leetcode-cn.com/problems/number-of-provinces/solution/547-peng-you-quan-by-chen-li-guan/
      * @param M
      * @return
      */
@@ -338,6 +403,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n^2)，整个矩阵都要被遍历，大小为n^2；
      * 空间复杂度：O(n)，visited数组的大小。
      *
+     * https://leetcode-cn.com/problems/number-of-provinces/solution/547-peng-you-quan-by-chen-li-guan/
      * @param M
      * @return
      */

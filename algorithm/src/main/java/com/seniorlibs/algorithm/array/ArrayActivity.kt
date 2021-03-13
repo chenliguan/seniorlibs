@@ -74,8 +74,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             LogUtils.d(TAG, "18. 四数之和1：${fourSum1(nums, 12)}")
         }
         R.id.btn_merge -> {
-            val nums1: IntArray = intArrayOf(1, 2, 3, 5, 6)
-            val nums2: IntArray = intArrayOf(1, 2, 6)
+            val nums1: IntArray = intArrayOf(1, 2, 3, 0, 0, 0)
+            val nums2: IntArray = intArrayOf(2, 5, 6)
             LogUtils.d(TAG, "88. 合并两个有序数组：${merge(nums1, 3, nums2,3)}")
         }
         else -> {
@@ -465,8 +465,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 88. 合并两个有序数组
-     * 思路：设置指针 len1 和 len2 分别指向 nums1 和 nums2 的有数字尾部，从尾部值开始比较遍历，同时设置指针 len 指向 nums1 的最末尾，每次遍历比较值大小之后
+     * 88. 合并两个有序数组  方法： 双指针 / 从后往前
+     * 思路：设置指针 len1 和 len2 分别指向 nums1 和 nums2 的有数字尾部，从尾部值开始比较遍历，
+     *       同时设置指针 len 指向 nums1 的最末尾，每次遍历比较值大小之后。
      *       因为 nums1 的空间都集中在后面，所以从后向前处理排序的数据会更好，节省空间
      *
      * 时间复杂度：O(m+n)
@@ -479,16 +480,27 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      */
     fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int) {
-        var len1 = m - 1
-        var len2 = n - 1
-        var len = m + n - 1
+        var p1 = m - 1
+        var p2 = n - 1
+        var p3 = m + n - 1
 
-        while (len1 >= 0 && len2 >= 0) {
-            // 注意--符号在后面，表示先进行计算再减1，这种缩写缩短了代码
-            nums1[len--] = if (nums1[len1] > nums2[len2]) nums1[len1--] else nums2[len2--]
+        /**
+          p1:nums1有效元素尾部；p2:nums2尾部；p3:最终数组尾部
+
+          1、当 p1>=0 时，nums1[p1] 和 nums2[p2]对比
+           （1）nums1[p1]大，将nums2[p1]放入p3位置，p1--,p3--
+           （2）nums2[p2]大于等于，将nums2[p2]放入p3位置，p2--,p3--
+
+          2、当 p1<0 时，将nums[p2]放入p3位置，p2--、p3--
+
+          3、循环结束条件：p2 < 0
+         */
+        while (p2 >= 0) {
+            if (p1 >= 0 && nums1[p1] > nums2[p2]) {
+                nums1[p3--] = nums1[p1--]
+            } else {
+                nums1[p3--] = nums2[p2--]
+            }
         }
-
-        // 表示将nums2数组剩余部分拷贝到nums1数组中：从下标0位置开始，长度为len2+1
-        System.arraycopy(nums2, 0, nums1, 0, len2 + 1)
     }
 }
