@@ -1,4 +1,4 @@
-package com.read.kotlinlib.memory;
+package com.read.kotlinlib.memory.listener;
 
 /**
  * Author: chen

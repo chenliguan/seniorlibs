@@ -7,8 +7,9 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.read.kotlinlib.R
-import com.read.kotlinlib.memory.CallBackManager.addCallBack
-import com.read.kotlinlib.memory.CallBackManager.removeCallBack
+import com.read.kotlinlib.memory.listener.CallBack
+import com.read.kotlinlib.memory.listener.CallBackManager.addCallBack
+import com.read.kotlinlib.memory.listener.CallBackManager.removeCallBack
 
 /**
  * Author: chen
@@ -18,7 +19,8 @@ import com.read.kotlinlib.memory.CallBackManager.removeCallBack
  * Modify:
  * Description: 模拟静态变量引起的内存泄露
  */
-class MemoryLeakActivity : AppCompatActivity(), CallBack {
+class MemoryLeakActivity : AppCompatActivity(),
+    CallBack {
 
     companion object {
 
