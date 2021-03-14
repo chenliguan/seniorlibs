@@ -1,17 +1,24 @@
 package com.seniorlibs.baselib;
 
 import android.app.Application;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
+import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.seniorlibs.baselib.hook.ImageHook;
 import com.seniorlibs.baselib.utils.DebugUtils;
+import com.seniorlibs.baselib.utils.LogUtils;
 
 import java.io.File;
 
-import io.reactivex.exceptions.OnErrorNotImplementedException;
+import de.robv.android.xposed.DexposedBridge;
+import de.robv.android.xposed.XC_MethodHook;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -25,8 +32,15 @@ import io.reactivex.plugins.RxJavaPlugins;
  */
 public class BaseApplication extends Application {
 
+    public static final String TAG = "BaseApplication";
+
     private static final int MEMORY_SIZE = 5 * 1024 * 1024;
     private static final int DISK_SIZE = 20 * 1024 * 1024;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+    }
 
     @Override
     public void onCreate() {
@@ -61,5 +75,16 @@ public class BaseApplication extends Application {
                 }
             });
         }
+
+        // 钩住所有构造函数
+        DexposedBridge.hookAllConstructors(ImageView.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+                // 查找挂钩方法
+                DexposedBridge.findAndHookMethod(ImageView.class, "setImageBitmap", Bitmap.class, new ImageHook());
+                DexposedBridge.findAndHookMethod(ImageView.class, "setImageDrawable", Bitmap.class, new ImageHook());
+            }
+        });
     }
 }

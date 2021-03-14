@@ -19,8 +19,7 @@ import com.read.kotlinlib.memory.listener.CallBackManager.removeCallBack
  * Modify:
  * Description: 模拟静态变量引起的内存泄露
  */
-class MemoryLeakActivity : AppCompatActivity(),
-    CallBack {
+class MemoryLeakActivity : AppCompatActivity(), CallBack {
 
     companion object {
 

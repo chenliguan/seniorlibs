@@ -100,6 +100,9 @@ dependencies {
     api rootProject.dependence.lifecycle_livedata
     api rootProject.dependence.fragment
 
+    // epic
+    api rootProject.dependence.epic
+
     // 功能
     api rootProject.dependence.mmkv
     api rootProject.dependence.multidex

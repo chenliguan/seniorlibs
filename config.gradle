@@ -75,6 +75,9 @@ ext {
             multidex              : "com.android.support:multidex:2.0.0",
             leakcanary            : "com.squareup.leakcanary:leakcanary-android:2.6",
 
+            // hook
+            epic                  : "me.weishu:epic:0.8.1-c",
+
             // test
             'test_junit'          : 'androidx.test.ext:junit:1.1.0',
             'test_runner'         : 'androidx.test:runner:1.2.0',
