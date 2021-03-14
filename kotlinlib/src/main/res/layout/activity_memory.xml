@@ -32,4 +32,32 @@
         android:onClick="testHandlerLeak"
         android:text="模拟非静态 Handler 引起的内存泄露"
         android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="compressBitmap"
+        android:text="修改图片加载的 Config，压缩 Bitmap 内存大小"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="bitmapPool"
+        android:text="Bitmap 复用"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="imageCache"
+        android:text="Bitmap 缓存"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="bitmapRegion"
+        android:text="BitmapRegionDecoder 图片分片显示"
+        android:textAllCaps="false"/>
 </LinearLayout>

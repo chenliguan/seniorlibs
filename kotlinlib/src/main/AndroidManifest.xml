@@ -37,6 +37,15 @@
         <activity android:name=".memory.ThreadLeakActivity" />
 
         <activity android:name=".memory.HandlerLeakActivity" />
+
+        <activity android:name=".memory.BitmapActivity" />
+
+        <activity android:name=".memory.BitmapPoolActivity" />
+
+        <activity android:name=".memory.ImageCacheActivity" />
+
+        <activity android:name=".memory.BitmapRegionActivity" />
+
     </application>
 
 </manifest>

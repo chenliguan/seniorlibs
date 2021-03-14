@@ -68,4 +68,40 @@ class MemoryActivity : AppCompatActivity() {
     fun testHandlerLeak(view: View?) {
         HandlerLeakActivity.actionStart(this)
     }
+
+    /**
+     * 修改图片加载的 Config，压缩 Bitmap 内存大小
+     *
+     * @param view
+     */
+    fun compressBitmap(view: View?) {
+        BitmapActivity.actionStart(this)
+    }
+
+    /**
+     * Bitmap 复用
+     *
+     * @param view
+     */
+    fun bitmapPool(view: View?) {
+        BitmapPoolActivity.actionStart(this)
+    }
+
+    /**
+     * Bitmap 缓存
+     *
+     * @param view
+     */
+    fun imageCache(view: View?) {
+        ImageCacheActivity.actionStart(this)
+    }
+
+    /**
+     * BitmapRegionDecoder 图片分片显示
+     *
+     * @param view
+     */
+    fun bitmapRegion(view: View?) {
+        BitmapRegionActivity.actionStart(this)
+    }
 }
