@@ -175,29 +175,36 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 1. 两数之和
+     * 核心思想：让时间复杂度下降，使用空间换时间，通过一个 HashMap 记录 元素值->索引 的映射，减少时间复杂度
      *
      * 时间复杂度：O(n)，把包含有n个元素的列表遍历两次，由于哈希表将查找时间缩短到O(1) ，所以时间复杂度为O(n)。
      * 空间复杂度：O(n)，所需的额外空间取决于哈希表中存储的元素数量，该表中存储了n个元素。
      *
+     * https://leetcode-cn.com/problems/two-sum/solution/1liang-shu-zhi-he-by-chen-li-guan/
      * @param nums
      * @param target
      * @return
      */
     private fun twoSum(nums: IntArray, target: Int): IntArray {
-        val res = mutableListOf<Int>()
+        val n = nums.size
         val map: MutableMap<Int, Int> = mutableMapOf()
 
-        for (i in nums.indices) {
-            val key = target - nums[i]  // 1.采用目标值-当前值=另一个值，然后在表中查这个值
-            if (map.containsKey(key)) {     // 2.回过头来检查表中是否已经存在当前元素所对应的目标元素，有就返回，没有走3
-                res.add(map.getValue(key))
-                res.add(i)
-            } else {
-                map[nums[i]] = i    // 3.将元素插入到表中：key是数值，value是下标
+        // 1.将元素映射添加到 map 中：key 是数值，value 是下标
+        for (i in 0 until n) {
+            map[nums[i]] = i
+        }
+
+        for (i in 0 until n) {
+            // 2.采用目标值-当前值=另一个值，然后在 map 中查这个值
+            val other = target - nums[i]
+
+            // 3.如果表中存在 other，且不是 nums[i] 本身
+            if (map.containsKey(other) && map[other] != i) {
+                return intArrayOf(i, map.getValue(other))
             }
         }
 
-        return res.toIntArray()
+        return intArrayOf()
     }
 
     /**
