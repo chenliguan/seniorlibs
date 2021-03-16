@@ -51,13 +51,8 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                val grid = arrayOf(
-                    charArrayOf('X','X','X','X'),
-                    charArrayOf('X','O','O','X'),
-                    charArrayOf('X','X','O','X'),
-                    charArrayOf('X','O','X','X')
-                )
-                LogUtils.e(TAG, "130. 被围绕的区域——方法一：深度优先遍历DFS：${solve(grid)}")
+                val nums: IntArray = intArrayOf(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)
+                LogUtils.d(TAG, "42. 接雨水：${trap(nums)}")
             }
             else -> {
             }
@@ -66,52 +61,40 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 130. 被围绕的区域
+     * 42. 接雨水
      *
-     * 边界上的 O 要特殊处理，只要把边界上的 O 特殊处理了，那么剩下的 O 替换成 X 就可以了。问题转化为，如何寻找和边界联通的 O。
+     * 时间复杂度： O(n)。
+     * 空间复杂度： O(1)。
      *
-     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
-     *
-     * @param board
+     * https://leetcode-cn.com/problems/trapping-rain-water/solution/42-jie-yu-shui-by-chen-li-guan-0dsm/
+     * @param height
+     * @return
      */
-    fun solve(board: Array<CharArray>) {
-        if (board.isEmpty()) return
+    fun trap(height: IntArray): Int {
+        if (height.isEmpty()) return 0
 
-        val m = board.size
-        val n = board[0].size
+        val n = height.size
+        var left = 0
+        var right = n - 1
+        var res = 0
 
-        for (i in 0 until m) {
-            for (j in 0 until n) {
-                val isEdge = (i == 0 || j == 0 || i == m - 1 || j == n - 1)
-                if (isEdge && board[i][j] == 'O') {
-                    dfs(board, i, j)
-                }
+        var l_max = height[0]
+        var r_max = height[n - 1]
+
+        while (left < right) {
+            l_max = Math.max(l_max, height[left])
+            r_max = Math.max(r_max, height[right])
+
+            if (l_max < r_max) {
+                res += l_max - height[left]
+                left++
+            } else {
+                res += r_max - height[right]
+                right--
             }
         }
 
-        for (i in 0 until m) {
-            for (j in 0 until n) {
-                if (board[i][j] == 'O') {
-                    board[i][j] = 'X'
-                }
-
-                if (board[i][j] == '#') {
-                    board[i][j] = 'O'
-                }
-            }
-        }
-
-    }
-
-    private fun dfs(board: Array<CharArray>, i: Int, j: Int) {
-        if (i >= 0 && j >= 0 && i <= board.size - 1 && j <= board[0].size - 1 && board[i][j] == 'O') {
-            board[i][j] = '#'
-            dfs(board, i - 1, j)
-            dfs(board, i + 1, j)
-            dfs(board, i, j - 1)
-            dfs(board, i, j + 1)
-        }
+        return res
     }
 
 }

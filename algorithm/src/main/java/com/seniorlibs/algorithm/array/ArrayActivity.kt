@@ -35,6 +35,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_remove_duplicates).setOnClickListener(this)
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_area).setOnClickListener(this)
+        findViewById<View>(R.id.btn_trap).setOnClickListener(this)
         findViewById<View>(R.id.btn_two_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
@@ -56,8 +57,11 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_max_area -> {
             val nums: IntArray = intArrayOf(1, 8, 6, 2, 5, 4, 8, 3, 7)
-            // 11. 盛最多水的容器
             LogUtils.d(TAG, "11. 盛最多水的容器：${maxArea(nums)}")
+        }
+        R.id.btn_trap -> {
+            val nums: IntArray = intArrayOf(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)
+            LogUtils.d(TAG, "42. 接雨水：${trap(nums)}")
         }
         R.id.btn_two_sum -> {
             val sum = twoSum(intArrayOf(2, 11, 15, 7), 9).asList().toString()
@@ -76,7 +80,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_merge -> {
             val nums1: IntArray = intArrayOf(1, 2, 3, 0, 0, 0)
             val nums2: IntArray = intArrayOf(2, 5, 6)
-            LogUtils.d(TAG, "88. 合并两个有序数组：${merge(nums1, 3, nums2,3)}")
+            LogUtils.d(TAG, "88. 合并两个有序数组：${merge(nums1, 3, nums2, 3)}")
         }
         else -> {
         }
@@ -85,7 +89,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     private fun initData() {
 
     }
-
 
 
     /**
@@ -174,6 +177,46 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * 42. 接雨水
+     *
+     * 时间复杂度： O(n)。
+     * 空间复杂度： O(1)。
+     *
+     * https://leetcode-cn.com/problems/trapping-rain-water/solution/42-jie-yu-shui-by-chen-li-guan-0dsm/
+     * @param height
+     * @return
+     */
+    fun trap(height: IntArray): Int {
+        if (height.isEmpty()) return 0
+
+        val n: Int = height.size
+        var left = 0
+        var right = n - 1
+        var res = 0
+
+        // l_max是height[0..left]中最高柱子的高度，r_max是height[right..n-1]的最高柱子的高度
+        var l_max = height[0]
+        var r_max = height[n - 1]
+
+        while (left <= right) {
+            l_max = Math.max(l_max, height[left])
+            r_max = Math.max(r_max, height[right])
+
+            // res += min(l_max, r_max) - height[i]
+            if (l_max < r_max) {
+                // height[left] 只和 l_max 有关
+                res += l_max - height[left]
+                left++
+            } else {
+                res += r_max - height[right]
+                right--
+            }
+        }
+        return res
+    }
+
+
+    /**
      * 1. 两数之和
      * 核心思想：让时间复杂度下降，使用空间换时间，通过一个 HashMap 记录 元素值->索引 的映射，减少时间复杂度
      *
@@ -239,18 +282,22 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 when {
                     sum < 0 -> {
                         /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                        while (i < j && nums[i] == nums[++i]) {}
+                        while (i < j && nums[i] == nums[++i]) {
+                        }
                     }
                     sum > 0 -> {
                         /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                        while (i < j && nums[j] == nums[--j]) {}
+                        while (i < j && nums[j] == nums[--j]) {
+                        }
                     }
                     sum == 0 -> {
                         /* 记录组合[k, i, j]到list */
                         res.add(mutableListOf(nums[k], nums[i], nums[j]))
                         /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
-                        while (i < j && nums[i] == nums[++i]) {}
-                        while (i < j && nums[j] == nums[--j]) {}
+                        while (i < j && nums[i] == nums[++i]) {
+                        }
+                        while (i < j && nums[j] == nums[--j]) {
+                        }
                     }
 
                 }
@@ -304,11 +351,13 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 when {
                     sum < 0 -> {
                         /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                        while (i < j && nums[i] == nums[++i]) {}
+                        while (i < j && nums[i] == nums[++i]) {
+                        }
                     }
                     sum > 0 -> {
                         /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                        while (i < j && nums[j] == nums[--j]) { }
+                        while (i < j && nums[j] == nums[--j]) {
+                        }
                     }
                     sum == 0 -> {
                         /* 记录组合[k, i, j]到list */
@@ -364,18 +413,22 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                     when {
                         sum < target -> {
                             /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                            while (i < j && nums[i] == nums[++i]) {}
+                            while (i < j && nums[i] == nums[++i]) {
+                            }
                         }
                         sum > target -> {
                             /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                            while (i < j && nums[j] == nums[--j]) {}
+                            while (i < j && nums[j] == nums[--j]) {
+                            }
                         }
                         sum == target -> {
                             /* 记录组合[f, k, i, j]到list */
                             res.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))
                             /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
-                            while (i < j && nums[i] == nums[++i]) {}
-                            while (i < j && nums[j] == nums[--j]) {}
+                            while (i < j && nums[i] == nums[++i]) {
+                            }
+                            while (i < j && nums[j] == nums[--j]) {
+                            }
                         }
                     }
                 }
@@ -492,15 +545,15 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         var p3 = m + n - 1
 
         /**
-          p1:nums1有效元素尾部；p2:nums2尾部；p3:最终数组尾部
+        p1:nums1有效元素尾部；p2:nums2尾部；p3:最终数组尾部
 
-          1、当 p1>=0 时，nums1[p1] 和 nums2[p2]对比
-           （1）nums1[p1]大，将nums2[p1]放入p3位置，p1--,p3--
-           （2）nums2[p2]大于等于，将nums2[p2]放入p3位置，p2--,p3--
+        1、当 p1>=0 时，nums1[p1] 和 nums2[p2]对比
+        （1）nums1[p1]大，将nums2[p1]放入p3位置，p1--,p3--
+        （2）nums2[p2]大于等于，将nums2[p2]放入p3位置，p2--,p3--
 
-          2、当 p1<0 时，将nums[p2]放入p3位置，p2--、p3--
+        2、当 p1<0 时，将nums[p2]放入p3位置，p2--、p3--
 
-          3、循环结束条件：p2 < 0
+        3、循环结束条件：p2 < 0
          */
         while (p2 >= 0) {
             if (p1 >= 0 && nums1[p1] > nums2[p2]) {
