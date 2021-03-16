@@ -70,6 +70,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "70. 爬楼梯4：${fun4(5)}")
                 LogUtils.e(TAG, "70. 爬楼梯5：${fun5(5)}")
             }
+            R.id.btn_min_cost_climb_stairs -> {
+                LogUtils.e(TAG, "746. 使用最小花费爬楼梯：${minCostClimbingStairs(intArrayOf(1, 100, 1, 1, 1, 100, 1, 1, 100, 1))}")
+            }
             R.id.btn_fib -> {
                 LogUtils.e(TAG, "509. 斐波那契数：${fib1(5)}")
                 LogUtils.e(TAG, "509. 斐波那契数：${fib2(5)}")
@@ -249,6 +252,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return dp[n]
     }
 
+
     /**
      * 70. 爬楼梯  方法四：动态规划优化(自底向上)，斐波那契数。数组当前值是依赖他前面两个值的（前两个除外），我们只需要用两个临时变量即可，不需要申请一个数组
      *
@@ -273,6 +277,36 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return sum
+    }
+
+
+    /**
+     * 746. 使用最小花费爬楼梯
+     *
+     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
+     * 空间复杂度：O(n)。用了n空间的数组辅助，空间复杂度为。
+     *
+     * 注意两点：第i级台阶是第i-1级台阶的阶梯顶部。
+     *          踏上第i级台阶花费cost[i]，直接迈一大步跨过而不踏上去则不用花费。
+     *          如果数组长度为 n，那么楼顶就在下标为 n，注意 dp 数组开 n + 1 个空间。
+     *
+     * https://leetcode-cn.com/problems/min-cost-climbing-stairs/solution/746-shi-yong-zui-xiao-hua-fei-pa-lou-ti-69t5n/
+     * @param cost
+     * @return
+     */
+    fun minCostClimbingStairs(cost: IntArray): Int {
+        val n = cost.size
+
+        val dp = IntArray(n + 1)
+        // base case
+        dp[1] = 0
+        dp[2] = Math.min(cost[0], cost[1])
+
+        // dp方程：参考爬楼梯 dp[i] = dp[i - 1] + dp[i - 2]
+        for (i in 3 until n + 1) {
+            dp[i] = Math.min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2])
+        }
+        return dp[n]
     }
 
 
