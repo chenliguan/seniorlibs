@@ -236,11 +236,12 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fun4(n: Int): Int {
-        if (n <= 1) return 1
+        if (n == 1) return 1
         if (n == 2) return 2
 
         val dp = IntArray(n + 1)
         // base case
+        // dp[0] = 1
         dp[1] = 1
         dp[2] = 2
 
@@ -263,7 +264,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fun5(n: Int): Int {
-        if (n <= 1) return 1
+        if (n == 1) return 1
         if (n == 2) return 2
 
         var first = 1
@@ -282,13 +283,15 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 746. 使用最小花费爬楼梯
+     * 思想：dp[i]表示的是跳到第i个台阶所需要的的最小花费。如果要跳到第i个台阶，可以从第i-1个台阶跳上来，
+     *       也可以从第i-2个台阶跳上来，哪个花费最小，我们就从哪个台阶跳上来。
+     *
+     * 注意：1.踏上第i级台阶花费cost[i]，直接迈一大步跨过而不踏上去则不用花费。
+     *      2. dp 开 n + 1 个空间，所以 dp 的范围是从 1 -> n-1，cost 的范围是从 0 -> n。dp[1]->cost[0]，dp[2]->cost[0].cost[1]，dp[n]->cost[n-1]
+     *
      *
      * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
      * 空间复杂度：O(n)。用了n空间的数组辅助，空间复杂度为。
-     *
-     * 注意两点：第i级台阶是第i-1级台阶的阶梯顶部。
-     *          踏上第i级台阶花费cost[i]，直接迈一大步跨过而不踏上去则不用花费。
-     *          如果数组长度为 n，那么楼顶就在下标为 n，注意 dp 数组开 n + 1 个空间。
      *
      * https://leetcode-cn.com/problems/min-cost-climbing-stairs/solution/746-shi-yong-zui-xiao-hua-fei-pa-lou-ti-69t5n/
      * @param cost
@@ -306,6 +309,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 3 until n + 1) {
             dp[i] = Math.min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2])
         }
+
         return dp[n]
     }
 
