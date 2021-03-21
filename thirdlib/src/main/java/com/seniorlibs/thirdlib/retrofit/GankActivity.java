@@ -1,20 +1,18 @@
 package com.seniorlibs.thirdlib.retrofit;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.seniorlibs.thirdlib.R;
 
@@ -30,7 +28,7 @@ import io.reactivex.functions.Consumer;
  * Modify:
  * Description: Retrofit + RxJava ＋ OkHttp测试
  */
-public class GankActivity extends Activity {
+public class GankActivity extends AppCompatActivity {
 
     private GankLoader mGankLoader;
     private GanKAdapter mAdapter;
