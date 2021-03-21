@@ -10,13 +10,15 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seniorlibs.baselib.utils.LogUtils;
 import com.seniorlibs.view.R;
 
 /**
  * 测试测量结果
  */
-public class TestActivity extends Activity implements OnClickListener {
+public class TestActivity extends AppCompatActivity implements OnClickListener {
 
     private static final String TAG = "NotificationTestActivity";
 

@@ -1,6 +1,5 @@
 package com.seniorlibs.view.activity;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +13,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seniorlibs.view.R;
 import com.seniorlibs.view.widget.HorizontalScrollViewEx;
 import com.seniorlibs.view.utils.MyUtils;
 
 import java.util.ArrayList;
 
-public class ScrollViewExActivity extends Activity {
+public class ScrollViewExActivity extends AppCompatActivity {
     private static final String TAG = "ScrollViewExActivity";
 
     @Override

@@ -1,6 +1,5 @@
 package com.seniorlibs.view.remoteviews;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +9,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seniorlibs.view.R;
 import com.seniorlibs.view.utils.MyConstants;
 
-public class RemoteViewsMainActivity extends Activity {
+public class RemoteViewsMainActivity extends AppCompatActivity {
 
     private static final String TAG = "RemoteViewsMainActivity";
 

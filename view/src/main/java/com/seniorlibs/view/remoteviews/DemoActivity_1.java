@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seniorlibs.view.R;
 
-public class DemoActivity_1 extends Activity {
+public class DemoActivity_1 extends AppCompatActivity {
     private static final String TAG = "DemoActivity_1";
 
 

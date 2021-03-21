@@ -21,9 +21,11 @@ import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seniorlibs.view.R;
 
-public class NotificationTestActivity extends Activity implements OnClickListener {
+public class NotificationTestActivity extends AppCompatActivity implements OnClickListener {
 
     private static final String TAG = "NotificationActivity";
 

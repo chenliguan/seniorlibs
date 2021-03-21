@@ -1,7 +1,8 @@
 package com.seniorlibs.view.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.seniorlibs.view.R;
 import com.seniorlibs.view.widget.PieImageView;
@@ -9,7 +10,7 @@ import com.seniorlibs.view.widget.PieImageView;
 /**
  * 测试自定义view
  */
-public class CustomViewActivity extends Activity {
+public class CustomViewActivity extends AppCompatActivity {
 
     private static final String TAG = "CustomViewActivity";
 

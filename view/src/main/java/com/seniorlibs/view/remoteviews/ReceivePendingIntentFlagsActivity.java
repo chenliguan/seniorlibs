@@ -1,9 +1,7 @@
 package com.seniorlibs.view.remoteviews;
 
-import android.app.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.seniorlibs.view.R;
@@ -11,7 +9,7 @@ import com.seniorlibs.view.R;
 /**
  * 接受测试PendingIntent的flags参数
  */
-public class ReceivePendingIntentFlagsActivity extends Activity {
+public class ReceivePendingIntentFlagsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

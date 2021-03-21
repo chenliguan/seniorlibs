@@ -10,10 +10,12 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seniorlibs.view.R;
 import com.seniorlibs.view.utils.MyConstants;
 
-public class DemoActivity_2 extends Activity {
+public class DemoActivity_2 extends AppCompatActivity {
     private static final String TAG = "DemoActivity_2";
 
     @Override
