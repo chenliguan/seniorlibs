@@ -13,6 +13,7 @@ import com.seniorlibs.thread.collection.CollectionActivity
 import com.seniorlibs.thread.handler.HandlerActivity
 import com.seniorlibs.thread.synchronize.SynchronizedTest
 import com.seniorlibs.thread.threadpool.ThreadPoolManagerActivity
+import com.seniorlibs.thread.wait.WaitTest
 
 /**
  * Author: chen
@@ -136,5 +137,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun testDeadLock(view: View) {
         DeadlockTest.deadLockTest()
+    }
+
+    /**
+     * 测试 wait、notify、notifyAll
+     */
+    fun testWait(view: View) {
+        WaitTest.testNotifyNotifyAll()
     }
 }

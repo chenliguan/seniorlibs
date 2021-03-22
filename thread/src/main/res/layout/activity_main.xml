@@ -68,5 +68,11 @@
             style="@style/BaseMatchWrap"
             android:onClick="testDeadLock"
             android:text="测试死锁" />
+
+        <Button
+            android:id="@+id/test_wait"
+            style="@style/BaseMatchWrap"
+            android:onClick="testWait"
+            android:text="测试 wait、notify、notifyAll" />
     </LinearLayout>
 </ScrollView>
