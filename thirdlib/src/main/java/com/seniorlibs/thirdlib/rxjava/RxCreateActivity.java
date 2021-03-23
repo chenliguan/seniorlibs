@@ -35,6 +35,47 @@ public class RxCreateActivity extends AppCompatActivity {
 
     private static final String TAG = " RxCreateActivity";
 
+
+    /*
+
+     通过观察者+装饰者模式，每调动一次操作符，那么就会进行一层被观察者的包装；根据需要对观察者包装。
+
+     按调用顺序往下对每个被观察者做一层包装，调用 subscribe 方法时，往上执行每层被观察者并对观察者包装。
+
+     因为 subscribeOn 是让上层被观察者的 source.subscribe(observer) 执行在指定线程，所以只有最上层被观察者切换线程有效，其余的切换线程无效。
+
+     当执行最上层被观察者包装类 ObservableCreate 时，实际是调用了它的 subscribeActual 方法，订阅了 观察者包装类 CreateEmitter，
+     然后，调用最上层被观察者 Observable0nSubscribe 的 subscribe 方法，开始调用下层观察者包装类 emitter 的 onNext 方法发送数据流，往下回调每层的观察者包装类。
+
+     因为 observerOn 是让下层观察者在回调方法中切换线程，所以只有最下层观察者切换线程有效。
+
+     */
+
+
+    /*
+     首先，Observable.create(source:ObservableOnSubscribe) 创建 observableCreate(source) 和 observer 对象；
+
+     然后，subscribe() 订阅时，实际是调用了 observableCreate(source) 的 subscribeActual 方法，
+     内部通过 source.subscribe(emitter) 给 上游的被观察者 添加订阅，订阅了 下游观察者包装类。
+
+     最后，订阅后调用下游观察者包装类 emitter 的 onNext 方法发送数据，实际是调用 下游观察者 的 onNext 方法，最终是在 下游观察者 接收到数据。
+
+     **/
+
+    /*
+
+     首先，Observable.create(source:ObservableOnSubscribe) 创建 observableCreate(source) 和 observer ，以及 observableObserveOn(source, scheduler) 对象。
+
+     然后，切换下游观察者线程时调用了 observableObserveOn(source, scheduler) 的 subscribeActual 方法，
+     通过 source.subscribe(observeOnObserver(observer, w) 给上游的 ObservableOnSubscribe 添加订阅，订阅了 下游包装了线程切换的观察者。
+
+     接着，订阅时调用了 observableCreate(source) 的 subscribeActual 方法，
+     通过 source.subscribe(emitter) 给上游的 ObservableOnSubscribe 添加订阅，订阅了包装了 下游观察者 的 发射器。
+
+     最后，调用发射器 emitter 的 onNext 方法发送数据，实际是调用 下游包装了线程切换的观察者 的 onNext 方法->再在方法内切换 下游观察者 的 onNext 方法执行的线程，最终是在 下游观察者 接收到数据。
+
+     **/
+
     public static void actionStart(Context context) {
         if (context == null) {
             return;
