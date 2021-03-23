@@ -287,7 +287,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      *       也可以从第i-2个台阶跳上来，哪个花费最小，我们就从哪个台阶跳上来。
      *
      * 注意：1.踏上第i级台阶花费cost[i]，直接迈一大步跨过而不踏上去则不用花费。
-     *      2. dp 开 n + 1 个空间，所以 dp 的范围是从 1 -> n-1，cost 的范围是从 0 -> n。dp[1]->cost[0]，dp[2]->cost[0].cost[1]，dp[n]->cost[n-1]
+     *      2. dp 开 n + 1 个空间，所以 dp 的范围是从 1 -> n-1，cost 的范围是从 0 -> n。dp[1]->cost[0]，dp[2]->cost[0]...cost[1]，dp[n]->cost[n-2]...cost[n-1]
      *
      *
      * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
