@@ -49,6 +49,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_max_profit_4).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_5).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_6).setOnClickListener(this)
+        findViewById<View>(R.id.btn_can_jump).setOnClickListener(this)
+        findViewById<View>(R.id.btn_jump).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -116,6 +118,12 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                     TAG,
                     "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
                 )
+            }
+            R.id.btn_can_jump -> {
+                LogUtils.e(TAG, "55. 跳跃游戏：${canJump(intArrayOf(2, 3, 1, 1, 4))}")
+            }
+            R.id.btn_jump -> {
+                LogUtils.e(TAG, "45. 跳跃游戏 ||：${jump(intArrayOf(2, 3, 1, 1, 4))}")
             }
             else -> {
             }
@@ -1081,5 +1089,57 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // return dp[prices.size - 1][0]
         return dp_i_0
+    }
+
+    /**
+     * 55. 跳跃游戏
+     * 思想：跳几步无所谓，关键在于可跳的覆盖范围。问题就转化为跳跃覆盖范围究竟可不可以覆盖到终点！
+     * 贪心算法局部最优解：每次取最大跳跃步数（取最大覆盖范围），最后得到整体最大覆盖范围，看是否能到终点。
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     * @param nums
+     * @return
+     */
+    fun canJump(nums: IntArray): Boolean {
+        val n = nums.size
+        var cover = 0
+        for (i in 0 until n - 1) {
+            // 不断计算可以覆盖的最大范围
+            cover = Math.max(cover, i + nums[i])
+            // 可能碰到了 0，卡住跳不动了 [0,2,3]
+            if (cover <= i) return false
+        }
+        // 说明可以覆盖到终点了
+        return cover >= n - 1
+    }
+
+    /**
+     * 45. 跳跃游戏 2
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     * @param nums
+     * @return
+     */
+    fun jump(nums: IntArray) : Int {
+        val n = nums.size
+
+        // 当前覆盖的最远距离下标
+        var end = 0
+        // 总覆盖的最远距离下标
+        var cover = 0
+        // 记录了跳跃次数
+        var jumps = 0
+
+        for (i in 0 until n - 1) {
+            cover = Math.max(nums[i] + i, cover)
+            // i 等于 当前覆盖的最远距离下标时，跳跃到下一个覆盖范围，更新为当前覆盖范围
+            if (i == end) {
+                jumps++
+                end = cover
+            }
+        }
+        return jumps
     }
 }
