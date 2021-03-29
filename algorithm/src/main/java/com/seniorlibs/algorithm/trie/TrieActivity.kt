@@ -131,14 +131,16 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 79. 单词搜索  解法 dfs回溯算法
+     * 79. 单词搜索  解法 dfs 回溯算法
      *
      * 时间复杂度：O(mn*3^h)，其中m, n为网格的长度与宽度，h为字符串word的长度。在每次调用函数dfs时，
      * 除了第一次可以进入4个分支以外，其余最多会进入3个分支（每个位置只能走一次，走过的分支没法走回去）。
      * 由于单词长为h，故时间复杂度是O(3^h)，而且还要执行O(mn)次检查。然而，由于剪枝的存在，
      * 在遇到不匹配或已访问的字符时会提前退出，终止递归流程。因此，实际的时间复杂度会远远小于O(mn*3^h)。
      *
-     * 空间复杂度：O(min(h, n))。额外开辟了O(n)的数组，同时栈的深度最大为O(min(h, n))
+     * 空间复杂度：O(min(h, n))。额外开辟了O(n)的数组，同时栈的深度最大为 O(min(h, n))
+     *
+     * https://leetcode-cn.com/problems/word-search/solution/79-dan-ci-sou-suo-by-chen-li-guan/
      *
      * @param board
      * @param word
