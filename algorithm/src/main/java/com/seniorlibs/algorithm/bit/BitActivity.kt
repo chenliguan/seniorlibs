@@ -37,7 +37,8 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_hamming_weight).setOnClickListener(this)
-        findViewById<View>(R.id.btn_hamming_weight).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_power_of_two).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_the_difference).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -56,13 +57,16 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_is_power_of_two -> {
                 LogUtils.e(TAG, "231. 2的幂：" + isPowerOfTwo(4))
             }
+            R.id.btn_find_the_difference -> {
+                LogUtils.e(TAG, "389. 找不同：" + findTheDifference("abcd", "abcde"))
+            }
             else -> {
             }
         }
     }
 
     /**
-     * 191. 位1的个  方法1：循环和位移动
+     * 191. 位1的个  方法2：循环和位移动
      *
      * 思路：遍历数字的 32 位。如果某一位是 1 ，将计数器加一
      *
@@ -103,9 +107,9 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
         var sum = 0
         while (n != 0) {
             sum++
-            // 00000000000000000000001000001001 & 00000000000000000000001000001000 = 00000000000000000000001000001000
-            // 00000000000000000000001000001000 & 00000000000000000000001000000111 = 00000000000000000000001000000000
-            // 00000000000000000000001000000000 & 00000000000000000000000111111111 = 00000000000000000000000000000000
+            // 10011 & 10010 = 10010
+            // 10010 & 10001 = 10000
+            // 10000 & 01000 = 00000
             n = n and n - 1  // &
         }
         return sum
@@ -115,11 +119,12 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 231. 2的幂
      *
-     * 若 n = 2^x ，且 x 为自然数（即 n 为 2 的幂），则一定满足以下条件：
-     * 1.恒有 n & (n - 1) == 0，这是因为：
-     *  （1）n 二进制最高位为 1，其余所有位为 0；
-     *  （2）n−1 二进制最高位为 00，其余所有位为 11；
-     * 2.一定满足 n > 0。
+     * 2^0 = 0001    n  & (n - 1)    = 清零最低位的 1
+     * 2^1 = 0010  0010 & (0010 - 1) = 0010 & 0001 = 0
+     * 2^2 = 0100
+     * 2^3 = 1000
+     *
+     * https://leetcode-cn.com/problems/power-of-two/solution/231-2de-mi-by-chen-li-guan/
      *
      * 时间复杂度：O(1)
      * 空间复杂度：O(1)
@@ -129,5 +134,31 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun isPowerOfTwo(n: Int): Boolean {
         return n > 0 && n and n - 1 == 0  // &
+    }
+
+
+    /**
+     * 389. 找不同
+     *
+     * 使用异或运算可以解题主要因为异或运算有以下几个特点：
+     *     一个数和0做XOR运算等于本身：  a⊕0 = a；
+     *     一个数和其本身做XOR运算等于0：a⊕a = 0；
+     *     XOR 运算满足交换律和结合律： a⊕b⊕a = (a⊕a)⊕b = 0⊕b = b；
+     * 在以上的基础条件上，将所有数字按照顺序做抑或运算，最后剩下的结果即为唯一的数字。
+     *
+     * 时间复杂度：O(m+n)，m 为字符串 s 的长度，n 为字符串t的长度。
+     * 空间复杂度：O(m+n)。
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    private fun findTheDifference(s: String, t: String): Char {
+        var res = t[t.length - 1]
+        for (i in 0 until s.length) {
+            res = (res.toInt() xor s[i].toInt()).toChar()
+            res = (res.toInt() xor t[i].toInt()).toChar()
+        }
+        return res
     }
 }

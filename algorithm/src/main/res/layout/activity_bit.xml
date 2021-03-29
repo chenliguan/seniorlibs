@@ -17,4 +17,9 @@
         style="@style/BtnStyles"
         android:text="231. 2的幂" />
 
+    <Button
+        android:id="@+id/btn_find_the_difference"
+        style="@style/BtnStyles"
+        android:text="389. 找不同" />
+
 </LinearLayout>
