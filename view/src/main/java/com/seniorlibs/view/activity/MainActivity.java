@@ -4,20 +4,43 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
 
 import com.seniorlibs.view.R;
 import com.seniorlibs.view.recycledview.LayoutActivity;
 import com.seniorlibs.view.remoteviews.RemoteViewsMainActivity;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String TAG = "RemoteViewsMainActivity";
+
+    private Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+
+        asyncLayoutInflater();
+    }
+
+    /**
+     * 异步加载布局
+     */
+    private void asyncLayoutInflater() {
+        new AsyncLayoutInflater(this).inflate(R.layout.activity_main, null, new AsyncLayoutInflater.OnInflateFinishedListener() {
+            @Override
+            public void onInflateFinished(@NonNull View view, int i, @Nullable ViewGroup viewGroup) {
+                setContentView(view);
+                mButton = findViewById(R.id.button1);
+            }
+        });
     }
 
     /**
