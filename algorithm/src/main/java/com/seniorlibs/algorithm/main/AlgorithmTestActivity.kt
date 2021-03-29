@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
+import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.algorithm.db.DbActivity
 import com.seniorlibs.algorithm.db.DbActivity2
 import com.seniorlibs.baselib.utils.LogUtils
@@ -51,8 +52,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                val nums: IntArray = intArrayOf(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)
-                LogUtils.d(TAG, "42. 接雨水：${trap(nums)}")
+                LogUtils.d(ArrayActivity.TAG, "3. 无重复字符的最长子串：${lengthOfLongestSubstring("pwwkew")}")
             }
             else -> {
             }
@@ -61,37 +61,28 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 42. 接雨水
+     * 3. 无重复字符的最长子串
      *
-     * 时间复杂度： O(n)。
-     * 空间复杂度： O(1)。
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(n)
      *
-     * https://leetcode-cn.com/problems/trapping-rain-water/solution/42-jie-yu-shui-by-chen-li-guan-0dsm/
-     * @param height
+     * @param s
      * @return
      */
-    fun trap(height: IntArray): Int {
-        if (height.isEmpty()) return 0
+    fun lengthOfLongestSubstring(s: String): Int {
+        if (s.isEmpty()) return 0
 
-        val n = height.size
+        val map = mutableMapOf<Char, Int>()
         var left = 0
-        var right = n - 1
         var res = 0
 
-        var l_max = height[0]
-        var r_max = height[n - 1]
-
-        while (left < right) {
-            l_max = Math.max(l_max, height[left])
-            r_max = Math.max(r_max, height[right])
-
-            if (l_max < r_max) {
-                res += l_max - height[left]
-                left++
-            } else {
-                res += r_max - height[right]
-                right--
+        for (i in 0 until s.length) {
+            if (map.containsKey(s[i])) {
+                left = Math.max(left, map[s[i]]!!)
             }
+
+            map[s[i]] = i + 1
+            res = Math.max(res, i - left + 1)
         }
 
         return res

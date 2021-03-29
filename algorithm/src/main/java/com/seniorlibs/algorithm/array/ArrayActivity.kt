@@ -36,6 +36,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_area).setOnClickListener(this)
         findViewById<View>(R.id.btn_trap).setOnClickListener(this)
+        findViewById<View>(R.id.btn_length_of_longest_substring).setOnClickListener(this)
         findViewById<View>(R.id.btn_two_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
@@ -62,6 +63,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_trap -> {
             val nums: IntArray = intArrayOf(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)
             LogUtils.d(TAG, "42. 接雨水：${trap(nums)}")
+        }
+        R.id.btn_length_of_longest_substring -> {
+            LogUtils.d(TAG, "3. 无重复字符的最长子串：${lengthOfLongestSubstring("pwwkew")}")
         }
         R.id.btn_two_sum -> {
             val sum = twoSum(intArrayOf(2, 11, 15, 7), 9).asList().toString()
@@ -215,6 +219,33 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
+
+    /**
+     * 3. 无重复字符的最长子串
+     *
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(n)
+     *
+     * @param s
+     * @return
+     */
+    fun lengthOfLongestSubstring(s: String): Int {
+        if (s.isEmpty()) return 0
+
+        val map = HashMap<Char, Int?>()
+        var left = 0
+        var res = 0
+
+        for (i in 0 until s.length) {
+            if (map.containsKey(s[i])) {
+                left = Math.max(left, map[s[i]]!!)
+            }
+
+            map[s[i]] = i + 1
+            res = Math.max(res, i - left + 1)
+        }
+        return res
+    }
 
     /**
      * 1. 两数之和
