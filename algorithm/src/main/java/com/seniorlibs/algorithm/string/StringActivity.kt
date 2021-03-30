@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
-import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -477,4 +476,31 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return res.toString()
     }
 
+
+    /**
+     * 290. 单词规律
+     *
+     * 时间复杂度：O(n + m)；
+     * 空间复杂度：O(n + m)；
+     *
+     * https://leetcode-cn.com/problems/word-pattern/solution/290-dan-ci-gui-lu-by-chen-li-guan-1wz3/
+     * @param pattern
+     * @param s
+     * @return
+     */
+    fun wordPattern(pattern: String, s: String): Boolean {
+        val strings = s.split(" ").toTypedArray()
+        if (pattern.length != strings.size) {
+            return false
+        }
+
+        val hashMap: HashMap<Any, Int> = HashMap()
+        for (i in 0 until pattern.length) {
+            // 利用map.put方法返回值（key第一次put时返回null，第n次put时返回第n-1次的value）
+            if (hashMap.put(pattern[i], i) != hashMap.put(strings[i], i)) {
+                return false
+            }
+        }
+        return true
+    }
 }
