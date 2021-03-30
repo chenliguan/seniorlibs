@@ -46,4 +46,9 @@
         android:id="@+id/btn_str_str"
         style="@style/BtnStyles"
         android:text="28. 实现 strStr()" />
+
+    <Button
+        android:id="@+id/btn_word_pattern"
+        style="@style/BtnStyles"
+        android:text="290. 单词规律" />
 </LinearLayout>

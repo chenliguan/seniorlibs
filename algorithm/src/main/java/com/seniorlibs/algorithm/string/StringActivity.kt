@@ -46,6 +46,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_longest_common_prefix).setOnClickListener(this)
         findViewById<View>(R.id.btn_decode_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_str_str).setOnClickListener(this)
+        findViewById<View>(R.id.btn_word_pattern).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -83,6 +84,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
                 LogUtils.d(TAG, "28. 实现 strStr()：${strStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD")}")
 //                LogUtils.d(TAG, "28. 实现 strStr()：${strStr("aabaaabaaac", "aabaaac")}")
+            }
+            R.id.btn_word_pattern -> {
+                LogUtils.d(TAG, "290. 单词规律：${wordPattern("abba","dog cat cat dog")}")
             }
             else -> {
             }
