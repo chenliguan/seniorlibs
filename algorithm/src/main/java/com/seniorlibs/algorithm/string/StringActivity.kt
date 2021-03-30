@@ -7,6 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
+import java.lang.StringBuilder
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Author: chen
@@ -42,6 +45,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string2).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_common_prefix).setOnClickListener(this)
+        findViewById<View>(R.id.btn_decode_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_str_str).setOnClickListener(this)
     }
 
@@ -70,10 +74,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "541. 反转字符串2：${reverseStr("abcdefg", 2)}")
             }
             R.id.btn_longest_common_prefix -> {
-                LogUtils.d(
-                    TAG,
-                    "14. 最长公共前缀：${longestCommonPrefix(arrayOf("flower", "flow", "flight"))}"
-                )
+                LogUtils.d(TAG, "14. 最长公共前缀：${longestCommonPrefix(arrayOf("flower", "flow", "flight"))}")
+            }
+            R.id.btn_decode_string -> {
+                LogUtils.d(TAG, "394. 字符串解码：${decodeString("3[a2[c]]")}")
             }
             R.id.btn_str_str -> {
                 LogUtils.d(TAG, "28. 实现 strStr()：${strStr2("hello", "ll")}")
@@ -425,4 +429,52 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         }
         return next
     }
+
+
+    /**
+     * 394. 字符串解码
+     *
+     * 时间复杂度 O(N)，一次遍历 s；
+     * 空间复杂度 O(N)，辅助栈在极端情况下需要线性空间，例如 2[2[a]]。
+     *
+     * https://leetcode-cn.com/problems/decode-string/solution/394-zi-fu-chuan-jie-ma-by-chen-li-guan-jncg/
+     * @param s
+     * @return
+     */
+    fun decodeString(s: String): String? {
+        var res = StringBuilder()
+        var multi = 0
+        val stackMulti: LinkedList<Int> = LinkedList()
+        val stackRes: LinkedList<String> = LinkedList()
+
+        for (c in s.toCharArray()) {
+            when (c) {
+                '[' -> {
+                    stackMulti.addLast(multi)
+                    stackRes.addLast(res.toString())
+                    multi = 0
+                    res = StringBuilder()
+                }
+                ']' -> {
+                    val curMulti: Int = stackMulti.removeLast()
+                    // curMulti * res
+                    val curRes = StringBuilder()
+                    for (i in 0 until curMulti) {
+                        curRes.append(res)
+                    }
+                    // lastRes + (curMulti * res)
+                    val lastRes = stackRes.removeLast()
+                    res = StringBuilder(lastRes + curRes)
+                }
+                in '0'..'9' -> {
+                    multi = multi * 10 + c.toString().toInt()
+                }
+                else -> {
+                    res.append(c)
+                }
+            }
+        }
+        return res.toString()
+    }
+
 }

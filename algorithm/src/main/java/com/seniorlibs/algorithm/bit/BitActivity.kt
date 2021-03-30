@@ -154,11 +154,14 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun findTheDifference(s: String, t: String): Char {
-        var res = t[t.length - 1]
+        var res = t[t.length - 1].toInt()
+
+        // 注意：s 的长度，不是 t 的长度
         for (i in 0 until s.length) {
-            res = (res.toInt() xor s[i].toInt()).toChar()
-            res = (res.toInt() xor t[i].toInt()).toChar()
+            res = res xor s[i].toInt()
+            res = res xor t[i].toInt()
         }
-        return res
+
+        return res.toChar()
     }
 }

@@ -38,6 +38,11 @@
         android:text="14. 最长公共前缀" />
 
     <Button
+        android:id="@+id/btn_decode_string"
+        style="@style/BtnStyles"
+        android:text="394. 字符串解码" />
+
+    <Button
         android:id="@+id/btn_str_str"
         style="@style/BtnStyles"
         android:text="28. 实现 strStr()" />

@@ -88,6 +88,30 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
+
+    private fun findTheDifference(s: String, t: String): Char {
+        var res = t[t.length - 1].toInt()
+
+        for (i in 0 until s.length) {
+            res = res xor s[i].toInt()
+            res = res xor t[i].toInt()
+        }
+
+        return res.toChar()
+    }
+
+    fun hammingWeight1(n: Int): Int {
+        var n = n
+        var num = 0
+
+        while (n != 0) {
+            num++
+
+            n = n and n - 1
+        }
+
+        return num
+    }
 }
 
 
