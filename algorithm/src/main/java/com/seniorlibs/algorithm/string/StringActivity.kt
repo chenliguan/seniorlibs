@@ -493,15 +493,15 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun wordPattern(pattern: String, s: String): Boolean {
-        val strings = s.split(" ").toTypedArray()
-        if (pattern.length != strings.size) {
+        val array = s.split(" ").toTypedArray()
+        if (pattern.length != array.size) {
             return false
         }
 
-        val hashMap: HashMap<Any, Int> = HashMap()
+        val map = mutableMapOf<Any, Int>()
         for (i in 0 until pattern.length) {
             // 利用map.put方法返回值（key第一次put时返回null，第n次put时返回第n-1次的value）
-            if (hashMap.put(pattern[i], i) != hashMap.put(strings[i], i)) {
+            if (map.put(pattern[i], i) != map.put(array[i], i)) {
                 return false
             }
         }

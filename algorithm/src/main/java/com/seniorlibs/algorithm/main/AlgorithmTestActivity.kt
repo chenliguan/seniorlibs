@@ -112,6 +112,19 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
         return num
     }
+
+    fun wordPattern(pattern: String, s: String): Boolean {
+        val array = s.split(" ").toTypedArray()
+        if (array.size != pattern.length) return false
+
+        val map = mutableMapOf<Any, Int>()
+        for (i in 0 until pattern.length) {
+            if (map.put(pattern[i], i) != map.put(array[i], i)) {
+                return false
+            }
+        }
+        return true
+    }
 }
 
 

@@ -89,8 +89,8 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 快速排序     9, 8, 6, 3, 2, 4
      *
-     * 基本思路：通过一趟排序将，排定一个元素呆在了它最终应该呆的位置，将要排序的数据分割成独立的两部分，
-     *          然后递归地去排它左边的部分（比它小的值）和右边的部分（比它大的值），依次进行下去，直到数组有序；
+     * 基本思路：通过一趟排序划分数组，将排序的数据分割成独立的两部分，分在新的基准位置左右；
+     *          然后递归地去排序它左边的部分（比它小的值）和右边的部分（比它大的值），依次进行下去，直到数组有序；
      *
      * 算法思想：分而治之（分治思想），与「归并排序」不同，「快速排序」在「分」这件事情上不想「归并排序」无脑地一分为二，
      *          而是采用了 partition（划分） 的方法，因此就没有「合」的过程。
@@ -106,18 +106,21 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
     fun quickSort(array: IntArray, begin: Int, end: Int) {
         if (end <= begin) return
 
-        // pivot: 基准位置
-        val pivot = partition(array, begin, end)
+        // mark: 基准位置
+        val mark = partition(array, begin, end)
 
         // 对两个子序列左边进行快排，直到序列为空或者只有一个元素
-        quickSort(array, begin, pivot - 1)
+        quickSort(array, begin, mark - 1)
 
         // 对两个子序列右边进行快排
-        quickSort(array, pivot + 1, end)
+        quickSort(array, mark + 1, end)
     }
 
     /**
-     * 划分数组，将要排序的数据分割成独立的两部分，分在最终基准位置左右
+     * 划分数组：
+     * 定义 counter 是从 begin 到 end 元素的位置，最初以 end 作为临时基准位置；
+     * 如果存在比 end 的值小的元素，都和 counter 交换，然后+1；遍历结束以后，将 counter 和 end 元素交换，成为新的基准位置；
+     * 这样，排序的数据分割成独立的两部分，分在新的基准位置左右。
      *
      * @param array
      * @param begin
@@ -125,9 +128,9 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun partition(array: IntArray, begin: Int, end: Int): Int {
-        // counter，指从begin开始，小于end的元素的位置，此时end作为临时基准位置
+        // 定义 counter 是从 begin 到 end 元素的位置，最初以 end 作为临时基准位置
         var counter = begin
-        // 如果存在比end的值小的元素，都和counter交换，然后+1
+        // 如果存在比 end 的值小的元素，都和 counter 交换，然后+1
         for (i in begin until end) {
             if (array[i] < array[end]) {
                 val temp = array[counter]
@@ -137,12 +140,13 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        // 最后，将+1后counter 和 end元素 交换，成为新的基准位置
+        // 遍历结束以后，将+1后 counter 和 end 元素交换，成为新的基准位置
         val temp = array[end]
         array[end] = array[counter]
         array[counter] = temp
         return counter
     }
+
 
     /**
      * 归并排序（Merge Sort）  采用分治法的一个非常典型的应用
@@ -182,7 +186,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
         // 如果左边还有数据需要拷贝，把左边数组剩下的拷贝到缓存数组
         while (i <= mid) temp[k++] = array[i++]
-        // 如果右边还有数据需要拷贝，把左边数组剩下的拷贝到缓存数组
+        // 如果右边还有数据需要拷贝，把右边数组剩下的拷贝到缓存数组
         while (j <= right) temp[k++] = array[j++]
         // 将缓存数组中的内容复制回原数组
         for (p in temp.indices) {
