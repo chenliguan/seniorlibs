@@ -600,7 +600,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return res else stack.push(root)
 
         while (!stack.isEmpty()) {
-            // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
+            // 将根节点弹出，如果是标记null，则是将空节点弹出即可；如果不是null，下面再将根节点添加到栈中
             val node = stack.pop()
             if (node != null) {
                 // 添加右节点
