@@ -45,6 +45,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_has_cycle).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_link).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge_two_lists).setOnClickListener(this)
+        findViewById<View>(R.id.btn_get_kth_from_end).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -103,6 +104,19 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li11.next = li22
                 li22.next = li33
                 LogUtils.e(TAG, "21. 合并两个有序链表：${mergeTwoLists(li1, li11)}")
+            }
+            R.id.btn_get_kth_from_end -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "剑指 Offer 22. 链表中倒数第k个节点：${getKthFromEnd(li1, 4)}")
             }
             else -> {
             }
@@ -280,4 +294,36 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * 剑指 Offer 22. 链表中倒数第k个节点
+     *
+     * 1.初始化：前指针 former 、后指针 latter，双指针都指向头节点 head。
+     * 2.构建双指针距离：前指针 former 先向前走 k 步（结束后，双指针 former 和 latter 间相距 k 步）。
+     * 3.双指针共同移动：循环中，双指针 former 和 latter 每轮都向前走一步，直至 former 走过链表 尾节点 时跳出（跳出后，latter 与尾节点距离为 k−1，即 latter 指向倒数第 k 个节点）。
+     * 4.返回值：返回 latter 即可。
+     *
+     * 时间复杂度 O(N) ： N 为链表长度；总体看， former 走了 N 步， latter 走了 (N−k) 步。
+     * 空间复杂度 O(1) ： 双指针 former , latter 使用常数大小的额外空间。
+     *
+     * https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/solution/jian-zhi-offer-22-lian-biao-zhong-dao-sh-yy9c/
+     * @param head
+     * @param k
+     * @return
+     */
+    fun getKthFromEnd(head: ListNode?, k: Int): ListNode? {
+        var former = head
+        var latter = head
+
+        for (i in 0 until k) {
+            if (former == null) return null
+            former = former.next
+        }
+
+        while (former != null) {
+            former = former.next
+            latter = latter!!.next
+        }
+        return latter
+    }
 }
