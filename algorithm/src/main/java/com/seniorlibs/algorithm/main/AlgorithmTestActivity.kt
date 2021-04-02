@@ -7,10 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
-import com.seniorlibs.algorithm.db.DbActivity
-import com.seniorlibs.algorithm.db.DbActivity2
 import com.seniorlibs.baselib.utils.LogUtils
-import java.util.*
 
 /**
  * Author: chen
@@ -59,6 +56,10 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    class ListNode(var `val`: Int) {
+        var next: ListNode? = null
+    }
 
     /**
      * 3. 无重复字符的最长子串
@@ -125,6 +126,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         }
         return true
     }
+
 }
 
 

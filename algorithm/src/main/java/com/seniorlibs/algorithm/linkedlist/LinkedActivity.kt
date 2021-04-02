@@ -312,18 +312,19 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun getKthFromEnd(head: ListNode?, k: Int): ListNode? {
-        var former = head
-        var latter = head
+        var fast = head
+        var slow = head
 
         for (i in 0 until k) {
-            if (former == null) return null
-            former = former.next
+            if (fast == null) return null
+            fast = fast.next
         }
 
-        while (former != null) {
-            former = former.next
-            latter = latter!!.next
+        while (fast != null) {
+            fast = fast.next
+            slow = slow!!.next
         }
-        return latter
+
+        return slow
     }
 }
