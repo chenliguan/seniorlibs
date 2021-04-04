@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
+import com.seniorlibs.algorithm.string.StringActivity
 import com.seniorlibs.baselib.utils.LogUtils
 
 
@@ -190,11 +191,14 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             return false
         }
 
-        var slow = head  // 1.快慢指针
+        // 1.快慢指针
+        var slow = head
         var fast = head.next
 
-        while (fast != slow) {  // 2.如果快慢指针不等，继续往前跑
-            if (slow?.next == null || fast?.next?.next == null) {  // 3.没环的特征是：某个next为空
+        // 2.如果快慢指针不等，继续往前跑
+        while (fast != slow) {
+            // 3.没环的特征是：某个next为空
+            if (slow?.next == null || fast?.next?.next == null) {
                 return false
             }
 
@@ -202,7 +206,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             fast = fast.next?.next
         }
 
-        return true // 4.如果有环，快跑者最终一定会追上慢跑者
+        // 4.如果有环，快跑者最终一定会追上慢跑者
+        return true
     }
 
 
@@ -216,30 +221,26 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @param head
      * @return
      */
-    private fun reverseList1(head: ListNode?): ListNode? {
-        if (head?.next == null) return head
-
-        // 申请节点pre和cur，pre指向null
-        var pre: ListNode? = null
-        var cur = head
-        var temp: ListNode? = null
+    fun reverseList1(head: ListNode?): ListNode? {
+        var prev: ListNode? = null
+        var cur: ListNode? = head
 
         while (cur != null) {
             // 记录当前节点的下一个节点
-            temp = cur.next
-            // 然后将当前节点指向pre
-            cur.next = pre
-            // pre和cur节点都前进一位
-            pre = cur
-            cur = temp
+            val next: ListNode? = cur.next
+            // 然后将当前节点指向 prev
+            cur.next = prev
+
+            // prev 和 cur 节点都前进一位
+            prev = cur
+            cur = next
         }
 
-        // pre最终成了新的表头
-        return pre
+        return prev
     }
 
     /**
-     * 206. 反转链表。方法二：递归
+     * 206. 反转链表。方法二：利用递归，倒序遍历单链表
      *
      * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。
      * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
@@ -252,17 +253,29 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 递归终止条件是当前为空，或者下一个节点为空
         if (head?.next == null) return head
 
-        // 这里的cur就是最后一个节点
-        val cur = reverseList(head.next)
-        // 如果链表是 1->2->3->4->5，那么此时的cur就是5
-        // 而head=4，head.next=5，head.next.next=null
-        // 所以head.next.next = 5.next，所以head.next?.next = head -> 5.next = 4
+        // 利用递归，倒序遍历单链表
+        val res = reverseList(head.next)
+        // 后序遍历代码
         head.next?.next = head
-        // 防止链表循环，需要将head.next设置为空
         head.next = null
-        // 每层递归函数都返回cur，也就是最后一个节点
-        return cur
+        return res
     }
+
+//    fun reverseList(head: ListNode?): ListNode? {
+//        // 递归终止条件是当前为空，或者下一个节点为空
+//        if (head?.next == null) return head
+//
+//        // 这里的cur就是最后一个节点
+//        val cur = reverseList(head.next)
+//        // 如果链表是 1->2->3->4->5，那么此时的cur就是5
+//        // 而head=4，head.next=5，head.next.next=null
+//        // 所以head.next.next = 5.next，所以head.next?.next = head -> 5.next = 4
+//        head.next?.next = head
+//        // 防止链表循环，需要将head.next设置为空
+//        head.next = null
+//        // 每层递归函数都返回cur，也就是最后一个节点
+//        return cur
+//    }
 
     /**
      * 21. 合并两个有序链表

@@ -61,4 +61,9 @@
         android:id="@+id/btn_is_palindrome_num"
         style="@style/BtnStyles"
         android:text="9. 回文数" />
+
+    <Button
+        android:id="@+id/btn_is_palindrome_linked"
+        style="@style/BtnStyles"
+        android:text="234. 回文链表" />
 </LinearLayout>

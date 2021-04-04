@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
+import com.seniorlibs.algorithm.linkedlist.LinkedActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 import kotlin.collections.HashMap
@@ -49,6 +50,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_word_pattern).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_str).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_num).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_palindrome_linked).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -96,9 +98,24 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_is_palindrome_num -> {
                 LogUtils.d(TAG, "9. 回文数：${isPalindrome(121)}")
             }
+            R.id.btn_is_palindrome_linked -> {
+                val li11 = ListNode(1)
+                val li22 = ListNode(2)
+                val li33 = ListNode(2)
+                val li44 = ListNode(1)
+                li11.next = li22
+                li22.next = li33
+                li33.next = li44
+                LogUtils.d(TAG, "234. 回文链表：${isPalindrome(li11)}")
+            }
             else -> {
             }
         }
+    }
+
+
+    class ListNode(var `val`: Int) {
+        var next: ListNode? = null
     }
 
     /**
@@ -581,5 +598,72 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return cur == x
+    }
+
+
+    /**
+     * 234. 回文链表
+     *
+     * 思路：
+     * 用快慢指针，快指针有两步，慢指针走一步，快指针遇到终止位置时，慢指针就在链表中间位置
+     * 同时用pre记录慢指针指向节点的前一个节点，用来分割链表
+     * 将链表分为前后均等两部分，如果链表长度是奇数，那么后半部分多一个节点
+     * 将后半部分反转 ，得cur2，前半部分为cur1
+     * 按照cur1的长度，一次比较cur1和cur2的节点数值
+     *
+     * 时间复杂度：O(n)。只遍历了一遍字符串。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/palindrome-linked-list/solution/234-hui-wen-lian-biao-by-chen-li-guan-nq60/
+     *
+     * @param head
+     * @return
+     */
+    private fun isPalindrome(head: ListNode?): Boolean {
+        var slow: ListNode? = head
+        var fast: ListNode? = head
+
+        // 通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
+        while (fast?.next != null) {
+            slow = slow!!.next
+            fast = fast.next!!.next
+        }
+
+        // 如果 fast 指针没有指向 null，说明链表的长度是奇数，slow 指针还得再向前进一步
+        if (fast != null) slow = slow!!.next
+
+        var left = head
+        // 从 slow 开始反转后面的链表，然后开始比较回文串
+        var right: ListNode? = reverseList(slow)
+        while (right != null) {
+            if (left!!.`val` !== right.`val`) return false
+            left = left!!.next
+            right = right.next
+        }
+        return true
+    }
+
+    /**
+     * 反转链表
+     *
+     * @param head
+     * @return
+     */
+    fun reverseList(head: ListNode?): ListNode? {
+        var prev: ListNode? = null
+        var cur: ListNode? = head
+
+        while (cur != null) {
+            // 记录当前节点的下一个节点
+            val next: ListNode? = cur.next
+            // 然后将当前节点指向 prev
+            cur.next = prev
+
+            // prev 和 cur 节点都前进一位
+            prev = cur
+            cur = next
+        }
+
+        return prev
     }
 }
