@@ -6,6 +6,7 @@ import android.view.View
 import com.read.kotlinlib.annotation.AnnotationParser
 import com.read.kotlinlib.basic.*
 import com.read.kotlinlib.bit.BitTest
+import com.read.kotlinlib.coroutine.CoroutineActivity
 import com.read.kotlinlib.generic.GenericTest
 import com.read.kotlinlib.generic.GenericTestKt
 import com.read.kotlinlib.inner.*

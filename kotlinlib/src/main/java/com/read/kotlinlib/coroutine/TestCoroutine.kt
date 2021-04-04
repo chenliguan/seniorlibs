@@ -1,8 +1,8 @@
-package com.read.kotlinlib.basic
+package com.read.kotlinlib.coroutine
 
-import android.view.View
 import android.widget.ImageView
 import com.nostra13.universalimageloader.core.ImageLoader
+import com.read.kotlinlib.coroutine.CoroutineActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

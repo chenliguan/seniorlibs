@@ -20,7 +20,7 @@
 
         <activity android:name=".basic.BasicActivity" />
 
-        <activity android:name=".basic.CoroutineActivity" />
+        <activity android:name=".coroutine.CoroutineActivity" />
 
         <activity android:name=".basic.FlowFunActivity" />
 

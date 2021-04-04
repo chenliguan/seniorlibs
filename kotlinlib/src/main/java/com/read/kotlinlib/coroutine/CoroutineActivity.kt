@@ -1,4 +1,4 @@
-package com.read.kotlinlib.basic
+package com.read.kotlinlib.coroutine
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,6 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.view.doOnPreDraw
-import com.nostra13.universalimageloader.core.ImageLoader
 import com.read.kotlinlib.R
 import com.seniorlibs.baselib.utils.LogUtils
 import kotlinx.coroutines.*
@@ -45,37 +44,21 @@ suspend fun suspendSimpleDelay(): Unit {
   (1)每一次从主线程到IO线程，都是一次协程 挂起(suspend)；
   (2)每一次从IO线程到主线程，都是一次协程 恢复(resume)；
   (3)挂起和恢复，这是挂起函数特有的能力，普通函数是不具备的；
-  (4)挂起函数，在执行的时候并不一定都会挂起。挂起的本质是使用 withContext 切线程，只是将程序执行流程转移到了其他线程，主线程并未被阻塞。
-  (5)挂起函数只能在其他挂起函数中被调用(or 协程作用域)；挂起函数里包含其他挂起函数的时候，它才会真正被挂起。
+  (4)挂起函数，并不一定都会挂起。真正的挂起必须使用 withContext 异步调用 resume，包括：切换到其他线程和单线程事件循环异步执行。
+  (5)挂起函数只能在其他挂起函数或协程作用域中被调用，因为它需要 Continuation，只有挂起函数或协程作用域才会有 Continuation。
 
 
 3.协程到底是如何做到一行代码切换两个线程的？
   (1)suspend 的本质，就是带有泛型参数的 CallBack ——> Continuation。编译器检测到 suspend 关键字修饰的函数以后，会自动将挂起函数转换成带有 Continuation 的函数。
   (2)Continuation 还多了一个协程的上下文 CoroutineContext，。
-  (3)从挂起函数转换成 CallBack 函数的过程，被称为：CPS 转换(Continuation-Passing-Style Transformation)。
-  (4)挂起函数的返回值有一个重要作用：标志该挂起函数有没有被挂起；否则，就是个 伪挂起函数。
-  (5)返回值可能返回 CoroutineSingletons.COROUTINE_SUSPENDED，也可能返回实际结果"no suspend"，甚至可能返回 null，所以返回类型只能是 Any?。
+  (3)从挂起函数转换成 Continuation 函数的过程，被称为：CPS 转换(Continuation-Passing-Style Transformation)。
+  (4)挂起函数的返回值有一个重要作用：标志 CoroutineSingletons.COROUTINE_SUSPENDED 表示该挂起函数有没有被挂起；否则，就是个 伪挂起函数。（返回类型只能是 Any?）
 
 
-  (1)挂起是怎么做到的？在suspend修饰的挂起函数中，调用另外一个协程自带的、内部实现了协程挂起代码的挂起函数 withContext()，让它来做真正的挂起，实现线程切换的工作。
-
-
-1.协程的原理？
+4.协程的原理？
   (1)挂起：挂起函数调用了包含了"挂起"的语义。协程挂起的时候会从挂起处将后面的代码封装成续体，协程挂起的时候，
         将挂起的任务根据调度器放到线程池中执行，会有一个线程监视任务的完成情况。
   (2)恢复：挂起函数返回时包含了"恢复"的语义。监视线程看到任务结束以后，根据需要再切到指定的线程中（主线程or子线程），执行续体中剩余的代码。
-
-
-2.从哪挂起？从当前正在执行它的线程挂起(脱离)，将协程挂到自己指定的线程中去执行，在执行完毕会切换回来；分离后当前的线程不会卡住，该干嘛干嘛去。
-3.为什么挂起函数只能在协程里或者另一个挂起函数中调用？挂起之后是需要恢复的，也就是把线程给切回来，而恢复这个动作必须由协程实现。
-
-1.Kotlin协程中挂起的是什么？协程。
-2.什么是协程？kotlin协程为launch()、async() 等中的代码，协同多个程序之间进行合作，帮助我们轻松的写出复杂的并发代码。
-  launch在创建的一个协程，在执行到某一个suspend函数(挂起函数)时，这个协程会被 suspend(被挂起)。
-3.协程是执行在单线程中的吗？协程本质上还是一套基于原生Java Thread API 的封装。只要没有魔改JVM，start了几个线程，操作系统就会创建几个线程；
-  Kotlin协程只是做了一个类似线程池的封装，根本谈不上什么性能更好。协程是协作式任务, 线程是抢占式任务, 本质上两者都属于并发。
-4.什么时候要用到协程的？需要切换线程的时候要用到协程;
-5.协程有什么好用？Kotlin协程同多个程序之间进行合作，让我们更方便的来进行多线程开发，帮助我们轻松的写出复杂的并发代码，甚至还能用非常简单的方式实现原本不可能实现的并发任务。
 
  */
 
@@ -366,7 +349,7 @@ class CoroutineActivity : AppCompatActivity() {
                 // 开启协程后，先打印一下进程名称和进程id
                 // 这一行会在内嵌 launch 之前输出
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "threadName = " + Thread.currentThread().name + " threadId = " + Thread.currentThread().id
                 )
                 delay(1000L)
@@ -561,7 +544,7 @@ class CoroutineActivity : AppCompatActivity() {
                         LogUtils.d(TAG, "job: I'm running finally")
                         delay(1000L)
                         LogUtils.d(
-                            TAG,
+                                TAG,
                             "job: And I've just delayed for 1 sec because I'm non-cancellable"
                         )
                     }
@@ -641,7 +624,7 @@ class CoroutineActivity : AppCompatActivity() {
                 }
                 // 使用.await()在一个延期的值上得到它的最终结果，但是Deferred也是一个Job，所以如果需要的话，你可以取消它
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "testAsync2 async 并发 The answer is ${jobOne.await() + jobTwo.await()}"
                 )
             }
@@ -665,7 +648,7 @@ class CoroutineActivity : AppCompatActivity() {
 //                jobOne.start() // 启动第一个
 //                jobTwo.start() // 启动第二个
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "testAsync3 The answer is ${jobOne.await() + jobTwo.await()}"
                 ) // 相当于 顺序
             }
@@ -733,7 +716,7 @@ class CoroutineActivity : AppCompatActivity() {
             // 运行在父协程的上下文中，即 runBlocking 主协程
             launch {
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "main runBlocking: I'm working in thread ${Thread.currentThread().name}"
                 )
             }
@@ -749,7 +732,7 @@ class CoroutineActivity : AppCompatActivity() {
             // 将使它获得一个新的线程池，一个专用的线程池是一种非常昂贵的资源
             launch(newSingleThreadContext("MyOwnThread")) {
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}"
                 )
             }
@@ -764,14 +747,14 @@ class CoroutineActivity : AppCompatActivity() {
         // 这里有三个协程，包括 runBlocking 内的主协程 (#1) ， 以及计算延期的值的另外两个协程 a (#2) 和 b (#3)
         runBlocking<Unit> {
             val jobA = async {
-                log("${TAG} ${this} I 'm computing a piece of the answer")
+                log("$TAG ${this} I 'm computing a piece of the answer")
                 6
             }
             val jobB = async {
-                log("${TAG} ${this} I'm computing another piece of the answer")
+                log("$TAG ${this} I'm computing another piece of the answer")
                 7
             }
-            log("${TAG} ${this} The answer is ${jobA.await() * jobB.await()}")
+            log("$TAG ${this} The answer is ${jobA.await() * jobB.await()}")
         }
 //        [Thread[main,5,main]] DeferredCoroutine{Active}@cd11540 I'm computing a piece of the answer
 //        [Thread[main,5,main]] DeferredCoroutine{Active}@8ffbc79 I'm computing another piece of the answer
@@ -795,7 +778,7 @@ class CoroutineActivity : AppCompatActivity() {
                     LogUtils.d(TAG, "job2: I am a child of the request coroutine")
                     delay(1000)
                     LogUtils.d(
-                        TAG,
+                            TAG,
                         "job2: I will not execute this line if my parent request is cancelled"
                     ) // 不执行了
                 }
@@ -822,7 +805,7 @@ class CoroutineActivity : AppCompatActivity() {
                     }
                 }
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "request: I'm done and I don't explicitly join my children that are still active"
                 )
             }
@@ -850,7 +833,7 @@ class CoroutineActivity : AppCompatActivity() {
                 6
             }
             LogUtils.d(
-                TAG,
+                    TAG,
                 "${Thread.currentThread()} The answer for v1 / v2 = ${v1.await() / v2.await()}"
             )
 
@@ -914,24 +897,24 @@ class CoroutineActivity : AppCompatActivity() {
         runBlocking<Unit> {
             threadLocal.set("main")
             LogUtils.d(
-                TAG,
+                    TAG,
                 "Pre-main, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
             )
             val job = launch(Dispatchers.Default + threadLocal.asContextElement(value = "launch")) {
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "Launch start, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
                 )
                 // 将当前协同程序分派器的线程(或线程池)分配给其他要运行的协程
                 yield()
                 LogUtils.d(
-                    TAG,
+                        TAG,
                     "After yield, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
                 )
             }
             job.join()
             LogUtils.d(
-                TAG,
+                    TAG,
                 "Post-main, current thread: ${Thread.currentThread()}, thread local value: '${threadLocal.get()}'"
             )
         }
@@ -972,7 +955,7 @@ class CoroutineActivity : AppCompatActivity() {
             // 挂起函数（子线程）执行完后，返回结果，再在协程中（主线程）获取其值
             val result = simpleDelay()
             LogUtils.e(
-                TAG,
+                    TAG,
                 "I'm working2 result：${result} in thread ${Thread.currentThread().name}"
             )
             LogUtils.e(TAG, "I'm working2 in thread ${Thread.currentThread().name}")
