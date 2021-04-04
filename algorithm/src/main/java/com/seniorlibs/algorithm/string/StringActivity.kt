@@ -47,6 +47,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_decode_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_str_str).setOnClickListener(this)
         findViewById<View>(R.id.btn_word_pattern).setOnClickListener(this)
+        findViewById<View>(R.id.btn_check_is_palindrome).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -87,6 +88,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_word_pattern -> {
                 LogUtils.d(TAG, "290. 单词规律：${wordPattern("abba","dog cat cat dog")}")
+            }
+            R.id.btn_check_is_palindrome -> {
+                LogUtils.d(TAG, "125. 验证回文串：${isPalindrome("A man, a plan, a canal: Panama")}")
             }
             else -> {
             }
@@ -506,5 +510,46 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return true
+    }
+
+    /**
+     * 125. 验证回文串
+     *
+     * 时间复杂度：O(n)。只遍历了一遍字符串。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/valid-palindrome/solution/125-yan-zheng-hui-wen-chuan-by-chen-li-g-8i3w/
+     * @param s
+     * @return
+     */
+    fun isPalindrome(s: String): Boolean {
+        val s = s.toLowerCase()
+        var left = 0
+        var right = s.length - 1
+
+        while (left < right) {
+            // 过滤非字母和数字
+            if (!isAccord(s[left])) {
+                left++
+                continue
+            }
+            if (!isAccord(s[right])) {
+                right--
+                continue
+            }
+
+            // 双指针从两端向中间逼近
+            if (s[left] != s[right]) {
+                return false
+            }
+            left++
+            right--
+        }
+
+        return true
+    }
+
+    private fun isAccord(c: Char): Boolean {
+        return c in 'a'..'z' || c in '0'..'9'
     }
 }

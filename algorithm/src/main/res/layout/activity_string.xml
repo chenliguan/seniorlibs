@@ -51,4 +51,9 @@
         android:id="@+id/btn_word_pattern"
         style="@style/BtnStyles"
         android:text="290. 单词规律" />
+
+    <Button
+        android:id="@+id/btn_check_is_palindrome"
+        style="@style/BtnStyles"
+        android:text="125. 验证回文串" />
 </LinearLayout>
