@@ -53,7 +53,12 @@
         android:text="290. 单词规律" />
 
     <Button
-        android:id="@+id/btn_check_is_palindrome"
+        android:id="@+id/btn_is_palindrome_str"
         style="@style/BtnStyles"
         android:text="125. 验证回文串" />
+
+    <Button
+        android:id="@+id/btn_is_palindrome_num"
+        style="@style/BtnStyles"
+        android:text="9. 回文数" />
 </LinearLayout>

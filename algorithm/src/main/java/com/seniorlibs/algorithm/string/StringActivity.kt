@@ -47,7 +47,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_decode_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_str_str).setOnClickListener(this)
         findViewById<View>(R.id.btn_word_pattern).setOnClickListener(this)
-        findViewById<View>(R.id.btn_check_is_palindrome).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_palindrome_str).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_palindrome_num).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -89,8 +90,11 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_word_pattern -> {
                 LogUtils.d(TAG, "290. 单词规律：${wordPattern("abba","dog cat cat dog")}")
             }
-            R.id.btn_check_is_palindrome -> {
+            R.id.btn_is_palindrome_str -> {
                 LogUtils.d(TAG, "125. 验证回文串：${isPalindrome("A man, a plan, a canal: Panama")}")
+            }
+            R.id.btn_is_palindrome_num -> {
+                LogUtils.d(TAG, "9. 回文数：${isPalindrome(121)}")
             }
             else -> {
             }
@@ -551,5 +555,31 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun isAccord(c: Char): Boolean {
         return c in 'a'..'z' || c in '0'..'9'
+    }
+
+    /**
+     * 9. 回文数
+     *
+     * 时间复杂度：O(n)。只遍历了一遍字符串。
+     * 空间复杂度：O(1)。
+     *
+     * @param x
+     * @return
+     */
+    fun isPalindrome(x: Int): Boolean {
+        // 如果是负数则一定不是回文数，直接返回 false
+        if (x < 0) return false
+
+        var xs = x
+        var cur = 0
+
+        // 如果是正数，则将其倒序数值计算出来，然后比较和原数值是否相等
+        while (xs != 0) {
+            // 123  3 2 1
+            cur = cur * 10 + xs % 10
+            xs /= 10
+        }
+
+        return cur == x
     }
 }
