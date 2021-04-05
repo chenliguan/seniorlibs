@@ -27,6 +27,23 @@
         android:text="206. 反转链表" />
 
     <Button
+        android:id="@+id/btn_middle_node"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="876. 链表的中间结点" />
+
+    <Button
+        android:id="@+id/btn_reverse_between"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="92. 反转链表 II" />
+
+    <Button
+        android:id="@+id/btn_is_palindrome_linked"
+        style="@style/BtnStyles"
+        android:text="234. 回文链表" />
+
+    <Button
         android:id="@+id/btn_merge_two_lists"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -37,5 +54,11 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="剑指 Offer 22. 链表中倒数第k个节点" />
+
+    <Button
+        android:id="@+id/btn_remove_nth_from_end"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="19. 删除链表的倒数第 N 个节点" />
 
 </LinearLayout>

@@ -45,8 +45,12 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_handler_reuse).setOnClickListener(this)
         findViewById<View>(R.id.btn_has_cycle).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_link).setOnClickListener(this)
+        findViewById<View>(R.id.btn_reverse_between).setOnClickListener(this)
+        findViewById<View>(R.id.btn_middle_node).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_palindrome_linked).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge_two_lists).setOnClickListener(this)
         findViewById<View>(R.id.btn_get_kth_from_end).setOnClickListener(this)
+        findViewById<View>(R.id.btn_remove_nth_from_end).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -92,6 +96,40 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "206. 反转链表：${reverseList(li11)}")
                 LogUtils.e(TAG, "206. 反转链表：${reverseList1(li11)}")
             }
+            R.id.btn_reverse_between -> {
+                val li11 = ListNode(1)
+                val li22 = ListNode(2)
+                val li33 = ListNode(3)
+                val li44 = ListNode(4)
+                val li55 = ListNode(5)
+                li11.next = li22
+                li22.next = li33
+                li33.next = li44
+                li44.next = li55
+                LogUtils.e(TAG, "92. 反转链表 II：${reverseBetween(li11, 2, 4)}")
+            }
+            R.id.btn_middle_node -> {
+                val li11 = ListNode(1)
+                val li22 = ListNode(2)
+                val li33 = ListNode(3)
+                val li44 = ListNode(4)
+                val li55 = ListNode(5)
+                li11.next = li22
+                li22.next = li33
+                li33.next = li44
+                li44.next = li55
+                LogUtils.e(TAG, "876. 链表的中间结点：${middleNode(li11)}")
+            }
+            R.id.btn_is_palindrome_linked -> {
+                val li11 = ListNode(1)
+                val li22 = ListNode(2)
+                val li33 = ListNode(2)
+                val li44 = ListNode(1)
+                li11.next = li22
+                li22.next = li33
+                li33.next = li44
+                LogUtils.d(StringActivity.TAG, "234. 回文链表：${isPalindrome(li11)}")
+            }
             R.id.btn_merge_two_lists -> {
                 val li1 = ListNode(1)
                 val li2 = ListNode(2)
@@ -118,6 +156,19 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li4.next = li5
                 li5.next = null
                 LogUtils.e(TAG, "剑指 Offer 22. 链表中倒数第k个节点：${getKthFromEnd(li1, 4)}")
+            }
+            R.id.btn_remove_nth_from_end -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "19. 删除链表的倒数第 N 个节点：${removeNthFromEnd(li1, 2)}")
             }
             else -> {
             }
@@ -278,12 +329,120 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 //    }
 
     /**
-     * 21. 合并两个有序链表
+     * 92. 反转链表 II
      *
-     * 时间复杂度：O(n+m)，其中n和m分别为两个链表的长度。因为每次调用递归都会去掉 l1 或者 l2 的头节点（直到至少有一个链表为空），
-     *                  函数 mergeTwoList 至多只会递归调用每个节点一次。因此，时间复杂度取决于合并后的链表长度，即 O(n+m)。
-     * 空间复杂度：O(n+m)，其中n和m分别为两个链表的长度。递归调用mergeTwoLists时需要消耗栈空间，栈空间的大小取决于递归调用的深度。
-     *                  结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)。
+     * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。
+     * 空间复杂度：O(1)，使用常量空间。
+     *
+     * https://leetcode-cn.com/problems/reverse-linked-list-ii/solution/92-fan-zhuan-lian-biao-ii-by-chen-li-gua-pfch/
+     * @param head
+     * @param left
+     * @param right
+     * @return
+     */
+    fun reverseBetween(head: ListNode?, left: Int, right: Int): ListNode? {
+        // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
+        val dummy = ListNode(0)
+        dummy.next = head
+
+        // 定义两个指针，分别称之为 g(guard 守卫) 和 p(point)。
+        var g: ListNode? = dummy
+        var p: ListNode? = dummy.next
+
+        // 将 g 移动到第一个要反转的节点的前面，将 p 移动到第一个要反转的节点的位置上
+        for (i in 0 until left - 1) {
+            g = g?.next
+            p = p?.next
+        }
+
+        // 将 p 后面的元素删除，然后插入到 g 的后面，也即头插法。（根据 left 和 right 重复此步骤）
+        for (i in 0 until right - left) {   // g = 1，p = 2
+            val removeNode = p?.next  // remove = 3
+            p?.next = p?.next?.next              // p?.next = 4  ->  1，2，4
+
+            removeNode?.next = g?.next           // 1、3、2
+            g?.next = removeNode
+        }
+
+        // 返回虚拟头结点 dummy 的下一个节点，即是 头结点
+        return dummy.next
+    }
+
+
+    /**
+     * 876. 链表的中间结点
+     *
+     * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。
+     * 空间复杂度：O(1)，使用常量空间。
+     *
+     * https://leetcode-cn.com/problems/middle-of-the-linked-list/solution/876-lian-biao-de-zhong-jian-jie-dian-by-1ost7/
+     * @param head
+     * @return
+     */
+    fun middleNode(head: ListNode?): ListNode? {
+        var slow: ListNode? = head
+        var fast: ListNode? = head
+
+        // 通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
+        while (fast?.next != null) {
+            slow = slow!!.next
+            fast = fast.next!!.next
+        }
+
+        return slow
+    }
+
+    /**
+     * 234. 回文链表
+     *
+     * 思路：
+     * 用快慢指针，快指针有两步，慢指针走一步，快指针遇到终止位置时，慢指针就在链表中间位置
+     * 同时用pre记录慢指针指向节点的前一个节点，用来分割链表
+     * 将链表分为前后均等两部分，如果链表长度是奇数，那么后半部分多一个节点
+     * 将后半部分反转 ，得cur2，前半部分为cur1
+     * 按照cur1的长度，一次比较cur1和cur2的节点数值
+     *
+     *
+     * 时间复杂度：O(n)。只遍历了一遍字符串。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/palindrome-linked-list/solution/234-hui-wen-lian-biao-by-chen-li-guan-nq60/
+     *
+     * @param head
+     * @return
+     */
+    private fun isPalindrome(head: ListNode?): Boolean {
+        var slow: ListNode? = head
+        var fast: ListNode? = head
+
+        // 通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
+        while (fast?.next != null) {
+            slow = slow!!.next
+            fast = fast.next!!.next
+        }
+
+        // 如果 fast 指针没有指向 null，说明链表的长度是奇数，slow 指针还得再向前进一步
+        if (fast != null) slow = slow!!.next
+
+        var left = head
+        // 从 slow 开始反转后面的链表，然后开始比较回文串
+        var right = reverseList(slow)
+        while (right != null) {
+            if (left!!.`val` !== right.`val`) return false
+            left = left!!.next
+            right = right.next
+        }
+        return true
+    }
+
+
+    /**
+     * 21. 合并两个有序链表  方法1：迭代（推荐）
+     *
+     * 思路：小的连小的，所以 l1 小，就连到 l1，l2 小就连到 l2
+     *
+     * 时间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。因为每次调用递归都会去掉 l1 或者 l2 的头节点（直到至少有一个链表为空），
+     * 空间复杂度：O(1)。
      *
      * https://leetcode-cn.com/problems/merge-two-sorted-lists/solution/21-he-bing-liang-ge-you-xu-lian-biao-by-j3c2y/
      * @param l1
@@ -291,6 +450,51 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun mergeTwoLists(l1: ListNode?, l2: ListNode?): ListNode? {
+        var l1 = l1
+        var l2 = l2
+
+        val dummy = ListNode(0)
+        var p: ListNode? = dummy
+
+        while (l1 != null && l2 != null) {
+            if (l1.`val` <= l2.`val`) {
+                p?.next = l1
+                l1 = l1.next
+            } else {
+                p?.next = l2
+                l2 = l2.next
+            }
+            p = p?.next
+        }
+
+        // 合并后 l1 和 l2 只有一个还未被合并完，直接将链表末尾指向未合并完的链表
+        if (l1 == null) {
+            p?.next = l2
+        } else {
+            p?.next = l1
+        }
+
+        return dummy.next
+    }
+
+    /**
+     * 21. 合并两个有序链表  方法2：递归
+     *
+     * 思路：递归就是程序内部维护了一个栈。这个题就是每次都把最小值压入栈，最后出栈的时候，将所有数连在一起就可以了。
+     *      说白了是用一个栈维护了顺序。最后的连接，当然是小的连小的，所以 l1 小，就连到 l1，l2 小就连到 l2，
+     *      最后先返回的，就是最小的头结点。
+     *
+     * 时间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。因为每次调用递归都会去掉 l1 或者 l2 的头节点（直到至少有一个链表为空），
+     *                  函数 mergeTwoList 至多只会递归调用每个节点一次。因此，时间复杂度取决于合并后的链表长度，即 O(n+m)。
+     * 空间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。递归调用mergeTwoLists时需要消耗栈空间，栈空间的大小取决于递归调用的深度。
+     *                  结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)。
+     *
+     * https://leetcode-cn.com/problems/merge-two-sorted-lists/solution/21-he-bing-liang-ge-you-xu-lian-biao-by-j3c2y/
+     * @param l1
+     * @param l2
+     * @return
+     */
+    fun mergeTwoLists1(l1: ListNode?, l2: ListNode?): ListNode? {
         // 1. 两条链表分别名为 l1 和 l2，当 l1 为空或 l2 为空时结束
         if (l1 == null) return l2
         if (l2 == null) return l1
@@ -340,4 +544,42 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         return slow
     }
+
+    /**
+     * 19. 删除链表的倒数第 N 个节点
+     *
+     * 时间复杂度：O(n)。只遍历了一遍。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/solution/19-shan-chu-lian-biao-de-dao-shu-di-n-ge-b48v/
+     * @param head
+     * @param n
+     * @return
+     */
+    fun removeNthFromEnd(head: ListNode?, n: Int): ListNode? {
+        // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
+        val dummy = ListNode(0)
+        dummy.next = head
+
+        // 设定双指针 left 和 right，初始都指向虚拟节点 dummy
+        var left: ListNode? = dummy
+        var right: ListNode? = dummy
+
+        // 移动 right，直到 left 与 right 之间相隔的元素个数为 n
+        for (i in 0 until n) {
+            right = right?.next
+        }
+
+        // 同时移动 left 与 right，直到 right 指向 null（此时，left 指向待删除节点左节点）
+        while (right?.next != null) {
+            left = left?.next
+            right = right?.next
+        }
+
+        // 删除节点：将 left 的下一个节点指向下下个节点
+        left?.next = left?.next?.next
+
+        return dummy.next
+    }
+
 }
