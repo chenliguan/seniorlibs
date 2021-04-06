@@ -522,7 +522,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
      * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
      *
-     * 题解：https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/144-er-cha-shu-de-qian-xu-bian-li-by-chen-li-guan/
+     * https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/144-er-cha-shu-de-qian-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
@@ -544,7 +544,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
      * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
      *
-     * 题解：https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/94-er-cha-shu-de-zhong-xu-bian-li-by-chen-li-guan/
+     * https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/94-er-cha-shu-de-zhong-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
@@ -566,7 +566,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
      * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
      *
-     * 题解：https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/145-er-cha-shu-de-hou-xu-bian-li-by-chen-li-guan/
+     * https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/145-er-cha-shu-de-hou-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
@@ -589,15 +589,16 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
      * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
      *
-     * 题解：https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/144-er-cha-shu-de-qian-xu-bian-li-by-chen-li-guan/
+     * https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/144-er-cha-shu-de-qian-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
     fun preorderTraversal1(root: TreeNode?): List<Int> {
         val res: MutableList<Int> = mutableListOf()
-        val stack: Deque<TreeNode?> = LinkedList()
+        if (root == null) return res
 
-        if (root == null) return res else stack.push(root)
+        val stack : Deque<TreeNode> = LinkedList<TreeNode>()
+        stack.push(root)
 
         while (!stack.isEmpty()) {
             // 将根节点弹出，如果是标记null，则是将空节点弹出即可；如果不是null，下面再将根节点添加到栈中
@@ -614,7 +615,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 stack.push(null)
             } else {
                 // 遇到标记，弹出栈顶元素，加入到集合中
-                res.add(stack.pop()!!.`val`)
+                res.add(stack.pop().`val`)
             }
         }
         return res
@@ -626,15 +627,16 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
      * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
      *
-     * 题解：https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/94-er-cha-shu-de-zhong-xu-bian-li-by-chen-li-guan/
+     * https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/94-er-cha-shu-de-zhong-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
     fun inorderTraversal1(root: TreeNode?): List<Int> {
         val res: MutableList<Int> = mutableListOf()
-        val stack: Deque<TreeNode?> = LinkedList()
+        if (root == null) return res
 
-        if (root == null) return res else stack.push(root)
+        val stack : Deque<TreeNode> = LinkedList<TreeNode>()
+        stack.push(root)
 
         while (!stack.isEmpty()) {
             // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
@@ -642,15 +644,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             if (node != null) {
                 // 添加右节点
                 if (node.right != null) stack.push(node.right)
+
                 // 添加根节点
                 stack.push(node)
                 // 根节点访问过，但还没有处理，需要做一下标记null
                 stack.push(null)
+
                 // 添加左节点
                 if (node.left != null) stack.push(node.left)
             } else {
                 // 遇到标记，弹出栈顶元素，加入到集合中
-                res.add(stack.pop()!!.`val`)
+                res.add(stack.pop().`val`)
             }
         }
         return res
@@ -662,15 +666,16 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
      * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
      *
-     * 题解：https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/145-er-cha-shu-de-hou-xu-bian-li-by-chen-li-guan/
+     * https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/145-er-cha-shu-de-hou-xu-bian-li-by-chen-li-guan/
      * @param root
      * @return
      */
     fun postorderTraversal1(root: TreeNode?): List<Int> {
         val res: MutableList<Int> = mutableListOf()
-        val stack: Deque<TreeNode?> = LinkedList()
+        if (root == null) return res
 
-        if (root == null) return res else stack.push(root)
+        val stack : Deque<TreeNode> = LinkedList<TreeNode>()
+        stack.push(root)
 
         while (!stack.isEmpty()) {
             // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
@@ -680,8 +685,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 stack.push(node)
                 // 根节点访问过，但还没有处理，需要做一下标记null
                 stack.push(null)
+
                 // 添加右节点
                 if (node.right != null) stack.push(node.right)
+
                 // 添加左节点
                 if (node.left != null) stack.push(node.left)
             } else {

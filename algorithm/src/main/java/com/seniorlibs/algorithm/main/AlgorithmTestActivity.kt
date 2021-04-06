@@ -2,12 +2,15 @@ package com.seniorlibs.algorithm.main
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.baselib.utils.LogUtils
+import java.util.*
 
 /**
  * Author: chen
@@ -49,7 +52,13 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                LogUtils.d(ArrayActivity.TAG, "3. 无重复字符的最长子串：${lengthOfLongestSubstring("pwwkew")}")
+                val node = TreeNode(1)
+                val node_right = TreeNode(2)
+                node.left = null
+                node.right = node_right
+                val node2 = TreeNode(3)
+                node_right.left = node2
+                LogUtils.e(TAG, "144. 二叉树的前序遍历-迭代：${preorderTraversal1(node)}")
             }
             else -> {
             }
@@ -59,6 +68,11 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
     class ListNode(var `val`: Int) {
         var next: ListNode? = null
+    }
+
+    class TreeNode(var `val`: Int) {
+        var left: TreeNode? = null
+        var right: TreeNode? = null
     }
 
     /**
@@ -114,6 +128,17 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         return num
     }
 
+    /**
+     * 290. 单词规律
+     *
+     * 时间复杂度：O(n + m)；
+     * 空间复杂度：O(n + m)；
+     *
+     * https://leetcode-cn.com/problems/word-pattern/solution/290-dan-ci-gui-lu-by-chen-li-guan-1wz3/
+     * @param pattern
+     * @param s
+     * @return
+     */
     fun wordPattern(pattern: String, s: String): Boolean {
         val array = s.split(" ").toTypedArray()
         if (array.size != pattern.length) return false
@@ -127,6 +152,57 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
+
+
+    private var list: MutableList<Int> = mutableListOf()
+
+    /**
+     * 144. 二叉树的前序遍历：递归
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，由于使用递归，将会使用隐式栈空间，递归深度会达到 n 层。
+     *
+     * 题解：https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/144-er-cha-shu-de-qian-xu-bian-li-by-chen-li-guan/
+     * @param root
+     * @return
+     */
+    fun preorderTraversal(root: TreeNode?): List<Int?>? {
+        if (root == null) return list
+
+        list.add(root.`val`)
+
+        preorderTraversal(root.left)
+
+        preorderTraversal(root.right)
+
+        return list
+    }
+
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    fun preorderTraversal1(root: TreeNode?): List<Int?>? {
+        val res: MutableList<Int> = mutableListOf()
+        if (root == null) return res
+
+        val stack : Deque<TreeNode> = LinkedList<TreeNode>()
+        stack.push(root)
+
+        while (!stack.isEmpty()) {
+            val node = stack.pop()
+            if (node != null) {
+                if (node.right != null) stack.push(node.right)
+
+                if (node.left != null) stack.push(node.left)
+
+                stack.push(node)
+                stack.push(null)
+
+            } else {
+                res.add(stack.pop().`val`)
+            }
+        }
+
+        return res
+    }
 }
 
 
