@@ -52,7 +52,6 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
             }
             R.id.btn_subsets -> {
-                listI.clear()
                 res.clear()
                 LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1, 2, 3))}")
             }
@@ -112,9 +111,6 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    var listI: MutableList<Int> = ArrayList()
-    var res: MutableList<List<Int>> = ArrayList()
-
     /**
      * 78. 子集--方法一：回溯
      *
@@ -124,32 +120,39 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n×2^n)。一共2^n个状态，每种状态需要O(n)的时间来构造子集；
      * 空间复杂度：O(n)。临时数组t的空间代价是O(n)，递归时栈空间的代价为O(n)。
      *
+     * https://leetcode-cn.com/problems/subsets/solution/78-zi-ji-by-chen-li-guan-jh4l/
      * @param nums
      * @return
      */
+    var res: MutableList<List<Int>> = ArrayList()
+
+    /* 主函数，输入一组不重复的数字，返回它们的全排列 */
     fun subsets(nums: IntArray): List<List<Int>>? {
-        dfs(0, nums)
+        val track: MutableList<Int> = ArrayList()
+        dfs(0, nums, track)
         return res
     }
 
-    fun dfs(cur: Int, nums: IntArray) {
-        // 1 递归终结条件（最先写）：指针越界，记录答案
+    // 已选路径记录在 track 中
+    // 可选择列表：track[1,2] 中不存在于 nums[1,2,3] 的那些元素[3]。
+    fun dfs(cur: Int, nums: IntArray, track: MutableList<Int>) {
+        // 1 递归终结条件（最先写）：结束条件，nums[1,2,3] 中的元素全都在 track[1,2,3] 中出现
         if (cur == nums.size) {
-            res.add(ArrayList(listI))
+            res.add(ArrayList(track))
             return
         }
 
-        // 2.1 选择当前位置元素
-        listI.add(nums[cur])
+        // 2.1 做选择：选择当前位置元素
+        track.add(nums[cur])
 
         // 3.1 下探到下一层（类似左子树）
-        dfs(cur + 1, nums)
+        dfs(cur + 1, nums, track)
 
-        // 2.2 递归结束，撤销选择，不选择当前位置元素
-        listI.removeAt(listI.size - 1)
+        // 取消选择，不选择当前位置元素
+        track.removeAt(track.size - 1)
 
         // 3.2 下探到下一层（类似右子树）
-        dfs(cur + 1, nums)
+        dfs(cur + 1, nums, track)
     }
 
 

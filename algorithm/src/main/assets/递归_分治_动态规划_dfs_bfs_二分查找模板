@@ -65,7 +65,58 @@ public void recur(int level, int param) {
 （1）找到一个可能存在的正确的答案；②在尝试了所有可能的分步方法后宣告该问题没有答案。
 
 
+1、关键：在递归之前做出选择，在递归之后撤销刚才的选择
+
+for 选择 in 选择列表: {
+    // 做选择
+    将该选择从选择列表移除
+    路径.add(选择)
+
+    // 下探到下一层，关键：level + 1
+    backtrack(路径, 选择列表)
+
+    // 撤销选择
+    路径.remove(选择)
+    将该选择再加入选择列表
+}
+
+2、模板
+
+
+var res: MutableList<List<Int>> = ArrayList()
+
+/* 主函数，输入一组不重复的数字，返回它们的全排列 */
+fun subsets(nums: IntArray): List<List<Int>>? {
+    val track: MutableList<Int> = ArrayList()
+    dfs(0, nums, track)
+    return res
+}
+
+// 已选路径记录在 track 中
+// 可选择列表：track[1,2] 中不存在于 nums[1,2,3] 的那些元素[3]。
+fun dfs(cur: Int, nums: IntArray, track: MutableList<Int>) {
+    // 1 递归终结条件（最先写）：结束条件，nums[1,2,3] 中的元素全都在 track[1,2,3] 中出现
+    if (cur == nums.size) {
+        res.add(ArrayList(track))
+        return
+    }
+
+    // 2.1 做选择：选择当前位置元素
+    track.add(nums[cur])
+
+    // 3.1 下探到下一层（类似左子树）
+    dfs(cur + 1, nums, track)
+
+    // 取消选择，不选择当前位置元素
+    track.removeAt(track.size - 1)
+
+    // 3.2 下探到下一层（类似右子树）
+    dfs(cur + 1, nums, track)
+}
+
+
 六、二分查找代码模板
+
 public int binarySearch(int[] array, int target) {
     int left = 0, right = array.length - 1, mid;
     while (left <= right) {
