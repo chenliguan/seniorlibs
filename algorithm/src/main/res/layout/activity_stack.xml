@@ -16,4 +16,9 @@
         android:id="@+id/btn_min_stack"
         style="@style/BtnStyles"
         android:text="155. 最小栈" />
+
+    <Button
+        android:id="@+id/btn_eval_rpn"
+        style="@style/BtnStyles"
+        android:text="150. 逆波兰表达式求值" />
 </LinearLayout>

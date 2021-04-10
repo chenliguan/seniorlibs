@@ -52,13 +52,7 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_1 -> {
-                val node = TreeNode(1)
-                val node_right = TreeNode(2)
-                node.left = null
-                node.right = node_right
-                val node2 = TreeNode(3)
-                node_right.left = node2
-                LogUtils.e(TAG, "144. 二叉树的前序遍历-迭代：${preorderTraversal1(node)}")
+                isValid("){")
             }
             else -> {
             }
@@ -202,6 +196,23 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return res
+    }
+
+    fun isValid(s: String): Boolean {
+        val stack : Deque<Char> = LinkedList<Char>()
+        for (char in s) {
+            if (char == '(') {
+                stack.push(')')
+            } else if (char == '[') {
+                stack.push(']')
+            } else if (char == '{') {
+                stack.push('}')
+            } else if (stack.isEmpty() || stack.pop() != char) {
+                return false
+            }
+        }
+
+        return stack.isEmpty()
     }
 }
 
