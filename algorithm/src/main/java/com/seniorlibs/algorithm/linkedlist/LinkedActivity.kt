@@ -51,6 +51,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_merge_two_lists).setOnClickListener(this)
         findViewById<View>(R.id.btn_get_kth_from_end).setOnClickListener(this)
         findViewById<View>(R.id.btn_remove_nth_from_end).setOnClickListener(this)
+        findViewById<View>(R.id.btn_odd_even_list).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -169,6 +170,19 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li4.next = li5
                 li5.next = null
                 LogUtils.e(TAG, "19. 删除链表的倒数第 N 个节点：${removeNthFromEnd(li1, 2)}")
+            }
+            R.id.btn_odd_even_list -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "328. 奇偶链表：${oddEvenList(li1)}")
             }
             else -> {
             }
@@ -580,6 +594,41 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         left?.next = left?.next?.next
 
         return dummy.next
+    }
+
+
+    /**
+     * 328. 奇偶链表
+     * 思想：将链表分为奇数链表和偶数链表，然后合并。其中，奇数链表的头节点为原链表的头节点 head，偶数链表的头节点为原链表头节点的下一个节点 head.next。
+     *
+     * 时间复杂度：O(n)。只遍历了一遍。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/odd-even-linked-list/solution/328-qi-ou-lian-biao-by-chen-li-guan-nzvi/
+     * @param head
+     * @return
+     */
+    fun oddEvenList(head: ListNode?): ListNode? {
+        if (head?.next == null) return head
+
+        // head 为奇数链表的头节点，odd 为奇数链表的尾节点
+        var odd = head
+        // even 为偶数链表的头节点
+        var even = head.next
+        // evenHead 为偶数链表的头节点
+        val evenHead = even
+
+        // 因为先判断的 odd 所以它的约束条件要来前面
+        while (odd?.next != null && even?.next != null) {
+            odd.next = even.next
+            odd = odd.next
+
+            even.next = odd?.next
+            even = even.next
+        }
+
+        odd?.next = evenHead
+        return head
     }
 
 }
