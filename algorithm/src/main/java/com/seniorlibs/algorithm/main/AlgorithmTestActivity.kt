@@ -214,6 +214,44 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
 
         return stack.isEmpty()
     }
+
+
+    fun mergeSort(array: IntArray, left: Int, right: Int) {
+        if (left >= right) return
+
+        // 分治
+        val mid = (left + right) / 2
+
+        // 递归排序
+        mergeSort(array, left, mid)
+
+        mergeSort(array, mid + 1, right)
+
+        // 合并
+        merge(array, left, mid, right)
+    }
+
+    fun merge(array: IntArray, left: Int, mid: Int, right: Int) {
+        val temp = IntArray(right - left + 1)
+        var i = left
+        var j = mid + 1
+        var k = 0
+
+        while (i <= mid && j <= right){
+            temp[k++] = if (array[i] < array[j]) array[i++] else array[j++]
+        }
+
+        while (i <= mid) {
+            temp[k++] = array[i++]
+        }
+        while (j <= mid) {
+            temp[k++] = array[j++]
+        }
+
+        for(p in temp.indices) {
+            array[left + p] = temp[p]
+        }
+    }
 }
 
 

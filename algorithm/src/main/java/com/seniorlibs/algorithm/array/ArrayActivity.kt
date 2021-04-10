@@ -574,27 +574,26 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      */
     fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int) {
-        var p1 = m - 1
-        var p2 = n - 1
-        var p3 = m + n - 1
+        var m = m
+        var n = n
+        var k = m + n - 1
 
-        /**
-        p1:nums1有效元素尾部；p2:nums2尾部；p3:最终数组尾部
-
-        1、当 p1>=0 时，nums1[p1] 和 nums2[p2]对比
-        （1）nums1[p1]大，将nums2[p1]放入p3位置，p1--,p3--
-        （2）nums2[p2]大于等于，将nums2[p2]放入p3位置，p2--,p3--
-
-        2、当 p1<0 时，将nums[p2]放入p3位置，p2--、p3--
-
-        3、循环结束条件：p2 < 0
-         */
-        while (p2 >= 0) {
-            if (p1 >= 0 && nums1[p1] > nums2[p2]) {
-                nums1[p3--] = nums1[p1--]
+        while (m > 0 && n > 0) {
+            if (nums1[m - 1] > nums2[n - 1]) {
+                nums1[k] = nums1[m - 1]
+                m--
             } else {
-                nums1[p3--] = nums2[p2--]
+                nums1[k] = nums2[n - 1]
+                n--
             }
+            k--
+        }
+
+        // 赋值:当n大于0并且m小于0时，此时nums1中的数组所有元素已经排列过了，
+        // 而nums2中还剩下n个元素，需要对nums1的前n个赋值为nums2的前n个（直接将前n个进行覆盖）
+        for (i in 0 until n) {
+            nums1[i] = nums2[i]
         }
     }
+
 }

@@ -89,14 +89,13 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 快速排序     9, 8, 6, 3, 2, 4
      *
-     * 基本思路：通过一趟排序划分数组，将排序的数据分割成独立的两部分，分在新的基准位置左右；
+     * 基本思路：分治思想，通过一趟排序划分数组，将排序的数据分割成独立的两部分，分在新的基准位置左右；
      *          然后递归地去排序它左边的部分（比它小的值）和右边的部分（比它大的值），依次进行下去，直到数组有序；
      *
-     * 算法思想：分而治之（分治思想），与「归并排序」不同，「快速排序」在「分」这件事情上不想「归并排序」无脑地一分为二，
-     *          而是采用了 partition（划分） 的方法，因此就没有「合」的过程。
+     * 对比：归并排序的处理过程是由下到上的，先处理子问题，然后再合并。而快排正好相反，它的处理过程是由上到下的，先分区，然后再处理子问题。
      *
      * 时间复杂度：O(nlogn)。
-     * 空间复杂度：O(logn) 。
+     * 空间复杂度：O(logn)。
      *
      * @param array
      * @param begin
@@ -106,14 +105,14 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
     fun quickSort(array: IntArray, begin: Int, end: Int) {
         if (end <= begin) return
 
-        // mark: 基准位置
-        val mark = partition(array, begin, end)
+        // 获取分区点
+        val q = partition(array, begin, end)
 
         // 对两个子序列左边进行快排，直到序列为空或者只有一个元素
-        quickSort(array, begin, mark - 1)
+        quickSort(array, begin, q - 1)
 
         // 对两个子序列右边进行快排
-        quickSort(array, mark + 1, end)
+        quickSort(array, q + 1, end)
     }
 
     /**
@@ -128,7 +127,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun partition(array: IntArray, begin: Int, end: Int): Int {
-        // 定义 counter 是从 begin 到 end 元素的位置，最初以 end 作为临时基准位置
+        // 定义 counter 是从 begin 到 end 元素的位置，最初以 end 作为分区点
         var counter = begin
         // 如果存在比 end 的值小的元素，都和 counter 交换，然后+1
         for (i in begin until end) {
@@ -140,7 +139,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        // 遍历结束以后，将+1后 counter 和 end 元素交换，成为新的基准位置
+        // 遍历结束以后，将 pivot 和 end 元素交换，成为新的分区点
         val temp = array[end]
         array[end] = array[counter]
         array[counter] = temp
@@ -150,11 +149,12 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 归并排序（Merge Sort）  采用分治法的一个非常典型的应用
-     * 思路：1.把长度为n的输入序列分成两个长度为n/2的子序列；
-     *      2.对这两个子序列分别采用归并排序；
-     *      3.将两个排序好的子序列合并成一个最终的排序序列。
+     * 思路：先处理子问题，然后再合并
+     *      1.把数组分成两个长度为n/2的数组；
+     *      2.对这两个子数组分别分治递归；
+     *      3.将两个排序好的子数组合并成一个最终的排序数组。
      *
-     * 时间复杂度：O(n * log n)，这里n是数组的长度：
+     * 时间复杂度：O(nlogn)，这里n是数组的长度：
      * 空间复杂度：O(n)，辅助数组与输入数组规模相当。
      *
      * @param array
@@ -164,16 +164,20 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
     fun mergeSort(array: IntArray, left: Int, right: Int) {
         if (right <= left) return
 
-        val mid = (left + right) shr 1 // 右移 (left + right) / 2
+        // 取 left 和 right 的中间位置
+        val mid = (left + right) / 2
 
+        // 分治递归
         mergeSort(array, left, mid)
+
         mergeSort(array, mid + 1, right)
 
+        // 将 array[left, mid] 和 array[mid+1, right]
         merge(array, left, mid, right)
     }
 
     fun merge(array: IntArray, left: Int, mid: Int, right: Int) {
-        // 临时数组
+        // 缓存数组
         val temp = IntArray(right - left + 1)
         var i = left
         var j = mid + 1
@@ -185,9 +189,14 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 如果左边还有数据需要拷贝，把左边数组剩下的拷贝到缓存数组
-        while (i <= mid) temp[k++] = array[i++]
+        while (i <= mid) {
+            temp[k++] = array[i++]
+        }
         // 如果右边还有数据需要拷贝，把右边数组剩下的拷贝到缓存数组
-        while (j <= right) temp[k++] = array[j++]
+        while (j <= right) {
+            temp[k++] = array[j++]
+        }
+
         // 将缓存数组中的内容复制回原数组
         for (p in temp.indices) {
             array[left + p] = temp[p]
