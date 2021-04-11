@@ -149,7 +149,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 归并排序（Merge Sort）  采用分治法的一个非常典型的应用
-     * 思路：先处理子问题，然后再合并
+     * 思路：先处理子问题，把数组从中间分成前后两部分，分到1个。然后对前后两部分分别排序，再将排好序的两部分合并在一起，这样整个数组就都有序了。
      *      1.把数组分成两个长度为n/2的数组；
      *      2.对这两个子数组分别分治递归；
      *      3.将两个排序好的子数组合并成一个最终的排序数组。
@@ -273,8 +273,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 选择排序
-     * 思想：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置；
-     *      然后，再从剩余未排序元素中继续寻找最小（大）元素；最后放到 前面已排序数组的 末尾。
+     * 思想：首先在未排序序列中找到最小（大）元素，存放到 前面已排序数组的 末尾。
      *
      * 时间复杂度：O(n^2)，这里n是数组的长度；
      * 空间复杂度：O(1)，使用到常数个临时变量。
@@ -283,7 +282,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun selectSort(array: IntArray) : IntArray {
-        if (array.size <= 1) return array
+        if (array.isEmpty()) return array
 
         // i = 1 逐步递增，是指 前面已排序数组的 最后一个位置
         for (i in array.indices) {
@@ -291,7 +290,9 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
             // 从下一个位置后，找到最小数的下标
             for (j in i + 1 until array.size) {
                 // 将最小数的索引保存
-                if (array[j] < array[minIndex]) minIndex = j
+                if (array[j] < array[minIndex]) {
+                    minIndex = j
+                }
             }
 
             // 最后交换元素
@@ -306,8 +307,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 插入排序
-     * 思想：将一个数字插入 前面已排序的数组，不使用逐步交换，使用先赋值给「临时变量」；
-     *      然后把不适合的元素逐个后移；最后空出一个位置，把「临时变量」赋值给这个空位；
+     * 思想：将 未排序的数组 的第一个元素先赋值给临时变量，然后把比插入元素大的元素逐个后移，最后空出一个位置，把临时变量赋值给这个空位；
      *
      * 时间复杂度：O(n^2)，这里n是数组的长度；
      * 空间复杂度：O(1)，使用到常数个临时变量。
@@ -316,21 +316,22 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun insertSort(array: IntArray) : IntArray {
-        if (array.size <= 1) return array
+        if (array.isEmpty()) return array
 
-        // i = 1 逐步递增，是指 前面已排序数组的 后一个位置
+        // i = 1 逐步递增，是指 未排序的数组 的第一个位置
         for (i in 1 until array.size) {
             // 先临时暂存这个变量
             val temp = array[i]
-            var pre = i - 1
-            // 然后前面比插入元素大的值逐个后移，空出一个位置
-            while(pre >= 0 && temp < array[pre]) {
-                array[pre + 1] = array[pre]
-                pre--
+            var j = i - 1
+            // 查找比插入元素大的元素逐个后移，空出一个位置
+            while(j >= 0 && temp < array[j]) {
+                // 数据移动
+                array[j + 1] = array[j]
+                j--
             }
 
-            // 最后把「临时变量」赋值给空位
-            array[pre + 1] = temp
+            // 最后把 临时变量 赋值给空位（因为前面-1，因此+1）
+            array[j + 1] = temp
         }
 
         return array
@@ -338,7 +339,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 冒泡排序  超时
-     * 思想：进行 n-1 趟比较并交换，对相邻的元素进行两两比较，大小不相等则进行交换，每一趟会将最小或最大的元素“冒”到 后面已排序数组 前面
+     * 思想：进行 n-1 趟比较并交换，将大小不相等的相邻元素两两交换，每一趟会将最小或最大的元素“冒”到 后面已排序数组 前面
      *
      * 时间复杂度：O(n^2)，这里n是数组的长度；
      * 空间复杂度：O(1)，使用到常数个临时变量。
@@ -347,23 +348,24 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun bubbleSort(array: IntArray): IntArray {
-        if (array.size <= 1) return array
+        if (array.isEmpty()) return array
 
         // array.size - 1 逐步递减，是指 后面已排序数组 前一个位置
-        for (i in array.size - 1 downTo 0) {
-            var sorted = true
-            for (j in 0 until i) {
-                // 相邻元素两两对比
+        for (i in 0 until array.size) {
+            // 提前退出冒泡循环的标志位
+            var flag = false
+            for (j in 0 until array.size - i - 1) {
+                // 相邻元素交换
                 if (array[j] > array[j + 1]) {
-                    // 元素交换
                     val temp = array[j]
                     array[j] = array[j + 1]
                     array[j + 1] = temp
-
-                    sorted = false
+                    // 表示有数据交换
+                    flag = true
                 }
             }
-            if (sorted) break
+            // 没有数据交换，提前退出
+            if (!flag) break
         }
 
         return array

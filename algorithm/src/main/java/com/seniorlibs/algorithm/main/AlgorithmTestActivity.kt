@@ -252,6 +252,81 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
             array[left + p] = temp[p]
         }
     }
+
+    /**
+     * 思想：首先在未排序序列中找到最小（大）元素，存放到 前面已排序数组的 末尾。
+     *
+     * @param array
+     * @return
+     */
+    fun selectSort(array: IntArray) : IntArray {
+        if (array.isEmpty()) return array
+
+        for (i in array.indices) {
+            var minIndex = i
+            for (j in i + 1 until array.size) {
+                if (array[j] < array[minIndex]) {
+                    minIndex = j
+                }
+            }
+
+            val temp = array[i]
+            array[i] = array[minIndex]
+            array[minIndex] = temp
+        }
+
+        return array
+    }
+
+
+    /**
+     * 思想：将 未排序的数组 的第一个元素先赋值给临时变量，然后把比插入元素大的元素逐个后移，最后空出一个位置，把临时变量赋值给这个空位；
+     *
+     * @param array
+     * @return
+     */
+    fun insertSort(array: IntArray) : IntArray {
+        if (array.isEmpty()) return array
+
+        for (i in 1 until array.size) {
+            val temp = array[i]
+            var j = i - 1
+
+            while (j >= 0 && temp < array[j]) {
+                array[j+1] = array[j]
+                j--
+            }
+
+            array[j + 1] = temp
+        }
+
+        return array
+    }
+
+    /**
+     * 思想：进行 n-1 趟比较并交换，将大小不相等的相邻元素两两交换，每一趟会将最小或最大的元素“冒”到 后面已排序数组 前面
+     *
+     * @param array
+     * @return
+     */
+    fun bubbleSort(array: IntArray): IntArray {
+        if (array.isEmpty()) return array
+
+        for (i in 0 until array.size) {
+            var flag = false
+            for (j in 0 until array.size - i - 1) {
+                if (array[j] > array[j+1]) {
+                    val temp = array[j]
+                    array[j] = array[j+1]
+                    array[j+1] = temp
+                    flag = true
+                }
+            }
+            if (!flag) break
+        }
+
+        return array
+    }
 }
 
 
