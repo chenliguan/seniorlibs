@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.baselib.utils.LogUtils
+import java.lang.StringBuilder
 import java.util.*
 
 /**
@@ -326,6 +327,27 @@ class AlgorithmTestActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return array
+    }
+
+
+    fun addStrings(num1: String, num2: String): String? {
+        val res = StringBuilder()
+        val i = num1.length - 1
+        val j = num2.length - 1
+        var carry = 0
+
+        while (i >= 0 || j >= 0) {
+            val n1: Char = if (i >= 0) num1[i] else '0'
+            val n2: Char = if (j >= 0) num2[j] else '0'
+            val result = n1.toInt() + n2.toInt() + carry
+            carry = result / 10
+            val currentNum = result % 10
+            res.append(currentNum)
+        }
+
+        if (carry == 1) res.append(1)
+
+        return res.reverse().toString()
     }
 }
 
