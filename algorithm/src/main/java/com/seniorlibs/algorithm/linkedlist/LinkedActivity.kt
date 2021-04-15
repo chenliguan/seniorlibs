@@ -359,23 +359,23 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         val dummy = ListNode(0)
         dummy.next = head
 
-        // 定义两个指针，分别称之为 g(guard 守卫) 和 p(point)。
-        var g: ListNode? = dummy
-        var p: ListNode? = dummy.next
+        // 定义两个指针，分别称之为 p、q
+        var p: ListNode? = dummy
+        var q: ListNode? = dummy.next
 
-        // 将 g 移动到第一个要反转的节点的前面，将 p 移动到第一个要反转的节点的位置上
+        // 将 p 移动到第一个要反转的节点的前面，将 q 移动到第一个要反转的节点的位置上
         for (i in 0 until left - 1) {
-            g = g?.next
             p = p?.next
+            q = q?.next
         }
 
-        // 将 p 后面的元素删除，然后插入到 g 的后面，也即头插法。（根据 left 和 right 重复此步骤）
-        for (i in 0 until right - left) {   // g = 1，p = 2
-            val removeNode = p?.next  // remove = 3
-            p?.next = p?.next?.next              // p?.next = 4  ->  1，2，4
+        // 将 p 后面的元素删除，然后插入到 p 的后面，也即头插法。（根据 left 和 right 重复此步骤）
+        for (i in 0 until right - left) {   // p = 1，q = 2
+            val remove = q?.next  // remove = 3
+            q?.next = q?.next?.next              // q?.next = 4  ->  1，2，4
 
-            removeNode?.next = g?.next           // 1、3、2
-            g?.next = removeNode
+            remove?.next = p?.next           // 1、3、2
+            p?.next = remove
         }
 
         // 返回虚拟头结点 dummy 的下一个节点，即是 头结点

@@ -814,7 +814,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 2.处理当前层逻辑
         // 在前序数组中找到根节点值
         val rootVal = preorder[preStart]
-        // 在中序哈希映射中找到根节点下标
+        // 根据根节点值，从map中找到根节点下标
         val rootIndex = map[rootVal]!!
         // 中序数组的根节点下标 与 中序起点下标 差距
         val leftSize = rootIndex - inStart
