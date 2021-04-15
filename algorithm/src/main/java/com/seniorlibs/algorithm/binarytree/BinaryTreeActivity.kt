@@ -453,19 +453,43 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 1.递归终结条件（最先写）
         if (root == null) return false
 
-        // 2.处理当前层逻辑
+        // 2.处理当前层逻辑：同时判断节点的左右子树同时为空才是叶子节点
         if (root.left == null && root.right == null) {
             return root.`val` == sum
         }
 
         // 3.下探到下一层，关键：sum - root.`val`
-        val left = hasPathSum(root.left, sum - root.`val`)
+        return hasPathSum(root.left, sum - root.`val`) || hasPathSum(root.right, sum - root.`val`)
+    }
 
-        val right = hasPathSum(root.right, sum - root.`val`)
+    fun hasPathSum1(root: TreeNode?, sum: Int): Boolean {
+        if (root == null) return false
 
-        return left || right
+        val stack: Deque<TreeNode?> = LinkedList()
+        // 根节点入栈
+        stack.push(root)
 
-        // 4.清理恢复当前层
+        while (!stack.isEmpty()) {
+            // 将根节点弹出
+            val node = stack.pop()
+
+            // 累加到叶子节点之后，结果等于sum，说明存在这样的一条路径
+            if (node?.left == null && node?.right == null) {
+                if (node?.`val` == sum) return true
+            }
+
+            // 右子节点累加，然后入栈
+            if (node?.right != null) {
+                node.right?.`val` = node.`val` + node.right!!.`val`
+                stack.push(node.right)
+            }
+            // 左子节点累加，然后入栈
+            if (node?.left != null) {
+                node.left?.`val` = node.`val` + node.left!!.`val`
+                stack.push(node.left)
+            }
+        }
+        return false
     }
 
 
@@ -484,12 +508,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun pathSum(root: TreeNode?, sum: Int): List<List<Int>> {
         val result: MutableList<List<Int>> = mutableListOf()
 
-        dfs(root, sum, mutableListOf(), result)
-
+        pathDfs(root, sum, mutableListOf(), result)
         return result
     }
 
-    fun dfs(root: TreeNode?, sum: Int, list: MutableList<Int>, result: MutableList<List<Int>>) {
+    fun pathDfs(root: TreeNode?, sum: Int, list: MutableList<Int>, result: MutableList<List<Int>>) {
         if (root == null) return
 
         list.add(root.`val`)
@@ -500,7 +523,6 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             if (sum == root.`val`) {
                 result.add(ArrayList(list))
             }
-
             // 把最后加入的结点值给移除掉，因为下一步直接 return 了，不会再走最后一行的 remove 了
             list.removeAt(list.size - 1)
             // 到叶子节点之后直接返回，因为在往下就走不动了
@@ -508,8 +530,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 如果没到达叶子节点，就继续从它的左右两个子节点往下找，注意 sum 要减去当前节点的值
-        dfs(root.left, sum - root.`val`, list, result)
-        dfs(root.right, sum - root.`val`, list, result)
+        pathDfs(root.left, sum - root.`val`, list, result)
+
+        pathDfs(root.right, sum - root.`val`, list, result)
 
         // 要理解递归的本质，当递归往下传递的时候他最后还是会往回走，把这个值使用完之后还要把它给移除，这就是回溯
         list.removeAt(list.size - 1)
