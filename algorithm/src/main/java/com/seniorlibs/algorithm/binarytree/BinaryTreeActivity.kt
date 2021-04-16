@@ -51,6 +51,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_valid_bst).setOnClickListener(this)
         findViewById<View>(R.id.btn_pre_in_build_tree).setOnClickListener(this)
         findViewById<View>(R.id.btn_in_post_build_tree).setOnClickListener(this)
+        findViewById<View>(R.id.btn_invert_tree).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -202,6 +203,18 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                         intArrayOf(9, 3, 15, 20, 7)
                     )}"
                 )
+            }
+            R.id.btn_invert_tree -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "226. 翻转二叉树：${invertTree(node)}")
+                LogUtils.e(TAG, "226. 翻转二叉树：${invertTree2(node)}")
             }
             else -> {
             }
@@ -736,6 +749,71 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return res
+    }
+
+
+    /**
+     * 226. 翻转二叉树  方法一：递归
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/invert-binary-tree/solution/226-fan-zhuan-er-cha-shu-by-chen-li-guan-o4wd/
+     * @param root
+     * @return
+     */
+    fun invertTree(root: TreeNode?): TreeNode? {
+        // 递归函数的终止条件，节点为空时返回
+        if (root == null) return null
+
+        // 下面三句是将当前节点的左右子树交换
+        val tmp = root.right
+        root.right = root.left
+        root.left = tmp
+
+        // 递归交换当前节点的 左子树
+        invertTree(root.left)
+        // 递归交换当前节点的 右子树
+        invertTree(root.right)
+        // 函数返回时就表示当前这个节点，以及它的左右子树都已经交换完了
+        return root
+    }
+
+    /**
+     * 226. 翻转二叉树  方法二：栈
+     *
+     * @param root
+     * @return
+     */
+    fun invertTree2(root: TreeNode?): TreeNode? {
+        if (root == null) return root
+
+        val stack : Deque<TreeNode> = LinkedList<TreeNode>()
+        stack.push(root)
+
+        while (!stack.isEmpty()) {
+            // 将根节点弹出，如果是标记null，则是将空节点弹出即可；如果不是null，下面再将根节点添加到栈中
+            val node = stack.pop()
+            if (node != null) {
+                // 添加右节点
+                if (node.right != null) stack.push(node.right)
+                // 添加左节点
+                if (node.left != null) stack.push(node.left)
+
+                // 添加根节点
+                stack.push(node)
+                // 根节点访问过，但还没有处理，需要做一下标记null
+                stack.push(null)
+            } else {
+                // 遇到标记，弹出栈顶元素
+                val rootNode = stack.pop()
+                // 下面三句是将当前节点的左右子树交换
+                val tmp = rootNode.right
+                rootNode.right = rootNode.left
+                rootNode.left = tmp
+            }
+        }
+        return root
     }
 
 

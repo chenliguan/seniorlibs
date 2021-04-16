@@ -67,4 +67,9 @@
         style="@style/BtnStyles"
         android:text="106. 从中序与后序遍历序列构造二叉树" />
 
+    <Button
+        android:id="@+id/btn_invert_tree"
+        style="@style/BtnStyles"
+        android:text="226. 翻转二叉树" />
+
 </LinearLayout>
