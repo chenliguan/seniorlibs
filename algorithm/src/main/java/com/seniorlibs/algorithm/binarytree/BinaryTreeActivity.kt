@@ -123,6 +123,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node2.left = node3
                 node1.right = TreeNode(4)
                 LogUtils.e(TAG, "112. 路径总和：${hasPathSum(node, 22)}")
+                LogUtils.e(TAG, "112. 路径总和：${hasPathSum1(node, 22)}")
             }
             R.id.btn_path_sum -> {
                 val node = TreeNode(1)
@@ -249,9 +250,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun preorder1(root: Node?): List<Int> {
         val res: MutableList<Int> = mutableListOf()
-        val stack: Deque<Node?> = LinkedList()
+        if (root == null) return res
 
-        if (root == null) return res else stack.push(root)
+        val stack: Deque<Node?> = LinkedList()
+        stack.push(root)
 
         while (!stack.isEmpty()) {
             // 将根节点弹出
@@ -303,9 +305,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun postorder1(root: Node?): List<Int> {
         val res: MutableList<Int> = mutableListOf()
-        val stack: Deque<Node?> = LinkedList()
+        if (root == null) return res
 
-        if (root == null) return res else stack.push(root)
+        val stack: Deque<Node?> = LinkedList()
+        stack.push(root)
 
         while (!stack.isEmpty()) {
             // 将根节点弹出
@@ -360,8 +363,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun maxDepth1(root: TreeNode?): Int {
         if (root == null) return 0
 
-        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
         var level = 0
+        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
         queue.offer(root)
 
         var size = queue.size
@@ -416,8 +419,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun minDepth1(root: TreeNode?): Int {
         if (root == null) return 0
 
-        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
         var level = 0
+        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
         queue.offer(root)
 
         var size = queue.size
@@ -438,7 +441,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 112. 路径总和
+     * 112. 路径总和  方式一：递归
      * 思想：一直向下找到叶子节点，同时判断节点的左右子树同时为空才是叶子节点
      *
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
@@ -446,23 +449,30 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      *
      * https://leetcode-cn.com/problems/path-sum/solution/112-lu-jing-zong-he-by-chen-li-guan-yi5m/
      * @param root
-     * @param sum
+     * @param targetSum
      * @return
      */
-    fun hasPathSum(root: TreeNode?, sum: Int): Boolean {
+    fun hasPathSum(root: TreeNode?, targetSum: Int): Boolean {
         // 1.递归终结条件（最先写）
         if (root == null) return false
 
         // 2.处理当前层逻辑：同时判断节点的左右子树同时为空才是叶子节点
         if (root.left == null && root.right == null) {
-            return root.`val` == sum
+            return root.`val` == targetSum
         }
 
         // 3.下探到下一层，关键：sum - root.`val`
-        return hasPathSum(root.left, sum - root.`val`) || hasPathSum(root.right, sum - root.`val`)
+        return hasPathSum(root.left, targetSum - root.`val`) || hasPathSum(root.right, targetSum - root.`val`)
     }
 
-    fun hasPathSum1(root: TreeNode?, sum: Int): Boolean {
+    /**
+     * 112. 路径总和  方式二：栈
+     *
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    fun hasPathSum1(root: TreeNode?, targetSum: Int): Boolean {
         if (root == null) return false
 
         val stack: Deque<TreeNode?> = LinkedList()
@@ -470,23 +480,29 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         stack.push(root)
 
         while (!stack.isEmpty()) {
-            // 将根节点弹出
             val node = stack.pop()
+            if (node != null) {
+                // 添加右节点
+                if (node.right != null)  {
+                    node.right?.`val` = node.`val` + node.right!!.`val`
+                    stack.push(node.right)
+                }
+                // 添加左节点
+                if (node.left != null) {
+                    node.left?.`val` = node.`val` + node.left!!.`val`
+                    stack.push(node.left)
+                }
 
-            // 累加到叶子节点之后，结果等于sum，说明存在这样的一条路径
-            if (node?.left == null && node?.right == null) {
-                if (node?.`val` == sum) return true
-            }
-
-            // 右子节点累加，然后入栈
-            if (node?.right != null) {
-                node.right?.`val` = node.`val` + node.right!!.`val`
-                stack.push(node.right)
-            }
-            // 左子节点累加，然后入栈
-            if (node?.left != null) {
-                node.left?.`val` = node.`val` + node.left!!.`val`
-                stack.push(node.left)
+                // 添加根节点
+                stack.push(node)
+                // 根节点访问过，但还没有处理，需要做一下标记null
+                stack.push(null)
+            } else {
+                val rootNode = stack.pop()
+                // 遇到标记，弹出栈顶元素：累减到叶子节点之后，结果等于 targetSum，说明存在这样的一条路径
+                if (rootNode?.left == null && rootNode?.right == null) {
+                    if (rootNode?.`val` == targetSum) return true
+                }
             }
         }
         return false
