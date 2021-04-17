@@ -35,7 +35,7 @@ public class ThreadPoolManager {
         // 线程池最大容量
         final int MAXIMUM_POOL_SIZE = 128;
         // 过剩的空闲线程的存活时间
-        final int KEEP_ALIVE_TIME = 1;
+        final int KEEP_ALIVE_TIME = 30;
         // 使用有界队列，可以配置大一些，例如几千
         BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(1000);
         // ThreadFactory 线程工厂，通过工厂方法newThread来获取新线程
