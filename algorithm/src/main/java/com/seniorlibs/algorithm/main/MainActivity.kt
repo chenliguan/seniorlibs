@@ -10,7 +10,6 @@ import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
 import com.seniorlibs.algorithm.bit.BitActivity
 import com.seniorlibs.algorithm.db.DbActivity
 import com.seniorlibs.algorithm.db.DbActivity2
-import com.seniorlibs.algorithm.dfsbfs.DfsBfsActivity
 import com.seniorlibs.algorithm.greedy.GreedyActivity
 import com.seniorlibs.algorithm.heap.HeapActivity
 import com.seniorlibs.algorithm.linkedlist.LinkedActivity
@@ -78,7 +77,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_queue -> { QueueActivity.actionStart(this) }
             R.id.btn_heap -> { HeapActivity.actionStart(this) }
             R.id.btn_binary_tree -> BinaryTreeActivity.actionStart(this)
-            R.id.btn_dfs_bfs -> DfsBfsActivity.actionStart(this)
             R.id.btn_recursive -> { RecursiveActivity.actionStart(this) }
             R.id.btn_back -> { BackActivity.actionStart(this) }
             R.id.btn_db -> { DbActivity.actionStart(this) }

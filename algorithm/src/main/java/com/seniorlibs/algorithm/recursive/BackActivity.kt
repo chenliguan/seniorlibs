@@ -65,18 +65,11 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 回溯算法关键在于:不合适就退回上一步，然后通过约束条件, 减少时间复杂度。
-     *
-     * DFS是一个劲的往某一个方向搜索，而回溯算法建立在DFS基础之上的，但不同的是在搜索过程中，达到结束条件后，恢复状态，回溯上一层，再次搜索。
-     * 因此回溯算法与 DFS 的区别就是有无状态重置
-     */
-
-    /**
-     * 22. 括号生成  方法一：回溯
+     * 22. 括号生成  方法一：递归+剪枝 ——> 由于字符串的特殊性，产生一次拼接都生成新的对象，因此无需回溯
      *
      * 思路：左括号只要小于 n，left 随时可以加。right 必须之前有左括号，左括号个数 > 右括号个数
      *
-     * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
+     * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
      * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
      *
      * https://leetcode-cn.com/problems/generate-parentheses/
@@ -90,16 +83,19 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         // ((()))
         // 添加 ( , 左括号只要小于 n，left 随时可以加
         // 添加 ) ，右括号之前必须有左括号，左括号个数 > 右括号个数
-        return generate(0, 0,  n, "", res)
+        generate(0, 0,  n, "", res)
+
+        return res
     }
 
-    fun generate(l: Int, r: Int, n : Int, str : String, res : MutableList<String>): MutableList<String> {
+    fun generate(l: Int, r: Int, n : Int, str : String, res : MutableList<String>) {
         // 1.递归终结条件（最先写） // 肯定不合法，提前结束，即“剪枝”
-        if (l > n || r > l) return res
+        if (l > n || r > l) return
 
         // 2.处理当前层逻辑
         if (l == n && r == l) {
             res.add(str)
+            return
         }
 
         // 3.下探到下一层
@@ -110,8 +106,52 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         if (r < l) {
             generate(l, r + 1, n , str + ")", res)
         }
+    }
 
-        return res
+
+    /**
+     * 17. 电话号码的字母组合
+     *
+     * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
+     * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
+     *
+     */
+    private val letterMap = arrayOf(
+        " ",  //0
+        "",  //1
+        "abc",  //2
+        "def",  //3
+        "ghi",  //4
+        "jkl",  //5
+        "mno",  //6
+        "pqrs",  //7
+        "tuv",  //8
+        "wxyz" //9
+    )
+
+    private var array: ArrayList<String> = arrayListOf()
+
+    fun letterCombinations(digits: String): List<String?>? {
+        if (digits == "") return array
+
+        findCombination(digits, 0, "")
+
+        return array
+    }
+
+    private fun findCombination(digits: String, index: Int, s: String) {
+        if (index == digits.length) {
+            array.add(s)
+            return
+        }
+
+        val c = digits[index]
+        val letters = letterMap[c - '0']
+
+        for (i in 0 until letters.length) {
+            findCombination(digits, index + 1, s + letters[i])
+        }
+        return
     }
 
 
