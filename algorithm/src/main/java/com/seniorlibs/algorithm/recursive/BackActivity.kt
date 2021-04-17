@@ -74,7 +74,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 22. 括号生成  方法一：回溯
      *
-     * 思路：左括号只要小于n，left随时可以加; right必须之前有左括号，左括号个数>右括号个数
+     * 思路：左括号只要小于 n，left 随时可以加。right 必须之前有左括号，左括号个数 > 右括号个数
      *
      * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
      * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
@@ -88,8 +88,8 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         if (n == 0) return res
 
         // ((()))
-        // 添加 ) ，需要 ( 的数量大于 )
-        // 添加 ( , 需要 ( 数量小于 n
+        // 添加 ( , 左括号只要小于 n，left 随时可以加
+        // 添加 ) ，右括号之前必须有左括号，左括号个数 > 右括号个数
         return generate(0, 0,  n, "", res)
     }
 
@@ -98,14 +98,18 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         if (l > n || r > l) return res
 
         // 2.处理当前层逻辑
-        if (l == n && r == l) res.add(str)
+        if (l == n && r == l) {
+            res.add(str)
+        }
 
         // 3.下探到下一层
-        if (l < n) generate(l + 1, r, n , str + "(", res)
+        if (l < n) {
+            generate(l + 1, r, n , str + "(", res)
+        }
 
-        if (r < l) generate(l, r + 1, n , str + ")", res)
-
-        // 4.清理恢复当前层
+        if (r < l) {
+            generate(l, r + 1, n , str + ")", res)
+        }
 
         return res
     }
