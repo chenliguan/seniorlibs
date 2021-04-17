@@ -29,8 +29,6 @@
 
         <activity android:name=".binarytree.BinaryTreeActivity" />
 
-        <activity android:name=".dfsbfs.DfsBfsActivity" />
-
         <activity android:name=".map.MapActivity" />
 
         <activity android:name=".stack.StackActivity" />

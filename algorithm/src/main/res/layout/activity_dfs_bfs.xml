@@ -7,18 +7,5 @@
     tools:context=".main.MainActivity"
     tools:ignore="MissingDefaultResource">
 
-    <Button
-        android:id="@+id/btn_level_order_bottom"
-        style="@style/BtnStyles"
-        android:text="107. 二叉树的层序遍历 II" />
 
-    <Button
-        android:id="@+id/btn_largest_values"
-        style="@style/BtnStyles"
-        android:text="515. 在每个树行中找最大值" />
-
-    <Button
-        android:id="@+id/btn_ladder_length"
-        style="@style/BtnStyles"
-        android:text="127. 单词接龙" />
 </LinearLayout>

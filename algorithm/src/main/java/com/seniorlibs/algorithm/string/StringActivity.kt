@@ -83,9 +83,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "394. 字符串解码：${decodeString("3[a2[c]]")}")
             }
             R.id.btn_str_str -> {
-                LogUtils.d(TAG, "28. 实现 strStr()：${strStr2("hello", "ll")}")
+                LogUtils.d(TAG, "28. 实现朴素的字符串匹配 strStr()：${strStr2("hello", "ll")}")
 
-                LogUtils.d(TAG, "28. 实现 strStr()：${strStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD")}")
+                LogUtils.d(TAG, "28. 实现KMP字符串匹配 strStr()：${strStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD")}")
 //                LogUtils.d(TAG, "28. 实现 strStr()：${strStr("aabaaabaaac", "aabaaac")}")
             }
             R.id.btn_word_pattern -> {
