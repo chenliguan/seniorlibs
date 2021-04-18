@@ -791,7 +791,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 如果到达叶子节点，就不能往下走了，直接 return
         if (root.left == null && root.right == null) {
             // 如果到达叶子节点，并且 sum 等于叶子节点的值，说明找到了一组，要把集合放到 result 中
-            if (sum == root.`val`) res.add(ArrayList(list))
+            if (sum == root.`val`) {
+                res.add(ArrayList(list))
+            }
             // 把最后加入的结点值给移除掉，因为下一步直接 return 了，不会再走最后一行的 remove 了
             list.removeAt(list.size - 1)
             // 到叶子节点之后直接返回，因为在往下就走不动了

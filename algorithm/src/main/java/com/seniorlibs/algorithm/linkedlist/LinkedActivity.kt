@@ -144,6 +144,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li11.next = li22
                 li22.next = li33
                 LogUtils.e(TAG, "21. 合并两个有序链表：${mergeTwoLists(li1, li11)}")
+                LogUtils.e(TAG, "21. 合并两个有序链表1：${mergeTwoLists1(li1, li11)}")
             }
             R.id.btn_get_kth_from_end -> {
                 val li1 = ListNode(1)
@@ -371,10 +372,10 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         // 将 p 后面的元素删除，然后插入到 p 的后面，也即头插法。（根据 left 和 right 重复此步骤）
         for (i in 0 until right - left) {   // p = 1，q = 2
-            val remove = q?.next  // remove = 3
+            val remove = q?.next      // remove = 3
             q?.next = q?.next?.next              // q?.next = 4  ->  1，2，4
 
-            remove?.next = p?.next           // 1、3、2
+            remove?.next = p?.next               // 1、3、2
             p?.next = remove
         }
 

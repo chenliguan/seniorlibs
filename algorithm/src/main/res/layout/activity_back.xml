@@ -23,6 +23,21 @@
         android:text="78. 子集" />
 
     <Button
+        android:id="@+id/btn_combine"
+        style="@style/BtnStyles"
+        android:text="77. 组合" />
+
+    <Button
+        android:id="@+id/btn_permute"
+        style="@style/BtnStyles"
+        android:text="46. 全排列" />
+
+    <Button
+        android:id="@+id/btn_restore_ip_addresses"
+        style="@style/BtnStyles"
+        android:text="93. 复原 IP 地址" />
+
+    <Button
         android:id="@+id/btn_solve_n_queens"
         style="@style/BtnStyles"
         android:text="51. N 皇后" />

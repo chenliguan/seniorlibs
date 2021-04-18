@@ -96,35 +96,37 @@ for 选择 in 选择列表: {
 
 2、案例
 
-var res: MutableList<List<Int>> = ArrayList()
-
-/* 主函数，输入一组不重复的数字，返回它们的全排列 */
-fun subsets(nums: IntArray): List<List<Int>>? {
-    val track: MutableList<Int> = ArrayList()
-    dfs(0, nums, track)
+/**
+ * 全排列
+ */
+fun permute(nums: IntArray): List<List<Int>> {
+    val res = mutableListOf<List<Int>>()
+    // 记录「路径」
+    backtrack(nums, mutableListOf<Int>(), res)
     return res
 }
 
-// 已选路径记录在 track 中
-// 可选择列表：track[1,2] 中不存在于 nums[1,2,3] 的那些元素[3]。
-fun dfs(cur: Int, nums: IntArray, track: MutableList<Int>) {
-    // 1 递归终结条件（最先写）：结束条件，nums[1,2,3] 中的元素全都在 track[1,2,3] 中出现
-    if (cur == nums.size) {
+fun backtrack(nums: IntArray, track: MutableList<Int>, res: MutableList<List<Int>>) {
+    // 到达叶子节点
+    if (track.size == nums.size) {
+        // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
         res.add(ArrayList(track))
         return
     }
 
-    // 2.1 做选择：选择当前位置元素
-    track.add(nums[cur])
+    for (i in 0 until nums.size) {
+        // 排除不合法的选择
+        if (track.contains(nums[i])) continue
 
-    // 3.1 下探到下一层（类似左子树）
-    dfs(cur + 1, nums, track)
+        // 做选择
+        track.add(nums[i])
 
-    // 取消选择，不选择当前位置元素
-    track.removeAt(track.size - 1)
+        // 进入下一层决策树
+        backtrack(nums, track, res)
 
-    // 3.2 下探到下一层（类似右子树）
-    dfs(cur + 1, nums, track)
+        // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
+        track.removeAt(track.size - 1)
+    }
 }
 
 
