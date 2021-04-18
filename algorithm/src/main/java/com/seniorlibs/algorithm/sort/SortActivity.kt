@@ -139,7 +139,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        // 遍历结束以后，将 pivot 和 end 元素交换，成为新的分区点
+        // 遍历结束以后，将 counter 和 end 元素交换，成为新的分区点
         val temp = array[end]
         array[end] = array[counter]
         array[counter] = temp

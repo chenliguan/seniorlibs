@@ -194,7 +194,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 思路：
      * 1、去除前导空格
      * 2、处理正负号：如果出现符号字符，仅第1个有效，并记录正负
-     * 3、将后续出现的数字字符进行转换，注意越界情况
+     * 3、从后续出现的数字字符中取出当前数字，在进行进制转换，注意不合法的情况
      *
      * 时间复杂度：O(n)，其中n为字符串的长度。我只需要依次处理所有的字符，处理每个字符需要的时间为O(1)。
      * 空间复杂度：O(1)，自动机的状态只需要常数空间存储
@@ -222,7 +222,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             sign = -1
         }
 
-        // 3、将后续出现的数字字符进行转换，注意越界情况
+        // 3、从后续出现的数字字符中取出当前数字，在进行进制转换，注意不合法的情况
         var total = 0
         while (index < str.length) {
             // 3.1 取出当前数字
@@ -291,7 +291,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             // 每个块开始于 2k 的倍数，也就是 0, 2k, 4k, 6k, ...。
             var i = start
 
-            // 如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，其余字符保持原样。--> j = start + k - 1
+            // 如果剩余字符少于 k 个，则将剩余字符全部反转。--> j = s.length - 1
+            // 如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，类同常规情况。--> j = start + k - 1
             var j = Math.min(s.length - 1, start + k - 1)
 
             // 交换
@@ -612,6 +613,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。只遍历了一遍字符串。
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/palindrome-number/solution/9-hui-wen-shu-by-chen-li-guan-yh68/
      * @param x
      * @return
      */
@@ -624,13 +626,17 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
         // 如果是正数，则将其倒序数值计算出来，然后比较和原数值是否相等
         while (xs != 0) {
-            // 123  3 2 1
-            cur = cur * 10 + xs % 10
+            // 每次取末尾数字  -123 % 10 = -3 -> -12 % 10 = -2 -> -1 % 10 = -1
+            val temp = xs % 10
+            // 0 * 10 + -3 = -3 -> -3 * 10 + -2 = 32 -> 32 * 10 + -1 = -321
+            cur = cur * 10 + temp
+            // -123/10 = -12 -> -12/10 = -1 -> -1/10 = -1
             xs /= 10
         }
 
         return cur == x
     }
+
 
     /**
      * 415. 字符串相加（两个大数相加）
@@ -651,13 +657,13 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         var carry = 0
 
         while (i >= 0 || j >= 0) {
-            val n1: Char = if (i >= 0) num1[i] else '0'
-            val n2: Char = if (j >= 0) num2[j] else '0'
+            val n1 = if (i >= 0) num1[i] else '0'
+            val n2 = if (j >= 0) num2[j] else '0'
             // 分别获取两个字符对应的字面数值，然后相加，再加上进位
             val result = n1.toInt() + n2.toInt() - 2 * '0'.toInt() + carry
-            // 获取进位
+            // 求值：获取进位
             carry = result / 10
-            // 处理当前位的最终值
+            // 求余：添加当前位
             res.append(result % 10)
             i--
             j--
