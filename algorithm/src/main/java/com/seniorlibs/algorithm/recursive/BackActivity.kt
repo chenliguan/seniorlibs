@@ -38,6 +38,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_bracket_generate).setOnClickListener(this)
+        findViewById<View>(R.id.btn_letter_combinations).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
         findViewById<View>(R.id.btn_solve_n_queens).setOnClickListener(this)
     }
@@ -50,6 +51,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btn_bracket_generate -> {
                 LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
+            }
+            R.id.btn_letter_combinations -> {
+                LogUtils.e(TAG, "17. 电话号码的字母组合：${letterCombinations("23")}")
             }
             R.id.btn_subsets -> {
                 res.clear()
@@ -112,8 +116,8 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 17. 电话号码的字母组合
      *
-     * 时间复杂度：O(4^n)，n值对应的决策树有2*n层，节点个数是1,2,4,8......，应该有2^{2n} - 1个节点，每个节点代表一个子问题，需要用O(1)时间解决，时间复杂度为O(2^{2n} - 1) = O(4^n)
-     * 空间复杂度：O(n)，除了答案数组之外，需要的空间取决于递归栈的深度，每一层递归函数需要O(1)的空间，最多递归2n层，因此空间复杂度为O(n)。
+     * 时间复杂度：O(3^m * 4^n)，其中 m 是输入中对应 3 个字母的数字个数（包括数字2、3、4、5、6、8），n 是输入中对应 4 个字母的数字个数（包括数字 7、9）
+     * 空间复杂度：O(m+n)，m+n 是输入数字的总个数
      *
      */
     private val letterMap = arrayOf(
@@ -129,9 +133,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         "wxyz" //9
     )
 
-    private var array: ArrayList<String> = arrayListOf()
+    private var array = arrayListOf<String>()
 
-    fun letterCombinations(digits: String): List<String?>? {
+    fun letterCombinations(digits: String): List<String> {
         if (digits == "") return array
 
         findCombination(digits, 0, "")
@@ -149,6 +153,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         val letters = letterMap[c - '0']
 
         for (i in 0 until letters.length) {
+            // a + d
             findCombination(digits, index + 1, s + letters[i])
         }
         return

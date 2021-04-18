@@ -13,6 +13,11 @@
         android:text="22. 括号生成" />
 
     <Button
+        android:id="@+id/btn_letter_combinations"
+        style="@style/BtnStyles"
+        android:text="17. 电话号码的字母组合" />
+
+    <Button
         android:id="@+id/btn_subsets"
         style="@style/BtnStyles"
         android:text="78. 子集" />

@@ -149,32 +149,6 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         return -1
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     fun search1(nums: IntArray, target: Int): Int {
         var left = 0
         var right = nums.size - 1
