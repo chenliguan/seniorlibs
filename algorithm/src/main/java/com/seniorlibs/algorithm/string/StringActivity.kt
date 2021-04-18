@@ -43,6 +43,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_my_atoi).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_reverse).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_common_prefix).setOnClickListener(this)
         findViewById<View>(R.id.btn_decode_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_str_str).setOnClickListener(this)
@@ -76,6 +77,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_reverse_string2 -> {
                 LogUtils.d(TAG, "541. 反转字符串2：${reverseStr("abcdefg", 2)}")
             }
+            R.id.btn_reverse -> {
+                LogUtils.d(TAG, "7. 整数反转：${reverse(-123)}")
+            }
             R.id.btn_longest_common_prefix -> {
                 LogUtils.d(TAG, "14. 最长公共前缀：${longestCommonPrefix(arrayOf("flower", "flow", "flight"))}")
             }
@@ -84,7 +88,6 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_str_str -> {
                 LogUtils.d(TAG, "28. 实现朴素的字符串匹配 strStr()：${strStr2("hello", "ll")}")
-
                 LogUtils.d(TAG, "28. 实现KMP字符串匹配 strStr()：${strStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD")}")
 //                LogUtils.d(TAG, "28. 实现 strStr()：${strStr("aabaaabaaac", "aabaaac")}")
             }
@@ -257,10 +260,13 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         var j = s.size - 1
 
         while (i < j) {
-            // 交换
-            val temp = s[i]
-            s[i] = s[j]
-            s[j] = temp
+            // 跳过相等的字符
+            if (s[i] != s[j]) {
+                // 交换
+                val temp = s[i]
+                s[i] = s[j]
+                s[j] = temp
+            }
 
             i++
             j--
@@ -282,9 +288,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         val ch = s.toCharArray()
         var start = 0
         while (start < s.length) {
+            // 每个块开始于 2k 的倍数，也就是 0, 2k, 4k, 6k, ...。
             var i = start
-            // 如果剩余字符少于k个，则将剩余字符全部反转。--> j = s.length - 1
-            // 如果剩余字符小于2k但大于或等于k个，则反转前k个字符，其余字符保持原样。--> j = start + k - 1
+
+            // 如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，其余字符保持原样。--> j = start + k - 1
             var j = Math.min(s.length - 1, start + k - 1)
 
             // 交换
@@ -296,11 +303,41 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 i++
                 j--
             }
-            // 从字符串开头算起的每隔2k个字符的前k个字符
+
+            // 直接翻转每个 2k 字符块
             start += 2 * k
         }
         return String(ch)
     }
+
+
+    /**
+     * 7. 整数反转
+     *
+     * 时间复杂度：O(log(x)，x 中大约有 log10(x)位数字
+     * 空间复杂度：O(1)。
+     *
+     * @param x
+     * @return
+     */
+    fun reverse(x: Int): Int {
+        var x = x
+        var res = 0
+        while (x != 0) {
+            // 每次取末尾数字  -123 % 10 = -3 -> -12 % 10 = -2 -> -1 % 10 = -1
+            val temp = x % 10
+
+            // 判断是否 大于 最大32位整数，小于 最小32位整数
+            if (res > Integer.MAX_VALUE / 10 || res < Integer.MIN_VALUE / 10)  return 0
+
+            // 0 * 10 + -3 = -3 -> -3 * 10 + -2 = 32 -> 32 * 10 + -1 = -321
+            res = res * 10 + temp
+            // -123/10 = -12 -> -12/10 = -1 -> -1/10 = -1
+            x /= 10
+        }
+        return res
+    }
+
 
     /**
      * 14. 最长公共前缀   方法1：纵向扫描
@@ -335,6 +372,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 28. 实现 strStr()    解法一：暴力法。最主要的问题是，如果字符串中重复的字符比较多，该算法就显得很蠢
      * haystack = "hello", needle = "ll"
+     * 思路：将长度为 needle.length 的滑动窗口沿着 haystack 字符串逐步移动，并将窗口内的子串与 needle 字符串相比较
      *
      * 时间复杂度：O(mn)，嵌套 for 循环。
      * 空间复杂度：O(1)。
@@ -351,7 +389,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 0..m - n) {
             var j = 0
             while (j < n) {
-                if (needle[j] != haystack[i + j]) break
+                if (needle[j] != haystack[i + j]) {
+                    break
+                }
                 j++
             }
             // needle 全都匹配了
