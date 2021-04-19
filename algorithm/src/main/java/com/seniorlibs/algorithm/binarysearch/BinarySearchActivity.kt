@@ -51,8 +51,8 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "69. x 的平方根：${mySqrt1(8)}")
             }
             R.id.btn_search -> {
-                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search(intArrayOf(1,3), 2)}")
-                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search1(intArrayOf(1,3), 2)}")
+                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search(intArrayOf(1, 3), 2)}")
+                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search1(intArrayOf(1, 3), 2)}")
             }
             else -> {
             }
@@ -74,20 +74,24 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     fun mySqrt(x: Int): Int {
         var left: Long = 0
         var right: Long = x.toLong()
-        var mid: Long = 0
-        var result: Long = -1
+        var res : Long = -1
 
+        // 在区间 [left..right] 查找目标元素
         while (left <= right) {
-            mid = left + (right - left) / 2
+            val mid = (right - left) / 2 + left
 
-            if (mid * mid <= x) { // 2.82842..., 由于返回类型是整数，小数部分将被舍去，结果是2。所以结果在mid*mid<x这一边
-                result = mid
+            // x = 8，mid = 2.82842... 注意：如果一个数 mid 的平方大于 x ，那么 mid 一定不是 x 的平方根。所以结果在 mid * mid < x 这边
+            if (mid * mid <= x) {
+                // 下一轮搜索区间是 [left..mid - 1]（）
                 left = mid + 1
+                res = mid
             } else {
+                // 下一轮搜索区间是 [mid..right]
                 right = mid - 1
             }
         }
-        return result.toInt()
+
+        return res.toInt()
     }
 
     /**
@@ -112,10 +116,8 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 33. 搜索旋转排序数组  5,6,7,0,1,2,3,4  6
      *
+     *      对于旋转数组，我们无法直接根据 nums[mid] 与 target 的大小关系来判断 target 是在 mid 的左边还是右边，因此需要「分段讨论」。
      * 思想：循环判断，直到排除到只剩最后一个元素时，退出循环，如果该元素和 target 相同，直接返回下标，否则返回 -1。
-     * 步骤：1.当[0,mid]升序时: nums[0] <= nums[mid]，当target > nums[mid] || target < nums[0]，target不在[0,mid]中，则向后规约条件
-     *      2.当[0,mid]发生旋转时: nums[0] > nums[mid]，当target > nums[mid] && target < nums[0]，target不在[0,mid]中，向后规约条件
-     *      3.其他其他情况就是向前规约了
      *
      * 时间复杂度：O(logn)，其中n为nums数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度O(logn)。
      * 空间复杂度：O(1) 。只需要常数级别的空间存放变量。
@@ -127,25 +129,40 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun search(nums: IntArray, target: Int): Int {
         var left = 0
-        var right = nums.size - 1
+        var right: Int = nums.size - 1
         var mid = 0
-        while (left < right) {
+
+        while (left <= right) {
             mid = (right - left) / 2 + left
 
-            if (nums[mid] == target) return mid
+            if (nums[mid] === target) {
+                return mid
+            }
 
-            // 当[0,mid]升序时: nums[0] <= nums[mid]，当target > nums[mid] || target < nums[0]，target不在[0,mid]中，则向后规约条件
-            if (nums[0] <= nums[mid] && (target < nums[0] || target > nums[mid])) {
-                left = mid + 1
-                // 当[0,mid]发生旋转时: nums[0] > nums[mid]，当target > nums[mid] && target < nums[0]，target不在[0,mid]中，向后规约条件
-            } else if (target < nums[0] && target > nums[mid]) {
-                left = mid + 1
-                // 其他其他情况就是向前规约了
+            // 先根据 nums[mid] 与 nums[left] 的关系判断 mid 是在左段还是右段
+            if (nums[mid] >= nums[left]) {
+                // 落在同一数组的情况，同时落在数组1 或 数组2
+                if (target >= nums[left] && target < nums[mid]) {
+                    // target 落在 left 和 mid 之间，则移动我们的 right，完全有序的一个区间内查找
+                    right = mid - 1
+                } else {
+                    // target 落在 mid 和 right 之间，有可能在数组1， 也有可能在数组2
+                    left = mid + 1
+                }
+
             } else {
-                right = mid - 1
+                // 不落在同一数组的情况，left 在数组1，mid 落在 数组2
+                if (target > nums[mid] && target <= nums[right]) {
+                    // 有序的一段区间，target 在 mid 和 right 之间
+                    left = mid + 1
+                } else {
+                    // 两种情况，target 在 left 和 mid 之间
+                    right = mid - 1
+                }
             }
         }
 
+        // 没有查找到
         return -1
     }
 
