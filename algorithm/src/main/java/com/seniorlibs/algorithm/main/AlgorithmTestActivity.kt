@@ -8,10 +8,8 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.array.ArrayActivity
-import com.seniorlibs.baselib.utils.LogUtils
-import java.lang.StringBuilder
 import java.util.*
+
 
 /**
  * Author: chen

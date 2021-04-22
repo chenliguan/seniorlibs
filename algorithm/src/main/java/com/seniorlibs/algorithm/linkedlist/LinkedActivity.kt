@@ -491,7 +491,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         return dummy.next
     }
-
+    
     /**
      * 21. 合并两个有序链表  方法2：递归
      *

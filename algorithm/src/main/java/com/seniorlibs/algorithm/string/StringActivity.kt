@@ -314,10 +314,12 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 7. 整数反转
+     * 思想："弹出" x 的最后一位数字，并将它 "推入" 到 res 的后面。最后，res 将与 x 相反
      *
      * 时间复杂度：O(log(x)，x 中大约有 log10(x)位数字
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/reverse-integer/solution/7-zheng-shu-fan-zhuan-by-chen-li-guan-lrh0/
      * @param x
      * @return
      */
@@ -325,16 +327,18 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         var x = x
         var res = 0
         while (x != 0) {
+            // pop
             // 每次取末尾数字  -123 % 10 = -3 -> -12 % 10 = -2 -> -1 % 10 = -1
             val temp = x % 10
+            // -123/10 = -12 -> -12/10 = -1 -> -1/10 = -1
+            x /= 10
 
             // 判断是否 大于 最大32位整数，小于 最小32位整数
             if (res > Integer.MAX_VALUE / 10 || res < Integer.MIN_VALUE / 10)  return 0
 
+            // push
             // 0 * 10 + -3 = -3 -> -3 * 10 + -2 = 32 -> 32 * 10 + -1 = -321
             res = res * 10 + temp
-            // -123/10 = -12 -> -12/10 = -1 -> -1/10 = -1
-            x /= 10
         }
         return res
     }
