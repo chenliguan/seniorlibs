@@ -57,6 +57,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_level_order).setOnClickListener(this)
         findViewById<View>(R.id.btn_level_order_bottom).setOnClickListener(this)
         findViewById<View>(R.id.btn_largest_values).setOnClickListener(this)
+        findViewById<View>(R.id.btn_right_side_view).setOnClickListener(this)
         findViewById<View>(R.id.btn_ladder_length).setOnClickListener(this)
     }
 
@@ -269,6 +270,23 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
                 LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：${largestValues(node)}")
                 LogUtils.e(TAG, "515. 在每个树行中找最大值 -- 方法二：DFS深度遍历-递归：${largestValues1(node)}")
+            }
+            R.id.btn_right_side_view -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(TAG, "199. 二叉树的右视图 -- 方法一：BFS广度遍历-迭代：${rightSideView(node)}")
             }
             R.id.btn_ladder_length -> {
                 val list = mutableListOf("hot", "dot", "dog", "lot", "log", "cog")
@@ -512,13 +530,20 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         while (!stack.isEmpty()) {
             // 将根节点弹出
-            val p = stack.pop()
-            // 加入到结果集合中
-            res.add(p!!.`val`)
+            val node = stack.pop()
+            if (node != null) {
+                // 将该节点的子节点从右往左压入栈
+                for (i in node.children.size - 1 downTo 0) {
+                    stack.push(node.children[i])
+                }
 
-            // 将该节点的子节点从右往左压入栈
-            for (i in p.children.size - 1 downTo 0) {
-                stack.push(p.children[i])
+                // 添加根节点
+                stack.push(node)
+                // 根节点访问过，但还没有处理，需要做一下标记null
+                stack.push(null)
+            } else {
+                // 遇到标记，弹出栈顶元素，加入到集合中
+                res.add(stack.pop()!!.`val`)
             }
         }
         return res
@@ -568,22 +593,63 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         while (!stack.isEmpty()) {
             // 将根节点弹出
             val node = stack.pop()
-            // 加入到结果集合中
-            res.add(node!!.`val`)
+            if (node != null) {
+                // 添加根节点
+                stack.push(node)
+                // 根节点访问过，但还没有处理，需要做一下标记null
+                stack.push(null)
 
-            // 将该节点的子节点从左往右压入栈
-            for (i in 0 until node.children.size) {
-                stack.push(node.children[i])
+                // 将该节点的子节点从左往右压入栈
+                for (i in node.children.size - 1 downTo 0) {
+                    stack.push(node.children[i])
+                }
+            } else {
+                // 遇到标记，弹出栈顶元素，加入到集合中
+                res.add(stack.pop()!!.`val`)
             }
         }
-        // 最后将list反转
-        return res.reversed()
+
+        return res
     }
 
     class TreeNode(var `val`: Int) {
         var left: TreeNode? = null
         var right: TreeNode? = null
     }
+
+
+    /**
+     * 257. 二叉树的所有路径
+     * 思路：类似前序遍历，使用字符串拼接，避免使用回溯
+     *
+     * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
+     * 空间复杂度：O(n)，空间复杂度与系统堆栈有关，系统栈需要记住每个节点的值，所以空间复杂度为O(n)。
+     *
+     * https://leetcode-cn.com/problems/binary-tree-paths/solution/257-er-cha-shu-de-suo-you-lu-jing-by-che-0o6p/
+     * @param root
+     * @return
+     */
+    fun binaryTreePaths(root: TreeNode?): List<String>? {
+        val res: MutableList<String> = ArrayList()
+        dfs(root, "", res)
+        return res
+    }
+
+    private fun dfs(root: TreeNode?, path: String, res: MutableList<String>) {
+        // 如果为空，直接返回
+        if (root == null) return
+        // 如果是叶子节点，说明找到了一条路径，把它加入到res中
+        if (root.left == null && root.right == null) {
+            res.add(path + root.`val`)
+            return
+        }
+
+        // 如果不是叶子节点，在分别遍历他的左右子节点
+        dfs(root.left, path + root.`val`.toString() + "->", res)
+
+        dfs(root.right, path + root.`val`.toString() + "->", res)
+    }
+
 
     /**
      * 104.二叉树的最大深度 - 方法一：DFS
@@ -683,6 +749,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             level++
             for (i in 0 until size) {
                 val node = queue.poll()
+
                 if (node.left == null && node.right == null) return level
 
                 if (node.left != null) queue.offer(node.left)
@@ -1218,7 +1285,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 思想：每次递归的时候都需要带一个 index(表示当前的层数)，也就对应那个田字格子中的第几行，如果 当前值 比 此位置的值 大，就用 当前值 覆盖。
      *
      * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
-     * 空间复杂度：O(n)，队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)。
+     * 空间复杂度：O(n)，队列中元素的个数不超过 n 个，故渐进空间复杂度为 O(n)。
      *
      * https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/solution/515-zai-mei-ge-shu-xing-zhong-zhao-zui-da-zhi-by-c/
      *
@@ -1298,6 +1365,95 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         // 4.清理恢复当前层
     }
+
+    /**
+     * 199. 二叉树的右视图
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(h)，h 是树的高度。
+     *
+     * https://leetcode-cn.com/problems/binary-tree-right-side-view/solution/199-er-cha-shu-de-you-shi-tu-by-chen-li-8k5xr/
+     * @param root
+     * @return
+     */
+    fun rightSideView(root: TreeNode?): List<Int> {
+        val res = mutableListOf<Int>()
+        if(root == null) return res
+
+        val queue = LinkedList<TreeNode>()
+        queue.offer(root)
+
+        var size = queue.size
+        while(size > 0) {
+
+            for(i in 0 until size) {
+                val node = queue.poll()
+                if(i == size - 1) {
+                    res.add(node.`val`)
+                }
+
+                if(node.left != null) queue.offer(node.left)
+                if(node.right != null) queue.offer(node.right)
+            }
+
+            size = queue.size
+        }
+
+        return res
+    }
+
+
+    /**
+     * 103. 二叉树的锯齿形层序遍历 -- 方法一：BFS广度遍历-迭代
+     *
+     * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
+     * 空间复杂度：O(n)，队列中元素的个数不超过 n 个，故渐进空间复杂度为 O(n)。
+     *
+     *
+     * @param root
+     * @return
+     */
+    fun zigzagLevelOrder(root: TreeNode?): List<List<Int>>? {
+        // 1.1 创建一个存放最终结果的集合 和 存放节点的队列
+        val res: MutableList<List<Int>> = mutableListOf()
+        if (root == null) return res
+
+        // 1.2 根节点不==null，将根节点放入队列
+        val queue: Queue<TreeNode> = LinkedList()
+        queue.offer(root)
+
+        // 计数。从偶数开始
+        var count = 0
+        // 2.1 遍历每一层前，当前层的队列不为空，继续遍历
+        var size = queue.size
+        while (size > 0) {
+            val list: MutableList<Int> = mutableListOf()
+            // 2.2 将这一层的元素全部取出（因为长度已确定，不会遍历新加入的左右节点）
+            for (i in 0 until size) {
+                val node = queue.poll()
+                if (count % 2 == 0) {
+                    // 2.3 偶数
+                    list.add(node.`val`)
+                } else {
+                    // 奇数
+                    list.add(0, node.`val`)
+                }
+
+                // 3 如果节点的左右孩子不为空，放入队列
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
+            }
+
+            // 计数+1
+            count++
+            // 4 将结果的集合赋值到大集合中
+            res.add(list)
+            size = queue.size
+        }
+
+        return res
+    }
+
 
     /**
      * 127. 单词接龙  方法一：双向BFS

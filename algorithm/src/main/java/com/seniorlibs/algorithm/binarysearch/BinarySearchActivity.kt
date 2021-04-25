@@ -137,7 +137,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         while (left <= right) {
             mid = (right - left) / 2 + left
 
-            if (nums[mid] === target) {
+            if (nums[mid] == target) {
                 return mid
             }
 

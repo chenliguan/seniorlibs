@@ -114,7 +114,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         if (left > n || left < right) return
 
         // 当所有括号都用完时，得到一个合法的括号组合
-        if (left == n && right == left) {
+        if (left == n && right == n) {
             res.add(str.toString())
             return
         }

@@ -632,10 +632,11 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         while (xs != 0) {
             // 每次取末尾数字  -123 % 10 = -3 -> -12 % 10 = -2 -> -1 % 10 = -1
             val temp = xs % 10
-            // 0 * 10 + -3 = -3 -> -3 * 10 + -2 = 32 -> 32 * 10 + -1 = -321
-            cur = cur * 10 + temp
             // -123/10 = -12 -> -12/10 = -1 -> -1/10 = -1
             xs /= 10
+
+            // 0 * 10 + -3 = -3 -> -3 * 10 + -2 = 32 -> 32 * 10 + -1 = -321
+            cur = cur * 10 + temp
         }
 
         return cur == x
@@ -663,12 +664,15 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         while (i >= 0 || j >= 0) {
             val n1 = if (i >= 0) num1[i] else '0'
             val n2 = if (j >= 0) num2[j] else '0'
+
             // 分别获取两个字符对应的字面数值，然后相加，再加上进位
-            val result = n1.toInt() + n2.toInt() - 2 * '0'.toInt() + carry
+            var sum = n1.toInt() + n2.toInt() - 2 * '0'.toInt() + carry
             // 求值：获取进位
-            carry = result / 10
+            carry = sum / 10
             // 求余：添加当前位
-            res.append(result % 10)
+            sum = sum % 10
+            res.append(sum)
+
             i--
             j--
         }
@@ -679,4 +683,52 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         // 最后翻转恢复字符串，再返回
         return res.reverse().toString()
     }
+
+    /**
+     * 2. 两数相加
+     * 思路：设定 i，j 双指针分别指向 num1，num2 尾部，模拟人工加法
+     *
+     * 时间复杂度 O(max(M,N)))：其中 M，N 为 2 数字长度，按位遍历一遍数字（以较长的数字为准）；
+     * 空间复杂度 O(1)：指针与变量使用常数大小空间。
+     *
+     * https://leetcode-cn.com/problems/add-two-numbers/solution/2-liang-shu-xiang-jia-by-chen-li-guan-cfp8/
+     * @param l1
+     * @param l2
+     * @return
+     */
+    fun addTwoNumbers(l1: ListNode?, l2: ListNode?): ListNode? {
+        var l1 = l1
+        var l2 = l2
+
+        val dummy = ListNode(0)
+        var cur: ListNode? = dummy
+        var carry = 0
+
+        while (l1 != null || l2 != null) {
+            val x = l1?.`val` ?: 0
+            val y = l2?.`val` ?: 0
+
+            // 分别获取两个节点对应的字面数值，然后相加，再加上进位
+            var sum = x + y + carry
+            // 求值：获取进位
+            carry = sum / 10
+            // 求余：添加当前位
+            sum = sum % 10
+
+            cur!!.next = ListNode(sum)
+            cur = cur.next
+
+            if (l1 != null) l1 = l1.next
+            if (l2 != null) l2 = l2.next
+        }
+
+        // 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
+        if (carry == 1) {
+            cur!!.next = ListNode(carry)
+        }
+
+        // 返回虚拟头结点 dummy 的下一个节点，即是 头结点
+        return dummy.next
+    }
+
 }

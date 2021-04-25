@@ -223,12 +223,13 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 3. 无重复字符的最长子串
      * 思路：双指针，滑动窗口，保证每个窗口里字母都是唯一的。
-     *      使用 map 来记录一个字母如果后面出现重复时，i 应该调整到的新位置，所以每次更新的时候都会保存 j + 1 ，即字母后面的位置。
-            j 表示子串的最后一个字母，计算子串长度为 j - i + 1。
-
+     *      使用 map 来记录一个字母，key 值为字符，value 值为字符位置 +1，+1 表示从字符位置后一个才开始不重复.
+     *      没有重复字母时，调整右边界。当窗口内出现重复字母时，调整左边界.
+     *
      * 时间复杂度：O(n)
      * 空间复杂度：O(n)
      *
+     * https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/3-wu-zhong-fu-zi-fu-de-zui-chang-zi-chua-72h1/
      * @param s
      * @return
      */
@@ -239,14 +240,16 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         var left = 0
         var res = 0
 
-        for (i in 0 until s.length) {
-            if (map.containsKey(s[i])) {
-                left = Math.max(left, map[s[i]]!!)
+        for (right in 0 until s.length) {
+            if (map.containsKey(s[right])) {
+                left = Math.max(left, map[s[right]]!!)
             }
 
-            map[s[i]] = i + 1
-            res = Math.max(res, i - left + 1)
+            res = Math.max(res, right - left + 1)
+
+            map[s[right]] = right + 1
         }
+
         return res
     }
 
@@ -306,6 +309,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             if (nums[k] > 0) break
             /* 当k的值与前面的值相等时忽略 */
             if (k > 0 && nums[k] == nums[k - 1]) continue
+
             /* 定义指针i指向k+1，指针j指向数组末尾，交替向中间移动 */
             var i = k + 1
             var j = nums.size - 1
@@ -574,24 +578,28 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      */
     fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int) {
-        var m = m
-        var n = n
-        var k = m + n - 1
+        var p1 = m
+        var p2 = n
+        var k = p1 + p2 - 1
 
-        while (m > 0 && n > 0) {
-            if (nums1[m - 1] > nums2[n - 1]) {
-                nums1[k] = nums1[m - 1]
-                m--
+        while (p1 > 0 && p2 > 0) {
+            if (nums1[p1 - 1] > nums2[p2 - 1]) {
+                nums1[k] = nums1[p1 - 1]
+                p1--
             } else {
-                nums1[k] = nums2[n - 1]
-                n--
+                nums1[k] = nums2[p2 - 1]
+                p2--
             }
             k--
         }
 
-        // 赋值:当n大于0并且m小于0时，此时nums1中的数组所有元素已经排列过了，
-        // 而nums2中还剩下n个元素，需要对nums1的前n个赋值为nums2的前n个（直接将前n个进行覆盖）
-        for (i in 0 until n) {
+        // 合并剩余的元素
+        for (i in 0 until p1) {
+            nums1[i] = nums1[i]
+        }
+
+        // 当 p2 大于 0 并且 p1 小于 0 时，此时 nums1 数组所有元素已排列过了，而nums2中还剩下p2个元素，需要对nums1的前p2个赋值为nums2的前p2个（直接将前n个进行覆盖）
+        for (i in 0 until p2) {
             nums1[i] = nums2[i]
         }
     }

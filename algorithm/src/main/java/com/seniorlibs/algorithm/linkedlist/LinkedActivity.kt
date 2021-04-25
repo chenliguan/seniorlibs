@@ -287,7 +287,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @param head
      * @return
      */
-    fun reverseList1(head: ListNode?): ListNode? {
+    fun reverseList(head: ListNode?): ListNode? {
         var prev: ListNode? = null
         var cur: ListNode? = head
 
@@ -315,7 +315,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @param head
      * @return
      */
-    fun reverseList(head: ListNode?): ListNode? {
+    fun reverseList1(head: ListNode?): ListNode? {
         // 递归终止条件是当前为空，或者下一个节点为空
         if (head?.next == null) return head
 
@@ -443,8 +443,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 从 slow 开始反转后面的链表，然后开始比较回文串
         var right = reverseList(slow)
         while (right != null) {
-            if (left!!.`val` !== right.`val`) return false
-            left = left!!.next
+            if (left!!.`val` != right.`val`) return false
+            left = left.next
             right = right.next
         }
         return true
@@ -632,4 +632,27 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         return head
     }
 
+
+    /**
+     * 160. 相交链表
+     *
+     * 题解：设链表A的长度为a+c，链表B的长度为b+c，a为链表A不公共部分，b为链表B不公共部分，c为链表A、B的公共部分。
+     * 将两个链表连起来，A->B和B->A，长度：a+c+b+c=b+c+a+c，若链表AB相交，则a+c+b与b+c+a就会抵消，它们就会在c处相遇；
+     * 若不相交，则c为nullptr，则a+b=b+a，它们各自移动到尾部循环结束，即返回nullptr
+     *
+     * @param headA
+     * @param headB
+     * @return
+     */
+    fun getIntersectionNode(headA: ListNode?, headB: ListNode?): ListNode? {
+        if (headA == null || headB == null) return null
+
+        var pA = headA
+        var pB = headB
+        while (pA !== pB) {
+            pA = if (pA == null) headB else pA.next
+            pB = if (pB == null) headA else pB.next
+        }
+        return pA
+    }
 }

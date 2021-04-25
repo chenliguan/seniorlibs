@@ -72,6 +72,7 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 242. 有效的字母异位词：哈希表
      *
+     * https://leetcode-cn.com/problems/valid-anagram/solution/242-you-xiao-de-zi-mu-yi-wei-ci-by-chen-li-guan/
      * @param s
      * @param t
      * @return
@@ -118,6 +119,10 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 49. 字母异位词分组
      *
+     * 时间复杂度：O(nk)。每个字符串计数再编码，由于题目说明是小写字母，所以是 O(n(k + 26))，常数忽略后就是 O(nk)。
+     * 空间复杂度： O(nk)。
+     *
+     * https://leetcode-cn.com/problems/group-anagrams/solution/49zi-mu-yi-wei-ci-fen-zu-by-chen-li-guan/
      * @param strs
      * @return
      */
@@ -151,6 +156,9 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 412. Fizz buzz
+     *
+     * 时间复杂度： O(N)，这里 NN 是输入字符串的长度；
+     * 空间复杂度： O(1)，保存结果集的空间不计算在内。
      *
      * @param n
      * @return

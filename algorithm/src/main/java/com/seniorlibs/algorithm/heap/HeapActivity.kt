@@ -117,8 +117,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> map[o1]!! - map[o2]!! })
         for (key in map.keys) {
             if (heap.size < k) {
-                // 2.2 如果堆的元素个数小于k：
-                // 就可以直接插入堆中
+                // 2.2 如果堆的元素个数小于k：就可以直接插入堆中
                 heap.offer(key)
             } else if (map[key]!! > map[heap.peek()]!!) {
                 // 2.3 如果堆的元素个数等于k：如果新元素的次数比堆顶端的元素大，则弹出堆顶端的元素，将新的元素添加进堆中
@@ -144,18 +143,21 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
      *
      * 空间复杂度：O(n)，因为小根堆里最多n个数，n是数组的长度。
      *
-     * @param arr
+     * @param nums
      * @param k
      * @return
      */
-    fun getLeastNumbers(arr: IntArray, k: Int): IntArray {
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun getLeastNumbers(nums: IntArray, k: Int): IntArray {
         // val heap = PriorityQueue<Int>()   // 默认是小根堆
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o1 - o2 })
-        for (c in arr) {    // 将所有数加入到小根堆中
+        // 将所有数加入到小根堆中
+        for (c in nums) {
             heap.offer(c)
         }
 
-        val res = IntArray(k)   // 从小根堆中取出最小数，取k次
+        // 从小根堆中取出最小数，取k次
+        val res = IntArray(k)
         for (i in 0 until k) {
             res[i] = heap.poll()
         }
