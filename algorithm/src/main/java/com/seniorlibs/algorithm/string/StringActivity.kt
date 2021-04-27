@@ -51,6 +51,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_palindrome_str).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_num).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_strings).setOnClickListener(this)
+        findViewById<View>(R.id.btn_add_two_numbers).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -102,6 +103,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_add_strings -> {
                 LogUtils.d(TAG, "415. 字符串相加（两个大数相加）：${addStrings("121", "12000000")}")
+            }
+            R.id.btn_add_two_numbers -> {
+//                LogUtils.d(TAG, "2. 两数相加：${addTwoNumbers(}")
             }
             else -> {
             }
@@ -669,8 +673,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             var sum = n1.toInt() + n2.toInt() - 2 * '0'.toInt() + carry
             // 求值：获取进位
             carry = sum / 10
-            // 求余：添加当前位
+            // 求余：获取当前位
             sum = sum % 10
+
+            // 添加当前位
             res.append(sum)
 
             i--
@@ -712,20 +718,19 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             var sum = x + y + carry
             // 求值：获取进位
             carry = sum / 10
-            // 求余：添加当前位
+            // 求余：获取当前位
             sum = sum % 10
 
-            cur!!.next = ListNode(sum)
-            cur = cur.next
+            // 添加下一个节点
+            cur?.next = ListNode(sum)
+            cur = cur?.next
 
             if (l1 != null) l1 = l1.next
             if (l2 != null) l2 = l2.next
         }
 
         // 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
-        if (carry == 1) {
-            cur!!.next = ListNode(carry)
-        }
+        if (carry == 1) cur?.next = ListNode(carry)
 
         // 返回虚拟头结点 dummy 的下一个节点，即是 头结点
         return dummy.next
