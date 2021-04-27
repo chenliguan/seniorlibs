@@ -13,6 +13,7 @@ import com.read.kotlinlib.inner.*
 import com.read.kotlinlib.jvm.JvmActivity
 import com.read.kotlinlib.memory.MemoryActivity
 import com.read.kotlinlib.polymorphisn.Polymorphisn
+import com.read.kotlinlib.reflect.ReflectTest
 import com.read.kotlinlib.string.StringTest
 import com.seniorlibs.baselib.utils.LogUtils
 
@@ -209,5 +210,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun testMemory(view: View?) {
         MemoryActivity.actionStart(this)
+    }
+
+    /**
+     * 反射
+     *
+     * @param view
+     */
+    fun testReflect(view: View?) {
+        ReflectTest.modifyFinal()
     }
 }
