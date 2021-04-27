@@ -249,31 +249,34 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 141.环形链表
      *
+     * 时间复杂度：O(n)，让我们将n设为链表中结点的总数。考虑下面两种情况，
+     *      链表中不存在环：快指针将会首先到达尾部，其时间取决于列表的长度，也就是O(n)；
+     *      链表中存在环：在最糟糕的情形下，时间复杂度为O(n+k)，也就是O(n)；
+     *
+     * 空间复杂度：O(1)，我们只使用了慢指针和快指针两个结点，所以空间复杂度为O(1)。
+     *
+     * https://leetcode-cn.com/problems/linked-list-cycle/solution/141-huan-xing-lian-biao-2-by-chen-li-guan/
      * @param head
      * @return
      */
-    private fun hasCycle(head: ListNode?): Boolean {
-        if (head?.next == null) {
-            return false
-        }
-
+    fun hasCycle(head: ListNode?): Boolean {
         // 1.快慢指针
         var slow = head
-        var fast = head.next
+        var fast = head?.next
 
         // 2.如果快慢指针不等，继续往前跑
-        while (fast != slow) {
-            // 3.没环的特征是：某个next为空
-            if (slow?.next == null || fast?.next?.next == null) {
-                return false
+        while (slow?.next != null || fast?.next != null) {
+            // 3.快慢指针相等：如果有环，快跑者最终一定会追上慢跑者
+            if (slow == fast) {
+                return true
             }
 
-            slow = slow.next
-            fast = fast.next?.next
+            slow = slow?.next
+            fast = fast?.next?.next
         }
 
-        // 4.如果有环，快跑者最终一定会追上慢跑者
-        return true
+        // 4.否则没有环
+        return false
     }
 
 

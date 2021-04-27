@@ -197,4 +197,25 @@ public class StringTest {
         String s4 = s3.intern();
         System.out.println(s3 == s4);    // true
     }
+
+
+
+    private static class Instance {
+        private Instance() {
+
+        }
+    }
+
+    private static volatile Instance sInstance;
+
+    public static Instance getInstance() {
+        if (sInstance == null) {
+            synchronized(Instance.class) {
+                if (sInstance == null) {
+                    sInstance = new Instance(); // 1 3 2
+                }
+            }
+        }
+        return sInstance;
+    }
 }
