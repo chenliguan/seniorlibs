@@ -736,4 +736,58 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return dummy.next
     }
 
+
+    /**
+     * 43. 字符串相乘
+     * 思路：设定 i，j 双指针分别指向 num1，num2 尾部，从个位数开始逐位相乘。一个字符与一个字符相乘，找出相乘的结果在 res 对应的位置添加，叠加到 res 上
+     *
+     * 时间复杂度：O(M N)。M,N 分别为 num1 和 num2 的长度。
+     * 空间复杂度：O(M+N)。用于存储计算结果。
+     *
+     * https://leetcode-cn.com/problems/multiply-strings/solution/43-zi-fu-chuan-xiang-cheng-by-chen-li-gu-d40z/
+     * @param l1
+     * @param l2
+     * @return
+     */
+    fun multiply(num1: String, num2: String): String {
+        if(num1.equals("0") || num2.equals("0")) return "0";
+
+        val m = num1.length
+        val n = num2.length
+        if (m == 0 || n == 0) return "0"
+
+        // 结果最多为 m + n 位数
+        val res = IntArray(m + n)
+
+        // 从个位数开始逐位相乘
+        for (i in m - 1 downTo 0) {
+            for (j in n - 1 downTo 0) {
+                // 一个字符与一个字符相乘
+                val mul = (num1[i] - '0') * (num2[j] - '0')
+                // 找出相乘的结果在 res 对应的位置添加
+                val p1 = i + j
+                val p2 = i + j + 1
+                // 叠加到 res 上
+                val sum = mul + res[p2]
+                res[p2] = sum % 10
+                // 此处的+=是为了处理此位有了数字
+                res[p1] += sum / 10
+            }
+        }
+
+        // 找到结果前缀那些未使用的0的位置
+        val sb = StringBuilder()
+        var i = 0
+        while (res[i] == 0) {
+            i++
+        }
+
+        // 将计算结果转化成字符串
+        while (i < res.size) {
+            sb.append(res[i])
+            i++
+        }
+        return sb.toString()
+    }
+
 }
