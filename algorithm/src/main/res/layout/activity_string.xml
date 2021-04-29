@@ -76,4 +76,9 @@
         android:id="@+id/btn_add_two_numbers"
         style="@style/BtnStyles"
         android:text="2. 两数相加" />
+
+    <Button
+        android:id="@+id/btn_multiply"
+        style="@style/BtnStyles"
+        android:text="43. 字符串相乘" />
 </LinearLayout>

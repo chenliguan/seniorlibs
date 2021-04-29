@@ -52,6 +52,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_palindrome_num).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_two_numbers).setOnClickListener(this)
+        findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -106,6 +107,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_add_two_numbers -> {
 //                LogUtils.d(TAG, "2. 两数相加：${addTwoNumbers(}")
+            }
+            R.id.btn_multiply -> {
+                LogUtils.d(TAG, "43. 字符串相乘：${multiply("123", "45")}")
             }
             else -> {
             }
