@@ -620,9 +620,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 9. 回文数
+     * 9. 回文数 == 验证回文数 == 7. 整数反转
      *
-     * 时间复杂度：O(n)。只遍历了一遍字符串。
+     * 时间复杂度：O(logx)，对于每次迭代，我们会将输入除以 10，因此时间复杂度为 O(logn)。
      * 空间复杂度：O(1)。
      *
      * https://leetcode-cn.com/problems/palindrome-number/solution/9-hui-wen-shu-by-chen-li-guan-yh68/
