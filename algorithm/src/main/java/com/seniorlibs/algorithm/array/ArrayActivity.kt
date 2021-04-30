@@ -233,21 +233,21 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param s
      * @return
      */
-    fun lengthOfLongestSubstring(s: String): Int {
-        if (s.isEmpty()) return 0
+    fun lengthOfLongestSubstring(str: String): Int {
+        if (str.isEmpty()) return 0
 
-        val map = HashMap<Char, Int?>()
+        val map = hashMapOf<Char, Int>()
         var left = 0
         var res = 0
 
-        for (right in 0 until s.length) {
-            if (map.containsKey(s[right])) {
-                left = Math.max(left, map[s[right]]!!)
+        for (i in 0 until str.length) {
+            if (map.containsKey(str[i])) {
+                left = Math.max(left, map[str[i]]!!)
             }
 
-            res = Math.max(res, right - left + 1)
+            res = Math.max(res, i - left + 1)
 
-            map[s[right]] = right + 1
+            map[str[i]] = i + 1
         }
 
         return res
