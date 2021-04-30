@@ -53,6 +53,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_add_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_two_numbers).setOnClickListener(this)
         findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
+        findViewById<View>(R.id.btn_check_inclusion).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -110,6 +111,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_multiply -> {
                 LogUtils.d(TAG, "43. 字符串相乘：${multiply("123", "45")}")
+            }
+            R.id.btn_check_inclusion -> {
+                LogUtils.d(TAG, "567. 字符串的排列：${checkInclusion("ab", "eidbaooo")}")
             }
             else -> {
             }
@@ -794,4 +798,49 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return sb.toString()
     }
 
+
+    /**
+     * 567. 字符串的排列
+     *
+     * 时间复杂度: 0(|s1| +|s2|)，这里|s1|表示字符串s1的长度，这里s2|表示字符串s2的长度;
+     * 空间复杂度: 0(E)，这里E表示s1和s2中出现的字符的种类数，取决于出现字符的ASCII值的范围。
+     *
+     * https://leetcode-cn.com/problems/permutation-in-string/solution/567-zi-fu-chuan-de-pai-lie-by-chen-li-gu-v2q2/
+     * @param s1
+     * @param s2
+     * @return
+     */
+    fun checkInclusion(s1: String, s2: String): Boolean {
+        val len1 = s1.length
+        val len2 = s2.length
+
+        // 【总欠账表】：s1的词频表
+        val array = IntArray(26)
+        // 统计s1的词频
+        for (c in s1) {
+            array[c - 'a']++
+        }
+
+        // 滑动窗口左右边界
+        var left = 0
+        var right = 0
+
+        // 依次尝试以s2中的每一个位置l作为左端点开始的 len2-len1 长度的子串 s2[l ... l+len1] 是否是s1的排列
+        while (left <= len2 - len1) {
+            // 右边界 s2[r] 字符进入窗口【还账】
+            while (right < left + len1 && array[s2[right] - 'a'] > 0) {
+                array[s2[right] - 'a']-- // 【还账】
+                right++
+            }
+
+            if (right == left + len1) return true
+
+            // 左边界 s2[l] 字符出窗口【赊账】，l++ 开始尝试以下一个位置做左端点
+            array[s2[left] - 'a']++ // 重新【赊账】
+            left++
+        }
+
+        // 所有的左端点均尝试还账失败，不可能再有答案了
+        return false
+    }
 }

@@ -72,6 +72,9 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 242. 有效的字母异位词：哈希表
      *
+     * 时间复杂度：O(n)。因为访问计数器表是一个固定的时间操作。
+     * 空间复杂度：O(1)。尽管我们使用了额外的空间，但是空间的复杂性是O(1)，因为无论N有多大，表的大小都保持不变。
+     *
      * https://leetcode-cn.com/problems/valid-anagram/solution/242-you-xiao-de-zi-mu-yi-wei-ci-by-chen-li-guan/
      * @param s
      * @param t
@@ -91,7 +94,9 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
             array[c - 'a']--
         }
 
-        for (i in array) if (i > 0) return false
+        for (i in array) {
+            if (i > 0) return false
+        }
 
         return true
     }
@@ -119,25 +124,23 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 49. 字母异位词分组
      *
-     * 时间复杂度：O(nk)。每个字符串计数再编码，由于题目说明是小写字母，所以是 O(n(k + 26))，常数忽略后就是 O(nk)。
-     * 空间复杂度： O(nk)。
+     * 时间复杂度：O(nk)。其中 n 是 strs 中的字符串的数量，k 是 strs 中的字符串的的最大长度。（所以是 O(n(k + 26))，常数忽略后就是 O(nk)。）
+     * 空间复杂度：O(nk)。需要用哈希表存储全部字符串。
      *
      * https://leetcode-cn.com/problems/group-anagrams/solution/49zi-mu-yi-wei-ci-fen-zu-by-chen-li-guan/
      * @param strs
      * @return
      */
     private fun groupAnagrams(strs: Array<String>): List<List<String>> {
-        val res : MutableList<List<String>> = mutableListOf()
+        val res = mutableListOf<List<String>>()
         if (strs.isEmpty()) return res
 
         val map = mutableMapOf<String, MutableList<String>>()
         for (str in strs) {
-            val sArray = str.toCharArray()
             val array = IntArray(26)
-            for (c in sArray) {
+            for (c in str) {
                 array[c - 'a']++
             }
-
             // 将每个字符串s转换为字符数组count-->key，由26个非负整数组成，表示a，b，c的数量。"eat", "tea"的key是相等的
             val sb = StringBuilder()
             for (c in array) {
@@ -145,10 +148,8 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             val key = sb.toString()
-            if (!map.containsKey(key)) {
-                map[key] = mutableListOf()
-            }
-            map[key]!!.add(str)
+            if (!map.containsKey(key)) map[key] = mutableListOf()
+            map[key]?.add(str)
         }
 
         return map.values.toList()
