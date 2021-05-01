@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BaseMatchParent"
@@ -7,90 +7,99 @@
     tools:context=".main.MainActivity"
     tools:ignore="MissingDefaultResource">
 
-    <LinearLayout
-        style="@style/BaseMatchParent"
-        android:orientation="vertical"
-        tools:context=".main.MainActivity"
-        tools:ignore="MissingDefaultResource">
+    <Button
+        android:id="@+id/btn_to_lower_case"
+        style="@style/BtnStyles"
+        android:text="709. 转换成小写字母" />
 
-        <Button
-            android:id="@+id/btn_to_lower_case"
-            style="@style/BtnStyles"
-            android:text="709. 转换成小写字母" />
+    <Button
+        android:id="@+id/btn_first_uniq_char"
+        style="@style/BtnStyles"
+        android:text="387. 字符串中的第一个唯一字符" />
 
-        <Button
-            android:id="@+id/btn_first_uniq_char"
-            style="@style/BtnStyles"
-            android:text="387. 字符串中的第一个唯一字符" />
+    <Button
+        android:id="@+id/btn_my_atoi"
+        style="@style/BtnStyles"
+        android:text="8. 字符串转换整数 (atoi)" />
 
-        <Button
-            android:id="@+id/btn_my_atoi"
-            style="@style/BtnStyles"
-            android:text="8. 字符串转换整数 (atoi)" />
+    <Button
+        android:id="@+id/btn_reverse_string"
+        style="@style/BtnStyles"
+        android:text="344. 反转字符串" />
 
-        <Button
-            android:id="@+id/btn_reverse_string"
-            style="@style/BtnStyles"
-            android:text="344. 反转字符串" />
+    <Button
+        android:id="@+id/btn_reverse_string2"
+        style="@style/BtnStyles"
+        android:text="541. 反转字符串2" />
 
-        <Button
-            android:id="@+id/btn_reverse_string2"
-            style="@style/BtnStyles"
-            android:text="541. 反转字符串2" />
+    <Button
+        android:id="@+id/btn_reverse"
+        style="@style/BtnStyles"
+        android:text="7. 整数反转" />
 
-        <Button
-            android:id="@+id/btn_reverse"
-            style="@style/BtnStyles"
-            android:text="7. 整数反转" />
+    <Button
+        android:id="@+id/btn_longest_common_prefix"
+        style="@style/BtnStyles"
+        android:text="14. 最长公共前缀" />
 
-        <Button
-            android:id="@+id/btn_longest_common_prefix"
-            style="@style/BtnStyles"
-            android:text="14. 最长公共前缀" />
+    <Button
+        android:id="@+id/btn_decode_string"
+        style="@style/BtnStyles"
+        android:text="394. 字符串解码" />
 
-        <Button
-            android:id="@+id/btn_decode_string"
-            style="@style/BtnStyles"
-            android:text="394. 字符串解码" />
+    <Button
+        android:id="@+id/btn_str_str"
+        style="@style/BtnStyles"
+        android:text="28. 实现 strStr()" />
 
-        <Button
-            android:id="@+id/btn_str_str"
-            style="@style/BtnStyles"
-            android:text="28. 实现 strStr()" />
+    <Button
+        android:id="@+id/btn_word_pattern"
+        style="@style/BtnStyles"
+        android:text="290. 单词规律" />
 
-        <Button
-            android:id="@+id/btn_word_pattern"
-            style="@style/BtnStyles"
-            android:text="290. 单词规律" />
+    <Button
+        android:id="@+id/btn_is_palindrome_str"
+        style="@style/BtnStyles"
+        android:text="125. 验证回文串" />
 
-        <Button
-            android:id="@+id/btn_is_palindrome_str"
-            style="@style/BtnStyles"
-            android:text="125. 验证回文串" />
+    <Button
+        android:id="@+id/btn_is_palindrome_num"
+        style="@style/BtnStyles"
+        android:text="9. 回文数" />
 
-        <Button
-            android:id="@+id/btn_is_palindrome_num"
-            style="@style/BtnStyles"
-            android:text="9. 回文数" />
+    <Button
+        android:id="@+id/btn_add_strings"
+        style="@style/BtnStyles"
+        android:text="415. 字符串相加（两个大数相加）" />
 
-        <Button
-            android:id="@+id/btn_add_strings"
-            style="@style/BtnStyles"
-            android:text="415. 字符串相加（两个大数相加）" />
+    <Button
+        android:id="@+id/btn_add_two_numbers"
+        style="@style/BtnStyles"
+        android:text="2. 两数相加" />
 
-        <Button
-            android:id="@+id/btn_add_two_numbers"
-            style="@style/BtnStyles"
-            android:text="2. 两数相加" />
+    <Button
+        android:id="@+id/btn_multiply"
+        style="@style/BtnStyles"
+        android:text="43. 字符串相乘" />
 
-        <Button
-            android:id="@+id/btn_multiply"
-            style="@style/BtnStyles"
-            android:text="43. 字符串相乘" />
+    <Button
+        android:id="@+id/btn_min_remove_to_make_valid"
+        style="@style/BtnStyles"
+        android:text="1249. 移除无效的括号" />
 
-        <Button
-            android:id="@+id/btn_check_inclusion"
-            style="@style/BtnStyles"
-            android:text="567. 字符串的排列" />
-    </LinearLayout>
-</ScrollView>
+    <Button
+        android:id="@+id/btn_score_of_parentheses"
+        style="@style/BtnStyles"
+        android:text="856. 括号的分数" />
+
+    <Button
+        android:id="@+id/btn_check_inclusion"
+        style="@style/BtnStyles"
+        android:text="567. 字符串的排列" />
+
+    <Button
+        android:id="@+id/btn_find_anagrams"
+        style="@style/BtnStyles"
+        android:text="438. 找到字符串中所有字母异位词" />
+
+</LinearLayout>

@@ -95,7 +95,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun generateParenthesis(n: Int): List<String> {
-        val res: MutableList<String> = mutableListOf()
+        val res = mutableListOf<String>()
         if (n == 0) return res
 
         // ((()))

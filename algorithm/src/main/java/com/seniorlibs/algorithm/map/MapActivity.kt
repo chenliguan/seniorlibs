@@ -141,6 +141,7 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
             for (c in str) {
                 array[c - 'a']++
             }
+
             // 将每个字符串s转换为字符数组count-->key，由26个非负整数组成，表示a，b，c的数量。"eat", "tea"的key是相等的
             val sb = StringBuilder()
             for (c in array) {
@@ -148,7 +149,9 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             val key = sb.toString()
-            if (!map.containsKey(key)) map[key] = mutableListOf()
+            if (!map.containsKey(key)) {
+                map[key] = mutableListOf()
+            }
             map[key]?.add(str)
         }
 

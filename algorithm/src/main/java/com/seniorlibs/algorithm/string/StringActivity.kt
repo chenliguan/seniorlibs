@@ -53,7 +53,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_add_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_two_numbers).setOnClickListener(this)
         findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_remove_to_make_valid).setOnClickListener(this)
+        findViewById<View>(R.id.btn_score_of_parentheses).setOnClickListener(this)
         findViewById<View>(R.id.btn_check_inclusion).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_anagrams).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -95,7 +98,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 //                LogUtils.d(TAG, "28. 实现 strStr()：${strStr("aabaaabaaac", "aabaaac")}")
             }
             R.id.btn_word_pattern -> {
-                LogUtils.d(TAG, "290. 单词规律：${wordPattern("abba","dog cat cat dog")}")
+                LogUtils.d(TAG, "290. 单词规律：${wordPattern("abba", "dog cat cat dog")}")
             }
             R.id.btn_is_palindrome_str -> {
                 LogUtils.d(TAG, "125. 验证回文串：${isPalindrome("A man, a plan, a canal: Panama")}")
@@ -112,8 +115,17 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_multiply -> {
                 LogUtils.d(TAG, "43. 字符串相乘：${multiply("123", "45")}")
             }
+            R.id.btn_min_remove_to_make_valid -> {
+                LogUtils.d(TAG, "1249. 移除无效的括号：${minRemoveToMakeValid("lee(t(c)o)de)")}")
+            }
+            R.id.btn_score_of_parentheses -> {
+                LogUtils.d(TAG, "856. 括号的分数：${scoreOfParentheses("(()(()))")}")
+            }
             R.id.btn_check_inclusion -> {
                 LogUtils.d(TAG, "567. 字符串的排列：${checkInclusion("ab", "eidbaooo")}")
+            }
+            R.id.btn_find_anagrams -> {
+                LogUtils.d(TAG, "438. 找到字符串中所有字母异位词：${findAnagrams("abcdab", "ab")}")
             }
             else -> {
             }
@@ -346,7 +358,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             x /= 10
 
             // 判断是否 大于 最大32位整数，小于 最小32位整数
-            if (res > Integer.MAX_VALUE / 10 || res < Integer.MIN_VALUE / 10)  return 0
+            if (res > Integer.MAX_VALUE / 10 || res < Integer.MIN_VALUE / 10) return 0
 
             // push
             // 0 * 10 + -3 = -3 -> -3 * 10 + -2 = 32 -> 32 * 10 + -1 = -321
@@ -403,7 +415,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         val m = haystack.length
         val n = needle.length
 
-        for (i in 0..m - n) {
+        for (i in 0 until m - n + 1) {
             var j = 0
             while (j < n) {
                 if (needle[j] != haystack[i + j]) {
@@ -411,9 +423,11 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 j++
             }
+
             // needle 全都匹配了
             if (j == n) return i
         }
+
         // haystack 中不存在 needle 子串
         return -1
     }
@@ -558,8 +572,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 290. 单词规律
      *
-     * 时间复杂度：O(n + m)；
-     * 空间复杂度：O(n + m)；
+     * 时间复杂度：O(n + m)，其中 n 为 pattern 的长度，m 为 str 的长度。插入和查询哈希表的均摊时间复杂度均为 O(n + m)。每一个字符至多只被遍历一次。
+     * 空间复杂度：O(n + m)，其中 n 为 pattern 的长度，m 为 str 的长度。最坏情况下，我们需要存储 pattern 中的每一个字符和 str 中的每一个字符串。
      *
      * https://leetcode-cn.com/problems/word-pattern/solution/290-dan-ci-gui-lu-by-chen-li-guan-1wz3/
      * @param pattern
@@ -568,13 +582,31 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun wordPattern(pattern: String, s: String): Boolean {
         val array = s.split(" ").toTypedArray()
+        // 字符和单词是互相映射，数量必须相等
         if (pattern.length != array.size) {
             return false
         }
 
         val map = mutableMapOf<Any, Int>()
         for (i in 0 until pattern.length) {
-            // 利用map.put方法返回值（key第一次put时返回null，第n次put时返回第n-1次的value）
+            /*
+                如果key不存在，插入成功，返回null；如果key存在，返回之前此key对应的value。
+
+                以pattern = "abba", str = "dog cat cat dog"为例，
+                第1次：map.put('a',0)返回null，map.put("dog",0)返回null，两者相等；
+                第2次：map.put('b',1)返回null，map.put("cat",1)返回null，两者相等；
+                第3次：map.put('b',2)返回1，map.put("cat",2)返回1，两者相等；
+                第4次：map.put('a',3)返回0，map.put("dog",3)返回0，两者相等，
+                结果为 true。
+
+                以pattern = "abba", str = "dog cat cat fish"为例，
+                第1次：map.put('a',0)返回null，map.put("dog",0)返回null，两者相等；
+                第2次：map.put('b',1)返回null，map.put("cat",1)返回null，两者相等；
+                第3次：map.put('b',2)返回1，map.put("cat",2)返回1，两者相等；
+                第4次：map.put('a',3)返回0，map.put("fish",3)返回null，两者不相等，
+                结果为 false。
+            */
+
             if (map.put(pattern[i], i) != map.put(array[i], i)) {
                 return false
             }
@@ -668,24 +700,24 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun addStrings(num1: String, num2: String): String? {
-        val res = StringBuilder("")
         var i = num1.length - 1
         var j = num2.length - 1
+
         var carry = 0
+        val res = StringBuilder("")
 
         while (i >= 0 || j >= 0) {
             val n1 = if (i >= 0) num1[i] else '0'
             val n2 = if (j >= 0) num2[j] else '0'
 
             // 分别获取两个字符对应的字面数值，然后相加，再加上进位
-            var sum = n1.toInt() + n2.toInt() - 2 * '0'.toInt() + carry
+            val sum = n1.toInt() + n2.toInt() - 2 * '0'.toInt() + carry
+
             // 求值：获取进位
             carry = sum / 10
-            // 求余：获取当前位
-            sum = sum % 10
 
             // 添加当前位
-            res.append(sum)
+            res.append(sum % 10)
 
             i--
             j--
@@ -749,7 +781,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 43. 字符串相乘
      * 思路：设定 i，j 双指针分别指向 num1，num2 尾部，从个位数开始逐位相乘。一个字符与一个字符相乘，找出相乘的结果在 res 对应的位置添加，叠加到 res 上
      *
-     * 时间复杂度：O(M N)。M,N 分别为 num1 和 num2 的长度。
+     * 时间复杂度：O(M * N)。M,N 分别为 num1 和 num2 的长度。
      * 空间复杂度：O(M+N)。用于存储计算结果。
      *
      * https://leetcode-cn.com/problems/multiply-strings/solution/43-zi-fu-chuan-xiang-cheng-by-chen-li-gu-d40z/
@@ -758,14 +790,13 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun multiply(num1: String, num2: String): String {
-        if(num1.equals("0") || num2.equals("0")) return "0";
+        if (num1.equals("0") || num2.equals("0")) return "0"
 
         val m = num1.length
         val n = num2.length
-        if (m == 0 || n == 0) return "0"
 
         // 结果最多为 m + n 位数
-        val res = IntArray(m + n)
+        val array = IntArray(m + n)
 
         // 从个位数开始逐位相乘
         for (i in m - 1 downTo 0) {
@@ -775,49 +806,156 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 // 找出相乘的结果在 res 对应的位置添加
                 val p1 = i + j
                 val p2 = i + j + 1
+
                 // 叠加到 res 上
-                val sum = mul + res[p2]
-                res[p2] = sum % 10
+                val sum = mul + array[p2]
+                array[p2] = sum % 10
                 // 此处的+=是为了处理此位有了数字
-                res[p1] += sum / 10
+                array[p1] += sum / 10
             }
         }
 
         // 找到结果前缀那些未使用的0的位置
-        val sb = StringBuilder()
+        val res = StringBuilder()
         var i = 0
-        while (res[i] == 0) {
+        while (array[i] == 0) {
             i++
+        }
+        // 将计算结果转化成字符串
+        while (i < array.size) {
+            res.append(array[i])
+            i++
+        }
+        return res.toString()
+    }
+
+    /**
+     * 1249. 移除无效的括号
+     *
+     * 时间复杂度：O(n)，一共有两个循环，每次循环操作 n 个字符，每次操作 O(1)。循环之外，还有一些 O(n)O(n) 的库函数调用。
+     * 空间复杂度：O(1)：指针与变量使用常数大小空间。
+     *
+     * https://leetcode-cn.com/problems/minimum-remove-to-make-valid-parentheses/solution/1249-yi-chu-wu-xiao-de-gua-hao-by-chen-l-qg82/
+     * @param s
+     * @return
+     */
+    fun minRemoveToMakeValid(s: String): String? {
+        val sb = StringBuilder()
+
+        // 记录 '(' 的数量
+        var count = 0
+
+        // 删除多余的')'
+        for (char in s) {
+            if (char == '(') {
+                count++
+                sb.append(char)
+            } else if (char == ')') {
+                count--
+                if (count < 0) {
+                    // 如果没有 '(' 匹配 ')'，不加入
+                    count = 0
+                } else {
+                    sb.append(char)
+                }
+            } else {
+                sb.append(char)
+            }
         }
 
-        // 将计算结果转化成字符串
-        while (i < res.size) {
-            sb.append(res[i])
-            i++
+        var i = sb.length - 1
+        // 删除多余的'('
+        while (count != 0) {
+            if (sb[i] == '(') {
+                count--
+                sb.deleteCharAt(i)
+            }
+            i--
         }
+
         return sb.toString()
+    }
+
+
+    /**
+     * 856. 括号的分数
+     *
+     * 时间复杂度：O(N)，其中 N 是字符串 S 的长度。
+     * 空间复杂度：O(N)，为栈的大小。
+     *
+     *  (()  (()) )
+     *  (                # 遇到 ( 往栈添加
+     *  (, (             # 继续添加
+     *
+     *  (, 1             # 遇到 ）合成一个 1   // A
+     *
+     *  (, 1, (          # 遇到 ( 往栈添加
+     *  (, 1, (, (       # 继续添加
+     *
+     *  (, 1, (, 1       # 遇到 ）合成一个 1   // A
+     *
+     *  (, 1, 2          # 遇到 ），结构是（1），所以计算的话是 1 * 2            // B
+     *  6                # 遇到 ），结构是（1，2），所以计算的话是（1 + 2） * 2
+     *
+     * https://leetcode-cn.com/problems/score-of-parentheses/solution/856-gua-hao-de-fen-shu-by-chen-li-guan-jv3r/
+     * @param str
+     * @return
+     */
+    fun scoreOfParentheses(S: String): Int {
+        val stack = LinkedList<Int>()
+
+        for (c in S) {
+            if (c == '(') {
+                // '('用-1来表示
+                stack.push(-1)
+
+            } else if (c == ')') {
+                // A
+                if (stack.peek() == -1) {
+                    stack.pop()
+                    stack.push(1)
+                } else {
+                    // B
+                    var temp = 0
+                    while (stack.peek() != -1) {
+                        temp += stack.pop()
+                    }
+                    stack.pop()
+                    stack.push(2 * temp)
+                }
+            }
+        }
+
+        // 最后栈内都是分数，没有括号了，求和即可
+        var res = 0
+        while (!stack.isEmpty()) {
+            res += stack.pop()
+        }
+        return res
     }
 
 
     /**
      * 567. 字符串的排列
      *
-     * 时间复杂度: 0(|s1| +|s2|)，这里|s1|表示字符串s1的长度，这里s2|表示字符串s2的长度;
+     * 时间复杂度: 0(|s| +|l|)，这里|s1|表示字符串s1的长度，这里s2|表示字符串s2的长度;
      * 空间复杂度: 0(E)，这里E表示s1和s2中出现的字符的种类数，取决于出现字符的ASCII值的范围。
      *
      * https://leetcode-cn.com/problems/permutation-in-string/solution/567-zi-fu-chuan-de-pai-lie-by-chen-li-gu-v2q2/
-     * @param s1
-     * @param s2
+     * @param s
+     * @param l
      * @return
      */
-    fun checkInclusion(s1: String, s2: String): Boolean {
-        val len1 = s1.length
-        val len2 = s2.length
+    fun checkInclusion(s: String, l: String): Boolean {
+        if (s.isEmpty() || l.isEmpty()) return false
+
+        val sLen = s.length
+        val lLen = l.length
 
         // 【总欠账表】：s1的词频表
         val array = IntArray(26)
         // 统计s1的词频
-        for (c in s1) {
+        for (c in s) {
             array[c - 'a']++
         }
 
@@ -826,21 +964,71 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         var right = 0
 
         // 依次尝试以s2中的每一个位置l作为左端点开始的 len2-len1 长度的子串 s2[l ... l+len1] 是否是s1的排列
-        while (left <= len2 - len1) {
+        while (left <= lLen - sLen) {
             // 右边界 s2[r] 字符进入窗口【还账】
-            while (right < left + len1 && array[s2[right] - 'a'] > 0) {
-                array[s2[right] - 'a']-- // 【还账】
+            while (right < left + sLen && array[l[right] - 'a'] > 0) {
+                array[l[right] - 'a']-- // 【还账】
                 right++
             }
 
-            if (right == left + len1) return true
+            if (right == left + sLen) return true
 
             // 左边界 s2[l] 字符出窗口【赊账】，l++ 开始尝试以下一个位置做左端点
-            array[s2[left] - 'a']++ // 重新【赊账】
+            array[l[left] - 'a']++ // 重新【赊账】
             left++
         }
 
         // 所有的左端点均尝试还账失败，不可能再有答案了
         return false
+    }
+
+
+    /**
+     * 438. 找到字符串中所有字母异位词
+     *
+     * 时间复杂度: 0(|s| +|l|)，这里|s1|表示字符串s1的长度，这里s2|表示字符串s2的长度;
+     * 空间复杂度: 0(E)，这里E表示s1和s2中出现的字符的种类数，取决于出现字符的ASCII值的范围。
+     *
+     * @param l
+     * @param s
+     * @return
+     */
+    fun findAnagrams(l: String, s: String): List<Int> {
+        val res = mutableListOf<Int>()
+        if (s.isEmpty() || l.isEmpty()) return res
+
+        val sLen = s.length
+        val lLen = l.length
+
+        // 【总欠账表】：s1的词频表
+        val array = IntArray(26)
+        // 统计s1的词频
+        for (c in s) {
+            array[c - 'a']++
+        }
+
+        // 滑动窗口左右边界
+        var left = 0
+        var right = 0
+
+        // 依次尝试以 l 中的每一个位置 left 作为左端点开始的 lLen-sLen 长度的子串 l[l ... l+len1] 是否是 s 的排列
+        while (left <= lLen - sLen) {
+            // 右边界 l[right] 字符进入窗口【还账】
+            while (right < left + sLen && array[l[right] - 'a'] > 0) {
+                array[l[right] - 'a']-- // 【还账】
+                right++
+            }
+
+            if (right == left + sLen) {
+                res.add(left)
+            }
+
+            // 左边界 l[left] 字符出窗口【赊账】，l++ 开始尝试以下一个位置做左端点
+            array[l[left] - 'a']++ // 重新【赊账】
+            left++
+        }
+
+        // 返回结果
+        return res
     }
 }
