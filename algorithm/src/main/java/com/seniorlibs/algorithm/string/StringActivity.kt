@@ -989,46 +989,42 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度: 0(|s| +|l|)，这里|s1|表示字符串s1的长度，这里s2|表示字符串s2的长度;
      * 空间复杂度: 0(E)，这里E表示s1和s2中出现的字符的种类数，取决于出现字符的ASCII值的范围。
      *
-     * @param l
+     * https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/solution/438-zhao-dao-zi-fu-chuan-zhong-suo-you-z-apuf/
      * @param s
+     * @param p
      * @return
      */
-    fun findAnagrams(l: String, s: String): List<Int> {
-        val res = mutableListOf<Int>()
-        if (s.isEmpty() || l.isEmpty()) return res
-
+    fun findAnagrams(s: String, p: String): List<Int> {
         val sLen = s.length
-        val lLen = l.length
+        val pLen = p.length
+        val res = mutableListOf<Int>()
+        if (sLen < pLen) return res
 
-        // 【总欠账表】：s1的词频表
-        val array = IntArray(26)
-        // 统计s1的词频
-        for (c in s) {
-            array[c - 'a']++
+        val windowArray = IntArray(26)
+        val targetArray = IntArray(26)
+        for (i in 0 until pLen) {
+            targetArray[p[i] - 'a']++
         }
 
-        // 滑动窗口左右边界
         var left = 0
-        var right = 0
+        // right 指针一步一步向右走遍历 l 字符串
+        for (right in 0 until sLen) {
+            val curRight = s[right] - 'a'
+            windowArray[curRight]++
 
-        // 依次尝试以 l 中的每一个位置 left 作为左端点开始的 lLen-sLen 长度的子串 l[l ... l+len1] 是否是 s 的排列
-        while (left <= lLen - sLen) {
-            // 右边界 l[right] 字符进入窗口【还账】
-            while (right < left + sLen && array[l[right] - 'a'] > 0) {
-                array[l[right] - 'a']-- // 【还账】
-                right++
+            // right 指针遍历到的字符加入 lArray 后不满足 sArray 的字符数量要求，所以这个窗口一定是不合法的，
+            // 假设：如果长度一样，但是有某个字母的个数不一样的话。那么一定有某个字符的个数大于目标数组的，然后left会收缩，导致长度不一样。所以假设不成立。
+            while (windowArray[curRight] > targetArray[curRight]) {
+                val curLeft = s[left] - 'a'
+                windowArray[curLeft]--
+                left++
             }
 
-            if (right == left + sLen) {
+            // 当滑动窗口的长度等于 s 的长度时，这时的 l 子字符串就是 s 的异位词
+            if (right - left + 1 == pLen) {
                 res.add(left)
             }
-
-            // 左边界 l[left] 字符出窗口【赊账】，l++ 开始尝试以下一个位置做左端点
-            array[l[left] - 'a']++ // 重新【赊账】
-            left++
         }
-
-        // 返回结果
         return res
     }
 }
