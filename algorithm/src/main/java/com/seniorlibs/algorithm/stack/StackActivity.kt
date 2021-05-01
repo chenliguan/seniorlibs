@@ -86,7 +86,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun isValid(s: String): Boolean {
-        val stack = Stack<Char>()
+        val stack = LinkedList<Char>()
         for (char in s) {
             // 如果是左括号，就把他们对应的右括号压栈
             if (char == '(') {
@@ -95,7 +95,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
                 stack.push('}')
             } else if (char == '[') {
                 stack.push(']')
-            } else if (stack.isEmpty() || stack.pop() != char) {
+            } else if (stack.isEmpty() || char != stack.pop()) {
                 // 否则就只能是右括号。
                 // 1.如果栈为空，说明括号无法匹配。
                 // 2.如果栈不为空，栈顶元素就要出栈，和这个右括号比较。

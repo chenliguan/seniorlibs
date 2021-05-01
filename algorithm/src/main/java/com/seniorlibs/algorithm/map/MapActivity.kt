@@ -72,25 +72,24 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 242. 有效的字母异位词：哈希表
      *
-     * 时间复杂度：O(n)。因为访问计数器表是一个固定的时间操作。
-     * 空间复杂度：O(1)。尽管我们使用了额外的空间，但是空间的复杂性是O(1)，因为无论N有多大，表的大小都保持不变。
+     * 时间复杂度：O(n)。其中 n 为 s 的长度。
+     * 空间复杂度：O(E)。其中 E 为字符集大小，此处 E=26。
      *
      * https://leetcode-cn.com/problems/valid-anagram/solution/242-you-xiao-de-zi-mu-yi-wei-ci-by-chen-li-guan/
      * @param s
      * @param t
      * @return
      */
-    private fun isAnagram(s: String, t: String): Boolean {
-        if (s.length != t.length) return false
-
-        val sArray = s.toCharArray()
-        val tArray = t.toCharArray()
+    fun isAnagram(s: String, t: String): Boolean {
+        if(s.length != t.length) return false
 
         val array = IntArray(26)
-        for (c in sArray) {
+
+        for (c in s) {
             array[c - 'a']++
         }
-        for (c in tArray) {
+
+        for (c in t) {
             array[c - 'a']--
         }
 
@@ -124,6 +123,8 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 49. 字母异位词分组
      *
+     * 思路：当且仅当它们的字符计数（每个字符的出现次数）相同时，两个字符串是字母异位词。
+     *
      * 时间复杂度：O(nk)。其中 n 是 strs 中的字符串的数量，k 是 strs 中的字符串的的最大长度。（所以是 O(n(k + 26))，常数忽略后就是 O(nk)。）
      * 空间复杂度：O(nk)。需要用哈希表存储全部字符串。
      *
@@ -131,11 +132,10 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
      * @param strs
      * @return
      */
-    private fun groupAnagrams(strs: Array<String>): List<List<String>> {
-        val res = mutableListOf<List<String>>()
-        if (strs.isEmpty()) return res
+    fun groupAnagrams(strs: Array<String>): List<List<String>> {
+        val res = mutableMapOf<String, MutableList<String>>()
+        if (strs.isEmpty()) return res.values.toList()
 
-        val map = mutableMapOf<String, MutableList<String>>()
         for (str in strs) {
             val array = IntArray(26)
             for (c in str) {
@@ -148,14 +148,15 @@ class MapActivity : AppCompatActivity(), View.OnClickListener {
                 sb.append("#${c}")
             }
 
+            // 将字符串添加到 res 中
             val key = sb.toString()
-            if (!map.containsKey(key)) {
-                map[key] = mutableListOf()
+            if (!res.containsKey(key)) {
+                res[key] = mutableListOf()
             }
-            map[key]?.add(str)
+            res[key]?.add(str)
         }
 
-        return map.values.toList()
+        return res.values.toList()
     }
 
     /**
