@@ -54,6 +54,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_word_pattern).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_str).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_num).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_two_numbers).setOnClickListener(this)
         findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
@@ -126,6 +127,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_is_palindrome_num -> {
                 LogUtils.d(TAG, "9. 回文数：${isPalindrome(121)}")
+            }
+            R.id.btn_longest_palindrome -> {
+                LogUtils.d(TAG, "409. 最长回文串：${longestPalindrome("abccccdd")}")
             }
             R.id.btn_add_strings -> {
                 LogUtils.d(TAG, "415. 字符串相加（两个大数相加）：${addStrings("121", "12000000")}")
@@ -865,7 +869,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 9. 回文数 == 验证回文数 == 7. 整数反转
+     * 9. 是否是回文数 == 验证回文数 == 7. 整数反转
      *
      * 时间复杂度：O(logx)，对于每次迭代，我们会将输入除以 10，因此时间复杂度为 O(logn)。
      * 空间复杂度：O(1)。
@@ -895,6 +899,50 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return cur == x
     }
 
+
+    /**
+     * 680. 验证回文字符串 Ⅱ
+     *
+     * 如果s[i]==s[j]继续i++、j--，判断是否回文
+     * 如果s[i]!=s[j]：1.判断s[i+1]到s[j]范围内字符串是否回文，如果是，去掉s[i]即可
+     *                2.或者判断s[i]到s[j-1]范围内是否回文，如果是，删除s[j]即可。
+     *
+     * 时间复杂度：O(n)；
+     * 空间复杂度：O(1)；
+     *
+     * https://leetcode-cn.com/problems/valid-palindrome-ii/solution/680-yan-zheng-hui-wen-zi-fu-chuan-ii-by-8ue7f/
+     * @param s
+     * @return
+     */
+    fun validPalindrome(s: String): Boolean {
+        var i = 0
+        var j = s.length - 1
+
+        while (i < j) {
+            if (s[i] != s[j]) {
+                return isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1)
+            }
+            i++
+            j--
+        }
+        return true
+    }
+
+    // 判断回文
+    fun isPalindrome(s: String, i: Int, j: Int): Boolean {
+        var i = i
+        var j = j
+        while (i < j) {
+            if (s[i] != s[j]) {
+                return false
+            }
+            i++
+            j--
+        }
+        return true
+    }
+
+
     /**
      * 409. 最长回文串
      *
@@ -912,13 +960,15 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     fun longestPalindrome(s: String): Int {
         val array = IntArray(58)
         for (c in s) {
-            array[c - 'A'] += 1
+            array[c - 'A'] ++
         }
 
         var res = 0
         for (x in array) {
-            // 字符出现的次数最多用偶数次
-            res += x - (x and 1)  // &
+            // 字符出现的次数最多用偶数次，res 结果也是偶数
+            // 01 & 01 = 1(奇数)、10 & 01 = 0(偶数)、11 & 01 = 1(奇数)、100 & 001 = 0(偶数)
+            // 1-1=0、2-0=1、3-1=2、4-0=4
+            res += x - (x and 1)
         }
 
         // 如果最终的长度小于原字符串的长度，说明里面某个字符出现了奇数次，那么那个字符可以放在回文串的中间，所以额外再加一

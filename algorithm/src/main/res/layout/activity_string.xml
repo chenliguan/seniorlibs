@@ -91,7 +91,12 @@
         <Button
             android:id="@+id/btn_is_palindrome_num"
             style="@style/BtnStyles"
-            android:text="9. 回文数" />
+            android:text="9. 是否是回文数" />
+
+        <Button
+            android:id="@+id/btn_longest_palindrome"
+            style="@style/BtnStyles"
+            android:text="409. 最长回文串" />
 
         <Button
             android:id="@+id/btn_add_strings"
