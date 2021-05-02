@@ -374,6 +374,36 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * 46. 把数字翻译成字符串
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * @param num
+     * @return
+     */
+    fun translateNum(num: Int): Int {
+        var num = num
+        var a = 1
+        var b = 1
+        var c = 1
+
+        while (num != 0) {
+            val tmp = num % 100
+            num /= 10
+            c = if (tmp in 10..25) {
+                a + b
+            } else {
+                b
+            }
+            
+            a = b
+            b = c
+        }
+        return c
+    }
+
+    /**
      * 344. 反转字符串
      *
      * 时间复杂度：O(n)，其中n为字符数组的长度，一共执行了n/2次的交换；
