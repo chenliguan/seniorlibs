@@ -47,4 +47,9 @@
         style="@style/BtnStyles"
         android:text="88. 合并两个有序数组" />
 
+    <Button
+        android:id="@+id/btn_find_repeat_number"
+        style="@style/BtnStyles"
+        android:text="03. 数组中重复的数字" />
+
 </LinearLayout>

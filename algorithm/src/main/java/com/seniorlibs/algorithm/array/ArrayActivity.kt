@@ -40,27 +40,28 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_repeat_number).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
         R.id.btn_remove_duplicates -> {
-            val nums: IntArray = intArrayOf(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)
+            val nums = intArrayOf(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)
             // 删除排序数组中的重复项
             removeDuplicates(nums)
-            LogUtils.d(TAG, "26. 删除排序数组中的重复项：${nums.asList().toString()}")
+            LogUtils.d(TAG, "26. 删除排序数组中的重复项：${nums.asList()}")
         }
         R.id.btn_move_zeroes -> {
-            val nums: IntArray = intArrayOf(0, 1, 0, 3, 12, 0, 1, 12, 0, 0, 6)
+            val nums = intArrayOf(0, 1, 0, 3, 12, 0, 1, 12, 0, 0, 6)
             // 移动零
             moveZeroes(nums)
-            LogUtils.d(TAG, "283. 移动零：${nums.asList().toString()}")
+            LogUtils.d(TAG, "283. 移动零：${nums.asList()}")
         }
         R.id.btn_max_area -> {
-            val nums: IntArray = intArrayOf(1, 8, 6, 2, 5, 4, 8, 3, 7)
+            val nums = intArrayOf(1, 8, 6, 2, 5, 4, 8, 3, 7)
             LogUtils.d(TAG, "11. 盛最多水的容器：${maxArea(nums)}")
         }
         R.id.btn_trap -> {
-            val nums: IntArray = intArrayOf(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)
+            val nums = intArrayOf(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)
             LogUtils.d(TAG, "42. 接雨水：${trap(nums)}")
         }
         R.id.btn_two_sum -> {
@@ -68,19 +69,23 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             LogUtils.e(TAG, "1. 两数之和：${sum}")
         }
         R.id.btn_three_sum -> {
-            val nums: IntArray = intArrayOf(-4, -1, -1, -1, 0, -1, 1, 2)
+            val nums = intArrayOf(-4, -1, -1, -1, 0, -1, 1, 2)
             LogUtils.d(TAG, "15. 三数之和：${threeSum(nums)}")
             LogUtils.d(TAG, "15. 三数之和1：${threeSum1(nums)}")
         }
         R.id.btn_four_sum -> {
-            val nums: IntArray = intArrayOf(0, 4, -5, 2, -2, 4, 2, -1, 4)
+            val nums = intArrayOf(0, 4, -5, 2, -2, 4, 2, -1, 4)
             LogUtils.d(TAG, "18. 四数之和：${fourSum(nums, 12)}")
             LogUtils.d(TAG, "18. 四数之和1：${fourSum1(nums, 12)}")
         }
         R.id.btn_merge -> {
-            val nums1: IntArray = intArrayOf(1, 2, 3, 0, 0, 0)
-            val nums2: IntArray = intArrayOf(2, 5, 6)
+            val nums1 = intArrayOf(1, 2, 3, 0, 0, 0)
+            val nums2 = intArrayOf(2, 5, 6)
             LogUtils.d(TAG, "88. 合并两个有序数组：${merge(nums1, 3, nums2, 3)}")
+        }
+        R.id.btn_find_repeat_number -> {
+            val nums = intArrayOf(2, 3, 1, 0, 2, 5, 3)
+            LogUtils.d(TAG, "03. 数组中重复的数字：${findRepeatNumber(nums)}")
         }
         else -> {
         }
@@ -567,4 +572,27 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * 03. 数组中重复的数字
+     *
+     * 时间复杂度：O(n)，遍历数组一遍。
+     * 空间复杂度：O(n)。不重复的每个元素都可能存入集合。
+     *
+     * https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/03-shu-zu-zhong-zhong-fu-de-shu-zi-by-ch-v318/
+     * @param nums
+     * @return
+     */
+    fun findRepeatNumber(nums: IntArray): Int {
+        val set = hashSetOf<Int>()
+        var repeat = -1
+
+        for (num in nums) {
+            if (!set.add(num)) {
+                repeat = num
+                break
+            }
+        }
+
+        return repeat
+    }
 }

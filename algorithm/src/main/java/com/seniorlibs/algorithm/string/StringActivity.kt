@@ -9,7 +9,6 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Author: chen
@@ -630,8 +629,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     fun decodeString(s: String): String? {
         var res = StringBuilder()
         var multi = 0
-        val stackMulti: LinkedList<Int> = LinkedList()
-        val stackRes: LinkedList<String> = LinkedList()
+        val stackMulti = LinkedList<Int>()
+        val stackRes = LinkedList<String>()
 
         for (c in s.toCharArray()) {
             when (c) {
