@@ -895,6 +895,36 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return cur == x
     }
 
+    /**
+     * 409. 最长回文串
+     *
+     * 思想：只需要尽可能的左右对称地构造字符串就行了，所以回文串里每种字符都出现了偶数次，除了奇数长度的回文串的时候最中间的那个字符可以出现奇数次。
+     *      比如回文串 abba，每个字符都出现了偶数次。而奇数长度的回文串 abcbcbcba，c出现了奇数次。
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(E)，E = 58。
+     *
+     * https://leetcode-cn.com/problems/longest-palindrome/solution/409-zui-chang-hui-wen-chuan-by-chen-li-g-lwq9/
+     *
+     * @param s
+     * @return
+     */
+    fun longestPalindrome(s: String): Int {
+        val array = IntArray(58)
+        for (c in s) {
+            array[c - 'A'] += 1
+        }
+
+        var res = 0
+        for (x in array) {
+            // 字符出现的次数最多用偶数次
+            res += x - (x and 1)  // &
+        }
+
+        // 如果最终的长度小于原字符串的长度，说明里面某个字符出现了奇数次，那么那个字符可以放在回文串的中间，所以额外再加一
+        return if (res < s.length) res + 1 else res
+    }
+
 
     /**
      * 415. 字符串相加（两个大数相加）
