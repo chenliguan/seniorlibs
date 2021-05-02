@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
+import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 import kotlin.collections.HashMap
@@ -55,6 +56,11 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_remove_to_make_valid).setOnClickListener(this)
         findViewById<View>(R.id.btn_score_of_parentheses).setOnClickListener(this)
+
+        findViewById<View>(R.id.btn_length_of_longest_substring).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_substring).setOnClickListener(this)
+        findViewById<View>(R.id.btn_repeated_substring_pattern).setOnClickListener(this)
+        findViewById<View>(R.id.btn_count_binary_substrings).setOnClickListener(this)
         findViewById<View>(R.id.btn_check_inclusion).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_anagrams).setOnClickListener(this)
     }
@@ -120,6 +126,19 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_score_of_parentheses -> {
                 LogUtils.d(TAG, "856. 括号的分数：${scoreOfParentheses("(()(()))")}")
+            }
+
+            R.id.btn_length_of_longest_substring -> {
+                LogUtils.d(ArrayActivity.TAG, "3. 无重复字符的最长子串：${lengthOfLongestSubstring("pwwkew")}")
+            }
+            R.id.btn_longest_substring -> {
+                LogUtils.d(ArrayActivity.TAG, "395. 至少有 K 个重复字符的最长子串：${longestSubstring("ababbc", 2)}")
+            }
+            R.id.btn_repeated_substring_pattern -> {
+                LogUtils.d(ArrayActivity.TAG, "459. 重复的子字符串：${repeatedSubstringPattern("abab")}")
+            }
+            R.id.btn_count_binary_substrings -> {
+                LogUtils.d(ArrayActivity.TAG, "696. 计数二进制子串：${countBinarySubstrings("00111011")}")
             }
             R.id.btn_check_inclusion -> {
                 LogUtils.d(TAG, "567. 字符串的排列：${checkInclusion("ab", "eidbaooo")}")
@@ -581,7 +600,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun wordPattern(pattern: String, s: String): Boolean {
-        val array = s.split(" ").toTypedArray()
+        val array = s.split(" ")
         // 字符和单词是互相映射，数量必须相等
         if (pattern.length != array.size) {
             return false
@@ -936,49 +955,167 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 3. 无重复字符的最长子串
+     * 思路：双指针，滑动窗口，保证每个窗口里字母都是唯一的。
+     *      使用 map 来记录一个字母，key 值为字符，value 值为字符位置 +1，+1 表示从字符位置后一个才开始不重复.
+     *      没有重复字母时，调整右边界。当窗口内出现重复字母时，调整左边界.
+     *
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(n)
+     *
+     * https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/3-wu-zhong-fu-zi-fu-de-zui-chang-zi-chua-72h1/
+     * @param s
+     * @return
+     */
+    fun lengthOfLongestSubstring(str: String): Int {
+        if (str.isEmpty()) return 0
+
+        val map = hashMapOf<Char, Int>()
+        var left = 0
+        var res = 0
+
+        for (i in 0 until str.length) {
+            if (map.containsKey(str[i])) {
+                left = Math.max(left, map[str[i]]!!)
+            }
+
+            res = Math.max(res, i - left + 1)
+
+            map[str[i]] = i + 1
+        }
+
+        return res
+    }
+
+    /**
+     * 395. 至少有 K 个重复字符的最长子串
+     *
+     * 思想：调用递归，如果一个字符 c 在 s 中出现的次数少于 k 次，那么 s 中所有的包含 c 的子字符串都不能满足题意。所以，应该在 s 的所有不包含 c 的子字符串中继续寻找结果
+     *
+     * 时间复杂度：O(N⋅E)，其中 N 为字符串的长度，E 为字符集=26。由于每次递归调用都会完全去除某个字符，因此递归深度最多为 E。
+     * 空间复杂度：O(E*E)。递归的深度为 O(E)，每层递归需要开辟 O(E) 的额外空间。
+     *
+     * https://leetcode-cn.com/problems/longest-substring-with-at-least-k-repeating-characters/solution/395-zhi-shao-you-k-ge-zhong-fu-zi-fu-de-u7le8/
+     * @param s
+     * @param k
+     * @return
+     */
+    fun longestSubstring(s: String, k: Int): Int {
+        if (s.length < k) return 0
+
+        val array = IntArray(26)
+        for (c in s) {
+            array[c - 'a']++
+        }
+
+        for (c in s) {
+            // 判断条件 找到小于出现k次的字符串
+            if (array[c - 'a'] < k) {
+                var res = 0
+                // 将字符串切分成多个小段 分别在求解
+                for (t in s.split(c)) {
+                    res = Math.max(res, longestSubstring(t, k))
+                }
+                return res
+            }
+        }
+
+        // 原字符串里面没有小于k的字符串 直接返回字符串长度
+        return s.length
+    }
+
+    /**
+     * 459. 重复的子字符串
+     * 思想：直接判断 str 中去除首尾元素之后，是否包含自身元素。如果包含。则表明存在重复子串。 abab -> a bababa b (ok) ; abc -> a bcab c (no)
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * @param s
+     * @return
+     */
+    fun repeatedSubstringPattern(s: String): Boolean {
+        val str = s + s
+        return str.substring(1, str.length - 1).contains(s)
+    }
+
+
+    /**
+     * 696. 计数二进制子串
+     *
+     * 思路：将字符串 s 按照 0 和 1 的连续段分组，存在 list 数组中，例如 s = 00111011，可以得到这样的：list ={2,3,1,2}。
+     *      两个相邻的数一定代表的是两种不同的字符，两个相邻的数字为 u 或者 v，它们对应着 u 个 0 和 v 个 1，或者 u 个 1 和 v 个 0，即是 min{u,v}。
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * @param s
+     * @return
+     */
+    fun countBinarySubstrings(s: String): Int {
+        val list = mutableListOf<Int>()
+        var p = 0
+
+        while (p < s.length) {
+            val c = s[p]
+            var count = 0
+            while (p < s.length && s[p] == c) {
+                p++
+                count++
+            }
+            list.add(count)
+        }
+
+        var res = 0
+        for (i in 1 until list.size) {
+            res += Math.min(list[i], list[i - 1])
+        }
+        return res
+    }
+
+
+    /**
      * 567. 字符串的排列
      *
-     * 时间复杂度: 0(|s| +|l|)，这里|s1|表示字符串s1的长度，这里s2|表示字符串s2的长度;
-     * 空间复杂度: 0(E)，这里E表示s1和s2中出现的字符的种类数，取决于出现字符的ASCII值的范围。
+     * 时间复杂度: 0(P + S) / 0(P + S + E)，这里 P 表示字符串 s 的长度，这里 S 表示字符串 s 的长度;
+     * 空间复杂度: 0(E)，E 为字符集=26。
      *
      * https://leetcode-cn.com/problems/permutation-in-string/solution/567-zi-fu-chuan-de-pai-lie-by-chen-li-gu-v2q2/
      * @param s
      * @param l
      * @return
      */
-    fun checkInclusion(s: String, l: String): Boolean {
-        if (s.isEmpty() || l.isEmpty()) return false
+    fun checkInclusion(p: String, s: String): Boolean {
+        if (p.isEmpty() || s.isEmpty()) return false
 
         val sLen = s.length
-        val lLen = l.length
+        val pLen = p.length
 
-        // 【总欠账表】：s1的词频表
-        val array = IntArray(26)
-        // 统计s1的词频
-        for (c in s) {
-            array[c - 'a']++
+        val windowArray = IntArray(26)
+        val targetArray = IntArray(26)
+        for (i in 0 until pLen) {
+            targetArray[p[i] - 'a']++
         }
 
-        // 滑动窗口左右边界
         var left = 0
-        var right = 0
+        // right 指针一步一步向右走遍历 s 字符串
+        for (right in 0 until sLen) {
+            val arrayRight = s[right] - 'a'
+            windowArray[arrayRight]++
 
-        // 依次尝试以s2中的每一个位置l作为左端点开始的 len2-len1 长度的子串 s2[l ... l+len1] 是否是s1的排列
-        while (left <= lLen - sLen) {
-            // 右边界 s2[r] 字符进入窗口【还账】
-            while (right < left + sLen && array[l[right] - 'a'] > 0) {
-                array[l[right] - 'a']-- // 【还账】
-                right++
+            // right 指针遍历到的字符加入 windowArray 后不满足 targetArray 的字符数量要求，所以这个窗口一定是不合法的，
+            // 假设：如果长度一样，但是有某个字母的个数不一样的话。那么一定有某个字符的个数大于目标数组的，然后left会收缩，导致长度不一样。所以假设不成立。
+            while (windowArray[arrayRight] > targetArray[arrayRight]) {
+                val arrayLeft = s[left] - 'a'
+                windowArray[arrayLeft]--
+                left++
             }
 
-            if (right == left + sLen) return true
-
-            // 左边界 s2[l] 字符出窗口【赊账】，l++ 开始尝试以下一个位置做左端点
-            array[l[left] - 'a']++ // 重新【赊账】
-            left++
+            // 当滑动窗口的长度等于 p 的长度时，这时的 s 子字符串就是 p 的异位词
+            if (right - left + 1 == pLen) {
+                return true
+            }
         }
-
-        // 所有的左端点均尝试还账失败，不可能再有答案了
         return false
     }
 
@@ -986,8 +1123,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 438. 找到字符串中所有字母异位词
      *
-     * 时间复杂度: 0(|s| +|l|)，这里|s1|表示字符串s1的长度，这里s2|表示字符串s2的长度;
-     * 空间复杂度: 0(E)，这里E表示s1和s2中出现的字符的种类数，取决于出现字符的ASCII值的范围。
+     * 时间复杂度: 0(P + S) / 0(P + S + E)，这里 P 表示字符串 s 的长度，这里 S 表示字符串 s 的长度;
+     * 空间复杂度: 0(E)，E 为字符集=26。
      *
      * https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/solution/438-zhao-dao-zi-fu-chuan-zhong-suo-you-z-apuf/
      * @param s
@@ -1007,20 +1144,20 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         var left = 0
-        // right 指针一步一步向右走遍历 l 字符串
+        // right 指针一步一步向右走遍历 s 字符串
         for (right in 0 until sLen) {
-            val curRight = s[right] - 'a'
-            windowArray[curRight]++
+            val arrayRight = s[right] - 'a'
+            windowArray[arrayRight]++
 
-            // right 指针遍历到的字符加入 lArray 后不满足 sArray 的字符数量要求，所以这个窗口一定是不合法的，
+            // right 指针遍历到的字符加入 windowArray 后不满足 targetArray 的字符数量要求，所以这个窗口一定是不合法的，
             // 假设：如果长度一样，但是有某个字母的个数不一样的话。那么一定有某个字符的个数大于目标数组的，然后left会收缩，导致长度不一样。所以假设不成立。
-            while (windowArray[curRight] > targetArray[curRight]) {
-                val curLeft = s[left] - 'a'
-                windowArray[curLeft]--
+            while (windowArray[arrayRight] > targetArray[arrayRight]) {
+                val arrayLeft = s[left] - 'a'
+                windowArray[arrayLeft]--
                 left++
             }
 
-            // 当滑动窗口的长度等于 s 的长度时，这时的 l 子字符串就是 s 的异位词
+            // 当滑动窗口的长度等于 p 的长度时，这时的 s 子字符串就是 p 的异位词
             if (right - left + 1 == pLen) {
                 res.add(left)
             }

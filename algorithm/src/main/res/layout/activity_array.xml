@@ -23,11 +23,6 @@
         android:text="11. 盛最多水的容器" />
 
     <Button
-        android:id="@+id/btn_length_of_longest_substring"
-        style="@style/BtnStyles"
-        android:text="3. 无重复字符的最长子串" />
-
-    <Button
         android:id="@+id/btn_trap"
         style="@style/BtnStyles"
         android:text="42. 接雨水" />

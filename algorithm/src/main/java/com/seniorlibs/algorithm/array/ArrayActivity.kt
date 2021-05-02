@@ -36,7 +36,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_move_zeroes).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_area).setOnClickListener(this)
         findViewById<View>(R.id.btn_trap).setOnClickListener(this)
-        findViewById<View>(R.id.btn_length_of_longest_substring).setOnClickListener(this)
         findViewById<View>(R.id.btn_two_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
@@ -63,9 +62,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_trap -> {
             val nums: IntArray = intArrayOf(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)
             LogUtils.d(TAG, "42. 接雨水：${trap(nums)}")
-        }
-        R.id.btn_length_of_longest_substring -> {
-            LogUtils.d(TAG, "3. 无重复字符的最长子串：${lengthOfLongestSubstring("pwwkew")}")
         }
         R.id.btn_two_sum -> {
             val sum = twoSum(intArrayOf(2, 11, 15, 7), 9).asList().toString()
@@ -181,7 +177,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 42. 接雨水
+     * 42. 接雨水（困难）
      *
      * 时间复杂度： O(n)。
      * 空间复杂度： O(1)。
@@ -219,39 +215,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-
-    /**
-     * 3. 无重复字符的最长子串
-     * 思路：双指针，滑动窗口，保证每个窗口里字母都是唯一的。
-     *      使用 map 来记录一个字母，key 值为字符，value 值为字符位置 +1，+1 表示从字符位置后一个才开始不重复.
-     *      没有重复字母时，调整右边界。当窗口内出现重复字母时，调整左边界.
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(n)
-     *
-     * https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/3-wu-zhong-fu-zi-fu-de-zui-chang-zi-chua-72h1/
-     * @param s
-     * @return
-     */
-    fun lengthOfLongestSubstring(str: String): Int {
-        if (str.isEmpty()) return 0
-
-        val map = hashMapOf<Char, Int>()
-        var left = 0
-        var res = 0
-
-        for (i in 0 until str.length) {
-            if (map.containsKey(str[i])) {
-                left = Math.max(left, map[str[i]]!!)
-            }
-
-            res = Math.max(res, i - left + 1)
-
-            map[str[i]] = i + 1
-        }
-
-        return res
-    }
 
     /**
      * 1. 两数之和

@@ -98,6 +98,27 @@
             style="@style/BtnStyles"
             android:text="856. 括号的分数" />
 
+
+        <Button
+            android:id="@+id/btn_length_of_longest_substring"
+            style="@style/BtnStyles"
+            android:text="3. 无重复字符的最长子串" />
+
+        <Button
+            android:id="@+id/btn_longest_substring"
+            style="@style/BtnStyles"
+            android:text="395. 至少有 K 个重复字符的最长子串" />
+
+        <Button
+            android:id="@+id/btn_repeated_substring_pattern"
+            style="@style/BtnStyles"
+            android:text="459. 重复的子字符串" />
+
+        <Button
+            android:id="@+id/btn_count_binary_substrings"
+            style="@style/BtnStyles"
+            android:text="696. 计数二进制子串" />
+
         <Button
             android:id="@+id/btn_check_inclusion"
             style="@style/BtnStyles"
