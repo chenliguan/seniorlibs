@@ -64,6 +64,16 @@
             android:text="394. 字符串解码" />
 
         <Button
+            android:id="@+id/btn_compress_string"
+            style="@style/BtnStyles"
+            android:text="01.06. 字符串压缩" />
+
+        <Button
+            android:id="@+id/btn_compress"
+            style="@style/BtnStyles"
+            android:text="443. 压缩字符串" />
+
+        <Button
             android:id="@+id/btn_str_str"
             style="@style/BtnStyles"
             android:text="28. 实现 strStr()" />
@@ -113,6 +123,11 @@
             android:id="@+id/btn_length_of_longest_substring"
             style="@style/BtnStyles"
             android:text="3. 无重复字符的最长子串" />
+
+        <Button
+            android:id="@+id/btn_character_replacement"
+            style="@style/BtnStyles"
+            android:text="424. 替换后的最长重复字符" />
 
         <Button
             android:id="@+id/btn_longest_substring"

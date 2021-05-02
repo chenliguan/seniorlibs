@@ -48,6 +48,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_reverse).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_common_prefix).setOnClickListener(this)
         findViewById<View>(R.id.btn_decode_string).setOnClickListener(this)
+        findViewById<View>(R.id.btn_compress_string).setOnClickListener(this)
+        findViewById<View>(R.id.btn_compress).setOnClickListener(this)
         findViewById<View>(R.id.btn_str_str).setOnClickListener(this)
         findViewById<View>(R.id.btn_word_pattern).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_str).setOnClickListener(this)
@@ -57,8 +59,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_remove_to_make_valid).setOnClickListener(this)
         findViewById<View>(R.id.btn_score_of_parentheses).setOnClickListener(this)
-
         findViewById<View>(R.id.btn_length_of_longest_substring).setOnClickListener(this)
+        findViewById<View>(R.id.btn_character_replacement).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_substring).setOnClickListener(this)
         findViewById<View>(R.id.btn_repeated_substring_pattern).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_binary_substrings).setOnClickListener(this)
@@ -105,6 +107,12 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_decode_string -> {
                 LogUtils.d(TAG, "394. 字符串解码：${decodeString("3[a2[c]]")}")
             }
+            R.id.btn_compress_string -> {
+                LogUtils.d(TAG, "01.06. 字符串压缩：${compressString("aabcccccaaa")}")
+            }
+            R.id.btn_compress -> {
+                LogUtils.d(TAG, "443. 压缩字符串：${compress(charArrayOf('a','a','b','b','b','c','c','c'))}")
+            }
             R.id.btn_str_str -> {
                 LogUtils.d(TAG, "28. 实现朴素的字符串匹配 strStr()：${strStr2("hello", "ll")}")
                 LogUtils.d(TAG, "28. 实现KMP字符串匹配 strStr()：${strStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD")}")
@@ -137,6 +145,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.btn_length_of_longest_substring -> {
                 LogUtils.d(ArrayActivity.TAG, "3. 无重复字符的最长子串：${lengthOfLongestSubstring("pwwkew")}")
+            }
+            R.id.btn_character_replacement -> {
+                LogUtils.d(ArrayActivity.TAG, "424. 替换后的最长重复字符：${characterReplacement("AABABBA", 1)}")
             }
             R.id.btn_longest_substring -> {
                 LogUtils.d(ArrayActivity.TAG, "395. 至少有 K 个重复字符的最长子串：${longestSubstring("ababbc", 2)}")
@@ -664,6 +675,80 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 01.06. 字符串压缩
+     *
+     * 时间复杂度：O(n)，其中 n 为字符串的长度，即遍历一次字符串的复杂度。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/compress-string-lcci/solution/0106-zi-fu-chuan-ya-suo-by-chen-li-guan-191f/
+     * @param s
+     * @return
+     */
+    fun compressString(s: String): String? {
+        if (s.isEmpty()) return s
+
+        val res = StringBuffer()
+        var c = s[0]
+        var count = 1
+
+        for (i in 1 until s.length) {
+            if (c == s[i]) {
+                count++
+            } else {
+                res.append(c)
+                res.append(count)
+                c = s[i]
+                count = 1
+            }
+        }
+        res.append(c)
+        res.append(count)
+
+        return if (res.length >= s.length) s else res.toString()
+    }
+
+
+    /**
+     * 443. 压缩字符串
+     *
+     * 不断右移右指针，使窗口不断增大；
+     * 当窗口内出现一个不同的元素时，就可以将元素及其数量（等于左右指针之差）更新在数组中，然后让左指针指向右指针；
+     * 遍历到最后一个字符时也需要结算，因此将右指针的终点设为数组之外一格。当右指针移到终点时也要更新数组。
+     *
+     * 时间复杂度：O(n)，其中 n 为字符串的长度，即遍历一次字符串的复杂度。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/string-compression/solution/443-ya-suo-zi-fu-chuan-by-chen-li-guan-6osc/
+     * @param chars
+     * @return
+     */
+    fun compress(chars: CharArray): Int {
+        // 三指针：["a","a","b","b","b","c","c","c"] right = 4、right0 = 2、left = 3
+        var right0 = 0
+        var left = 0
+
+        // 由于最后一个字符也需要判断，所以将右指针终点放到数组之外一格
+        for (right in 0..chars.size) {
+            // 当遍历完成 或 右指针元素不等于左指针元素时，更新数组
+            if (right == chars.size || chars[right] != chars[right0]) {
+                // 更新字符
+                chars[left++] = chars[right0]
+
+                // 更新计数，当个数大于 1 时才更新
+                if (right - right0 > 1) {
+                    for (c in (right - right0).toString()) {
+                        chars[left++] = c
+                    }
+                }
+
+                right0 = right
+            }
+        }
+        return left
+    }
+
+
+    /**
      * 290. 单词规律
      *
      * 时间复杂度：O(n + m)，其中 n 为 pattern 的长度，m 为 str 的长度。插入和查询哈希表的均摊时间复杂度均为 O(n + m)。每一个字符至多只被遍历一次。
@@ -1062,6 +1147,49 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
+
+    /**
+     * 424. 替换后的最长重复字符
+     *
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(E)
+     *
+     * https://leetcode-cn.com/problems/longest-repeating-character-replacement/solution/424-ti-huan-hou-de-zui-chang-zhong-fu-zi-2p6l/
+     * @param s
+     * @param k
+     * @return
+     */
+    fun characterReplacement(s: String, k: Int): Int {
+        // 窗口内相同元素的最大个数
+        var maxSame = 0
+        // 模拟 hashMap，很多场合都可以，大家可以总结一下
+        val array = IntArray(26)
+
+        // 左右指针
+        var left = 0
+        var right = 0
+
+        while (right < s.length) {
+            // 得出索引，ASCLL 码
+            val index = s[right] - 'A'
+            // 数目加1，要求出窗口内最多元素
+            array[index]++
+            // 得出最大 maxSame
+            maxSame = Math.max(maxSame, array[index])
+
+            // 不符合情况时，缩小窗口
+            if (maxSame + k < right - left + 1) {
+                array[s[left] - 'A']--
+                left++
+            }
+
+            right++
+        }
+
+        return right - left
+    }
+
+
     /**
      * 395. 至少有 K 个重复字符的最长子串
      *
@@ -1239,5 +1367,27 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return res
+    }
+
+
+    /**
+     * 05. 替换空格
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * @param s
+     * @return
+     */
+    fun replaceSpace(s: String): String? {
+        val res = StringBuilder()
+        for (c in s) {
+            if (c == ' ') {
+                res.append("%20")
+            } else {
+                res.append(c)
+            }
+        }
+        return res.toString()
     }
 }
