@@ -378,36 +378,6 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 46. 把数字翻译成字符串
-     *
-     * 时间复杂度：O(n)。
-     * 空间复杂度：O(1)。
-     *
-     * @param num
-     * @return
-     */
-    fun translateNum(num: Int): Int {
-        var num = num
-        var a = 1
-        var b = 1
-        var c = 1
-
-        while (num != 0) {
-            val tmp = num % 100
-            num /= 10
-            c = if (tmp in 10..25) {
-                a + b
-            } else {
-                b
-            }
-            
-            a = b
-            b = c
-        }
-        return c
-    }
-
-    /**
      * 344. 反转字符串
      *
      * 时间复杂度：O(n)，其中n为字符数组的长度，一共执行了n/2次的交换；
@@ -942,7 +912,6 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
-
     /**
      * 409. 最长回文串
      *
@@ -973,6 +942,32 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
         // 如果最终的长度小于原字符串的长度，说明里面某个字符出现了奇数次，那么那个字符可以放在回文串的中间，所以额外再加一
         return if (res < s.length) res + 1 else res
+    }
+
+    /**
+     * 01.04. 回文排列
+     *
+     * 回文字符串有两种，一种是奇数的，类似于"abbba"，一种是偶数的，类似于"abba"或者"aabbaa"。
+     * 如果是偶数的，只需要找出每个字符都是偶数就行了。如果是奇数的，那么字符串的所有字符中只有一个字符的个数是奇数，其他的都是偶数。
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * @param s
+     * @return
+     */
+    fun canPermutePalindrome(s: String): Boolean {
+        val set = mutableSetOf<Char>()
+        for (ch in s) {
+            // set的add方法如果返回false，表示已经有了，就把他删除
+            if (!set.add(ch)) {
+                set.remove(ch)
+            }
+        }
+
+        // 最后判断set的长度是否小于等于1，如果等于1说明 只有一个字符的个数是奇数，其他的都是偶数。
+        // 如果等于0说明每个字符都是偶数，否则不可能构成回文字符串
+        return set.size <= 1
     }
 
 
