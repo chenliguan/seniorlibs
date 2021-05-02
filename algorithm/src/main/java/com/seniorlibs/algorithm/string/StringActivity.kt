@@ -41,6 +41,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_to_lower_case).setOnClickListener(this)
         findViewById<View>(R.id.btn_first_uniq_char).setOnClickListener(this)
+        findViewById<View>(R.id.btn_first_uniq_chars).setOnClickListener(this)
         findViewById<View>(R.id.btn_my_atoi).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string2).setOnClickListener(this)
@@ -77,6 +78,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_first_uniq_char -> {
                 LogUtils.e(TAG, "387. 字符串中的第一个唯一字符：" + firstUniqChar("leetcode"))
+            }
+            R.id.btn_first_uniq_chars -> {
+                LogUtils.e(TAG, "50. 第一个只出现一次的字符：" + firstUniqChars("leetcode"))
             }
             R.id.btn_my_atoi -> {
                 LogUtils.e(TAG, "8. 字符串转换整数 (atoi)：" + myAtoi("   -42  with words"))
@@ -218,18 +222,55 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     fun firstUniqChar(s: String): Int {
         if (s.isEmpty()) return -1
 
-        val map = HashMap<Char, Int>(s.length)
+        val map = mutableMapOf<Char, Int>()
         // 构建哈希表：字符及其出现的频率
         for (c in s) {
-            if (map[c] == null) map[c] = 0
-            map[c] = map[c]!! + 1
+            if (map.containsKey(c)) {
+                map[c] = map[c]!! + 1
+            } else {
+                map[c] = 1
+            }
         }
         // 找到索引
-        for (i in s.indices) {
+        for (i in 0 until s.length) {
             if (map[s[i]] == 1) return i
         }
+
         return -1
     }
+
+
+    /**
+     * 剑指 Offer 50. 第一个只出现一次的字符
+     *
+     * 时间复杂度：O(n)。只遍历了一遍字符串，同时散列表中查找操作是常数时间复杂度的。
+     * 空间复杂度：O(n)。用到了散列表来存储字符串中每个元素出现的次数。
+     *
+     * https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/solution/jian-zhi-offer-50-di-yi-ge-zhi-chu-xian-ou6xe/
+     * @param s
+     * @return
+     */
+    fun firstUniqChars(s: String): Char {
+        if (s.isEmpty()) return ' '
+
+        val map = mutableMapOf<Char, Int>()
+
+        // 构建哈希表：字符及其出现的频率
+        for (c in s) {
+            if (map.containsKey(c)) {
+                map[c] = map[c]!! + 1
+            } else {
+                map[c] = 1
+            }
+        }
+        // 找到字符
+        for (c in s) {
+            if (map[c] == 1) return c
+        }
+
+        return ' '
+    }
+
 
     /**
      * 8. 字符串转换整数 (atoi)
@@ -1049,6 +1090,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。
      * 空间复杂度：O(n)。
      *
+     * https://leetcode-cn.com/problems/count-binary-substrings/solution/696-ji-shu-er-jin-zhi-zi-chuan-by-chen-l-dilo/
      * @param s
      * @return
      */

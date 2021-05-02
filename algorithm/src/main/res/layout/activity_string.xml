@@ -24,6 +24,11 @@
             android:text="387. 字符串中的第一个唯一字符" />
 
         <Button
+            android:id="@+id/btn_first_uniq_chars"
+            style="@style/BtnStyles"
+            android:text="50. 第一个只出现一次的字符" />
+
+        <Button
             android:id="@+id/btn_my_atoi"
             style="@style/BtnStyles"
             android:text="8. 字符串转换整数 (atoi)" />
