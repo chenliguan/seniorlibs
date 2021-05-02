@@ -42,6 +42,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_to_lower_case).setOnClickListener(this)
         findViewById<View>(R.id.btn_first_uniq_char).setOnClickListener(this)
         findViewById<View>(R.id.btn_first_uniq_chars).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_unique).setOnClickListener(this)
         findViewById<View>(R.id.btn_my_atoi).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string2).setOnClickListener(this)
@@ -81,6 +82,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_first_uniq_chars -> {
                 LogUtils.e(TAG, "50. 第一个只出现一次的字符：" + firstUniqChars("leetcode"))
+            }
+            R.id.btn_is_unique -> {
+                LogUtils.e(TAG, "01.01. 判定字符是否唯一：" + isUnique("leetcode"))
             }
             R.id.btn_my_atoi -> {
                 LogUtils.e(TAG, "8. 字符串转换整数 (atoi)：" + myAtoi("   -42  with words"))
@@ -269,6 +273,37 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return ' '
+    }
+
+
+    /**
+     * 01.01. 判定字符是否唯一
+     *
+     * 时间复杂度：O(n)。只遍历了一遍字符串，同时散列表中查找操作是常数时间复杂度的。
+     * 空间复杂度：O(n)。用到了散列表来存储字符串中每个元素出现的次数。
+     *
+     * https://leetcode-cn.com/problems/is-unique-lcci/solution/0101-pan-ding-zi-fu-shi-fou-wei-yi-by-ch-e0eh/
+     * @param s
+     * @return
+     */
+    fun isUnique(s: String): Boolean {
+        if (s.isEmpty()) return true
+
+        val map = mutableMapOf<Char, Int>()
+        // 构建哈希表：字符及其出现的频率
+        for (c in s) {
+            if (map.containsKey(c)) {
+                map[c] = map[c]!! + 1
+            } else {
+                map[c] = 1
+            }
+        }
+        // 找到索引
+        for (c in s) {
+            if (map[c]!! > 1) return false
+        }
+
+        return true
     }
 
 

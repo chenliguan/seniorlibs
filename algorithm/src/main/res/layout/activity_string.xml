@@ -29,6 +29,11 @@
             android:text="50. 第一个只出现一次的字符" />
 
         <Button
+            android:id="@+id/btn_is_unique"
+            style="@style/BtnStyles"
+            android:text="01.01. 判定字符是否唯一" />
+
+        <Button
             android:id="@+id/btn_my_atoi"
             style="@style/BtnStyles"
             android:text="8. 字符串转换整数 (atoi)" />
