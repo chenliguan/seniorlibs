@@ -52,7 +52,6 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_search -> {
                 LogUtils.d(TAG, "33. 搜索旋转排序数组：${search(intArrayOf(1, 3), 2)}")
-                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search1(intArrayOf(1, 3), 2)}")
             }
             else -> {
             }
@@ -120,7 +119,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * 思想：循环判断，直到排除到只剩最后一个元素时，退出循环，如果该元素和 target 相同，直接返回下标，否则返回 -1。
      *
      * 时间复杂度：O(logn)，其中n为nums数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度O(logn)。
-     * 空间复杂度：O(1) 。只需要常数级别的空间存放变量。
+     * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
      *
      * https://leetcode-cn.com/problems/search-in-rotated-sorted-array/solution/33-sou-suo-xuan-zhuan-pai-xu-shu-zu-by-chen-li-gua/
      *
@@ -137,9 +136,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         while (left <= right) {
             mid = (right - left) / 2 + left
 
-            if (nums[mid] == target) {
-                return mid
-            }
+            if (nums[mid] == target) return mid
 
             // 先根据 nums[mid] 与 nums[left] 的关系判断 mid 是在左段还是右段
             if (nums[mid] >= nums[left]) {
@@ -168,24 +165,34 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         return -1
     }
 
-    fun search1(nums: IntArray, target: Int): Int {
+
+    /**
+     * 162. 寻找峰值
+     * 思路：出现了 nums[-1] = nums[n] = -∞，这就代表着 只要数组中存在一个元素比相邻元素大，那么沿着它一定可以找到一个峰值。因此，使用二分查找找到峰值。
+     *
+     * 时间复杂度：O(logN)。
+     * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
+     *
+     * https://leetcode-cn.com/problems/find-peak-element/solution/162-xun-zhao-feng-zhi-by-chen-li-guan-1ooh/
+     * @param array
+     * @return
+     */
+    fun findPeakElement(array: IntArray): Int {
         var left = 0
-        var right = nums.size - 1
-        var mid = 0
+        var right = array.size - 1
 
-        while (left <= right) {
-            mid = (right - left) / 2 + left
-            if (nums[mid] == target) return mid
-
-            if (nums[0] <= nums[mid] && (target < nums[0] || target > nums[mid])) {
-                left = mid + 1
-            } else if (target < nums[0] && target > nums[mid]) {
-                left = mid + 1
+        // 查找时，左指针 l，右指针 r，以其保持左右顺序为循环条件
+        while (left < right) {
+            // 根据左右指针计算中间位置 mid，并比较 mid 与 mid+1 的值
+            val mid = left + (right - left) / 2
+            if (array[mid] > array[mid + 1]) {
+                // 如果 mid 较大，则左侧存在峰值，r = mid
+                right = mid
             } else {
-                right = mid - 1
+                // 如果 mid + 1 较大，则右侧存在峰值，l = mid + 1
+                left = mid + 1
             }
         }
-
-        return -1
+        return left
     }
 }
