@@ -98,7 +98,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * 对比：归并排序的处理过程是由下到上的，先处理子问题，然后再合并。而快排正好相反，它的处理过程是由上到下的，先分区，然后再处理子问题。
      *
      * 时间复杂度：O(nlogn)。
-     * 空间复杂度：O(nlogn)。
+     * 空间复杂度：O(nlogn)。划分函数的平均递归深度为 O(logN)， n 个数据。
      *
      * https://leetcode-cn.com/problems/sort-an-array/solution/912-pai-xu-shu-zu-by-chen-li-guan/
      * @param array

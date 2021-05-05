@@ -21,4 +21,9 @@
         android:id="@+id/btn_get_least_numbers"
         style="@style/BtnStyles"
         android:text="40. 最小的k个数" />
+
+    <Button
+        android:id="@+id/btn_find_kth_largest"
+        style="@style/BtnStyles"
+        android:text="215. 数组中的第K个最大元素" />
 </LinearLayout>

@@ -43,6 +43,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_heap).setOnClickListener(this)
         findViewById<View>(R.id.btn_top_k_frequent).setOnClickListener(this)
         findViewById<View>(R.id.btn_get_least_numbers).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_kth_largest).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -71,8 +72,11 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
                 val nums: IntArray = intArrayOf(0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6)
                 LogUtils.d(TAG, "347. 前 K 个高频元素 ：" + topKFrequent(nums, 3))
             }
-            R.id.btn_top_k_frequent -> {
+            R.id.btn_get_least_numbers -> {
                 LogUtils.d(TAG, "40. 最小的k个数 ：" + getLeastNumbers(intArrayOf(3, 2, 1), 2))
+            }
+            R.id.btn_find_kth_largest -> {
+                LogUtils.d(TAG, "215. 数组中的第K个最大元素 ：" + findKthLargest(intArrayOf(3,2,3,1,2,4,5,5,6), 4))
             }
             else -> {
             }
@@ -91,18 +95,18 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(n)，最坏情况下（每个元素都不同），map需要存储n个键值对，优先队列需要存储k个元素，因此空间复杂度是O(n)。
      *
      * https://leetcode-cn.com/problems/top-k-frequent-elements/solution/347-qian-k-ge-gao-pin-yuan-su-by-chen-li-guan/
-     * @param nums
+     * @param array
      * @param k
      * @return
      */
     @RequiresApi(Build.VERSION_CODES.N)
-    fun topKFrequent(nums: IntArray, k: Int): MutableList<Int> {
+    fun topKFrequent(array: IntArray, k: Int): MutableList<Int> {
         val res = mutableListOf<Int>()
-        if (nums.isEmpty() || k == 0) return res
+        if (array.isEmpty() || k == 0) return res
 
         // 1. 使用map统计每个元素出现的次数：元素为键，元素出现的次数为值
         val map = mutableMapOf<Int, Int>()
-        for (num in nums) {
+        for (num in array) {
             if (map.containsKey(num)) {
                 map[num] = map[num]!! + 1
             } else {
@@ -141,19 +145,20 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(n)，因为小根堆里最多n个数，n是数组的长度。
      *
      * https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/40-zui-xiao-de-kge-shu-by-chen-li-guan/
-     * @param nums
+     * @param array
      * @param k
      * @return
      */
     @RequiresApi(Build.VERSION_CODES.N)
-    fun getLeastNumbers(nums: IntArray, k: Int): IntArray {
+    fun getLeastNumbers(array: IntArray, k: Int): IntArray {
         // 从小根堆中取出最小数，取k次
         val res = IntArray(k)
-        if (nums.isEmpty() || k == 0) return res
+        if (array.isEmpty() || k == 0) return res
+        if (array.size <= k) return array
 
         // 优先堆队列：按升序用大顶堆保存次数最小的k个数
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o2 - o1 })
-        for (i in nums) {
+        for (i in array) {
             if (heap.size < k) {
                 // 如果堆的元素个数小于k：就可以直接插入堆中
                 heap.offer(i)
@@ -172,30 +177,74 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
+    /**
+     * 40. 最小的k个数 - 方法二：快排变形
+     *
+     * 思想：寻找最小的 k 个数。假设经过一次 partition 操作，枢纽元素位于下标 m，也就是说，左侧的数组有 m 个元素，是原数组中最小的 m 个数。那么：
+     *
+     * 时间复杂度：O(n)，由于快速选择只需要递归一边的数组，都是上一次遍历的 1/2，结果是 N + N/2 + N/4 + ... + N/N = 2N, 因此时间复杂度是 O(N)。
+     * 空间复杂度：O(logN)，划分函数的平均递归深度为 O(logN)。
+     *
+     * https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/40-zui-xiao-de-kge-shu-by-chen-li-guan/
+     * @param array
+     * @param k
+     * @return
+     */
+    fun getLeastNumbers2(array: IntArray, k: Int): IntArray? {
+        // 从小根堆中取出最小数，取k次
+        val res = IntArray(k)
+        if (array.isEmpty() || k == 0) return res
+        if (array.size <= k) return array
+
+        // 原地不断划分数组
+        partitionArray(array, 0, array.size - 1, k)
+
+        // 数组的前 k 个数此时就是最小的 k 个数，将其存入结果
+        for (i in 0 until k) {
+            res[i] = array[i]
+        }
+        return res
+    }
+
+    fun partitionArray(array : IntArray, left: Int, right: Int, k: Int) {
+        val index = partition(array, left, right)
+        if (k == index) {
+            // 若 k = index，就找到了最小的 k 个数，就是左侧的数组
+            return
+        } else if (k < index) {
+            // 若 k < index，则最小的 k 个数一定都在左侧数组中，只需要对左侧数组递归地 parition 即可
+            partitionArray(array, left, index - 1, k)
+        } else {
+            // 若 k > index，则左侧数组中的 index 个数都属于最小的 k 个数，还需要在右侧数组中寻找最小的 k-index 个数，对右侧数组递归地 partition 即可
+            partitionArray(array, index + 1, right, k)
+        }
+    }
+
 
     /**
      * 215. 数组中的第K个最大元素
-     * 思路：借助 partition 操作定位到最终排定以后索引为 len - k 的那个元素（特别注意：随机化切分元素）
+     * 思路：1.借助 partition 操作定位到最终排定以后索引为 len - k 的那个元素；
+     *      2.partition（切分）操作总能排定一个元素，还能够知道这个元素它最终所在的位置，这样每经过一次 partition（切分）操作就能缩小搜索的范围。
      *
-     * 时间复杂度：O(N)，每次调用 partition 遍历的元素数目都是上一次遍历的 1/2，因此时间复杂度是 N + N/2 + N/4 + ... + N/N = 2N, 因此时间复杂度是 O(N)。
-     * 空间复杂度：O(1)O(1)，原地排序，没有借助额外的辅助空间。
+     * 时间复杂度：O(N)，由于快速选择只需要递归一边的数组，都是上一次遍历的 1/2，结果是 N + N/2 + N/4 + ... + N/N = 2N, 因此时间复杂度是 O(N)
+     * 空间复杂度：O(1)，原地排序，没有借助额外的辅助空间。
      *
-     * https://leetcode-cn.com/problems/kth-largest-element-in-an-array/solution/partitionfen-er-zhi-zhi-you-xian-dui-lie-java-dai-/
+     * https://leetcode-cn.com/problems/kth-largest-element-in-an-array/solution/215-shu-zu-zhong-de-di-kge-zui-da-yuan-s-jrqy/
      * @param nums
      * @param k
      * @return
      */
-    fun findKthLargest(nums: IntArray, k: Int): Int {
-        val len = nums.size
+    fun findKthLargest(array: IntArray, k: Int): Int {
+        val len = array.size
         var left = 0
         var right = len - 1
 
         // 转换一下，第 k 大元素的索引是 len - k
         val target = len - k
         while (true) {
-            val index = partition(nums, left, right)
+            val index = partition(array, left, right)
             if (index == target) {
-                return nums[index]
+                return array[index]
             } else if (index < target) {
                 left = index + 1
             } else {
@@ -239,6 +288,4 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         nums[i] = nums[j]
         nums[j] = temp
     }
-
-
 }
