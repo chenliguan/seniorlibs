@@ -36,10 +36,13 @@ public class BaseApplication extends Application {
 
     private static final int MEMORY_SIZE = 5 * 1024 * 1024;
     private static final int DISK_SIZE = 20 * 1024 * 1024;
+    private static Context mContext;
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+
+        mContext = base;
     }
 
     @Override
@@ -47,6 +50,10 @@ public class BaseApplication extends Application {
         super.onCreate();
 
         init();
+    }
+
+    public static Context getAppContext() {
+        return mContext;
     }
 
     private void init() {

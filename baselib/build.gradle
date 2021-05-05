@@ -71,6 +71,7 @@ dependencies {
     // glide
     api rootProject.dependence.glide
     annotationProcessor rootProject.dependence.glide_annotation
+    api rootProject.dependence.glide_okhttp3
     api rootProject.dependence.imageloader
 
     // okhttp

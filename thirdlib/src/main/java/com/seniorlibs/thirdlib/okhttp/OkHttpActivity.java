@@ -84,6 +84,10 @@ public class OkHttpActivity extends AppCompatActivity {
                 .readTimeout(3000, TimeUnit.MILLISECONDS)
                 // 写入超时
                 .writeTimeout(3000, TimeUnit.MILLISECONDS)
+                // 添加监听
+                .eventListenerFactory(OkHttpEventListener.FACTORY)
+                // 添加 dns
+//                .dns(OkHttpDNS.getIns())
                 .build();
     }
 

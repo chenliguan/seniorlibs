@@ -1,14 +1,11 @@
 package com.seniorlibs.thirdlib.retrofit;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.seniorlibs.thirdlib.R;
 
@@ -40,14 +37,15 @@ public class GanKAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyViewHolder viewHolder = (MyViewHolder) holder;
         GankEntry entry = mGankEntries.get(position);
-
         ImageLoader.getInstance().displayImage(entry.url, viewHolder.mImageView);
+
         viewHolder.descText.setText(entry.desc);
         viewHolder.authorText.setText(entry.who);
         
 //        setHasStableIds(true);
 //        hasStableIds();
     }
+
 
     @Override
     public int getItemCount() {
