@@ -149,6 +149,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(m+n)，m 为字符串 s 的长度，n 为字符串t的长度。
      * 空间复杂度：O(m+n)。
      *
+     * https://leetcode-cn.com/problems/find-the-difference/solution/389-zhao-bu-tong-by-chen-li-guan-3hwy/
      * @param s
      * @param t
      * @return
@@ -164,4 +165,23 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
 
         return res.toChar()
     }
+
+    /**
+     * 136. 只出现一次的数字
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/single-number/solution/136-zhi-chu-xian-yi-ci-de-shu-zi-by-chen-l8d2/
+     * @param nums
+     * @return
+     */
+    fun singleNumber(nums: IntArray): Int {
+        var res = 0
+        for (num in nums) {
+            res = res xor num
+        }
+        return res
+    }
+
 }
