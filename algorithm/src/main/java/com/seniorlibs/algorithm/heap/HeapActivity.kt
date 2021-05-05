@@ -11,7 +11,6 @@ import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
 import java.util.*
 import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 /**
  * Author: chen
@@ -81,17 +80,15 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 347. 前 K 个高频元素  nums = [0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6] , k = 2
+     * 347. 前 K 个高频元素  方法一：小顶堆
      *
      * 思路：如果堆的元素个数小于k，就可以直接插入堆中。
      *      如果堆的元素个数等于k，则检查堆顶与新元素的次数的大小。如果堆顶更大，说明至少有k个数字的出现次数比当前值大，故舍弃当前值；否则，就弹出堆顶，并将当前值插入堆中。
      *
-     * 时间复杂度：O(nlogk)。维护一个大小为k的小顶堆，每次插入元素的时候，需要的时间是logk；
-     *          而整个过程中处理n个元素，最坏的情况就是，每次如果新元素的次数比堆顶端的元素大，
-     *          则弹出堆顶端的元素，将新的元素添加进堆中，这个过程总共需要做n次，结果是nlogk
+     * 时间复杂度：O(nlogk)。维护一个大小为k的小顶堆，每次插入元素的时候，需要的时间是logk，而整个过程中处理n个元素。
+     *          最坏的情况就是，每次如果新元素的次数比堆顶端的元素大，则弹出堆顶端的元素，将新的元素添加进堆中，这个过程总共需要做n次，结果是nlogk
      *
-     * 空间复杂度：O(n)，最坏情况下（每个元素都不同），map需要存储n个键值对，优先队列需要存储k个元素，
-     *          因此空间复杂度是O(n)。
+     * 空间复杂度：O(n)，最坏情况下（每个元素都不同），map需要存储n个键值对，优先队列需要存储k个元素，因此空间复杂度是O(n)。
      *
      * https://leetcode-cn.com/problems/top-k-frequent-elements/solution/347-qian-k-ge-gao-pin-yuan-su-by-chen-li-guan/
      * @param nums
@@ -100,11 +97,11 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
      */
     @RequiresApi(Build.VERSION_CODES.N)
     fun topKFrequent(nums: IntArray, k: Int): MutableList<Int> {
-        val res: MutableList<Int> = mutableListOf()
-        if (nums.isEmpty()) return res
+        val res = mutableListOf<Int>()
+        if (nums.isEmpty() || k == 0) return res
 
         // 1. 使用map统计每个元素出现的次数：元素为键，元素出现的次数为值
-        val map: MutableMap<Int, Int> = mutableMapOf()
+        val map = mutableMapOf<Int, Int>()
         for (num in nums) {
             if (map.containsKey(num)) {
                 map[num] = map[num]!! + 1
@@ -135,7 +132,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 40. 最小的k个数 - 方法一：堆
+     * 40. 最小的k个数 - 方法一：大顶堆
      *
      * 时间复杂度：O(nlogk)。维护一个大小为k的小顶堆，每次插入元素的时候，需要的时间是logk；
      *          而整个过程中处理n个元素，最坏的情况就是，每次如果新元素的次数比堆顶端的元素大，
@@ -143,25 +140,105 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
      *
      * 空间复杂度：O(n)，因为小根堆里最多n个数，n是数组的长度。
      *
+     * https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/40-zui-xiao-de-kge-shu-by-chen-li-guan/
      * @param nums
      * @param k
      * @return
      */
     @RequiresApi(Build.VERSION_CODES.N)
     fun getLeastNumbers(nums: IntArray, k: Int): IntArray {
-        // val heap = PriorityQueue<Int>()   // 默认是小根堆
-        val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o1 - o2 })
-        // 将所有数加入到小根堆中
-        for (c in nums) {
-            heap.offer(c)
-        }
-
         // 从小根堆中取出最小数，取k次
         val res = IntArray(k)
+        if (nums.isEmpty() || k == 0) return res
+
+        // 优先堆队列：按升序用大顶堆保存次数最小的k个数
+        val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o2 - o1 })
+        for (i in nums) {
+            if (heap.size < k) {
+                // 如果堆的元素个数小于k：就可以直接插入堆中
+                heap.offer(i)
+            } else if (i < heap.peek()) {
+                // 如果堆的元素个数等于k：如果新元素的次数比堆顶端的元素大，则弹出堆顶端的元素，将新的元素添加进堆中
+                heap.poll()
+                heap.offer(i)
+            }
+        }
+
+        // 最小堆中的k个元素即为最小的k个数，遍历取出堆中的元素
         for (i in 0 until k) {
             res[i] = heap.poll()
         }
 
         return res
     }
+
+
+    /**
+     * 215. 数组中的第K个最大元素
+     * 思路：借助 partition 操作定位到最终排定以后索引为 len - k 的那个元素（特别注意：随机化切分元素）
+     *
+     * 时间复杂度：O(N)，每次调用 partition 遍历的元素数目都是上一次遍历的 1/2，因此时间复杂度是 N + N/2 + N/4 + ... + N/N = 2N, 因此时间复杂度是 O(N)。
+     * 空间复杂度：O(1)O(1)，原地排序，没有借助额外的辅助空间。
+     *
+     * https://leetcode-cn.com/problems/kth-largest-element-in-an-array/solution/partitionfen-er-zhi-zhi-you-xian-dui-lie-java-dai-/
+     * @param nums
+     * @param k
+     * @return
+     */
+    fun findKthLargest(nums: IntArray, k: Int): Int {
+        val len = nums.size
+        var left = 0
+        var right = len - 1
+
+        // 转换一下，第 k 大元素的索引是 len - k
+        val target = len - k
+        while (true) {
+            val index = partition(nums, left, right)
+            if (index == target) {
+                return nums[index]
+            } else if (index < target) {
+                left = index + 1
+            } else {
+                right = index - 1
+            }
+        }
+    }
+
+    /**
+     * 划分数组：
+     * 定义 counter 是从 left 到 right 元素的位置，最初以 right 作为临时基准位置；
+     * 如果存在比 right 的值小的元素，都和 counter 交换，然后+1；遍历结束以后，将 counter 和 right 元素交换，成为新的基准位置；
+     * 这样，排序的数据分割成独立的两部分，分在新的基准位置左右。
+     *
+     * @param array
+     * @param left
+     * @param right 最初的基准位置
+     * @return
+     */
+    fun partition(array: IntArray, left: Int, right: Int): Int {
+        // 定义 counter 是从 left 到 right 元素的位置，最初以 end 作为分区点
+        var counter = left
+
+        // 如果存在比 end 的值小的元素，都和 counter 交换，然后+1
+        for (i in left until right) {
+            if (array[i] < array[right]) {
+                // 小于 right 的元素，都和 counter 交换
+                swap(array, counter, i)
+                // 然后+1
+                counter++
+            }
+        }
+
+        // 遍历结束以后，将 counter 和 end 元素交换，成为新的分区点
+        swap(array, counter, right)
+        return counter
+    }
+
+    private fun swap(nums: IntArray, i: Int, j: Int) {
+        val temp = nums[i]
+        nums[i] = nums[j]
+        nums[j] = temp
+    }
+
+
 }

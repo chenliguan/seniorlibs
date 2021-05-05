@@ -86,6 +86,9 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+
+
     /**
      * 快速排序     9, 8, 6, 3, 2, 4
      *
@@ -95,55 +98,61 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * 对比：归并排序的处理过程是由下到上的，先处理子问题，然后再合并。而快排正好相反，它的处理过程是由上到下的，先分区，然后再处理子问题。
      *
      * 时间复杂度：O(nlogn)。
-     * 空间复杂度：O(logn)。
+     * 空间复杂度：O(nlogn)。
      *
+     * https://leetcode-cn.com/problems/sort-an-array/solution/912-pai-xu-shu-zu-by-chen-li-guan/
      * @param array
-     * @param begin
+     * @param left
      * @param end
      * @return
      */
-    fun quickSort(array: IntArray, begin: Int, end: Int) {
-        if (end <= begin) return
+    fun quickSort(array: IntArray, left: Int, right: Int) {
+        if (right <= left) return
 
         // 获取分区点
-        val q = partition(array, begin, end)
+        val q = partition(array, left, right)
 
-        // 对两个子序列左边进行快排，直到序列为空或者只有一个元素
-        quickSort(array, begin, q - 1)
+        // 对左边进行快排，直到序列为空或者只有一个元素
+        quickSort(array, left, q - 1)
 
-        // 对两个子序列右边进行快排
-        quickSort(array, q + 1, end)
+        // 对右边进行快排
+        quickSort(array, q + 1, right)
     }
 
     /**
      * 划分数组：
-     * 定义 counter 是从 begin 到 end 元素的位置，最初以 end 作为临时基准位置；
-     * 如果存在比 end 的值小的元素，都和 counter 交换，然后+1；遍历结束以后，将 counter 和 end 元素交换，成为新的基准位置；
+     * 定义 counter 是从 left 到 right 元素的位置，最初以 right 作为临时基准位置；
+     * 如果存在比 right 的值小的元素，都和 counter 交换，然后+1；遍历结束以后，将 counter 和 right 元素交换，成为新的基准位置；
      * 这样，排序的数据分割成独立的两部分，分在新的基准位置左右。
      *
      * @param array
-     * @param begin
-     * @param end 最初的基准位置
+     * @param left
+     * @param right 最初的基准位置
      * @return
      */
-    private fun partition(array: IntArray, begin: Int, end: Int): Int {
-        // 定义 counter 是从 begin 到 end 元素的位置，最初以 end 作为分区点
-        var counter = begin
+    fun partition(array: IntArray, left: Int, right: Int): Int {
+        // 定义 counter 是从 left 到 right 元素的位置，最初以 end 作为分区点
+        var counter = left
+
         // 如果存在比 end 的值小的元素，都和 counter 交换，然后+1
-        for (i in begin until end) {
-            if (array[i] < array[end]) {
-                val temp = array[counter]
-                array[counter] = array[i]
-                array[i] = temp
+        for (i in left until right) {
+            if (array[i] < array[right]) {
+                // 小于 right 的元素，都和 counter 交换
+                swap(array, counter, i)
+                // 然后+1
                 counter++
             }
         }
 
         // 遍历结束以后，将 counter 和 end 元素交换，成为新的分区点
-        val temp = array[end]
-        array[end] = array[counter]
-        array[counter] = temp
+        swap(array, counter, right)
         return counter
+    }
+
+    private fun swap(nums: IntArray, i: Int, j: Int) {
+        val temp = nums[i]
+        nums[i] = nums[j]
+        nums[j] = temp
     }
 
 
@@ -253,10 +262,14 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         var largest = index
 
         // left < length。左节点大于根节点，将左序号赋值为目标序号
-        if (left < length && array[left] > array[index]) largest = left
+        if (left < length && array[left] > array[index]) {
+            largest = left
+        }
 
         // 右节点大于根节点（新目标序号），将右序号赋值为目标序号
-        if (right < length && array[right] > array[largest]) largest = right
+        if (right < length && array[right] > array[largest]) {
+            largest = right
+        }
 
         // 目标序号元素不是最大值
         if (index != largest) {
