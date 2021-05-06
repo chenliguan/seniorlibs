@@ -122,12 +122,12 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         // 尝试添加一个左括号
         str.append("(")                               // 选择
         generate(left + 1, right, n , str, res)
-        str.delete(str.length - 1, str.length)        // 撤消选择
+        str.deleteCharAt(str.length - 1)       // 撤消选择
 
         // 尝试添加一个右括号
         str.append(")")
         generate(left, right + 1, n , str, res)
-        str.delete(str.length - 1, str.length)
+        str.deleteCharAt(str.length - 1)
     }
 
     /**
@@ -207,13 +207,106 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+
     /**
-     * 子集、组合与排列是不同性质的概念。
-     * 子集、组合是无关顺序的，而排列是和元素顺序有关的，如 [1，2] 和 [2，1] 是同一个组合(子集)，但 [1,2] 和 [2,1] 是两种不一样的排列！！！！因此被分为两类问题
+     * 排列、子集与组合的区别？
      *
+     * 1、排列 是顺序有关的，但 [1,2] 和 [2,1] 是两种不一样的排列。 而子集、组合是无关顺序的，如 [1,2] 和 [2,1] 是同一个组合(子集)。
+     *
+     * 2、排列是 n 个数随机组合，每个数只出现一次即可，如 [1,2]、[2,1]。而子集、组合从 start 开始，防止产生重复的组合，例如：1-2、2-1（X）
+     *
+     * 3、排列下一个遍历起点的数字没有递增递减限制，如 [1,2]、[2,1]。 而子集、组合下一个遍历起点的数字都是递增的，即是当前选择的数字(i) +1，如 [1,2]、[1,3]、[1,4]
+     */
+
+
+    /**
      * 回溯思想：找到一个子集，结束了递归，要撤销当前的选择（从list中删掉），回到选择前的状态，做另一个选择：不选当前的数，往下递归，继续生成子集。
      *          回退到上一步，把路走全，才能在包含解的空间树中，回溯出所有的解。
      */
+
+    /**
+     * 46. 全排列，输入一组不重复的数字，返回它们的全排列  方法：回溯
+     *
+     * 时间复杂度：O(n×n!)，其中 n 为序列的长度。
+     * 空间复杂度：O(n)
+     *
+     * https://leetcode-cn.com/problems/permutations/solution/46-quan-pai-lie-by-chen-li-guan-a7o5/
+     * @param nums
+     * @return
+     */
+    fun permute(nums: IntArray): List<List<Int>> {
+        val res = mutableListOf<List<Int>>()
+        dfsPermute(nums, mutableListOf(), res)
+        return res
+    }
+
+    fun dfsPermute(nums: IntArray, list: MutableList<Int>, res: MutableList<List<Int>>) {
+        // 区别1：到达叶子节点才加入 res
+        if (list.size == nums.size) {
+            // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
+            res.add(ArrayList(list))
+            return
+        }
+
+        // 区别2：从 0 开始，允许产生重复的组合，例如：1-2、2-1
+        for (i in 0 until nums.size) {
+            // 区别2：排除 list 中相同的元素的情况，eg：list={1}，i=1 --> 返回
+            if (list.contains(nums[i])) continue
+
+            // 做选择
+            list.add(nums[i])
+
+            // 进入下一层决策树
+            dfsPermute(nums, list, res)
+
+            // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
+            list.removeAt(list.size - 1)
+        }
+    }
+
+    /**
+     * 剑指 Offer 38. 字符串的排列
+     * 区别：使用 MutableSet 避免重复 "aab" ：["aab","aba","aab","aba","baa","baa"] --> ["aba","aab","baa"]
+     *
+     * 时间复杂度：O(n×n!)，其中 n 为序列的长度。
+     * 空间复杂度：O(n)
+     *
+     * https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/solution/jian-zhi-offer-38-zi-fu-chuan-de-pai-lie-86ak/
+     * @param s
+     * @return
+     */
+    fun permutation(s: String): Array<String> {
+        val res = mutableSetOf<String>()
+        dfsPermutation(s, StringBuilder(), BooleanArray(s.length), res)
+        return res.toTypedArray()
+    }
+
+    fun dfsPermutation(s: String, sb : StringBuilder, visited : BooleanArray, res: MutableSet<String>) {
+        // 区别1：到达叶子节点才加入 res
+        if (sb.length == s.length) {
+            // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
+            res.add(sb.toString())
+            return
+        }
+
+        // 区别2：从 0 开始，允许产生重复的组合，例如：1-2、2-1
+        for (i in 0 until s.length) {
+            // 区别2：已经选择过的就不能再选了，eg：list={1}，i=1 --> 返回
+            if (visited[i]) continue
+
+            // 做选择
+            sb.append(s[i])
+            visited[i] = true
+
+            // 进入下一层决策树
+            dfsPermutation(s, sb, visited, res)
+
+            // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
+            sb.deleteCharAt(sb.length - 1)
+            visited[i] = false
+        }
+    }
+
 
     /**
      * 78. 子集--方法：二叉树 + 回溯
@@ -243,7 +336,8 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         // 区别1：前序遍历的位置
         res.add(ArrayList(list))
 
-        // 区别2：从 start 开始，防止产生重复的子集
+        // 区别2：从 start 开始，防止产生重复的组合，例如：1-2、2-1（X）
+        // 下一个遍历起点的数字都是递增的，即是当前选择的数字(i) +1
         for (i in start until nums.size) {
             // 做选择
             list.add(nums[i])
@@ -258,12 +352,14 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 77. 组合  方法：回溯
+     * 题目：给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
      *
      * 时间复杂度：O(n×2^n)。一共2^n个状态，每种状态需要O(n)的时间来构造子集；
      * 空间复杂度：O(n)。
      *
      * https://leetcode-cn.com/problems/combinations/solution/77-zu-he-by-chen-li-guan-8srk/
-     * @param nums
+     * @param n
+     * @param k
      * @return
      */
     fun combine(n: Int, k : Int): List<List<Int>> {
@@ -280,8 +376,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        // 区别2：从 start 开始，防止产生重复的组合，包括 1-n
-        for (i in start..n) {
+        // 区别2：从 start 开始，防止产生重复的组合，例如：1-2、2-1（X）
+        // 下一个遍历起点的数字都是递增的，即是当前选择的数字(i) +1
+        for (i in start until n + 1) {
             // 做选择
             list.add(i)
 
@@ -293,46 +390,6 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
-    /**
-     * 46. 全排列，输入一组不重复的数字，返回它们的全排列  方法：回溯
-     *
-     * 时间复杂度：O(n×n!)，其中 n 为序列的长度。
-     * 空间复杂度：O(n)
-     *
-     * https://leetcode-cn.com/problems/permutations/solution/46-quan-pai-lie-by-chen-li-guan-a7o5/
-     * @param nums
-     * @return
-     */
-    fun permute(nums: IntArray): List<List<Int>> {
-        val res = mutableListOf<List<Int>>()
-        dfsPermute(nums, mutableListOf(), res)
-        return res
-    }
-
-    fun dfsPermute(nums: IntArray, list: MutableList<Int>, res: MutableList<List<Int>>) {
-        // 区别1：到达叶子节点才加入 res
-        if (list.size == nums.size) {
-            // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
-            res.add(ArrayList(list))
-            return
-        }
-
-        // 区别2：从 0 开始
-        for (i in 0 until nums.size) {
-            // 区别2：每次通过 contains 来排除 list 中不合法的选择
-            if (list.contains(nums[i])) continue
-
-            // 做选择
-            list.add(nums[i])
-
-            // 进入下一层决策树
-            dfsPermute(nums, list, res)
-
-            // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
-            list.removeAt(list.size - 1)
-        }
-    }
 
 
     /**

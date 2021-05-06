@@ -80,18 +80,26 @@ public void recur(int level, int param) {
 
 1、模板
 
-for 选择 in 选择列表: {
-    // 做选择
-    将该选择从选择列表移除
-    路径.add(选择)
+private void backtrack("原始参数") {
+    // 终止条件(递归必须要有终止条件)
+    if ("终止条件") {
+        // 一些逻辑操作（可有可无，视情况而定）
+        return;
+    }
 
-    // 下探到下一层，关键：level + 1
-    backtrack(路径, 选择列表)
+    for (int i = "for循环开始的参数"; i < "for循环结束的参数"; i++) {
+        // 一些逻辑操作（可有可无，视情况而定）
 
-    // 撤销（移除）选择
-    路径.remove(选择)
-    将该选择再加入选择列表
+        // 做出选择
+
+        // 递归
+        backtrack("新的参数");
+        // 一些逻辑操作（可有可无，视情况而定）
+
+        // 撤销选择
+    }
 }
+
 
 
 2、案例
@@ -115,7 +123,7 @@ fun backtrack(nums: IntArray, track: MutableList<Int>, res: MutableList<List<Int
     }
 
     for (i in 0 until nums.size) {
-        // 排除不合法的选择
+        // 排除 list 中相同的元素的情况，eg：list={1}，i=1 --> 返回
         if (track.contains(nums[i])) continue
 
         // 做选择
