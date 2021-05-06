@@ -16,7 +16,7 @@ class MinStack {
      * 思想：借用一个辅助栈 minStack，用于存获取栈中最小值。
      *
      * 时间复杂度 O(1) ：压栈，出栈，获取最小值的时间复杂度都为 O(1)。
-     * 空间复杂度 O(N) ：包含 NN 个元素辅助栈占用线性大小的额外空间。
+     * 空间复杂度 O(N) ：包含 N 个元素辅助栈占用线性大小的额外空间。
      *
      * https://leetcode-cn.com/problems/min-stack/solution/155-zui-xiao-zhan-by-chen-li-guan-unbp/
      */

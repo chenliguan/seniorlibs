@@ -56,6 +56,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
                 val obj = MinStack()
                 obj.push(1)
                 obj.push(3)
+                obj.push(-2)
                 obj.push(1)
                 obj.push(-1)
                 obj.push(2)
@@ -67,6 +68,12 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_eval_rpn -> {
                 LogUtils.d(TAG, "150. 逆波兰表达式求值：${evalRPN(arrayOf("2","1","+","3","*"))}")
             }
+//            R.id.btn_queue_stack -> {
+//                LogUtils.d(TAG, "225.两个队列实现栈")
+//            }
+//            R.id.btn_stack_queue -> {
+//                LogUtils.d(TAG, "232. 用栈实现队列")
+//            }
 
             else -> {
             }
