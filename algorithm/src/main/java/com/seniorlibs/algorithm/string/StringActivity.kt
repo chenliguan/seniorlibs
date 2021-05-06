@@ -1386,42 +1386,38 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 567. 字符串的排列
      *
-     * 时间复杂度: 0(P + S) / 0(P + S + E)，这里 P 表示字符串 s 的长度，这里 S 表示字符串 s 的长度;
-     * 空间复杂度: 0(E)，E 为字符集=26。
+     * 时间复杂度: 0(n)；
+     * 空间复杂度: 0(1)，需要常数级别的额外空间。
      *
      * https://leetcode-cn.com/problems/permutation-in-string/solution/567-zi-fu-chuan-de-pai-lie-by-chen-li-gu-v2q2/
+     * @param p
      * @param s
-     * @param l
      * @return
      */
     fun checkInclusion(p: String, s: String): Boolean {
-        if (p.isEmpty() || s.isEmpty()) return false
+        val n = s.length
+        val m = p.length
+        if (n < m) return false
 
-        val sLen = s.length
-        val pLen = p.length
+        val pCnt = IntArray(26)
+        val sCnt = IntArray(26)
 
-        val windowArray = IntArray(26)
-        val targetArray = IntArray(26)
-        for (i in 0 until pLen) {
-            targetArray[p[i] - 'a']++
+        for (i in 0 until m) {
+            pCnt[p[i] - 'a']++
+            sCnt[s[i] - 'a']++
         }
 
-        var left = 0
-        // right 指针一步一步向右走遍历 s 字符串
-        for (right in 0 until sLen) {
-            val arrayRight = s[right] - 'a'
-            windowArray[arrayRight]++
+        // 若 pCnt 和 sCnt 相等，则找到第一个异位词索引 0
+        if (Arrays.equals(sCnt, pCnt)) {
+            return true
+        }
 
-            // right 指针遍历到的字符加入 windowArray 后不满足 targetArray 的字符数量要求，所以这个窗口一定是不合法的，
-            // 假设：如果长度一样，但是有某个字母的个数不一样的话。那么一定有某个字符的个数大于目标数组的，然后left会收缩，导致长度不一样。所以假设不成立。
-            while (windowArray[arrayRight] > targetArray[arrayRight]) {
-                val arrayLeft = s[left] - 'a'
-                windowArray[arrayLeft]--
-                left++
-            }
-
-            // 当滑动窗口的长度等于 p 的长度时，这时的 s 子字符串就是 p 的异位词
-            if (right - left + 1 == pLen) {
+        // 继续遍历 s 字符串索引为 [pLen, sLen) 的字母，在 sCnt 中每次增加一个新字母，去除一个旧字母
+        for (i in m until n) {
+            sCnt[s[i - m] - 'a']--
+            sCnt[s[i] - 'a']++
+            // 判断 pCnt 和 sCnt 是否相等，相等则在返回值 res 中新增异位词索引 i - pLen + 1
+            if (Arrays.equals(sCnt, pCnt)) {
                 return true
             }
         }
@@ -1432,8 +1428,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 438. 找到字符串中所有字母异位词
      *
-     * 时间复杂度: 0(P + S) / 0(P + S + E)，这里 P 表示字符串 s 的长度，这里 S 表示字符串 s 的长度;
-     * 空间复杂度: 0(E)，E 为字符集=26。
+     * 时间复杂度: 0(n)；
+     * 空间复杂度: 0(1)，需要常数级别的额外空间。
      *
      * https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/solution/438-zhao-dao-zi-fu-chuan-zhong-suo-you-z-apuf/
      * @param s
@@ -1441,38 +1437,36 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun findAnagrams(s: String, p: String): List<Int> {
-        val sLen = s.length
-        val pLen = p.length
+        val n = s.length
+        val m = p.length
         val res = mutableListOf<Int>()
-        if (sLen < pLen) return res
+        if (n < m) return res
 
-        val windowArray = IntArray(26)
-        val targetArray = IntArray(26)
-        for (i in 0 until pLen) {
-            targetArray[p[i] - 'a']++
+        val pCnt = IntArray(26)
+        val sCnt = IntArray(26)
+
+        for (i in 0 until m) {
+            pCnt[p[i] - 'a']++
+            sCnt[s[i] - 'a']++
         }
 
-        var left = 0
-        // right 指针一步一步向右走遍历 s 字符串
-        for (right in 0 until sLen) {
-            val arrayRight = s[right] - 'a'
-            windowArray[arrayRight]++
+        // 若 pCnt 和 sCnt 相等，则找到第一个异位词索引 0
+        if (Arrays.equals(sCnt, pCnt)) {
+            res.add(0)
+        }
 
-            // right 指针遍历到的字符加入 windowArray 后不满足 targetArray 的字符数量要求，所以这个窗口一定是不合法的，
-            // 假设：如果长度一样，但是有某个字母的个数不一样的话。那么一定有某个字符的个数大于目标数组的，然后left会收缩，导致长度不一样。所以假设不成立。
-            while (windowArray[arrayRight] > targetArray[arrayRight]) {
-                val arrayLeft = s[left] - 'a'
-                windowArray[arrayLeft]--
-                left++
-            }
-
-            // 当滑动窗口的长度等于 p 的长度时，这时的 s 子字符串就是 p 的异位词
-            if (right - left + 1 == pLen) {
-                res.add(left)
+        // 继续遍历 s 字符串索引为 [pLen, sLen) 的字母，在 sCnt 中每次增加一个新字母，去除一个旧字母
+        for (i in m until n) {
+            sCnt[s[i - m] - 'a']--
+            sCnt[s[i] - 'a']++
+            // 判断 pCnt 和 sCnt 是否相等，相等则在返回值 res 中新增异位词索引 i - pLen + 1
+            if (Arrays.equals(sCnt, pCnt)) {
+                res.add(i - m + 1)
             }
         }
         return res
     }
+
 
 
     /**

@@ -76,7 +76,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "40. 最小的k个数 ：" + getLeastNumbers(intArrayOf(3, 2, 1), 2))
             }
             R.id.btn_find_kth_largest -> {
-                LogUtils.d(TAG, "215. 数组中的第K个最大元素 ：" + findKthLargest(intArrayOf(3,2,3,1,2,4,5,5,6), 4))
+                LogUtils.d(TAG, "215. 数组中的第K个最大元素 ：" + findKthLargest(intArrayOf(3, 2, 3, 1, 2, 4, 5, 5, 6), 4))
             }
             else -> {
             }
@@ -206,7 +206,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-    fun partitionArray(array : IntArray, left: Int, right: Int, k: Int) {
+    fun partitionArray(array: IntArray, left: Int, right: Int, k: Int) {
         val index = partition(array, left, right)
         if (k == index) {
             // 若 k = index，就找到了最小的 k 个数，就是左侧的数组
