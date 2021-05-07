@@ -1469,6 +1469,76 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * 什么时候用单调栈：要给当前的元素，找右边/左边第一个比它大/小的位置。
+     * 单调递增栈，利用波谷剔除栈中的波峰，留下波谷；
+     * 单调递减栈，利用波峰剔除栈中的波谷，留下波峰。
+     */
+
+    /**
+     * 402. 移掉K位数字
+     *
+     * 思想：尽量维护高位的递增，这样更小，所以维护单调递增栈。
+     *
+     * 1432219 这样「高位递增」的数，肯定不会想删高位，高位肯定想尽量小，会尽量删低位。= 1219
+     * 4321351 这样「高位递减」的数，会想干掉高位，直接让高位变小，效果很好。= 1351
+     *
+     * b.如果当前遍历的数比栈顶大，符合递增，就是满意的，入栈。
+     * a.如果当前遍历的数比栈顶小，立马删掉栈顶的数，不管后面有没有更大的。因为栈顶的数在高位，删掉它，小的顶上，高位变小，变小的幅度大于低位变小。
+     *
+     * "1432219"  k = 3
+     * bottom[1       ]top		1入
+     * bottom[1 4     ]top		4入
+     * bottom[1 3     ]top	4出	3入
+     * bottom[1 2     ]top	3出	2入
+     * bottom[1 2 2   ]top		2入
+     * bottom[1 2 1   ]top	2出	1入	出栈满3个，停止出栈
+     * bottom[1 2 1 9 ]top		9入
+     *
+     * bottom[1 2 1 9 ]top  --> 从底部弹出，1-2-1-9
+     *
+     * 时间复杂度：O(n)；
+     * 空间复杂度：O(n)。栈存储数字需要线性的空间。
+     *
+     * @param str
+     * @param k
+     * @return
+     */
+    fun removeKdigits(str: String, k: Int): String {
+        var k = k
+        val stack = LinkedList<Char>()
+        var res = ""
+
+        // 遍历 str 字符串
+        for (c in str) {
+            // a.如果当前遍历的数比栈顶小，立马删掉栈顶的数，不管后面有没有更大的。只要 k>0 且当前的 c 比栈顶的小，则栈顶出栈，k--
+            while (k > 0 && stack.isNotEmpty() && c < stack.peek()) {
+                stack.pop()
+                k--
+            }
+
+            // b.如果当前遍历的数比栈顶大，符合递增，就是满意的。不是"0"或栈非空（避免0入空栈），入栈
+            if (c != '0' || !stack.isEmpty()) {
+                stack.push(c)
+            }
+        }
+
+        // 如果还没删够，要从 stack 继续删，直到 k=0
+        while (k > 0 && stack.isNotEmpty()) {
+            stack.pop()
+            k--
+        }
+
+        // 如果栈空了，返回"0"，如果栈非空，转成字符串返回
+        if(stack.isEmpty()) return "0"
+
+        while(stack.isNotEmpty()) {
+            res += stack.pollLast()
+        }
+        return res
+    }
+
+
 
     /**
      * 05. 替换空格
