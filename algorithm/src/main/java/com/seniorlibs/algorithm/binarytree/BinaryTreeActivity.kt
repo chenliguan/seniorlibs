@@ -1457,6 +1457,101 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 101. 对称二叉树  方法一：递归实现
+     * 思路：比较 left 是否等于 right，不等的话直接返回。相当于，比较 left 的左节点和 right 的右节点，再比较 left 的右节点和 right 的左节点。
+     *
+     * 时间复杂度：这里遍历了这棵树，渐进时间复杂度为 O(n)。
+     * 空间复杂度：这里的空间复杂度和递归使用的栈空间有关，这里递归层数不超过 nn，故渐进空间复杂度为 O(n)。
+     *
+     * https://leetcode-cn.com/problems/symmetric-tree/solution/101-dui-cheng-er-cha-shu-by-chen-li-guan-je8g/
+     * @param root
+     * @return
+     */
+    fun isSymmetric(root: TreeNode?): Boolean {
+        if (root == null) {
+            return true
+        }
+
+        // 调用递归函数，比较左节点，右节点
+        return dfs(root.left, root.right)
+    }
+
+    fun dfs(left: TreeNode?, right: TreeNode?): Boolean {
+        // 递归的终止条件是两个节点都为空，返回 true
+        if (left == null && right == null) {
+            return true
+        }
+
+        // 两个节点中有一个为空，或者两个节点的值不相等，返回 false
+        if (left == null || right == null) {
+            return false
+        }
+        if (left.`val` != right.`val`) {
+            return false
+        }
+
+        // 再递归的比较 左节点的左孩子 和 右节点的右孩子，以及比较 左节点的右孩子 和 右节点的左孩子
+        return dfs(left.left, right.right) && dfs(left.right, right.left)
+    }
+
+
+    /**
+     *  101. 对称二叉树  方法二：层序遍历实现
+     *
+     * 首先从队列中拿出两个节点 left 和 right 比较
+     * 将 left 的 left 节点和 right 的 right 节点放入队列，将 left 的 right 节点和 right 的 left 节点放入队列
+     *
+     * 时间复杂度是 O(n)。
+     * 空间复杂度是 O(n)。
+     *
+     * @param root
+     * @return
+     */
+    fun isSymmetric2(root: TreeNode?): Boolean {
+        if (root == null || root.left == null && root.right == null) {
+            return true
+        }
+
+        // 用队列保存节点
+        val queue = LinkedList<TreeNode?>()
+        // 将根节点的左右孩子放到队列中
+        queue.offer(root.left)
+        queue.offer(root.right)
+
+        while (queue.size > 0) {
+            // 从队列中取出两个节点，再比较这两个节点
+            val left = queue.poll()
+            val right = queue.poll()
+
+            // 如果两个节点都为空就继续循环
+            if (left == null && right == null) {
+                continue
+            }
+
+            // 两个节点中有一个为空，或者两个节点的值不相等，返回 false
+            if (left == null || right == null) {
+                return false
+            }
+            if (left.`val` != right.`val`) {
+                return false
+            }
+
+            // 将左节点的左孩子，右节点的右孩子放入队列
+            queue.offer(left.left)
+            queue.offer(right.right)
+
+            // 将左节点的右孩子，右节点的左孩子放入队列
+            queue.offer(left.right)
+            queue.offer(right.left)
+        }
+
+        return true
+    }
+
+
+
+
+    /**
      * 127. 单词接龙  方法一：双向BFS
      *
      * 时间复杂度：O(M×N)，其中 MM 是单词的长度N是单词表中单词的总数。与单向搜索相同的是，找到所有的变换需要M * N次操作。
