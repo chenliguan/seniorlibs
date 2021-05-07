@@ -245,7 +245,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
             val index = partition(array, left, right)
             if (target == index) {
                 return array[index]
-            } else if (target > index) {
+            } else if (target < index) {
                 right = index - 1
             } else {
                 left = index + 1
