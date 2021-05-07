@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
-import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -390,6 +389,55 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * 39. 组合总和
+     * 题目：给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+     *      candidates 中的数字可以无限制重复被选取。
+     *
+     * 时间复杂度：O(n×2^n)。一共2^n个状态，每种状态需要O(n)的时间来构造子集；
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/combination-sum/solution/39-zu-he-zong-he-by-chen-li-guan-ebcb/
+     * @param array
+     * @param target
+     * @return
+     */
+    fun combinationSum(array: IntArray, target: Int): List<List<Int?>?>? {
+        val res = mutableListOf<List<Int>>()
+        if (array.isEmpty()) {
+            return res
+        }
+
+        // 排序是剪枝的前提：排序后，如果比 target 大，后面的就不需要递归了，因为后面的数会更大
+        Arrays.sort(array)
+        dfs(array, 0, target, mutableListOf(), res)
+        return res
+    }
+
+    private fun dfs(array: IntArray, start: Int, target: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
+        // 由于进入更深层的时候，小于 0 的部分被剪枝，因此递归终止条件值只判断等于 0 的情况
+        if (target == 0) {
+            res.add(ArrayList(list))
+            return
+        }
+
+        // 下一个遍历起点的数字都是递增的，即是当前选择的数字(i) +1
+        for (i in start until array.size) {
+            // 重点理解这里剪枝，前提是候选数组已经有序，
+            if (target - array[i] < 0) {
+                break
+            }
+
+            // 做选择
+            list.add(array[i])
+
+            // 注意：由于每一个元素可以重复使用，下一轮搜索的起点依然是 i，这里非常容易弄错
+            dfs(array, i,target - array[i], list, res)
+
+            // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
+            list.removeAt(list.size - 1)
+        }
+    }
 
 
     /**
