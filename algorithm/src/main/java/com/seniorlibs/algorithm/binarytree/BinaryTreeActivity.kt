@@ -1549,6 +1549,43 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * 236. 二叉树的最近公共祖先
+     *
+     * 时间复杂度 O(N) ： 其中 N 为二叉树节点数；最差情况下，需要递归遍历树的所有节点。
+     * 空间复杂度 O(N) ： 最差情况下，递归深度达到 N ，系统使用 O(N) 大小的额外空间。
+     *
+     * https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/236-er-cha-shu-de-zui-jin-gong-gong-zu-x-bfgv/
+     *
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    fun lowestCommonAncestor(root: TreeNode?, p: TreeNode?, q: TreeNode?): TreeNode? {
+        if (root == null) return root
+        // 找到了一个根节点，返回 root 节点
+        if (root == p || root == q) return root
+
+
+        // 递归遍历左右子节点
+        val left = lowestCommonAncestor(root.left, p, q)
+
+        val right = lowestCommonAncestor(root.right, p, q)
+
+        // 当 left 和 right 同时为空：说明 root 的左/右子树中都不包含 p,q，返回 null
+        if (left == null && right == null) return null // 1.
+
+        // p,q 两节点都在 root 的 右子树 中，返回 right。此时的 right 指向 最近公共祖先节点
+        if (left == null) return right // 3.
+        // 同理
+        if (right == null) return left // 4.
+
+        // 当 left 和 right 同时不为空 ：说明 p, q 分别在左/右子树，因此 root 为最近公共祖先，返回 root 节点
+        return root   // 2. if(left != null and right != null)
+    }
+
+
 
 
     /**
