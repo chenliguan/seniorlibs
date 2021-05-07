@@ -140,9 +140,35 @@ fun backtrack(nums: IntArray, track: MutableList<Int>, res: MutableList<List<Int
 
 六、二分查找代码模板
 
+/**
+ * 不要出现 else，而是把所有情况用 else if 写清楚，这样可以清楚地展现所有细节
+ */
+int binarySearch(int[] nums, int target) {
+    int left = 0, right = ...;
+
+    while(...) {
+        int mid = (right - left) / 2 + left;
+
+        if (target == nums[mid]) {
+            ...
+        } else if (target > nums[mid]) {
+            left = ...
+        } else if (target < nums[mid]) {
+            right = ...
+        }
+    }
+
+    return ...;
+}
+
+/**
+ * 寻找一个数（基本的二分搜索）
+ * 特点：两端都闭区间[left, right]
+ */
 public int binarySearch(int[] array, int target) {
     int left = 0;
     int right = array.length - 1;
+
     while (left <= right) {
         int mid = (right - left) / 2 + left;
 
@@ -150,13 +176,14 @@ public int binarySearch(int[] array, int target) {
             return mid;
         } else if (target < array[mid]) {
             right = mid - 1;
-        } else {
+        } else if (target > array[mid]) {
             left = mid + 1;
         }
     }
 
     return -1;
 }
+
 
 七、BFS模板-迭代
 

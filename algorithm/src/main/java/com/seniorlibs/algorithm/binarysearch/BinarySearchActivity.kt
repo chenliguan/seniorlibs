@@ -136,7 +136,10 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         while (left <= right) {
             mid = (right - left) / 2 + left
 
-            if (nums[mid] == target) return mid
+            if (nums[mid] == target) {
+                // 直接返回
+                return mid
+            }
 
             // 先根据 nums[mid] 与 nums[left] 的关系判断 mid 是在左段还是右段
             if (nums[mid] >= nums[left]) {
@@ -149,7 +152,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
                     left = mid + 1
                 }
 
-            } else {
+            } else if (nums[mid] < nums[left]) {
                 // 不落在同一数组的情况，left 在数组1，mid 落在 数组2
                 if (target > nums[mid] && target <= nums[right]) {
                     // 有序的一段区间，target 在 mid 和 right 之间
@@ -158,11 +161,38 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
                     // 两种情况，target 在 left 和 mid 之间
                     right = mid - 1
                 }
+
             }
         }
 
         // 没有查找到
         return -1
+    }
+
+    /**
+     * 153. 寻找旋转排序数组中的最小值
+     *
+     * 时间复杂度：时间复杂度为 O(logn)。
+     * 空间复杂度：O(1)。
+     *
+     * @param nums
+     * @return
+     */
+    fun findMin(nums: IntArray): Int {
+        var left = 0
+        var right = nums.size - 1                   // 左闭右闭区间，如果用右开区间则不方便判断右值
+
+        while (left < right) {                           // 循环不变式，如果left == right，则循环结束
+            val mid = left + (right - left) / 2     // 地板除，mid更靠近left
+
+            if (nums[mid] > nums[right]) {               // 中值 > 右值，最小值在右半边，收缩左边界
+                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过mid
+            } else if (nums[mid] <= nums[right]) {       // 明确中值 < 右值，最小值在左半边，收缩右边界
+                right = mid                              // 因为中值 < 右值，中值也可能是最小值，右边界只能取到 mid 处
+            }
+        }
+
+        return nums[left]                                // 循环结束，left == right，最小值输出 nums[left] 或 nums[right] 均可
     }
 
 

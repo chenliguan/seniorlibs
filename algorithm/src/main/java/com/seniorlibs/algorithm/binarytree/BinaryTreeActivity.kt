@@ -912,7 +912,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun invertTree2(root: TreeNode?): TreeNode? {
         if (root == null) return root
 
-        val stack: Deque<TreeNode> = LinkedList<TreeNode>()
+        val stack = LinkedList<TreeNode>()
         stack.push(root)
 
         while (!stack.isEmpty()) {
@@ -931,6 +931,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 // 遇到标记，弹出栈顶元素
                 val rootNode = stack.pop()
+
                 // 下面三句是将当前节点的左右子树交换
                 val tmp = rootNode.right
                 rootNode.right = rootNode.left

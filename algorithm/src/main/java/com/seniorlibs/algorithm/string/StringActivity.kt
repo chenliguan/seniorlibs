@@ -1459,7 +1459,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         for (i in m until n) {
             sCnt[s[i - m] - 'a']--
             sCnt[s[i] - 'a']++
-            // 判断 pCnt 和 sCnt 是否相等，相等则在返回值 res 中新增异位词索引 i - pLen + 1
+
+            // 判断 pCnt 和 sCnt 是否相等，相等则在返回值 res 中新增异位词起步索引 i - m + 1
             if (Arrays.equals(sCnt, pCnt)) {
                 res.add(i - m + 1)
             }
