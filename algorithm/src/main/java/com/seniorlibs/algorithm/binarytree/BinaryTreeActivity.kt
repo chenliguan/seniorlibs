@@ -302,6 +302,23 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         var children = mutableListOf<Node>()
     }
 
+    class DNode {
+        var `val` = 0
+        var left: Node? = null
+        var right: Node? = null
+
+        constructor() {}
+        constructor(_val: Int) {
+            `val` = _val
+        }
+
+        constructor(_val: Int, _left: Node?, _right: Node?) {
+            `val` = _val
+            left = _left
+            right = _right
+        }
+    }
+
 
     /**
      * 144. 二叉树的前序遍历：递归
@@ -1592,7 +1609,6 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return root   // 2. if(left != null and right != null)
     }
 
-
     /**
      * 114. 二叉树展开为链表
      *
@@ -1628,6 +1644,49 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    // 426. 将二叉搜索树转化为排序的双向链表 == 剑指 Offer 36. 二叉搜索树与双向链表
+
+//    // 记录头结点，用来最后返回的
+//    private var head: DNode? = null
+//
+//    // 记录遍历的当前节点的前一个节点, 用来把当前节点给串起来的
+//    private var pre: DNode? = null
+//
+//    fun treeToDoublyList(root: DNode?): DNode? {
+//        if (root == null) return root
+//
+//        inorder(root)
+//
+//        // 注意，上面的方法中，我们只是把第一个接点到最后一个节点串了起来，但并没有把第一个节点
+//        // 和最后一个节点串起来连成一个环形，所以这里还要把链表的首尾连接起来（这里pre已经是尾节点了）
+//        head.left = pre
+//        pre1.right = head
+//        return head
+//    }
+//
+//    // 二叉树的中序遍历
+//    private fun inorder(root: DNode?) {
+//        // 边界条件的判断
+//        if (root == null) return
+//
+//        // 先遍历左子节点
+//        inorder(root.left)
+//
+//        // 下面是对当前节点的操作
+//        if (pre == null) {
+//            // 这行代码只会执行一次，就是root是树的左子节点的左子节点的……,一直没有左子节点为止,实际上就是中序遍历结果的第一个节点
+//            head = root
+//        } else {
+//            // 串起来的结果就是前一个节点pre的right指向当前节点，然后当前节点的left指向前一个节点pre
+//            pre.right = root
+//        }
+//        root.left = pre
+//        // 前一个节点和当前节点串起来之后，就让当前节点变成前一个节点
+//        pre = root
+//
+//        // 最后在遍历右子节点
+//        inorder(root.right)
+//    }
 
 
     /**
