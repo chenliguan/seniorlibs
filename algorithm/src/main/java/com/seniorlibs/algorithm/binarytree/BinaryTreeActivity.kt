@@ -798,11 +798,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun hasPathSum1(root: TreeNode?, targetSum: Int): Boolean {
         if (root == null) return false
 
-        val stack: Deque<TreeNode?> = LinkedList()
+        val stack = LinkedList<TreeNode>()
         // 根节点入栈
         stack.push(root)
 
-        while (!stack.isEmpty()) {
+        while (stack.isNotEmpty()) {
             val node = stack.pop()
             if (node != null) {
                 // 添加右节点
@@ -837,7 +837,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 思想：一直向下找到叶子节点，同时判断节点的左右子树同时为空才是叶子节点
      *
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
-     * 空间复杂度：取决于结果列表的长度。
+     * 空间复杂度：O(n)。
      *
      * https://leetcode-cn.com/problems/path-sum-ii/solution/113-lu-jing-zong-he-ii-by-chen-li-guan-mx4f/
      * @param root
@@ -846,36 +846,42 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun pathSum(root: TreeNode?, sum: Int): List<List<Int>> {
         val res = mutableListOf<List<Int>>()
+        if (root == null) {
+            return res
+        }
+
         pathDfs(root, sum, mutableListOf(), res)
         return res
     }
 
-    fun pathDfs(root: TreeNode?, sum: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
-        if (root == null) return
-
-        // 把当前节点值加入到list中
-        list.add(root.`val`)
-
+    fun pathDfs(root: TreeNode?, targetSum: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
         // 如果到达叶子节点，就不能往下走了，直接 return
-        if (root.left == null && root.right == null) {
-            // 如果到达叶子节点，并且 sum 等于叶子节点的值，说明找到了一组，要把集合放到 result 中
-            if (sum == root.`val`) {
+        if (root?.left == null && root?.right == null) {
+            if (targetSum - root?.`val`!! == 0) {
+                list.add(root.`val`)
                 res.add(ArrayList(list))
+                // 把最后加入的结点值给移除掉，因为下一步直接 return 了，不会再走最后一行的 remove 了
+                list.removeAt(list.size - 1)
             }
-            // 把最后加入的结点值给移除掉，因为下一步直接 return 了，不会再走最后一行的 remove 了
-            list.removeAt(list.size - 1)
-            // 到叶子节点之后直接返回，因为在往下就走不动了
             return
         }
 
         // 如果没到达叶子节点，就继续从它的左右两个子节点往下找，注意 sum 要减去当前节点的值
-        pathDfs(root.left, sum - root.`val`, list, res)
+        if (root.left != null) {
+            // 把当前节点值加入到list中
+            list.add(root.`val`)
+            pathDfs(root.left, targetSum - root.`val`, list, res)
+            // 撤销选择
+            list.removeAt(list.size - 1)
+        }
 
-        pathDfs(root.right, sum - root.`val`, list, res)
-
-        // 要理解递归的本质，当递归往下传递的时候他最后还是会往回走，把这个值使用完之后还要把它给移除，这就是回溯
-        list.removeAt(list.size - 1)
+        if (root.right != null) {
+            list.add(root.`val`)
+            pathDfs(root.right, targetSum - root.`val`, list, res)
+            list.removeAt(list.size - 1)
+        }
     }
+
 
     /**
      * 226. 翻转二叉树  方法一：递归
@@ -1017,7 +1023,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun buildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
-        val map: MutableMap<Int, Int> = mutableMapOf()
+        val map = mutableMapOf<Int, Int>()
         for (i in inorder.indices) map[inorder[i]] = i
 
         return buildTrees(
@@ -1074,7 +1080,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun buildTree1(postorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
-        val map: MutableMap<Int, Int> = mutableMapOf()
+        val map = mutableMapOf<Int, Int>()
         for (i in inorder.indices) map[inorder[i]] = i
 
         return buildTree1s(
@@ -1128,17 +1134,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun levelOrder(root: TreeNode?): List<List<Int>>? {
         // 1.1 创建一个存放最终结果的集合 和 存放节点的队列
-        val res: MutableList<List<Int>> = mutableListOf()
+        val res = mutableListOf<List<Int>>()
         if (root == null) return res
 
         // 1.2 根节点不==null，将根节点放入队列
-        val queue: Queue<TreeNode> = LinkedList()
+        val queue = LinkedList<TreeNode>()
         queue.offer(root)
 
         // 2.1 遍历每一层前，当前层的队列不为空，继续遍历
         var size = queue.size
         while (size > 0) {
-            val list: MutableList<Int> = mutableListOf()
+            val list = mutableListOf<Int>()
             // 2.2 将这一层的元素全部取出（因为长度已确定，不会遍历新加入的左右节点）
             for (i in 0 until size) {
                 val node = queue.poll()
@@ -1172,7 +1178,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun levelOrder1(root: TreeNode?): List<List<Int>>? {
         // 存放最终结果的集合
-        val res: MutableList<MutableList<Int>> = mutableListOf()
+        val res = mutableListOf<MutableList<Int>>()
         if (root == null) return res
 
         dfsLevel(0, root, res)
@@ -1214,17 +1220,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun levelOrderBottom(root: TreeNode?): List<List<Int>> {
         // 1.1 创建一个存放最终结果的集合 和 存放节点的队列
-        val res: MutableList<List<Int>> = mutableListOf()
+        val res = mutableListOf<List<Int>>()
         if (root == null) return res
 
         // 1.2 根节点不==null，将根节点放入队列
-        val queue: Queue<TreeNode> = LinkedList()
+        val queue = LinkedList<TreeNode>()
         queue.offer(root)
 
         // 2.1 遍历每一层前，当前层的队列不为空，继续遍历
         var size = queue.size
         while (size > 0) {
-            val list: MutableList<Int> = mutableListOf()
+            val list = mutableListOf<Int>()
             // 2.2 将这一层的元素全部取出（因为长度已确定，不会遍历新加入的左右节点）
             for (i in 0 until size) {
                 val node = queue.poll()
@@ -1249,7 +1255,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
     fun levelOrderBottom1(root: TreeNode?): List<List<Int>> {
         // 存放最终结果的集合
-        val res: MutableList<MutableList<Int>> = mutableListOf()
+        val res = mutableListOf<MutableList<Int>>()
         if (root == null) return res
 
         levelOrder(0, root, res)
@@ -1297,7 +1303,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun largestValues(root: TreeNode?): List<Int> {
         // 1.1 创建一个存放最终结果的集合 和 存放节点的队列
         val res = mutableListOf<Int>()
-        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
+        val queue = LinkedList<TreeNode>()
 
         // 1.2 创建一个队列，将根节点放入其中
         if (root == null) return res else queue.offer(root)
@@ -1417,11 +1423,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun zigzagLevelOrder(root: TreeNode?): List<List<Int>>? {
         // 1.1 创建一个存放最终结果的集合 和 存放节点的队列
-        val res: MutableList<List<Int>> = mutableListOf()
+        val res = mutableListOf<List<Int>>()
         if (root == null) return res
 
         // 1.2 根节点不==null，将根节点放入队列
-        val queue: Queue<TreeNode> = LinkedList()
+        val queue = LinkedList<TreeNode>()
         queue.offer(root)
 
         // 计数。从偶数开始
