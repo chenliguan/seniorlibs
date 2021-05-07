@@ -630,7 +630,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun binaryTreePaths(root: TreeNode?): List<String>? {
-        val res: MutableList<String> = ArrayList()
+        val res = mutableListOf<String>()
         dfs(root, "", res)
         return res
     }
@@ -638,6 +638,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     private fun dfs(root: TreeNode?, path: String, res: MutableList<String>) {
         // 如果为空，直接返回
         if (root == null) return
+
         // 如果是叶子节点，说明找到了一条路径，把它加入到res中
         if (root.left == null && root.right == null) {
             res.add(path + root.`val`)
@@ -645,9 +646,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 如果不是叶子节点，在分别遍历他的左右子节点
-        dfs(root.left, path + root.`val`.toString() + "->", res)
+        dfs(root.left, path + root.`val` + "->", res)
 
-        dfs(root.right, path + root.`val`.toString() + "->", res)
+        dfs(root.right, path + root.`val` + "->", res)
     }
 
 
@@ -1585,6 +1586,41 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return root   // 2. if(left != null and right != null)
     }
 
+
+    /**
+     * 114. 二叉树展开为链表
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/solution/114-er-cha-shu-zhan-kai-wei-lian-biao-by-zkzf/
+     * @param root
+     */
+    fun flatten(root: TreeNode?) {
+        var root = root
+        while (root != null) {
+            // 5.左子树为 null，直接考虑右子节点
+            if (root.left == null) {
+                root = root.right
+            } else {
+                // 1.找左子树最右边的节点
+                var pre = root.left
+                while (pre?.right != null) {
+                    pre = pre.right
+                }
+
+                // 2.将原来的右子树接到左子树的最右边节点
+                pre?.right = root.right
+
+                // 3.将左子树插入到右子树的地方
+                root.right = root.left
+
+                // 4.左节点置空，并考虑下一个右子节点
+                root.left = null
+                root = root.right
+            }
+        }
+    }
 
 
 

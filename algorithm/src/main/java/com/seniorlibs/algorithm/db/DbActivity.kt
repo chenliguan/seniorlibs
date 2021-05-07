@@ -1105,7 +1105,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 300. 最长递增子序列  解法：动态规划
      *
-     * 时间复杂度：O(N^2)，这里 NN 是数组的长度，写了两个 for 循环；
+     * 时间复杂度：O(N^2)，这里 N 是数组的长度，写了两个 for 循环；
      * 空间复杂度：O(N)，要使用和输入数组长度相等的状态数组，因此空间复杂度是 O(N)。
      *
      * https://leetcode-cn.com/problems/longest-increasing-subsequence/
