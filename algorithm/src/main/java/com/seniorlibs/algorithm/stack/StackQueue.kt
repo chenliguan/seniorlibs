@@ -53,4 +53,18 @@ class StackQueue {
             outStack.push(inStack.pop())
         }
     }
+
+
+    // 入队，往第一个栈压入值
+    fun appendTail(value: Int) {
+        inStack.push(value)
+    }
+
+    // 出队
+    fun deleteHead(): Int {
+        if (outStack.isEmpty()) {
+            in2out()
+        }
+        return outStack.pop()
+    }
 }
