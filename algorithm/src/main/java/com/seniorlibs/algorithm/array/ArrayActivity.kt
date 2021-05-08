@@ -595,4 +595,36 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         return repeat
     }
+
+
+    /**
+     * 56. 合并区间
+     *
+     * 时间复杂度：O(nlogn)，其中 n 为区间的数量。除去排序的开销，我们只需要一次线性扫描，所以主要的时间开销是排序的 O(nlogn)。
+     * 空间复杂度：O(nlogn)，其中 n 为区间的数量。这里计算的是存储答案之外，使用的额外空间。(nlogn) 即为排序所需要的空间复杂度。
+     *
+     * https://leetcode-cn.com/problems/merge-intervals/solution/56-he-bing-qu-jian-by-chen-li-guan-7trv/
+     * @param intervals
+     * @return
+     */
+    fun merge(intervals: Array<IntArray>): Array<IntArray?>? {
+
+        // 先按照区间起始位置排序
+        Arrays.sort(intervals) { v1, v2 -> v1[0] - v2[0] }
+
+        // 遍历区间
+        val res = Array(intervals.size) { IntArray(2) }
+        var idx = -1
+        for (interval in intervals) {
+            // 如果结果数组是空的，或者 当前区间的起始位置 > 结果数组中最后区间的终止位置，则不合并，直接将当前区间加入结果数组
+            if (idx == -1 || interval[0] > res[idx][1]) {
+                res[++idx] = interval
+            } else {
+                // 反之将当前区间合并至结果数组的 最后区间
+                res[idx][1] = Math.max(res[idx][1], interval[1])
+            }
+        }
+
+        return Arrays.copyOf(res, idx + 1)
+    }
 }
