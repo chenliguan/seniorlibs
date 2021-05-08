@@ -340,41 +340,43 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         if (str.isEmpty()) return 0
 
         // 1、去除前导空格
-        var index = 0
-        while (index < str.length && str[index] == ' ') index++
+        var i = 0
+        while (i < str.length && str[i] == ' ') {
+            i++
+        }
         // 如果已经遍历完成（针对极端用例 "      "）
-        if (index == str.length) return 0
+        if (i == str.length) return 0
 
         // 2、处理正负号：如果出现符号字符，仅第1个有效，并记录正负
         var sign = 1
-        val firstChar = str[index]
+        val firstChar = str[i]
         if (firstChar == '+') {
-            index++
+            i++
         } else if (firstChar == '-') {
-            index++
+            i++
             sign = -1
         }
 
         // 3、从后续出现的数字字符中取出当前数字，在进行进制转换，注意不合法的情况
-        var total = 0
-        while (index < str.length) {
+        var res = 0
+        while (i < str.length) {
             // 3.1 取出当前数字
-            val digit = str[index] - '0'
+            val temp = str[i] - '0'
             // 3.2 先判断不合法的情况
-            if (digit < 0 || digit > 9) break
+            if (temp < 0 || temp > 9) break
 
             // 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判断乘以 10 以后是否越界
-            if (total > Int.MAX_VALUE / 10 || (total == Int.MAX_VALUE / 10 && digit > Int.MAX_VALUE % 10)) {
+            if (res > Int.MAX_VALUE / 10 || (res == Int.MAX_VALUE / 10 && temp > Int.MAX_VALUE % 10)) {
                 return if (sign == 1) Int.MAX_VALUE else Int.MIN_VALUE
             }
 
             // 3.3 合法的情况下，才考虑转换
-            total = 10 * total + digit
-            index++
+            res = res * 10 + temp
+            i++
         }
 
         // 3.4 最后，把符号位乘进去
-        return total * sign
+        return res * sign
     }
 
     /**
@@ -389,9 +391,12 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     fun reverseString(s: CharArray): Unit {
         if (s.isEmpty()) return
 
-        var i = 0
-        var j = s.size - 1
+        swap(0, s.size - 1, s)
+    }
 
+    fun swap(i1: Int, j1 : Int, s: CharArray) {
+        var i = i1
+        var j = j1
         while (i < j) {
             // 跳过相等的字符
             if (s[i] != s[j]) {
@@ -420,27 +425,22 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     fun reverseStr(s: String, k: Int): String {
         val ch = s.toCharArray()
         var start = 0
+
         while (start < s.length) {
             // 每个块开始于 2k 的倍数，也就是 0, 2k, 4k, 6k, ...。
-            var i = start
+            val i = start
 
             // 如果剩余字符少于 k 个，则将剩余字符全部反转。--> j = s.length - 1
             // 如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，类同常规情况。--> j = start + k - 1
-            var j = Math.min(s.length - 1, start + k - 1)
+            val j = Math.min(s.length - 1, start + k - 1)
 
             // 交换
-            while (i < j) {
-                val temp = ch[i]
-                ch[i] = ch[j]
-                ch[j] = temp
-
-                i++
-                j--
-            }
+            swap(i, j, ch)
 
             // 直接翻转每个 2k 字符块
             start += 2 * k
         }
+
         return String(ch)
     }
 
@@ -494,10 +494,13 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         if (strs.isEmpty()) return ""
 
         // 从前往后遍历 0 行字符串的每一列 j
-        for (j in strs[0].indices) {
+        for (j in 0 until strs[0].length) {
+            // 取 0 行 j 的字符 c
             val c = strs[0][j]
-            // 比较一列上的所有字符 i 是否相同，如果全相同则继续对下一列 j 进行比较
+
+            // 比较 1 行开始的每一行的 j 列上的所有字符是否与 c 相同，如果全相同则继续对下一列 j 进行比较
             for (i in 1 until strs.size) {
+
                 // 如果达到当前行长度 或 存在不相同，则当前列 j 不再属于公共前缀，当前列之前的部分为最长公共前缀。
                 if (j == strs[i].length || strs[i][j] != c) {
                     return strs[0].substring(0, j)
@@ -641,41 +644,51 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @param s
      * @return
      */
-    fun decodeString(s: String): String? {
-        var res = StringBuilder()
-        var multi = 0
-        val stackMulti = LinkedList<Int>()
-        val stackRes = LinkedList<String>()
+    fun decodeString(s: String): String {
+        val numStack = LinkedList<Int>()
+        val strStack = LinkedList<String>()
+        var res = ""
+        var num = 0
 
-        for (c in s.toCharArray()) {
-            when (c) {
-                '[' -> {
-                    stackMulti.addLast(multi)
-                    stackRes.addLast(res.toString())
-                    multi = 0
-                    res = StringBuilder()
+        for (i in 0 until s.length) {
+            if (s[i] in '0'..'9') {
+                // 算出倍数
+                num = num * 10 + s[i].toInt() - '0'.toInt()
+
+            } else if (s[i] == '[') {
+                // 倍数 num 进入栈等待
+                numStack.push(num)
+                // 入栈后清零
+                num = 0
+
+                // res 串入栈
+                strStack.push(res)
+                res = ""
+
+            } else if (s[i] == ']') {
+                // 遇到 ]，两个栈的栈顶出栈   a6[c]
+                var temp = ""
+                // 获取拷贝次数
+                val times = numStack.pop() // 6
+                // 构建子串
+                for (j in 0 until times) {
+                    temp += res  // c -> cccccc
                 }
-                ']' -> {
-                    val curMulti: Int = stackMulti.removeLast()
-                    // curMulti * res
-                    val curRes = StringBuilder()
-                    for (i in 0 until curMulti) {
-                        curRes.append(res)
-                    }
-                    // lastRes + (curMulti * res)
-                    val lastRes = stackRes.removeLast()
-                    res = StringBuilder(lastRes + curRes)
+
+                if (strStack.isEmpty()) {
+                    res = temp
+                } else {
+                    res = strStack.pop() + temp  // a + cccccc
                 }
-                in '0'..'9' -> {
-                    multi = multi * 10 + c.toString().toInt()
-                }
-                else -> {
-                    res.append(c)
-                }
+
+            } else {
+                // 遇到字母，追加给 res
+                res += s[i]
             }
         }
-        return res.toString()
+        return res
     }
+
 
 
     /**
@@ -705,6 +718,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 count = 1
             }
         }
+
         res.append(c)
         res.append(count)
 
