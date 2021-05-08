@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
-import com.seniorlibs.algorithm.binarytree.BinaryTreeActivity
 import com.seniorlibs.algorithm.string.StringActivity
 import com.seniorlibs.baselib.utils.LogUtils
 
@@ -658,5 +657,36 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             pB = if (pB == null) headA else pB.next
         }
         return pA
+    }
+
+    /**
+     * 24. 两两交换链表中的节点
+     *
+     * 时间复杂度：O(n)；
+     * 空间复杂度：O(1)；
+     *
+     * https://leetcode-cn.com/problems/swap-nodes-in-pairs/solution/24-liang-liang-jiao-huan-lian-biao-zhong-p05v/
+     * @param head
+     * @return
+     */
+    fun swapPairs(head: ListNode?): ListNode? {
+        // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
+        val dummy = ListNode(0)
+        dummy.next = head
+        var temp: ListNode? = dummy
+
+        while (temp?.next != null && temp.next?.next != null) {
+            // temp -> 1 -> 2 -> n
+            val start = temp.next       // 1
+            val end = temp.next?.next   // 2
+
+            temp.next = end           // temp -> 2
+            start?.next = end?.next   // 1 -> n
+
+            end?.next = start         // 2 -> 1
+            temp = start              // temp -> 1
+        }
+
+        return dummy.next
     }
 }
