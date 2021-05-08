@@ -21,4 +21,9 @@
         android:id="@+id/btn_eval_rpn"
         style="@style/BtnStyles"
         android:text="150. 逆波兰表达式求值" />
+
+    <Button
+        android:id="@+id/btn_daily_temperatures"
+        style="@style/BtnStyles"
+        android:text="739. 每日温度" />
 </LinearLayout>

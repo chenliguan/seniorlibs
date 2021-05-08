@@ -40,6 +40,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_valid).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_stack).setOnClickListener(this)
         findViewById<View>(R.id.btn_eval_rpn).setOnClickListener(this)
+        findViewById<View>(R.id.btn_daily_temperatures).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -74,7 +75,12 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 //            R.id.btn_stack_queue -> {
 //                LogUtils.d(TAG, "232. 用栈实现队列")
 //            }
-
+//            R.id.btn_stack_queue -> {
+//                LogUtils.d(TAG, "232. 用栈实现队列")
+//            }
+            R.id.btn_daily_temperatures -> {
+                LogUtils.d(TAG, "739. 每日温度：${dailyTemperatures(intArrayOf(73, 74, 75, 71, 69, 72, 76, 73))}")
+            }
             else -> {
             }
         }
@@ -158,4 +164,110 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
             -1
         }
     }
+
+
+    /**
+     * 什么时候用单调栈：要给当前的元素，找右边/左边第一个比它大/小的位置。
+     * 单调递增栈，利用波谷剔除栈中的波峰，留下波谷；
+     * 单调递减栈，利用波峰剔除栈中的波谷，留下波峰。
+     */
+
+    /**
+     * 402. 移掉K位数字
+     *
+     * 思想：尽量维护高位的递增，这样更小，所以维护单调递增栈。
+     *
+     * 1432219 这样「高位递增」的数，肯定不会想删高位，高位肯定想尽量小，会尽量删低位。= 1219
+     * 4321351 这样「高位递减」的数，会想干掉高位，直接让高位变小，效果很好。= 1351
+     *
+     * b.如果当前遍历的数比栈顶大，符合递增，就是满意的，入栈。
+     * a.如果当前遍历的数比栈顶小，立马删掉栈顶的数，不管后面有没有更大的。因为栈顶的数在高位，删掉它，小的顶上，高位变小，变小的幅度大于低位变小。
+     *
+     * "1432219"  k = 3
+     * bottom[1       ]top		1入
+     * bottom[1 4     ]top		4入
+     * bottom[1 3     ]top	4出	3入
+     * bottom[1 2     ]top	3出	2入
+     * bottom[1 2 2   ]top		2入
+     * bottom[1 2 1   ]top	2出	1入	出栈满3个，停止出栈
+     * bottom[1 2 1 9 ]top		9入
+     *
+     * bottom[1 2 1 9 ]top  --> 从底部弹出，1-2-1-9
+     *
+     * 时间复杂度：O(n)；
+     * 空间复杂度：O(n)。栈存储数字需要线性的空间。
+     *
+     * @param str
+     * @param k
+     * @return
+     */
+    fun removeKdigits(str: String, k: Int): String {
+        var k = k
+        val stack = LinkedList<Char>()
+        var res = ""
+
+        // 遍历 str 字符串
+        for (c in str) {
+            // a.如果当前遍历的数比栈顶小，立马删掉栈顶的数，不管后面有没有更大的。只要 k>0 且当前的 c 比栈顶的小，则栈顶出栈，k--
+            while (k > 0 && stack.isNotEmpty() && c < stack.peek()) {
+                stack.pop()
+                k--
+            }
+
+            // b.如果当前遍历的数比栈顶大，符合递增，就是满意的。不是"0"或栈非空（避免0入空栈），入栈
+            if (c != '0' || stack.isNotEmpty()) {
+                stack.push(c)
+            }
+        }
+
+        // 如果还没删够，要从 stack 继续删，直到 k=0
+        while (k > 0 && stack.isNotEmpty()) {
+            stack.pop()
+            k--
+        }
+
+        // 如果栈空了，返回"0"，如果栈非空，转成字符串返回
+        if(stack.isEmpty()) return "0"
+
+        while(stack.isNotEmpty()) {
+            res += stack.pollLast()
+        }
+        return res
+    }
+
+    /**
+     * 739. 每日温度
+     * 题目：对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。给定一个列表 [73, 74, 75, 71, 69, 72, 76, 73]，输出是 [1, 1, 4, 2, 1, 1, 0, 0]。
+     *
+     * 存储下标的单调递减栈，从栈底到栈顶的下标对应的温度列表中的温度依次递减。如果一个下标在单调栈里，则表示尚未找到下一次温度更高的下标。
+     *
+     * 时间复杂度：O(n)；正向遍历温度列表一遍，对于温度列表中的每个下标，最多有一次进栈和出栈的操作。
+     * 空间复杂度：O(n)，其中 n 是温度列表的长度。需要维护一个单调栈存储温度列表中的下标。
+     *
+     * https://leetcode-cn.com/problems/daily-temperatures/solution/739-mei-ri-wen-du-by-chen-li-guan-i0u2/
+     * @param T
+     * @return
+     */
+    fun dailyTemperatures(T: IntArray): IntArray? {
+        val stack = LinkedList<Int>()
+        val array = IntArray(T.size)
+
+        for (i in 0 until T.size) {
+            // 如果当前遍历的数比栈顶大，立马弹出栈顶计算天数，直到栈为空
+            while (stack.isNotEmpty() && T[i] > T[stack.peek()]) {
+                val prevIndex = stack.pop()
+                array[prevIndex] = i - prevIndex
+            }
+
+            stack.push(i)
+        }
+
+        while (stack.isNotEmpty()) {
+            // 这里可以删掉
+            array[stack.pop()] = 0
+        }
+        return array
+    }
+
+
 }
