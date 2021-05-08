@@ -673,18 +673,53 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
         val dummy = ListNode(0)
         dummy.next = head
-        var temp: ListNode? = dummy
+        var p: ListNode? = dummy
 
-        while (temp?.next != null && temp.next?.next != null) {
+        while (p?.next != null && p.next?.next != null) {
             // temp -> 1 -> 2 -> n
-            val start = temp.next       // 1
-            val end = temp.next?.next   // 2
+            val start = p.next       // 1
+            val end = p.next?.next   // 2
 
-            temp.next = end           // temp -> 2
+            p.next = end              // p -> 2
             start?.next = end?.next   // 1 -> n
 
             end?.next = start         // 2 -> 1
-            temp = start              // temp -> 1
+            p = start                 // p -> 1
+        }
+
+        return dummy.next
+    }
+
+
+    /**
+     * 82. 删除排序链表中的重复元素 II
+     *
+     * 时间复杂度：O(n)，其中 n 是链表的长度。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/solution/82-shan-chu-pai-xu-lian-biao-zhong-de-zh-s4sy/
+     * @param head
+     * @return
+     */
+    fun deleteDuplicates(head: ListNode?): ListNode? {
+        if (head == null) return head
+
+        val dummy = ListNode(0)
+        dummy.next = head
+        var cur: ListNode? = dummy
+
+        while (cur?.next != null && cur.next?.next != null) {
+            if (cur.next?.`val` == cur.next?.next?.`val`) {
+                // 跳过当前的重复节点，使得cur指向当前重复元素的最后一个位置
+                val x = cur.next?.`val`
+                while (cur.next != null && cur.next?.`val` == x) {
+                    cur.next = cur.next?.next
+                }
+
+            } else {
+                // 不重复，移到下一个位置
+                cur = cur.next
+            }
         }
 
         return dummy.next
