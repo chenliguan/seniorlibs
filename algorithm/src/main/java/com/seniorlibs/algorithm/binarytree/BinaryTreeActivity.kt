@@ -1690,6 +1690,41 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 543. 二叉树的直径
+     *
+     * 时间复杂度：O(N)；
+     * 空间复杂度：O(Height)，其中 Height 为二叉树的高度。
+     *
+     * https://leetcode-cn.com/problems/diameter-of-binary-tree/solution/543-er-cha-shu-de-zhi-jing-by-chen-li-gu-w75a/
+     * @param root
+     * @return
+     */
+    fun diameterOfBinaryTree(root: TreeNode?): Int {
+        depth(root)
+        // -1 是因为根节点是同一个
+        return res - 1
+    }
+
+    var res = 0
+    fun depth(node: TreeNode?): Int {
+        // 访问到空节点了，返回0
+        if (node == null) return 0
+
+        // 左儿子为根的子树的深度
+        val left = depth(node.left) + 1
+        // 右儿子为根的子树的深度
+        val right = depth(node.right) + 1
+
+        // 计算最大深度即 left + right - 1(因为+1了两次)，并更新 res
+        res = Math.max(res, left + right - 1)
+
+        // 返回该节点为根的子树的深度
+        return Math.max(left, right)
+    }
+
+
+
+    /**
      * 127. 单词接龙  方法一：双向BFS
      *
      * 时间复杂度：O(M×N)，其中 MM 是单词的长度N是单词表中单词的总数。与单向搜索相同的是，找到所有的变换需要M * N次操作。
