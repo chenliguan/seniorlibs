@@ -662,4 +662,39 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         return if (min == Int.MAX_VALUE) 0 else min
     }
+
+    /**
+     * 189. 旋转数组
+     *
+     * 时间复杂度：O(n)。每个元素被翻转两次，一共 n 个元素，因此总时间复杂度为 O(2n)=O(n)
+     * 空间复杂度：O(1)。
+     *
+     * @param nums
+     * @param k
+     */
+    fun rotate(nums: IntArray, k: Int) {
+        var k = k
+        // 避免 K 可能会大于最大长度
+        k = k % nums.size
+
+        // 首先对整个数组实行翻转，这样子原数组中需要翻转的子数组，就会跑到数组最前面  [1,2,3,4,5,6,7] -> [7,6,5,4,3,2,1]
+        reverse(nums, 0, nums.size - 1)
+        // 从 k 处分隔数组，左右两数组，各自进行翻转  [7,6,5, 4,3,2,1] -> [5,6,7, 1,2,3,4]
+        reverse(nums, 0, k - 1)
+        reverse(nums, k, nums.size - 1)
+    }
+
+    fun reverse(nums: IntArray, start: Int, end: Int) {
+        var start = start
+        var end = end
+
+        while (start < end) {
+            val temp = nums[start]
+            nums[start] = nums[end]
+            nums[end] = temp
+
+            start++
+            end--
+        }
+    }
 }
