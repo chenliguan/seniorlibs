@@ -281,6 +281,37 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 142. 环形链表 II
+     *
+     * 时间复杂度：O(N)。
+     * 空间复杂度：O(N)。
+     *
+     * https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/142-huan-xing-lian-biao-ii-by-chen-li-gu-okw4/
+     * @param head
+     * @return
+     */
+    fun detectCycle(head: ListNode?): ListNode? {
+        var fast = head
+        var slow = head
+
+        while (true) {
+            if (fast?.next == null) return null
+
+            fast = fast.next!!.next
+            slow = slow!!.next
+
+            if (fast === slow) break
+        }
+
+        fast = head
+        while (slow !== fast) {
+            slow = slow!!.next
+            fast = fast!!.next
+        }
+        return fast
+    }
+
+    /**
      * 206. 反转链表。方法一：双指针迭代
      *
      * 时间复杂度：O(n)，假设n是列表的长度，时间复杂度是 O(n)。

@@ -801,4 +801,59 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         return res
     }
+
+
+    /*
+    n->f(n)
+    0->1
+    1->3
+    2->4
+    3->2
+    类似链表一样的序列：0->1->3->2->4->null
+
+    n->f(n)
+    0->1
+    1->3
+    2->4
+    3->2
+    4->2
+    类似链表一样的序列：0->1->3->2->4->2->4->2->... ，这里 2->4 是一个循环
+     */
+
+    /**
+     * 287. 寻找重复数
+     *
+     * 时间复杂度：O(N)。
+     * 空间复杂度：O(N)。
+     *
+     * https://leetcode-cn.com/problems/find-the-duplicate-number/solution/287-xun-zhao-zhong-fu-shu-by-chen-li-gua-ihi5/
+     * @param nums
+     * @return
+     */
+    fun findDuplicate(nums: IntArray): Int {
+        var fast = 0
+        var slow = 0
+
+        while (true) {
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+
+            // 第一次相遇
+            if (slow == fast) {
+                break
+            }
+        }
+
+        // slow 指针位置不变，将 fast 指针重新 指向链表头部节点
+        fast = 0
+
+        // slow和fast同时每轮向前走 11 步；
+        while (nums[slow] != nums[fast]) {
+            slow = nums[slow]
+            fast = nums[fast]
+        }
+
+        // 双指针第二次相遇
+        return nums[slow]
+    }
 }

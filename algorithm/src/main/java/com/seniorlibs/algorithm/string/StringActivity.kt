@@ -1698,6 +1698,94 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 13. 罗马数字转整数
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/roman-to-integer/solution/13-luo-ma-shu-zi-zhuan-zheng-shu-by-chen-dw4p/
+     * @param s
+     * @return
+     */
+    fun romanToInt(s: String): Int {
+        val map = mutableMapOf<String, Int>()
+        map["I"] = 1
+        map["IV"] = 4
+        map["V"] = 5
+        map["IX"] = 9
+        map["X"] = 10
+        map["XL"] = 40
+        map["L"] = 50
+        map["XC"] = 90
+        map["C"] = 100
+        map["CD"] = 400
+        map["D"] = 500
+        map["CM"] = 900
+        map["M"] = 1000
+
+        var res = 0
+        var i = 0
+
+        while (i < s.length) {
+            if (i + 1 < s.length && map.containsKey(s.substring(i, i + 2))) {
+                // 2位
+                res += map[s.substring(i, i + 2)]!!
+                i += 2
+            } else {
+                // 1位
+                res += map[s.substring(i, i + 1)]!!
+                i++
+            }
+        }
+        return res
+    }
+
+    /**
+     * 剑指 Offer 57 - II. 和为s的连续正数序列
+     *
+     * 滑动窗口
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/solution/jian-zhi-offer-57-ii-he-wei-sde-lian-xu-v7eb0/
+     * @param target
+     * @return
+     */
+    fun findContinuousSequence(target: Int): Array<IntArray>? {
+        // 滑动窗口的左边界
+        var i = 1
+        var j = 1
+        var sum = 0
+
+        val res = mutableListOf<IntArray>()
+        // 窗口的左边是窗口内的最小数字，只能小于等于target / 2, 因为题中要求的是至少含有两个数
+        while (i <= target / 2) {
+            if (sum < target) {
+                // 如果窗口内的值小于 target，右边界向右移动
+                sum += j
+                j++
+            } else if (sum > target) {
+                // 如果窗口内的值大于 target，左边界向右移动
+                sum -= i
+                i++
+            } else {
+                // 如果窗口内的值等于 target，说明找到了一组满足条件的序列，把它加入到列表中
+                val array = IntArray(j - i)
+                for (k in i until j) {
+                    array[k - i] = k
+                }
+                res.add(array)
+
+                // 左边界向右移动
+                sum -= i
+                i++
+            }
+        }
+        return res.toTypedArray()
+    }
+
+    /**
      * 05. 替换空格
      *
      * 时间复杂度：O(n)。
