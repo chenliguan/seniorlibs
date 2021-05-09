@@ -197,6 +197,36 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 154. 寻找旋转排序数组中的最小值 II == 剑指 Offer 11. 旋转数组的最小数字
+     * 区别 153：可能存在 重复 元素值的数组 nums
+     *
+     * 时间复杂度：时间复杂度为 O(logn)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/solution/154-xun-zhao-xuan-zhuan-pai-xu-shu-zu-zh-xshl/
+     * @param nums
+     * @return
+     */
+    fun minArray(nums: IntArray): Int {
+        var left = 0
+        var right = nums.size - 1                   // 左闭右闭区间，如果用右开区间则不方便判断右值
+
+        while (left < right) {                           // 循环不变式，如果left == right，则循环结束
+            val mid = left + (right - left) / 2     // 地板除，mid更靠近left
+
+            if (nums[mid] > nums[right]) {               // 中值 > 右值，最小值在右半边，收缩左边界
+                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过 mid
+            } else if (nums[mid] < nums[right]) {        // 明确中值 < 右值，最小值在左半边，收缩右边界
+                right = mid                              // 因为中值 <= 右值，中值也可能是最小值，右边界只能取到 mid 处
+            } else {
+                right--  // middle 既不大于 left 的值，也不小于 right 的值，代表着 middle 可能等于 left 的值，或者 right 的值，只能让 right 递减，来一个一个找最小值了。
+            }
+        }
+
+        return nums[left]                                // 循环结束，left == right，最小值输出 nums[left] 或 nums[right] 均可
+    }
+
+    /**
      * 162. 寻找峰值
      * 思路：出现了 nums[-1] = nums[n] = -∞，这就代表着 只要数组中存在一个元素比相邻元素大，那么沿着它一定可以找到一个峰值。因此，使用二分查找找到峰值。
      *

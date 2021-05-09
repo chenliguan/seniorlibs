@@ -233,9 +233,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param target
      * @return
      */
-    private fun twoSum(nums: IntArray, target: Int): IntArray {
+    fun twoSum(nums: IntArray, target: Int): IntArray {
         val n = nums.size
-        val map: MutableMap<Int, Int> = mutableMapOf()
+        val map = mutableMapOf<Int, Int>()
 
         // 1.将元素映射添加到 map 中：key 是数值，value 是下标
         for (i in 0 until n) {
