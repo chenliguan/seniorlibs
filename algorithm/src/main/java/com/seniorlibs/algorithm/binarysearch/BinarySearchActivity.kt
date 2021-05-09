@@ -302,6 +302,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         return -1
     }
 
+    // 888 -> 找出最后一个 8
     fun findLastPosition(nums: IntArray, target: Int): Int {
         var left = 0
         var right = nums.size - 1
