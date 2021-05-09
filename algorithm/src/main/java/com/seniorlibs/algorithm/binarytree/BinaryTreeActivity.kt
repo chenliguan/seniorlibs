@@ -1754,6 +1754,38 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * 108. 将有序数组转换为二叉搜索树
+     * 二叉搜索树的中序遍历是升序的，因此本题等同于根据中序遍历的序列恢复二叉搜索树
+     *
+     * 时间复杂度：O(N)；
+     * 空间复杂度：O(Height)，其中 Height 为二叉树的高度。
+     *
+     * https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/solution/108-jiang-you-xu-shu-zu-zhuan-huan-wei-e-0bhp/
+     * @param nums
+     * @return
+     */
+    fun sortedArrayToBST(nums: IntArray): TreeNode? {
+        return dfs(nums, 0, nums.size - 1)
+    }
+
+    private fun dfs(nums: IntArray, left: Int, right: Int): TreeNode? {
+        if (left > right) return null
+
+        // 求高度平衡，因此以升序数组的中间元素作为根节点 root。
+        val mid = left + (right - left) / 2
+
+        val root = TreeNode(nums[mid])
+
+        // 递归的构建 root 的左子树与右子树。
+        root.left = dfs(nums, left, mid - 1)
+
+        root.right = dfs(nums, mid + 1, right)
+
+        return root
+    }
+
+
 
     /**
      * 127. 单词接龙  方法一：双向BFS

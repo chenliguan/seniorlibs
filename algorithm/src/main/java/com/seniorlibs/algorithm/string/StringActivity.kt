@@ -112,7 +112,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "01.06. 字符串压缩：${compressString("aabcccccaaa")}")
             }
             R.id.btn_compress -> {
-                LogUtils.d(TAG, "443. 压缩字符串：${compress(charArrayOf('a','a','b','b','b','c','c','c'))}")
+                LogUtils.d(TAG, "443. 压缩字符串：${compress(charArrayOf('a', 'a', 'b', 'b', 'b', 'c', 'c', 'c'))}")
             }
             R.id.btn_str_str -> {
                 LogUtils.d(TAG, "28. 实现朴素的字符串匹配 strStr()：${strStr2("hello", "ll")}")
@@ -394,7 +394,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         swap(0, s.size - 1, s)
     }
 
-    fun swap(i1: Int, j1 : Int, s: CharArray) {
+    fun swap(i1: Int, j1: Int, s: CharArray) {
         var i = i1
         var j = j1
         while (i < j) {
@@ -758,7 +758,6 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-
     /**
      * 01.06. 字符串压缩
      *
@@ -776,20 +775,23 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         var c = s[0]
         var count = 1
 
+        // bbbkk
         for (i in 1 until s.length) {
             if (c == s[i]) {
-                count++
+                count++           // bbb -> count = 3，kk -> count = 2
             } else {
-                res.append(c)
-                res.append(count)
-                c = s[i]
-                count = 1
+                res.append(c)     // b
+                res.append(count) // 3
+
+                c = s[i]          // c = k
+                count = 1         // count = 1
             }
         }
 
-        res.append(c)
-        res.append(count)
+        res.append(c)             // k
+        res.append(count)         // 2
 
+        // 若"压缩"后的字符串比原字符串长度更长，则返回原先的字符串
         return if (res.length >= s.length) s else res.toString()
     }
 
@@ -810,24 +812,25 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun compress(chars: CharArray): Int {
         // 三指针：["a","a","b","b","b","c","c","c"] right = 4、right0 = 2、left = 3
-        var right0 = 0
+        var rightL = 0
         var left = 0
 
         // 由于最后一个字符也需要判断，所以将右指针终点放到数组之外一格
         for (right in 0..chars.size) {
             // 当遍历完成 或 右指针元素不等于左指针元素时，更新数组
-            if (right == chars.size || chars[right] != chars[right0]) {
+            if (right == chars.size || chars[right] != chars[rightL]) {
                 // 更新字符
-                chars[left++] = chars[right0]
+                chars[left] = chars[rightL]
+                left++
 
                 // 更新计数，当个数大于 1 时才更新
-                if (right - right0 > 1) {
-                    for (c in (right - right0).toString()) {
-                        chars[left++] = c
-                    }
+                if (right - rightL > 1) {
+                    chars[left] = '0' + (right - rightL)
+                    left++
                 }
 
-                right0 = right
+                // 更新 rightL 指针为 right
+                rightL = right
             }
         }
         return left
@@ -942,7 +945,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             // 每次取末尾数字  -123 % 10 = -3 -> -12 % 10 = -2 -> -1 % 10 = -1
             val temp = xs % 10
             // -123/10 = -12 -> -12/10 = -1 -> -1/10 = -1
-            xs /= 10
+            xs = xs / 10
 
             // 0 * 10 + -3 = -3 -> -3 * 10 + -2 = 32 -> 32 * 10 + -1 = -321
             cur = cur * 10 + temp
@@ -954,6 +957,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 680. 验证回文字符串 Ⅱ
+     * 题目：给定一个非空字符串 s，最多删除一个字符。判断是否能成为回文字符串。
      *
      * 如果s[i]==s[j]继续i++、j--，判断是否回文
      * 如果s[i]!=s[j]：1.判断s[i+1]到s[j]范围内字符串是否回文，如果是，去掉s[i]即可
@@ -997,11 +1001,13 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 409. 最长回文串
      *
+     * "abccccdd" -> "dccaccd", 它的长度是 7
+     *
      * 思想：只需要尽可能的左右对称地构造字符串就行了，所以回文串里每种字符都出现了偶数次，除了奇数长度的回文串的时候最中间的那个字符可以出现奇数次。
      *      比如回文串 abba，每个字符都出现了偶数次。而奇数长度的回文串 abcbcbcba，c出现了奇数次。
      *
      * 时间复杂度：O(n)。
-     * 空间复杂度：O(E)，E = 58。
+     * 空间复杂度：O(1)。
      *
      * https://leetcode-cn.com/problems/longest-palindrome/solution/409-zui-chang-hui-wen-chuan-by-chen-li-g-lwq9/
      *
@@ -1009,25 +1015,28 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun longestPalindrome(s: String): Int {
-        val array = IntArray(58)
+        // 统计字符串 s 中个字母的个数
+        val array = IntArray(128)
         for (c in s) {
-            array[c - 'A'] ++
+            array[c - 'A']++
         }
 
         var res = 0
         for (x in array) {
-            // 字符出现的次数最多用偶数次，res 结果也是偶数
-            // 01 & 01 = 1(奇数)、10 & 01 = 0(偶数)、11 & 01 = 1(奇数)、100 & 001 = 0(偶数)
-            // 1-1=0、2-0=1、3-1=2、4-0=4
+            // 字母是偶数个数的可以直接加到最长回文串长度上
+            // 字母是奇数个数的只有一个可以全部加到最长回文串长度上（充当中心），其他奇数个数的字母可以令其个数减1后（奇数减1就变成偶数了）再加到最长回文串上
+
+            // (奇)01 & 01 = 1、(偶)10 & 01 = 0、(奇)11 & 01 = 1、(偶)100 & 001 = 0
+            // (x and 1) -> x & 1 -> x 是奇数结果是 1，x 是偶数结果是 0
             res += x - (x and 1)
         }
 
-        // 如果最终的长度小于原字符串的长度，说明里面某个字符出现了奇数次，那么那个字符可以放在回文串的中间，所以额外再加一
+        // 如果最终的长度小于原字符串的长度，说明里面某个字符出现了奇数次，（因为奇数减1就变成偶数了），那么此奇数字符可以放在回文串的中间，所以额外再加1
         return if (res < s.length) res + 1 else res
     }
 
     /**
-     * 01.04. 回文排列
+     * 01.04. 回文排列（了解）
      *
      * 回文字符串有两种，一种是奇数的，类似于"abbba"，一种是偶数的，类似于"abba"或者"aabbaa"。
      * 如果是偶数的，只需要找出每个字符都是偶数就行了。如果是奇数的，那么字符串的所有字符中只有一个字符的个数是奇数，其他的都是偶数。
@@ -1040,15 +1049,15 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun canPermutePalindrome(s: String): Boolean {
         val set = mutableSetOf<Char>()
-        for (ch in s) {
+        for (c in s) {
             // set的add方法如果返回false，表示已经有了，就把他删除
-            if (!set.add(ch)) {
-                set.remove(ch)
+            if (!set.add(c)) {
+                set.remove(c)
             }
         }
 
-        // 最后判断set的长度是否小于等于1，如果等于1说明 只有一个字符的个数是奇数，其他的都是偶数。
-        // 如果等于0说明每个字符都是偶数，否则不可能构成回文字符串
+        // 最后判断set的长度是否 <= 1，如果等于1说明：只有一个字符的个数是奇数，其他的都是偶数。如果等于0说明：每个字符都是偶数。
+        // 如果大于1，表示不可能构成回文字符串
         return set.size <= 1
     }
 
@@ -1245,7 +1254,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 1249. 移除无效的括号
+     * 1249. 移除无效的括号（了解）
      *
      * 时间复杂度：O(n)，一共有两个循环，每次循环操作 n 个字符，每次操作 O(1)。循环之外，还有一些 O(n)O(n) 的库函数调用。
      * 空间复杂度：O(1)：指针与变量使用常数大小空间。
@@ -1261,20 +1270,20 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         var count = 0
 
         // 删除多余的')'
-        for (char in s) {
-            if (char == '(') {
+        for (c in s) {
+            if (c == '(') {
                 count++
-                sb.append(char)
-            } else if (char == ')') {
+                sb.append(c)
+            } else if (c == ')') {
                 count--
                 if (count < 0) {
                     // 如果没有 '(' 匹配 ')'，不加入
                     count = 0
                 } else {
-                    sb.append(char)
+                    sb.append(c)
                 }
             } else {
-                sb.append(char)
+                sb.append(c)
             }
         }
 
@@ -1293,7 +1302,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 856. 括号的分数
+     * 856. 括号的分数（了解）
      *
      * 时间复杂度：O(N)，其中 N 是字符串 S 的长度。
      * 空间复杂度：O(N)，为栈的大小。
@@ -1335,6 +1344,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                     while (stack.peek() != -1) {
                         temp += stack.pop()
                     }
+
                     stack.pop()
                     stack.push(2 * temp)
                 }
@@ -1389,7 +1399,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * 424. 替换后的最长重复字符
      *
      * 时间复杂度：O(n)
-     * 空间复杂度：O(E)
+     * 空间复杂度：O(1)
      *
      * https://leetcode-cn.com/problems/longest-repeating-character-replacement/solution/424-ti-huan-hou-de-zui-chang-zhong-fu-zi-2p6l/
      * @param s
@@ -1414,8 +1424,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             // 得出最大 maxSame
             maxSame = Math.max(maxSame, array[index])
 
-            // 不符合情况时，缩小窗口
-            if (maxSame + k < right - left + 1) {
+            // 要替换次数大于 k 了，窗口超出范围了，缩小窗口左边
+            if (right - left - maxSame + 1 > k) {
                 array[s[left] - 'A']--
                 left++
             }
@@ -1430,7 +1440,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 395. 至少有 K 个重复字符的最长子串
      *
-     * 思想：调用递归，如果一个字符 c 在 s 中出现的次数少于 k 次，那么 s 中所有的包含 c 的子字符串都不能满足题意。所以，应该在 s 的所有不包含 c 的子字符串中继续寻找结果
+     * 思想：过分治 缩小问题的规模，调用递归。
+     *      如果一个字符 c 在 s 中出现的次数少于 k 次，那么 s 中所有的包含 c 的子字符串都不能满足题意。所以，应该在 s 的所有不包含 c 的子字符串中继续寻找结果
      *
      * 时间复杂度：O(N⋅E)，其中 N 为字符串的长度，E 为字符集=26。由于每次递归调用都会完全去除某个字符，因此递归深度最多为 E。
      * 空间复杂度：O(E*E)。递归的深度为 O(E)，每层递归需要开辟 O(E) 的额外空间。
@@ -1449,10 +1460,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         for (c in s) {
-            // 判断条件 找到小于出现k次的字符串
+            // 判断条件 找到小于出现 k 次的字符串
             if (array[c - 'a'] < k) {
                 var res = 0
-                // 将字符串切分成多个小段 分别在求解
+                // 将字符串切分成多个小段 分别再分治求解
                 for (t in s.split(c)) {
                     res = Math.max(res, longestSubstring(t, k))
                 }
@@ -1465,7 +1476,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 459. 重复的子字符串
+     * 459. 重复的子字符串（了解）
      * 思想：直接判断 str 中去除首尾元素之后，是否包含自身元素。如果包含。则表明存在重复子串。 abab -> a bababa b (ok) ; abc -> a bcab c (no)
      *
      * 时间复杂度：O(n)。
@@ -1481,7 +1492,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 696. 计数二进制子串
+     * 696. 计数二进制子串（了解）
      *
      * 思路：将字符串 s 按照 0 和 1 的连续段分组，存在 list 数组中，例如 s = 00111011，可以得到这样的：list ={2,3,1,2}。
      *      两个相邻的数一定代表的是两种不同的字符，两个相邻的数字为 u 或者 v，它们对应着 u 个 0 和 v 个 1，或者 u 个 1 和 v 个 0，即是 min{u,v}。
