@@ -1711,15 +1711,46 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (node == null) return 0
 
         // 左儿子为根的子树的深度
-        val left = depth(node.left) + 1
+        val left = depth(node.left)
         // 右儿子为根的子树的深度
-        val right = depth(node.right) + 1
+        val right = depth(node.right)
 
         // 计算最大深度即 left + right - 1(因为+1了两次)，并更新 res
-        res = Math.max(res, left + right - 1)
+        res = Math.max(res, left + right + 1)
 
         // 返回该节点为根的子树的深度
         return Math.max(left, right)
+    }
+
+
+    /**
+     * 110. 平衡二叉树
+     *
+     * 时间复杂度：O(N)；
+     * 空间复杂度：O(Height)，其中 Height 为二叉树的高度。
+     *
+     * https://leetcode-cn.com/problems/balanced-binary-tree/solution/110-ping-heng-er-cha-shu-by-chen-li-guan-hq18/
+     * @param root
+     * @return
+     */
+    fun isBalanced(root: TreeNode?): Boolean {
+        return recur(root) != -1
+    }
+
+    fun recur(root: TreeNode?): Int {
+        // 当越过叶子节点时，返回高度 0
+        if (root == null) return 0
+
+        val left = recur(root.left)
+        // 当左（右）子树高度 left== -1 时，代表此子树的 左（右）子树 不是平衡树，因此直接返回 -1−1 ；
+        if (left == -1) return -1
+
+        val right = recur(root.right)
+        if (right == -1) return -1
+
+        // 当节点root 左 / 右子树的，高度差 < 2 ：则返回 最大深度 ，代表此子树是平衡树
+        //                          高度差 ≥ 2 ：则返回 −1 ，代表此子树不是平衡树
+        return if (Math.abs(left - right) < 2) Math.max(left, right) + 1 else -1
     }
 
 
