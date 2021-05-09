@@ -1601,6 +1601,47 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * 6. Z 字形变换
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/zigzag-conversion/solution/6-z-zi-xing-bian-huan-by-chen-li-guan-j7qs/
+     * @param s
+     * @param numRows
+     * @return
+     */
+    fun convert(s: String, numRows: Int): String? {
+        if (numRows < 2) return s
+
+        var i = 0
+        var flag = -1
+
+        val rows = mutableListOf<StringBuilder>()
+        for (k in 0 until numRows) {
+            rows.add(StringBuilder())
+        }
+
+        for (c in s) {
+            // 把每个字符 c 填入对应行
+            rows[i].append(c)
+
+            // 更新当前字符 c 对应的行索引：第 0 行改为 +1(-1+1=0)，最后一行改为 -1(0-1=-1)
+            if (i == 0 || i == numRows - 1) {
+                flag = -flag
+            }
+
+            i += flag
+        }
+
+        val res = StringBuilder()
+        for (row in rows) {
+            res.append(row)
+        }
+        return res.toString()
+    }
+
 
     /**
      * 05. 替换空格
