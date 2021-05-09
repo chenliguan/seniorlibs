@@ -1074,6 +1074,55 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return dummy.next
     }
 
+    /**
+     * 445. 两数相加 II（了解）
+     *
+     * 时间复杂度 O(max(M,N)))：其中 M，N 为 2 数字长度，按位遍历一遍数字（以较长的数字为准）；
+     * 空间复杂度 O(1)：指针与变量使用常数大小空间。
+     *
+     * https://leetcode-cn.com/problems/add-two-numbers-ii/solution/445-liang-shu-xiang-jia-ii-by-chen-li-gu-75pf/
+     * @param l1
+     * @param l2
+     * @return
+     */
+    fun addTwoNumbers2(l1: ListNode?, l2: ListNode?): ListNode? {
+        var l1 = l1
+        var l2 = l2
+
+        val stack1 = LinkedList<Int>()
+        val stack2 = LinkedList<Int>()
+
+        var cur: ListNode? = null
+        var carry = 0
+
+        while (l1 != null) {
+            stack1.push(l1.`val`)
+            l1 = l1.next
+        }
+        while (l2 != null) {
+            stack2.push(l2.`val`)
+            l2 = l2.next
+        }
+
+        // carry == 1 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
+        while (stack1.isNotEmpty() || stack2.isNotEmpty() || carry == 1) {
+            val a = if (stack1.isEmpty()) 0 else stack1.pop()
+            val b = if (stack2.isEmpty()) 0 else stack2.pop()
+
+            var sum = a + b + carry
+            carry = sum / 10
+            sum %= 10
+
+            // 添加下一个节点
+            val curNode = ListNode(sum)
+            curNode.next = cur
+            cur = curNode
+        }
+
+        // 返回虚拟头结点 dummy 的下一个节点，即是 头结点
+        return cur
+    }
+
 
     /**
      * 43. 字符串相乘
