@@ -41,6 +41,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_repeat_number).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_sub_arrayLen).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -86,6 +87,10 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_find_repeat_number -> {
             val nums = intArrayOf(2, 3, 1, 0, 2, 5, 3)
             LogUtils.d(TAG, "03. 数组中重复的数字：${findRepeatNumber(nums)}")
+        }
+        R.id.btn_min_sub_arrayLen -> {
+            val nums = intArrayOf(2, 3, 1, 2, 4, 3)
+            LogUtils.d(TAG, "209. 长度最小的子数组：${minSubArrayLen(7, nums)}")
         }
         else -> {
         }
@@ -285,27 +290,60 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             /* 核心3：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
             while (i < j) {
                 val sum = nums[k] + nums[i] + nums[j]
-                when {
-                    sum < 0 -> {
-                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                        while (i < j && nums[i] == nums[++i]) {
-                        }
+                if (sum < 0) {
+                    /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                    while (i < j && nums[i] == nums[++i]) {
                     }
-                    sum > 0 -> {
-                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                        while (i < j && nums[j] == nums[--j]) {
-                        }
+                } else if (sum > 0) {
+                    /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                    while (i < j && nums[j] == nums[--j]) {
                     }
-                    sum == 0 -> {
-                        /* 记录组合[k, i, j]到list */
-                        res.add(mutableListOf(nums[k], nums[i], nums[j]))
-                        /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
-                        while (i < j && nums[i] == nums[++i]) {
-                        }
-                        while (i < j && nums[j] == nums[--j]) {
-                        }
+                } else if (sum == 0) {
+                    /* 记录组合[k, i, j]到list */
+                    res.add(mutableListOf(nums[k], nums[i], nums[j]))
+                    /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                    while (i < j && nums[i] == nums[++i]) {
                     }
+                    while (i < j && nums[j] == nums[--j]) {
+                    }
+                }
+            }
+        }
+        return res
+    }
 
+    /**
+     * 16. 最接近的三数之和
+     *
+     * 时间复杂度 O(n^2)：其中固定指针k循环复杂度O(n)，双指针i，j 复杂度O(n)。
+     * 空间复杂度 O(1)：指针使用常数大小的额外空间。
+     *
+     * https://leetcode-cn.com/problems/3sum-closest/solution/16-zui-jie-jin-de-san-shu-zhi-he-by-chen-st0v/
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun threeSumClosest(nums: IntArray, target: Int): Int {
+        Arrays.sort(nums)
+        var res = nums[0] + nums[1] + nums[2]
+        for (k in 0 until nums.size) {
+            var i = k + 1
+            var j = nums.size - 1
+
+            while (i < j) {
+                val sum = nums[i] + nums[j] + nums[k]
+
+                // 多出的步骤，比较当前差值和已有差值哪个大
+                if (Math.abs(target - sum) < Math.abs(target - res)) {
+                    res = sum
+                }
+
+                if (sum < target) {
+                    i++
+                } else if (sum > target) {
+                    j--
+                } else {
+                    return res
                 }
             }
         }
@@ -635,6 +673,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)，其中 nn 是数组的长度。指针 start 和 end 最多各移动 n 次。
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/minimum-size-subarray-sum/solution/209-chang-du-zui-xiao-de-zi-shu-zu-by-ch-c2hl/
      * @param target
      * @param nums
      * @return
@@ -649,14 +688,12 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         while (right < nums.size) {
             // 移动右指针，扩大窗口，直到子数组和 >= 目标值 target
-            sum += nums[right]
-            right++
+            sum += nums[right++]
 
             // 移动左指针，缩小窗口，直到子数组和 < 目标值 target
             while (sum >= target) {
                 min = Math.min(min, right - left)
-                sum -= nums[left]
-                left++
+                sum -= nums[left++]
             }
         }
 
@@ -669,6 +706,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)。每个元素被翻转两次，一共 n 个元素，因此总时间复杂度为 O(2n)=O(n)
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/rotate-array/solution/189-xuan-zhuan-shu-zu-by-chen-li-guan-mf2l/
      * @param nums
      * @param k
      */
@@ -696,5 +734,71 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             start++
             end--
         }
+    }
+
+    /**
+     * 169. 多数元素
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/majority-element/solution/169-duo-shu-yuan-su-by-chen-li-guan-xqnd/
+     * @param nums
+     * @return
+     */
+    fun majorityElement(nums: IntArray): Int {
+        val map = mutableMapOf<Int, Int>()
+        val half = nums.size / 2
+        for (num in nums) {
+            var n = 0
+            if (map.containsKey(num)) {
+                n = map[num]!!
+                if (n + 1 > half) {
+                    return num
+                }
+            }
+
+            map[num] = n + 1
+        }
+        return -1
+    }
+
+
+    /**
+     * 349. 两个数组的交集
+     *
+     * 时间复杂度：O(m+n)。
+     * 空间复杂度：O(m+n)。
+     *
+     * https://leetcode-cn.com/problems/intersection-of-two-arrays/solution/349-liang-ge-shu-zu-de-jiao-ji-by-chen-l-omcy/
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    fun intersection(nums1: IntArray?, nums2: IntArray?): IntArray? {
+        if (nums1 == null || nums1.isEmpty() || nums2 == null || nums2.isEmpty()) {
+            return IntArray(0)
+        }
+
+        val set1 = mutableSetOf<Int>()
+        val set2 = mutableSetOf<Int>()
+
+        for (num in nums1) {
+            set1.add(num)
+        }
+
+        // 遍历 nums2，如果元素在 set1 中存在，加入到 set2 中
+        for (num in nums2) {
+            if (set1.contains(num)) {
+                set2.add(num)
+            }
+        }
+
+        val res = IntArray(set2.size)
+        var index = 0
+        for (value in set2) {
+            res[index++] = value
+        }
+        return res
     }
 }
