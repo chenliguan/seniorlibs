@@ -608,7 +608,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun merge(intervals: Array<IntArray>): Array<IntArray?>? {
-
         // 先按照区间起始位置排序
         Arrays.sort(intervals) { v1, v2 -> v1[0] - v2[0] }
 
@@ -625,6 +624,42 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+        // 复制指定的数组，以空值截断或填充：idx = 2，因此 +1 [[1,6],[8,10],[15,18],[0,0]] -> [[1,6],[8,10],[15,18]
         return Arrays.copyOf(res, idx + 1)
+    }
+
+
+    /**
+     * 209. 长度最小的子数组
+     *
+     * 时间复杂度：O(n)，其中 nn 是数组的长度。指针 start 和 end 最多各移动 n 次。
+     * 空间复杂度：O(1)。
+     *
+     * @param target
+     * @param nums
+     * @return
+     */
+    fun minSubArrayLen(target: Int, nums: IntArray): Int {
+        var left = 0
+        var right = 0
+        // 总数，用于比较目标值
+        var sum = 0
+        // 最小区间
+        var min = Int.MAX_VALUE
+
+        while (right < nums.size) {
+            // 移动右指针，扩大窗口，直到子数组和 >= 目标值 target
+            sum += nums[right]
+            right++
+
+            // 移动左指针，缩小窗口，直到子数组和 < 目标值 target
+            while (sum >= target) {
+                min = Math.min(min, right - left)
+                sum -= nums[left]
+                left++
+            }
+        }
+
+        return if (min == Int.MAX_VALUE) 0 else min
     }
 }
