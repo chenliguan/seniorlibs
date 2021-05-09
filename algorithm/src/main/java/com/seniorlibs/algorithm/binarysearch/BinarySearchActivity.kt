@@ -58,6 +58,33 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * 704. 二分查找
+     *
+     * 时间复杂度：O(logn)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/binary-search/solution/704-er-fen-cha-zhao-by-chen-li-guan-wbhk/
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun search1(nums: IntArray, target: Int): Int {
+        var left = 0
+        var right = nums.size - 1
+        while (left <= right) {
+            val mid = left + (right - left) / 2
+            if (nums[mid] == target) {
+                return mid
+            } else if (nums[mid] > target) {
+                right = mid - 1
+            } else {
+                left = mid + 1
+            }
+        }
+        return -1
+    }
+
 
     /**
      * 69. x 的平方根。方法一：二分查找
