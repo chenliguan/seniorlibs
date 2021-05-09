@@ -15,6 +15,8 @@ import com.seniorlibs.baselib.utils.LogUtils
  * Mender:
  * Modify:
  * Description: 二分查找
+ *
+ * 核心的思想就一个：逐渐缩小问题规模
  */
 class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -59,6 +61,12 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * 写对二分查找不能靠模板，需要理解加练习 （附练习题，持续更新）
+     *
+     * https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/
+     */
+
+    /**
      * 704. 二分查找
      *
      * 时间复杂度：O(logn)。
@@ -69,75 +77,69 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * @param target
      * @return
      */
-    fun search1(nums: IntArray, target: Int): Int {
+     fun search1(nums: IntArray, target: Int): Int {
+        val len = nums.size
         var left = 0
-        var right = nums.size - 1
-        while (left <= right) {
+        var right = len - 1
+
+        // 在 nums[left..right] 里查找 target
+        while (left < right) {
             val mid = left + (right - left) / 2
-            if (nums[mid] == target) {
-                return mid
-            } else if (nums[mid] > target) {
-                right = mid - 1
-            } else {
+            // mid 在左区间
+            if (nums[mid] < target) {
+                // 下一轮搜索区间：[mid + 1..right]
                 left = mid + 1
+            } else if (nums[mid] >= target) {
+                // 下一轮搜索区间：[left..mid]
+                right = mid
             }
+        }
+
+        // 注意：退出循环的时候，我们不能确定 nums[left] 是否等于 target，因此还需要单独做一次判断；
+        if (nums[left] == target) {
+            return left
         }
         return -1
     }
 
-
     /**
-     * 69. x 的平方根。方法一：二分查找
+     * 35. 搜索插入位置
+     * 思路：找出第一个大于等于 target 的元素的下标，那么小于 target 的元素就一定不是我们要找的
      *
-     * 思想：一个数的平方根肯定不会超过它自己，最小是0，范围最大是自己。例如 ：8的平方根，8的一半是4，4^2=16>8，
-     *      意即：如果一个数的一半的平方大于它自己，那么这个数的取值范围在小于4的一半：0-3
+     * 时间复杂度：O(logn)。
+     * 空间复杂度：O(1)。
      *
-     * 时间复杂度：O(logX)，二分法的时间复杂度是对数级别的。
-     * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
-     *
-     * https://leetcode-cn.com/problems/sqrtx/solution/69-x-de-ping-fang-gen-by-chen-li-guan-2/
+     * @param nums
+     * @param target
+     * @return
      */
-    fun mySqrt(x: Int): Int {
-        var left: Long = 0
-        var right: Long = x.toLong()
-        var res : Long = -1
+    fun searchInsert(nums: IntArray, target: Int): Int {
+        val len = nums.size
+        // 特殊判断
+        if (nums[len - 1] < target) {
+            return len
+        }
 
-        // 在区间 [left..right] 查找目标元素
-        while (left <= right) {
-            val mid = (right - left) / 2 + left
-
-            // x = 8，mid = 2.82842... 注意：如果一个数 mid 的平方大于 x ，那么 mid 一定不是 x 的平方根。所以结果在 mid * mid < x 这边
-            if (mid * mid <= x) {
-                // 下一轮搜索区间是 [left..mid - 1]（）
+        // 程序走到这里一定有 target <= nums[len - 1]
+        var left = 0
+        var right = len - 1
+        // 在区间 nums[left..right] 里查找第 1 个大于等于 target 的元素的下标
+        while (left < right) {
+            val mid = left + (right - left) / 2
+            // mid 在左区间
+            // 如果当前 mid 看到的数值严格小于 target，那么 mid 以及 mid 左边的所有元素就一定不是题目要求的输出
+            if (nums[mid] < target) {
+                // 下一轮搜索的区间是 [mid + 1..right]
                 left = mid + 1
-                res = mid
-            } else {
-                // 下一轮搜索区间是 [mid..right]
-                right = mid - 1
+            } else if (nums[mid] >= target) {
+                // 下一轮搜索的区间是 [left..mid]
+                right = mid
             }
         }
 
-        return res.toInt()
+        // 由于执行到最后 nums[left..right] 里一定存在插入元素的位置，并且退出循环的时候一定有 left == right 成立，因此直接返回 left 或者 right 均可。
+        return left
     }
-
-    /**
-     * 69. x 的平方根。方法二：牛顿迭代，
-     *
-     * 思想：v = (v + a/v)/2
-     *
-     * 时间复杂度：O(logX)，此方法是二次收敛的，相较于二分查找更快。。
-     * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
-     *
-     * https://leetcode-cn.com/problems/sqrtx/solution/69-x-de-ping-fang-gen-by-chen-li-guan-2/
-     */
-    fun mySqrt1(x: Int): Int {
-        var v = x.toLong()
-        while (x < v * v) {
-            v = (v + x / v) / 2
-        }
-        return v.toInt()
-    }
-
 
     /**
      * 33. 搜索旋转排序数组  5,6,7,0,1,2,3,4  6
@@ -156,45 +158,46 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun search(nums: IntArray, target: Int): Int {
+        val len = nums.size
+        if (len == 0) return -1
+
         var left = 0
-        var right: Int = nums.size - 1
-        var mid = 0
+        var right = len - 1
 
-        while (left <= right) {
-            mid = (right - left) / 2 + left
-
-            if (nums[mid] == target) {
-                // 直接返回
-                return mid
-            }
+        while (left < right) {
+            // 当看到边界设置行为是 right = mid - 1 与 left = mid 的时候，需要将 mid 的下取整行为调整为上取整，以避免出现死循环
+            val mid = left + (right - left + 1) / 2
 
             // 先根据 nums[mid] 与 nums[left] 的关系判断 mid 是在左段还是右段
-            if (nums[mid] >= nums[left]) {
-                // 落在同一数组的情况，同时落在数组1 或 数组2
-                if (target >= nums[left] && target < nums[mid]) {
-                    // target 落在 left 和 mid 之间，则移动我们的 right，完全有序的一个区间内查找
-                    right = mid - 1
-                } else {
-                    // target 落在 mid 和 right 之间，有可能在数组1， 也有可能在数组2
-                    left = mid + 1
-                }
-
-            } else if (nums[mid] < nums[left]) {
-                // 不落在同一数组的情况，left 在数组1，mid 落在 数组2
-                if (target > nums[mid] && target <= nums[right]) {
+            if (nums[mid] < nums[right]) {
+                // 在有序区间 [mid..right] 里的条件；把比较好些的判断（target 落在有序的那部分）放在 if 的开头考虑
+                if (nums[mid] <= target && target <= nums[right]) {
                     // 有序的一段区间，target 在 mid 和 right 之间
-                    left = mid + 1
+                    left = mid
                 } else {
                     // 两种情况，target 在 left 和 mid 之间
                     right = mid - 1
                 }
 
+            } else if (nums[mid] >= nums[right]) {
+                // 区间 [left..mid] 内的元素一定是有序的；
+                if (nums[left] <= target && target <= nums[mid - 1]) {  // mid - 1 是为了与上一个分支的边界设置行为一致
+                    // target 落在 left 和 mid 之间，则移动我们的 right，完全有序的一个区间内查找
+                    right = mid - 1
+                } else {
+                    // target 落在 mid 和 right 之间，有可能在数组1， 也有可能在数组2
+                    left = mid
+                }
             }
         }
 
-        // 没有查找到
+        // 注意：退出循环的时候，我们不能确定 nums[left] 是否等于 target，因此还需要单独做一次判断；
+        if (nums[left] == target) {
+            return left
+        }
         return -1
     }
+
 
     /**
      * 153. 寻找旋转排序数组中的最小值
@@ -212,22 +215,21 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         while (left < right) {                           // 循环不变式，如果left == right，则循环结束
             val mid = left + (right - left) / 2     // 地板除，mid更靠近left
 
-            if (nums[mid] > nums[right]) {               // 中值 > 右值，最小值在右半边，收缩左边界
-                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过 mid
-            } else if (nums[mid] <= nums[right]) {       // 明确中值 < 右值，最小值在左半边，收缩右边界
+            if (nums[mid] < nums[right]) {              // 明确中值 < 右值，最小值在左半边，收缩右边界
                 right = mid                              // 因为中值 <= 右值，中值也可能是最小值，右边界只能取到 mid 处
+            } else if (nums[mid] >= nums[right]) {        // 中值 > 右值，最小值在右半边，收缩左边界
+                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过 mid
             }
         }
 
         return nums[left]                                // 循环结束，left == right，最小值输出 nums[left] 或 nums[right] 均可
     }
 
-
     /**
      * 154. 寻找旋转排序数组中的最小值 II == 剑指 Offer 11. 旋转数组的最小数字
      * 区别 153：可能存在 重复 元素值的数组 nums
      *
-     * 时间复杂度：时间复杂度为 O(logn)。
+     * 时间复杂度：O(logn)。
      * 空间复杂度：O(1)。
      *
      * https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/solution/154-xun-zhao-xuan-zhuan-pai-xu-shu-zu-zh-xshl/
@@ -241,10 +243,10 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         while (left < right) {                           // 循环不变式，如果left == right，则循环结束
             val mid = left + (right - left) / 2     // 地板除，mid更靠近left
 
-            if (nums[mid] > nums[right]) {               // 中值 > 右值，最小值在右半边，收缩左边界
-                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过 mid
-            } else if (nums[mid] < nums[right]) {        // 明确中值 < 右值，最小值在左半边，收缩右边界
+            if (nums[mid] < nums[right]) {              // 明确中值 < 右值，最小值在左半边，收缩右边界
                 right = mid                              // 因为中值 <= 右值，中值也可能是最小值，右边界只能取到 mid 处
+            } else if (nums[mid] > nums[right]) {        // 中值 > 右值，最小值在右半边，收缩左边界
+                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过 mid
             } else {
                 right--  // middle 既不大于 left 的值，也不小于 right 的值，代表着 middle 可能等于 left 的值，或者 right 的值，只能让 right 递减，来一个一个找最小值了。
             }
@@ -253,9 +255,75 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         return nums[left]                                // 循环结束，left == right，最小值输出 nums[left] 或 nums[right] 均可
     }
 
+
     /**
-     * 162. 寻找峰值
-     * 思路：出现了 nums[-1] = nums[n] = -∞，这就代表着 只要数组中存在一个元素比相邻元素大，那么沿着它一定可以找到一个峰值。因此，使用二分查找找到峰值。
+     * 34. 在排序数组中查找元素的第一个和最后一个位置
+     *
+     * 时间复杂度：O(logn)。
+     * 空间复杂度：O(1)。
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun searchRange(nums: IntArray, target: Int): IntArray? {
+        val len = nums.size
+        if (len == 0) return intArrayOf(-1, -1)
+
+        val firstPosition = findFirstPosition(nums, target)
+        if (firstPosition == -1) {
+            return intArrayOf(-1, -1)
+        }
+
+        val lastPosition = findLastPosition(nums, target)
+        return intArrayOf(firstPosition, lastPosition)
+    }
+
+    // 完全同 704. 二分查找
+    fun findFirstPosition(nums: IntArray, target: Int): Int {
+        var left = 0
+        var right = nums.size - 1
+        while (left < right) {
+            val mid = left + (right - left) / 2
+            // 小于一定不是解
+            if (nums[mid] < target) {
+                // 下一轮搜索区间是 [mid + 1..right]
+                left = mid + 1
+            } else {
+                // nums[mid] > target，下一轮搜索区间是 [left..mid]
+                right = mid
+            }
+        }
+
+        if (nums[left] == target) {
+            return left
+        }
+
+        return -1
+    }
+
+    fun findLastPosition(nums: IntArray, target: Int): Int {
+        var left = 0
+        var right = nums.size - 1
+        while (left < right) {
+            val mid = left + (right - left + 1) / 2
+            if (nums[mid] > target) {
+                // 下一轮搜索区间是 [left..mid - 1]
+                right = mid - 1
+            } else {
+                // 下一轮搜索区间是 [mid..right]
+                left = mid
+            }
+        }
+
+        return left
+    }
+
+
+
+    /**
+     * 162. 寻找峰值   [1,2,1,3,5,6,4]  位置5->6
+     * 思路：出现了 nums[-1] = nums[n] = -∞，这就代表着 （只要数组中存在一个元素比相邻元素大，那么沿着它一定可以找到一个峰值）。因此，使用二分查找找到峰值。
      *
      * 时间复杂度：O(logN)。
      * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
@@ -281,5 +349,77 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return left
+    }
+
+    /**
+     * 方法二：线性扫描
+     *
+     * 时间复杂度 : O(n)。对长度为 n 的数组 nums 只进行一次遍历。
+     * 空间复杂度 : O(1)。只使用了常数空间。
+     *
+     * @param nums
+     * @return
+     */
+    fun findPeakElement1(nums: IntArray): Int {
+        for (i in 0 until nums.size - 1) {
+            if (nums[i] > nums[i + 1]) {
+                return i
+            }
+        }
+        return nums.size - 1
+    }
+
+    /**
+     * 69. x 的平方根。方法一：二分查找
+     *
+     * 思想：一个数的平方根肯定不会超过它自己，最小是0，范围最大是自己。例如 ：8的平方根，8的一半是4，4^2=16>8，
+     *      意即：如果一个数的一半的平方大于它自己，那么这个数的取值范围在小于4的一半：0-3
+     *
+     * 时间复杂度：O(logX)，二分法的时间复杂度是对数级别的。
+     * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
+     *
+     * https://leetcode-cn.com/problems/sqrtx/solution/69-x-de-ping-fang-gen-by-chen-li-guan-2/
+     */
+    fun mySqrt(x: Int): Int {
+        // 特殊值判断
+        if (x == 0) return 0
+        if (x == 1) return 1
+
+        var left = 1
+        var right = x / 2
+
+        // 在区间 [left..right] 查找目标元素
+        while (left < right) {
+            val mid = left + (right - left + 1) / 2
+
+            // 注意：这里为了避免乘法溢出，改用除法
+            if (mid > x / mid) {
+                // 下一轮搜索区间是 [left..mid - 1]
+                right = mid - 1
+            } else {
+                // 下一轮搜索区间是 [mid..right]
+                left = mid
+            }
+        }
+
+        return left
+    }
+
+    /**
+     * 69. x 的平方根。方法二：牛顿迭代，
+     *
+     * 思想：v = (v + a/v)/2
+     *
+     * 时间复杂度：O(logX)，此方法是二次收敛的，相较于二分查找更快。。
+     * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
+     *
+     * https://leetcode-cn.com/problems/sqrtx/solution/69-x-de-ping-fang-gen-by-chen-li-guan-2/
+     */
+    fun mySqrt1(x: Int): Int {
+        var v = x.toLong()
+        while (x < v * v) {
+            v = (v + x / v) / 2
+        }
+        return v.toInt()
     }
 }

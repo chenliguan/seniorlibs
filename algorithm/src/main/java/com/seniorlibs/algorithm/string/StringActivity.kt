@@ -349,10 +349,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
         // 2、处理正负号：如果出现符号字符，仅第1个有效，并记录正负
         var sign = 1
-        val firstChar = str[i]
-        if (firstChar == '+') {
+        val ch = str[i]
+        if (ch == '+') {
             i++
-        } else if (firstChar == '-') {
+        } else if (ch == '-') {
             i++
             sign = -1
         }
@@ -362,9 +362,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         while (i < str.length) {
             // 3.1 取出当前数字
             val temp = str[i] - '0'
+
             // 3.2 先判断不合法的情况
             if (temp < 0 || temp > 9) break
-
             // 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判断乘以 10 以后是否越界
             if (res > Int.MAX_VALUE / 10 || (res == Int.MAX_VALUE / 10 && temp > Int.MAX_VALUE % 10)) {
                 return if (sign == 1) Int.MAX_VALUE else Int.MIN_VALUE
@@ -759,7 +759,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 01.06. 字符串压缩
+     * 01.06. 字符串压缩（了解）
      *
      * 时间复杂度：O(n)，其中 n 为字符串的长度，即遍历一次字符串的复杂度。
      * 空间复杂度：O(1)。
@@ -797,7 +797,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 443. 压缩字符串
+     * 443. 压缩字符串（了解）
      *
      * 不断右移右指针，使窗口不断增大；
      * 当窗口内出现一个不同的元素时，就可以将元素及其数量（等于左右指针之差）更新在数组中，然后让左指针指向右指针；
@@ -1093,6 +1093,49 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
             // 添加当前位
             res.append(sum % 10)
+
+            i--
+            j--
+        }
+
+        // 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
+        if (carry == 1) res.append(1)
+
+        // 最后翻转恢复字符串，再返回
+        return res.reverse().toString()
+    }
+
+    /**
+     * 67. 二进制求和
+     *
+     * 思路：设定 i，j 双指针分别指向 num1，num2 尾部，模拟人工加法
+     *
+     * 时间复杂度 O(max(M,N)))：其中 M，N 为 2 数字长度，按位遍历一遍数字（以较长的数字为准）；
+     * 空间复杂度 O(1)：指针与变量使用常数大小空间。
+     *
+     * @param num1
+     * @param num2
+     * @return
+     */
+    fun addBinary(num1: String, num2: String): String? {
+        var i = num1.length - 1
+        var j = num2.length - 1
+
+        var carry = 0
+        val res = StringBuilder()
+
+        while (i >= 0 || j >= 0) {
+            val n1 = if (i >= 0) num1[i] else '0'
+            val n2 = if (j >= 0) num2[j] else '0'
+
+            // 分别获取两个字符对应的字面数值，然后相加，再加上进位
+            val sum = n1.toInt() + n2.toInt() - 2 * '0'.toInt() + carry
+
+            // 求值：获取进位
+            carry = sum / 2
+
+            // 添加当前位
+            res.append(sum % 2)
 
             i--
             j--
