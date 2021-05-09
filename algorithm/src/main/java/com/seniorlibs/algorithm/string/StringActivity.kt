@@ -475,6 +475,45 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 151. 翻转字符串里的单词
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/reverse-words-in-a-string/solution/151-fan-zhuan-zi-fu-chuan-li-de-dan-ci-b-8d03/
+     * @param s
+     * @return
+     */
+    fun reverseStrWords(s: String): String {
+        val stack = LinkedList<String>()
+
+        var word = StringBuilder()
+        // 先遍历字符串，提取单词入栈
+        for (i in 0 until s.length) {
+            if (s[i] != ' ') {
+                word.append(s[i])
+
+                // 关键判断条件：什么时候入栈，当字母后有空格或已是最后一个则判断为单词入栈
+                if (s[i + 1] == ' ' || i == s.length - 1) {
+                    stack.push(word.toString())
+                    word = StringBuilder()
+                }
+            }
+        }
+
+        // 加入 栈中元素 和 空格 组成反转后结果
+        val res = StringBuilder()
+        while (stack.isNotEmpty()) {
+            res.append(stack.pop())
+            if (stack.isNotEmpty()) {
+                res.append(' ')
+            }
+        }
+
+        return res.toString()
+    }
+
+    /**
      * 7. 整数反转
      * 思想："弹出" x 的最后一位数字，并将它 "推入" 到 res 的后面。最后，res 将与 x 相反
      *
