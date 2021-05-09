@@ -724,4 +724,52 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         return dummy.next
     }
+
+
+    /**
+     * 61. 旋转链表
+     *
+     * 先转化为循环链表，再找头结点
+     *
+     * 时间复杂度：O(n)，其中 n 是链表的长度。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/rotate-list/solution/61-xuan-zhuan-lian-biao-by-chen-li-guan-zotm/
+     * @param head
+     * @param k
+     * @return
+     */
+    fun rotateRight(head: ListNode?, k: Int): ListNode? {
+        if (head == null) return head
+
+        var k = k
+
+        // 1.计算链表的长度
+        var n = 1
+        var p = head
+        while (p?.next != null) {
+            p = p.next
+            n++
+        }
+
+        // 2.链表最后一位值的 next 指向原链表首位数字，转化为循环链表
+        p?.next = head
+
+        // 避免 K 可能会大于最大长度
+        k = k % n
+
+        // 3.找到新表头的前驱节点
+        var count = 0
+        var cur = head
+        while (count < n - k - 1) {
+            // 记录步数
+            count++
+            cur = cur?.next
+        }
+
+        // 4.在新的头结点之前断环
+        val res = cur?.next
+        cur?.next = null
+        return res
+    }
 }
