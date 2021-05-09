@@ -250,13 +250,13 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun dailyTemperatures(T: IntArray): IntArray? {
         val stack = LinkedList<Int>()
-        val array = IntArray(T.size)
+        val res = IntArray(T.size)
 
         for (i in 0 until T.size) {
             // 如果当前遍历的数比栈顶大，立马弹出栈顶计算天数，直到栈为空
             while (stack.isNotEmpty() && T[i] > T[stack.peek()]) {
                 val prevIndex = stack.pop()
-                array[prevIndex] = i - prevIndex
+                res[prevIndex] = i - prevIndex
             }
 
             stack.push(i)
@@ -264,10 +264,42 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 
         while (stack.isNotEmpty()) {
             // 这里可以删掉
-            array[stack.pop()] = 0
+            res[stack.pop()] = 0
         }
-        return array
+        return res
     }
 
 
+    /**
+     * 找到数组中, 比左边所有数字都小, 比右边所有数字都大的 数字
+     *
+     * 思路：维护一个单调递减栈，同时记录已遍历的最小值。遍历数组，对于数组当前值，小于最小值，则入栈，同时更新最小值；否则，出栈直到栈顶元素大于当前值。
+     *
+     * input:  9,8,7,3,4,2,1
+     * output: 9,8,7,2,1
+     * input:  3,3,1
+     * output: 1
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     */
+    fun findMax(array: IntArray) {
+        val stack = LinkedList<Int>()
+        var minLeft = Int.MAX_VALUE
+
+        for (num in array) {
+            if (num < minLeft) {
+                minLeft = num
+                stack.push(num)
+            } else {
+                while (!stack.isEmpty() && num >= stack.peek()) {
+                    stack.pop()
+                }
+            }
+        }
+
+        while (!stack.isEmpty()) {
+            System.out.println(stack.pop())
+        }
+    }
 }
