@@ -444,6 +444,35 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         return String(ch)
     }
 
+    /**
+     * 557. 反转字符串中的单词 III
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(n)。
+     *
+     * @param s
+     * @return
+     */
+    fun reverseWords(s: String): String? {
+        val ch = s.toCharArray()
+        var start = 0
+        for (i in 0 until ch.size) {
+            if (ch[i] == ' ') {
+                swap(start, i - 1, ch)
+                // 更新 start 为下一个单词的左索引
+                start = i + 1
+                continue
+            }
+
+            // 到了字符数组结尾，那么最后一个单词的开头和结束索引分别是 start 和 i = n - 1
+            if (i == ch.size - 1) {
+                swap(start, i, ch)
+            }
+        }
+
+        return String(ch)
+    }
+
 
     /**
      * 7. 整数反转
@@ -1284,6 +1313,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 3. 无重复字符的最长子串
+     *
      * 思路：双指针，滑动窗口，保证每个窗口里字母都是唯一的。
      *      使用 map 来记录一个字母，key 值为字符，value 值为字符位置 +1，+1 表示从字符位置后一个才开始不重复.
      *      没有重复字母时，调整右边界。当窗口内出现重复字母时，调整左边界.
