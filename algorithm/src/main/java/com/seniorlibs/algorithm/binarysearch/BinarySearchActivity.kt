@@ -109,6 +109,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(logn)。
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/search-insert-position/solution/35-sou-suo-cha-ru-wei-zhi-by-chen-li-gua-70lp/
      * @param nums
      * @param target
      * @return
@@ -205,6 +206,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：时间复杂度为 O(logn)。
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/solution/153-xun-zhao-xuan-zhuan-pai-xu-shu-zu-zh-6hsd/
      * @param nums
      * @return
      */
@@ -308,12 +310,12 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         var right = nums.size - 1
         while (left < right) {
             val mid = left + (right - left + 1) / 2
-            if (nums[mid] > target) {
-                // 下一轮搜索区间是 [left..mid - 1]
-                right = mid - 1
-            } else {
+            if (nums[mid] <= target) {
                 // 下一轮搜索区间是 [mid..right]
                 left = mid
+            } else {
+                // 下一轮搜索区间是 [left..mid - 1]
+                right = mid - 1
             }
         }
 

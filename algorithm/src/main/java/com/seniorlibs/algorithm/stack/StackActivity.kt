@@ -277,6 +277,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      *
      * input:  9,8,7,3,4,2,1
      * output: 9,8,7,2,1
+     *
      * input:  3,3,1
      * output: 1
      *
