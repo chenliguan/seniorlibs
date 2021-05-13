@@ -688,12 +688,14 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         while (right < nums.size) {
             // 移动右指针，扩大窗口，直到子数组和 >= 目标值 target
-            sum += nums[right++]
+            sum += nums[right]
+            right++
 
             // 移动左指针，缩小窗口，直到子数组和 < 目标值 target
             while (sum >= target) {
                 min = Math.min(min, right - left)
-                sum -= nums[left++]
+                sum -= nums[left]
+                left++
             }
         }
 
@@ -847,13 +849,18 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         // slow 指针位置不变，将 fast 指针重新 指向链表头部节点
         fast = 0
 
-        // slow和fast同时每轮向前走 11 步；
-        while (nums[slow] != nums[fast]) {
+        // slow和fast同时每轮向前走 1 步；
+        while (true) {
             slow = nums[slow]
             fast = nums[fast]
+
+            // 第一次相遇
+            if (slow == fast) {
+                break
+            }
         }
 
         // 双指针第二次相遇
-        return nums[slow]
+        return slow
     }
 }

@@ -1417,21 +1417,24 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @param s
      * @return
      */
-    fun lengthOfLongestSubstring(str: String): Int {
-        if (str.isEmpty()) return 0
+    fun lengthOfLongestSubstring(s: String): Int {
+        if (s.isEmpty()) return 0
 
-        val map = hashMapOf<Char, Int>()
+        val map = mutableMapOf<Char, Int>()
         var left = 0
         var res = 0
 
-        for (i in 0 until str.length) {
-            if (map.containsKey(str[i])) {
-                left = Math.max(left, map[str[i]]!!)
+        for (i in 0 until s.length) {
+            // 先判断 右边新字符是否已重复
+            if (map.containsKey(s[i])) {
+                left = Math.max(left, map[s[i]]!!)
             }
 
-            res = Math.max(res, i - left + 1)
+            // 扩大右边界并更新窗口状态
+            map[s[i]] = i + 1
 
-            map[str[i]] = i + 1
+            // 计算无重复字符的最长子串
+            res = Math.max(res, i - left + 1)
         }
 
         return res
@@ -1464,16 +1467,15 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             val index = s[right] - 'A'
             // 数目加1，要求出窗口内最多元素
             array[index]++
+            right++
             // 得出最大 maxSame
             maxSame = Math.max(maxSame, array[index])
 
             // 要替换次数大于 k 了，窗口超出范围了，缩小窗口左边
-            if (right - left - maxSame + 1 > k) {
+            while (right - left - maxSame > k) {
                 array[s[left] - 'A']--
                 left++
             }
-
-            right++
         }
 
         return right - left

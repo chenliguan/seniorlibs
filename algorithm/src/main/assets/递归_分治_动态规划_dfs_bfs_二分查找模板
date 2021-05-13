@@ -295,8 +295,26 @@ fun postorder1(root: Node?): List<Int> {
     return res.reversed()
 }
 
+九、滑动窗口
 
-九、并查集
+void slidwindow(nums : IntArray)
+{
+    int left = 0, right = 0;
+    while(right < nums.size())
+    {
+        ...// 扩大右边界并更新窗口状态
+        right++;
+
+        while(需要收缩) // 窗口到达什么状态需要收缩
+        {
+            ...// 缩小左边界并更新窗口状态
+            left++;
+        }
+    }
+}
+
+
+十、并查集
 class UnionFind(n: Int) {
 
     private var count = 0
