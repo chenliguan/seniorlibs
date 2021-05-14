@@ -133,22 +133,22 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      * @param array
      * @return
      */
-    fun evalRPN(array: Array<String>): Int {
+    fun evalRPN(ts: Array<String>): Int {
         val stack: Deque<Int> = LinkedList()
-        for (s in array) {
+        for (s in ts) {
             if ("+-*/".contains(s)) {
                 // 遇到运算符时，从栈中取出两个数进行运算，并将结果放回栈内
-                val b = stack.pollLast()  // 1，后进先出
-                val a = stack.pollLast()  // 2
+                val b = stack.pop()  // 1，后进先出
+                val a = stack.pop()  // 2
                 val result = calc(a, b, s)
-                stack.addLast(result)
+                stack.push(result)
             } else {
                 // 入栈所有的数字
-                stack.addLast(s.toInt())
+                stack.push(s.toInt())
             }
         }
         // 整个过程结束后，栈顶元素就是最终结果，弹出
-        return stack.pollLast()
+        return stack.pop()
     }
 
     fun calc(a: Int, b: Int, op: String): Int {

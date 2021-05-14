@@ -768,31 +768,25 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @param s
      * @return
      */
-    fun compressString(s: String): String? {
-        if (s.isEmpty()) return s
+    fun compressString(S: String): String {
+        val N = S.length
+        var i = 0
+        val sb = StringBuilder()
 
-        val res = StringBuffer()
-        var c = s[0]
-        var count = 1
-
-        // bbbkk
-        for (i in 1 until s.length) {
-            if (c == s[i]) {
-                count++           // bbb -> count = 3，kk -> count = 2
-            } else {
-                res.append(c)     // b
-                res.append(count) // 3
-
-                c = s[i]          // c = k
-                count = 1         // count = 1
+        while (i < N) {
+            var j = i
+            while (j < N && S[j] == S[i]) {
+                j++
             }
+
+            sb.append(S[i])
+            sb.append(j - i)
+            i = j
         }
 
-        res.append(c)             // k
-        res.append(count)         // 2
-
+        val res = sb.toString()
         // 若"压缩"后的字符串比原字符串长度更长，则返回原先的字符串
-        return if (res.length >= s.length) s else res.toString()
+        return if (res.length < S.length) res else S
     }
 
 
