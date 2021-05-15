@@ -66,6 +66,54 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/
      */
 
+
+    /**
+     * 寻找数组中给定元素的下界
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun lowerBound(nums: IntArray, target: Int): Int {
+        var l = 0
+        var r = nums.size
+        while (l < r) {
+            val m = l + (r - l) / 2
+            if (nums[m] < target) {
+                l = m + 1
+            } else {
+                r = m
+            }
+        }
+
+        // 由于执行到最后 nums[l..r] 里一定存在插入元素的位置，并且退出循环的时候一定有 l == r 成立，因此直接返回 l 或者 r 均可。
+        return l
+    }
+
+    /**
+     * 寻找数组中给定元素的上界
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun upperBound(nums: IntArray, target: Int): Int {
+        var l = 0
+        var r = nums.size
+        while (l <= r) {
+            val m = l + (r - l) / 2
+            if (nums[m] < target) {
+                l = m + 1
+            } else {
+                r = m
+            }
+        }
+
+        // 由于执行到最后 nums[l..r] 里一定存在插入元素的位置，并且退出循环的时候一定有 l == r 成立，因此直接返回 l 或者 r 均可。
+        return l
+    }
+
+
     /**
      * 704. 二分查找
      *
@@ -78,28 +126,12 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
      fun search1(nums: IntArray, target: Int): Int {
-        val len = nums.size
-        var left = 0
-        var right = len - 1
+        if (nums.isEmpty()) return 0
 
-        // 在 nums[left..right] 里查找 target
-        while (left < right) {
-            val mid = left + (right - left) / 2
-            // mid 在左区间
-            if (nums[mid] < target) {
-                // 下一轮搜索区间：[mid + 1..right]
-                left = mid + 1
-            } else if (nums[mid] >= target) {
-                // 下一轮搜索区间：[left..mid]
-                right = mid
-            }
-        }
+        val l = lowerBound(nums, target)
 
-        // 注意：退出循环的时候，我们不能确定 nums[left] 是否等于 target，因此还需要单独做一次判断；
-        if (nums[left] == target) {
-            return left
-        }
-        return -1
+        // 注意：退出循环的时候，我们不能确定 nums[l] 是否等于 target，因此还需要单独做一次判断；
+        return if (l < nums.size && nums[l] == target) l else -1
     }
 
     /**
@@ -115,32 +147,58 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun searchInsert(nums: IntArray, target: Int): Int {
-        val len = nums.size
-        // 特殊判断
-        if (nums[len - 1] < target) {
-            return len
-        }
+        if (nums.isEmpty()) return 0
 
-        // 程序走到这里一定有 target <= nums[len - 1]
-        var left = 0
-        var right = len - 1
-        // 在区间 nums[left..right] 里查找第 1 个大于等于 target 的元素的下标
-        while (left < right) {
-            val mid = left + (right - left) / 2
-            // mid 在左区间
-            // 如果当前 mid 看到的数值严格小于 target，那么 mid 以及 mid 左边的所有元素就一定不是题目要求的输出
-            if (nums[mid] < target) {
-                // 下一轮搜索的区间是 [mid + 1..right]
-                left = mid + 1
-            } else if (nums[mid] >= target) {
-                // 下一轮搜索的区间是 [left..mid]
-                right = mid
-            }
-        }
-
-        // 由于执行到最后 nums[left..right] 里一定存在插入元素的位置，并且退出循环的时候一定有 left == right 成立，因此直接返回 left 或者 right 均可。
-        return left
+        return lowerBound(nums, target)
     }
+
+
+    /**
+     * 34. 在排序数组中查找元素的第一个和最后一个位置
+     *
+     * 时间复杂度：O(logn)。
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/34-zai-pai-xu-shu-zu-zhong-cha-zhao-yuan-5zut/
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun searchRange(nums: IntArray, target: Int): IntArray? {
+        val res = intArrayOf(-1, -1)
+        if (nums.isEmpty()) return res
+
+        val l = lowerBound(nums, target)
+        val r = upperBound(nums, target)
+        if (l == r) return res
+
+        res[0] = l
+        res[1] = r - 1
+        return res
+    }
+
+    /**
+     * 剑指 Offer 53 - I. 在排序数组中查找数字 I
+     *
+     * 时间复杂度：O(logn)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun searchTimes(nums: IntArray, target: Int): Int {
+        if (nums.isEmpty()) return 0
+
+        val l = lowerBound(nums, target)
+        val r = upperBound(nums, target)
+        if (l == r) return 0
+
+        return r - l
+    }
+
 
     /**
      * 33. 搜索旋转排序数组  5,6,7,0,1,2,3,4  6
@@ -256,72 +314,6 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
         return nums[left]                                // 循环结束，left == right，最小值输出 nums[left] 或 nums[right] 均可
     }
-
-
-    /**
-     * 34. 在排序数组中查找元素的第一个和最后一个位置
-     *
-     * 时间复杂度：O(logn)。
-     * 空间复杂度：O(1)。
-     *
-     * @param nums
-     * @param target
-     * @return
-     */
-    fun searchRange(nums: IntArray, target: Int): IntArray? {
-        val len = nums.size
-        if (len == 0) return intArrayOf(-1, -1)
-
-        val firstPosition = findFirstPosition(nums, target)
-        if (firstPosition == -1) {
-            return intArrayOf(-1, -1)
-        }
-
-        val lastPosition = findLastPosition(nums, target)
-        return intArrayOf(firstPosition, lastPosition)
-    }
-
-    // 完全同 704. 二分查找
-    fun findFirstPosition(nums: IntArray, target: Int): Int {
-        var left = 0
-        var right = nums.size - 1
-        while (left < right) {
-            val mid = left + (right - left) / 2
-            // 小于一定不是解
-            if (nums[mid] < target) {
-                // 下一轮搜索区间是 [mid + 1..right]
-                left = mid + 1
-            } else {
-                // nums[mid] > target，下一轮搜索区间是 [left..mid]
-                right = mid
-            }
-        }
-
-        if (nums[left] == target) {
-            return left
-        }
-
-        return -1
-    }
-
-    // 888 -> 找出最后一个 8
-    fun findLastPosition(nums: IntArray, target: Int): Int {
-        var left = 0
-        var right = nums.size - 1
-        while (left < right) {
-            val mid = left + (right - left + 1) / 2
-            if (nums[mid] <= target) {
-                // 下一轮搜索区间是 [mid..right]
-                left = mid
-            } else {
-                // 下一轮搜索区间是 [left..mid - 1]
-                right = mid - 1
-            }
-        }
-
-        return left
-    }
-
 
 
     /**
