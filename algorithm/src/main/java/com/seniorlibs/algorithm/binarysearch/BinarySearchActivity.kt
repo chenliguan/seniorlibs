@@ -425,4 +425,39 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         }
         return v.toInt()
     }
+
+    /**
+     * 74. 搜索二维矩阵
+     *
+     * 时间复杂度：O(logmn)，其中 m 和 n 分别是矩阵的行数和列数。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/search-a-2d-matrix/solution/74-sou-suo-er-wei-ju-zhen-by-chen-li-gua-rj3e/
+     * https://leetcode-cn.com/problems/search-a-2d-matrix-ii/solution/240-sou-suo-er-wei-ju-zhen-ii-by-chen-li-f62s/
+     *
+     * @param matrix
+     * @param target
+     * @return
+     */
+    fun searchMatrix(matrix: Array<IntArray>, target: Int): Boolean {
+        var rows = matrix.size - 1
+        var columns = 0
+
+        // 以二维数组左下角为原点，建立直角坐标轴。
+        while (rows >= 0 && columns < matrix[0].size) {
+            val num = matrix[rows][columns]
+
+            if (num == target) {
+                return true
+            } else if (num < target) {
+                // 若当前数字小于了查找数，查找往右移一位。
+                columns++
+            } else {
+                // 若当前数字大于了查找数，查找往上移一位。
+                rows--
+            }
+        }
+
+        return false
+    }
 }
