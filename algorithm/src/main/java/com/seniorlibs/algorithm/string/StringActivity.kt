@@ -759,7 +759,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 01.06. 字符串压缩（了解）
+     * 01.06. 字符串压缩
      *
      * 时间复杂度：O(n)，其中 n 为字符串的长度，即遍历一次字符串的复杂度。
      * 空间复杂度：O(1)。
