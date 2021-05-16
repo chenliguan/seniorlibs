@@ -38,8 +38,15 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.btn_sqrt).setOnClickListener(this)
+        findViewById<View>(R.id.btn_search1).setOnClickListener(this)
+        findViewById<View>(R.id.btn_search_insert).setOnClickListener(this)
+        findViewById<View>(R.id.btn_search_range).setOnClickListener(this)
+        findViewById<View>(R.id.btn_search_times).setOnClickListener(this)
         findViewById<View>(R.id.btn_search).setOnClickListener(this)
+        findViewById<View>(R.id.btn_search_2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_min).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_min_2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_sqrt).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -48,12 +55,33 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_sqrt -> {
-                LogUtils.d(TAG, "69. x 的平方根：${mySqrt(8)}")
-                LogUtils.d(TAG, "69. x 的平方根：${mySqrt1(8)}")
+            R.id.btn_search1 -> {
+                LogUtils.d(TAG, "704. 二分查找：${search1(intArrayOf(1, 3, 5, 5, 7), 5)}")
+            }
+            R.id.btn_search_insert -> {
+                LogUtils.d(TAG, "35. 搜索插入位置：${searchInsert(intArrayOf(1, 3, 5, 5, 7), 4)}")
+            }
+            R.id.btn_search_range -> {
+                LogUtils.d(TAG, "34. 在排序数组中查找元素的第一个和最后一个位置：${searchRange(intArrayOf(1, 3, 5, 5, 7), 5)}")
+            }
+            R.id.btn_search_times -> {
+                LogUtils.d(TAG, "剑指 Offer 53 - I. 在排序数组中查找数字 I：${searchTimes(intArrayOf(1, 3, 5, 5, 7), 5)}")
             }
             R.id.btn_search -> {
-                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search(intArrayOf(1, 3), 2)}")
+                LogUtils.d(TAG, "33. 搜索旋转排序数组：${search(intArrayOf(5, 6, 7, 0, 1, 2), 1)}")
+            }
+            R.id.btn_search_2 -> {
+                LogUtils.d(TAG, "81. 搜索旋转排序数组 II：${search2(intArrayOf(5, 6, 7, 0, 0, 1, 2), 1)}")
+            }
+            R.id.btn_find_min -> {
+                LogUtils.d(TAG, "153. 寻找旋转排序数组中的最小值：${findMin(intArrayOf(5, 6, 7, 0, 1, 2))}")
+            }
+            R.id.btn_find_min_2 -> {
+                LogUtils.d(TAG, "154. 寻找旋转排序数组中的最小值 II：${findMin2(intArrayOf(5, 6, 7, 0, 0, 1, 2))}")
+            }
+            R.id.btn_sqrt -> {
+                LogUtils.d(TAG, "69. target 的平方根：${mySqrt(8)}")
+                LogUtils.d(TAG, "69. target 的平方根：${mySqrt1(8)}")
             }
             else -> {
             }
@@ -100,9 +128,9 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     fun upperBound(nums: IntArray, target: Int): Int {
         var l = 0
         var r = nums.size
-        while (l <= r) {
+        while (l < r) {
             val m = l + (r - l) / 2
-            if (nums[m] < target) {
+            if (nums[m] <= target) {
                 l = m + 1
             } else {
                 r = m
@@ -125,7 +153,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * @param target
      * @return
      */
-     fun search1(nums: IntArray, target: Int): Int {
+    fun search1(nums: IntArray, target: Int): Int {
         if (nums.isEmpty()) return 0
 
         val l = lowerBound(nums, target)
@@ -183,7 +211,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(logn)。
      * 空间复杂度：O(1)。
      *
-     * https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/
+     * https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/solution/jian-zhi-offer-53-i-zai-pai-xu-shu-zu-zh-9b5r/
      *
      * @param nums
      * @param target
@@ -201,65 +229,119 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 33. 搜索旋转排序数组  5,6,7,0,1,2,3,4  6
-     *
-     *      对于旋转数组，我们无法直接根据 nums[mid] 与 target 的大小关系来判断 target 是在 mid 的左边还是右边，因此需要「分段讨论」。
-     * 思想：循环判断，直到排除到只剩最后一个元素时，退出循环，如果该元素和 target 相同，直接返回下标，否则返回 -1。
+     * 33. 搜索旋转排序数组  5,6,7,0,1,2  0
      *
      * 时间复杂度：O(logn)，其中n为nums数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度O(logn)。
      * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
      *
      * https://leetcode-cn.com/problems/search-in-rotated-sorted-array/solution/33-sou-suo-xuan-zhuan-pai-xu-shu-zu-by-chen-li-gua/
-     *
      * https://leetcode-cn.com/problems/search-in-rotated-sorted-array/solution/yi-wen-dai-ni-shua-bian-er-fen-cha-zhao-dtadq/
+     *
      * @param nums
      * @param target
      * @return
      */
     fun search(nums: IntArray, target: Int): Int {
-        val len = nums.size
-        if (len == 0) return -1
+        var l = 0
+        var r = nums.size
 
-        var left = 0
-        var right = len - 1
+        while (l < r) {
+            val m = l + (r - l) / 2
+            
+            // 先处理掉能够取到的3个值。
+            if (nums[l] == target) return l
+            if (nums[m] == target) return m
+            // 这里不能用A[r]，因为我们使用的是开闭原则，右边始终是不能取到的。
+            if (nums[r - 1] == target) return r - 1
 
-        while (left < right) {
-            // 当看到边界设置行为是 right = mid - 1 与 left = mid 的时候，需要将 mid 的下取整行为调整为上取整，以避免出现死循环
-            val mid = left + (right - left + 1) / 2
-
-            // 先根据 nums[mid] 与 nums[left] 的关系判断 mid 是在左段还是右段
-            if (nums[mid] < nums[right]) {
-                // 在有序区间 [mid..right] 里的条件；把比较好些的判断（target 落在有序的那部分）放在 if 的开头考虑
-                if (nums[mid] <= target && target <= nums[right]) {
-                    // 有序的一段区间，target 在 mid 和 right 之间
-                    left = mid
+            // 这里开始把不要的区间切掉
+            if (nums[m] > nums[r - 1]) {
+                if (nums[l] < target && target < nums[m]) {
+                    // case (a)
+                    // 到这里，nums[m]已经不可能等于x，所以需要将[m ... r)这段区间一起扔掉，留下[l, m)这段区间，续断查找
+                    r = m
                 } else {
-                    // 两种情况，target 在 left 和 mid 之间
-                    right = mid - 1
+                    // case (b)
+                    // nums[m]已经不可能等于x，所以这里将[l ... m]这个区间切掉，留下[m + 1, r)
+                    l = m + 1
                 }
 
-            } else if (nums[mid] >= nums[right]) {
-                // 区间 [left..mid] 内的元素一定是有序的；
-                if (nums[left] <= target && target <= nums[mid - 1]) {  // mid - 1 是为了与上一个分支的边界设置行为一致
-                    // target 落在 left 和 mid 之间，则移动我们的 right，完全有序的一个区间内查找
-                    right = mid - 1
+            } else {
+                if (nums[m] < target && target < nums[r - 1]) {
+                    // case (c)
+                    // 到这里，左边的区间[l ... m]已经不需要了，只需要留下[m + 1, r)
+                    l = m + 1
                 } else {
-                    // target 落在 mid 和 right 之间，有可能在数组1， 也有可能在数组2
-                    left = mid
+                    // case (d)
+                    // 到这里，右边的区间[m ... r)，已经不需要了，只需要留下区间[l, m)
+                    r = m
                 }
             }
-        }
-
-        // 注意：退出循环的时候，我们不能确定 nums[left] 是否等于 target，因此还需要单独做一次判断；
-        if (nums[left] == target) {
-            return left
         }
         return -1
     }
 
 
     /**
-     * 153. 寻找旋转排序数组中的最小值
+     * 81. 搜索旋转排序数组 II  5,6,7,0,1,1,2  1
+     *
+     * 时间复杂度：O(logn)，其中n为nums数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度O(logn)。
+     * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
+     *
+     * https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/solution/81-sou-suo-xuan-zhuan-pai-xu-shu-zu-ii-b-uh9j/
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun search2(nums: IntArray, target: Int): Boolean {
+        var l = 0
+        var r = nums.size
+        while (l < r) {
+            val m = l + (r - l) / 2
+
+            // 先处理掉能够取到的3个值。这里不能用nums[r]，因为我们使用的是 开闭原则，右边始终是不能取到的。
+            if (nums[m] == target || nums[l] == target || nums[r - 1] == target) {
+                return true
+            }
+            // 区别：找到重复的下标都在 l，右移 l
+            if (nums[l] == nums[m]) {
+                l++
+                continue
+            }
+
+            // 这里开始把不要的区间切掉
+            if (nums[m] > nums[r - 1]) {
+                if (nums[l] < target && target < nums[m]) {
+                    // case (a)
+                    // 到这里，nums[m]已经不可能等于x，所以需要将[m ... r)这段区间一起扔掉，留下[l, m)这段区间，续断查找
+                    r = m
+                } else {
+                    // case (b)
+                    // nums[m]已经不可能等于x，所以这里将[l ... m]这个区间切掉，留下[m + 1, r)
+                    l = m + 1
+                }
+
+            } else {
+                if (nums[m] < target && target < nums[r - 1]) {
+                    // case (c)
+                    // 到这里，左边的区间[l ... m]已经不需要了，只需要留下[m + 1, r)
+                    l = m + 1
+                } else {
+                    // case (d)
+                    // 到这里，右边的区间[m ... r)，已经不需要了，只需要留下区间[l, m)
+                    r = m
+                }
+            }
+        }
+        return false
+    }
+    
+    
+    /**
+     * 153. 寻找旋转排序数组中的最小值     5, 6, 7, 0, 1, 2
+     *
+     * 注意：区别前面的题目，r = nums.size - 1
      *
      * 时间复杂度：时间复杂度为 O(logn)。
      * 空间复杂度：O(1)。
@@ -269,51 +351,62 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun findMin(nums: IntArray): Int {
-        var left = 0
-        var right = nums.size - 1                   // 左闭右闭区间，如果用右开区间则不方便判断右值
+        // 由于要使用A[r-1]，这里直接用了闭区间[l, r]
+        var l = 0
+        var r = nums.size - 1
 
-        while (left < right) {                           // 循环不变式，如果left == right，则循环结束
-            val mid = left + (right - left) / 2     // 地板除，mid更靠近left
+        // 保证区间中至少有一个元素
+        while (l < r) {
+            val m = l + (r - l) / 2
 
-            if (nums[mid] < nums[right]) {              // 明确中值 < 右值，最小值在左半边，收缩右边界
-                right = mid                              // 因为中值 <= 右值，中值也可能是最小值，右边界只能取到 mid 处
-            } else if (nums[mid] >= nums[right]) {        // 中值 > 右值，最小值在右半边，收缩左边界
-                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过 mid
+            // 当nums[m] > nums[r]时，nums[m]掉在左边的区间，此时[l, m]可以不要了，保留区间[m + 1, r]
+            if (nums[m] > nums[r]) {
+                l = m + 1
+            } else {
+                // 如果nums[m] < nums[r]，表示nums[m]掉在了右边的区间，那么此时[m + 1, r]可以不要了，保留区间[l, m]
+                r = m
             }
         }
-
-        return nums[left]                                // 循环结束，left == right，最小值输出 nums[left] 或 nums[right] 均可
+        return nums[l]
     }
 
+
     /**
-     * 154. 寻找旋转排序数组中的最小值 II == 剑指 Offer 11. 旋转数组的最小数字
+     * 154. 寻找旋转排序数组中的最小值 II == 剑指 Offer 11. 旋转数组的最小数字    5, 6, 7, 0, 0, 1, 2
      * 区别 153：可能存在 重复 元素值的数组 nums
      *
      * 时间复杂度：O(logn)。
      * 空间复杂度：O(1)。
      *
      * https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/solution/154-xun-zhao-xuan-zhuan-pai-xu-shu-zu-zh-xshl/
+     * https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/solution/154-xun-zhao-xuan-zhuan-pai-xu-shu-zu-zh-rzhu/
+     *
      * @param nums
      * @return
      */
-    fun minArray(nums: IntArray): Int {
-        var left = 0
-        var right = nums.size - 1                   // 左闭右闭区间，如果用右开区间则不方便判断右值
+    fun findMin2(nums: IntArray): Int {
+        // 由于要使用A[r-1]，这里直接用了闭区间[l, r]
+        var l = 0
+        var r = nums.size - 1
 
-        while (left < right) {                           // 循环不变式，如果left == right，则循环结束
-            val mid = left + (right - left) / 2     // 地板除，mid更靠近left
+        // 保证区间中至少有一个元素
+        while (l < r) {
+            val m = l + (r - l) / 2
 
-            if (nums[mid] < nums[right]) {              // 明确中值 < 右值，最小值在左半边，收缩右边界
-                right = mid                              // 因为中值 <= 右值，中值也可能是最小值，右边界只能取到 mid 处
-            } else if (nums[mid] > nums[right]) {        // 中值 > 右值，最小值在右半边，收缩左边界
-                left = mid + 1                           // 因为中值 > 右值，中值肯定不是最小值，左边界可以跨过 mid
+            // 当nums[m] > nums[r]时，nums[m]掉在左边的区间，此时[l, m]可以不要了，保留区间[m + 1, r]
+            if (nums[m] > nums[r]) {
+                l = m + 1
+            } else if (nums[m] < nums[r]) {
+                // 如果nums[m] < nums[r]，表示nums[m]掉在了右边的区间，那么此时[m + 1, r]可以不要了，保留区间[l, m]
+                r = m
             } else {
-                right--  // middle 既不大于 left 的值，也不小于 right 的值，代表着 middle 可能等于 left 的值，或者 right 的值，只能让 right 递减，来一个一个找最小值了。
+                // 区别：如果m与右边元素相等，由于重复元素的存在，并不能确定 nums[m] 究竟在最小值的左侧还是右侧，那么扔掉nums[r]
+                r--
             }
         }
-
-        return nums[left]                                // 循环结束，left == right，最小值输出 nums[left] 或 nums[right] 均可
+        return nums[l]
     }
+
 
 
     /**
@@ -365,7 +458,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 69. x 的平方根。方法一：二分查找
+     * 69. target 的平方根。方法一：二分查找
      *
      * 思想：一个数的平方根肯定不会超过它自己，最小是0，范围最大是自己。例如 ：8的平方根，8的一半是4，4^2=16>8，
      *      意即：如果一个数的一半的平方大于它自己，那么这个数的取值范围在小于4的一半：0-3
@@ -373,22 +466,22 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(logX)，二分法的时间复杂度是对数级别的。
      * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
      *
-     * https://leetcode-cn.com/problems/sqrtx/solution/69-x-de-ping-fang-gen-by-chen-li-guan-2/
+     * https://leetcode-cn.com/problems/sqrtx/solution/69-target-de-ping-fang-gen-by-chen-li-guan-2/
      */
-    fun mySqrt(x: Int): Int {
+    fun mySqrt(target: Int): Int {
         // 特殊值判断
-        if (x == 0) return 0
-        if (x == 1) return 1
+        if (target == 0) return 0
+        if (target == 1) return 1
 
         var left = 1
-        var right = x / 2
+        var right = target / 2
 
         // 在区间 [left..right] 查找目标元素
         while (left < right) {
             val mid = left + (right - left + 1) / 2
 
             // 注意：这里为了避免乘法溢出，改用除法
-            if (mid > x / mid) {
+            if (mid > target / mid) {
                 // 下一轮搜索区间是 [left..mid - 1]
                 right = mid - 1
             } else {
@@ -401,19 +494,19 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 69. x 的平方根。方法二：牛顿迭代，
+     * 69. target 的平方根。方法二：牛顿迭代，
      *
      * 思想：v = (v + a/v)/2
      *
      * 时间复杂度：O(logX)，此方法是二次收敛的，相较于二分查找更快。。
      * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
      *
-     * https://leetcode-cn.com/problems/sqrtx/solution/69-x-de-ping-fang-gen-by-chen-li-guan-2/
+     * https://leetcode-cn.com/problems/sqrtx/solution/69-target-de-ping-fang-gen-by-chen-li-guan-2/
      */
-    fun mySqrt1(x: Int): Int {
-        var v = x.toLong()
-        while (x < v * v) {
-            v = (v + x / v) / 2
+    fun mySqrt1(target: Int): Int {
+        var v = target.toLong()
+        while (target < v * v) {
+            v = (v + target / v) / 2
         }
         return v.toInt()
     }

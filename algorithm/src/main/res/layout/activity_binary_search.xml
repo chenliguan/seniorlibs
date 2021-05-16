@@ -8,13 +8,48 @@
     tools:ignore="MissingDefaultResource">
 
     <Button
-        android:id="@+id/btn_sqrt"
+        android:id="@+id/btn_search1"
         style="@style/BtnStyles"
-        android:text="69. x 的平方根" />
+        android:text="704. 二分查找" />
+
+    <Button
+        android:id="@+id/btn_search_insert"
+        style="@style/BtnStyles"
+        android:text="35. 搜索插入位置" />
+
+    <Button
+        android:id="@+id/btn_search_range"
+        style="@style/BtnStyles"
+        android:text="34. 在排序数组中查找元素的第一个和最后一个位置" />
+
+    <Button
+        android:id="@+id/btn_search_times"
+        style="@style/BtnStyles"
+        android:text="剑指 Offer 53 - I. 在排序数组中查找数字 I" />
 
     <Button
         android:id="@+id/btn_search"
         style="@style/BtnStyles"
         android:text="33. 搜索旋转排序数组" />
+
+    <Button
+        android:id="@+id/btn_search_2"
+        style="@style/BtnStyles"
+        android:text="81. 搜索旋转排序数组 II" />
+
+    <Button
+        android:id="@+id/btn_find_min"
+        style="@style/BtnStyles"
+        android:text="153. 寻找旋转排序数组中的最小值" />
+
+    <Button
+        android:id="@+id/btn_find_min_2"
+        style="@style/BtnStyles"
+        android:text="154. 寻找旋转排序数组中的最小值 II" />
+
+    <Button
+        android:id="@+id/btn_sqrt"
+        style="@style/BtnStyles"
+        android:text="69. x 的平方根" />
 
 </LinearLayout>
