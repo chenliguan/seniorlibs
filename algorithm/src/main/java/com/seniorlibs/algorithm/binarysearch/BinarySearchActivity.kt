@@ -46,7 +46,12 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_search_2).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_min).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_min_2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_peak_index_in_mountain_array).setOnClickListener(this)
+        findViewById<View>(R.id.btn_valid_mountain_array).setOnClickListener(this)
+        findViewById<View>(R.id.btn_get_number_same_as_index).setOnClickListener(this)
         findViewById<View>(R.id.btn_sqrt).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_peak_element).setOnClickListener(this)
+        findViewById<View>(R.id.btn_search_matrix).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -79,9 +84,29 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_find_min_2 -> {
                 LogUtils.d(TAG, "154. 寻找旋转排序数组中的最小值 II：${findMin2(intArrayOf(5, 6, 7, 0, 0, 1, 2))}")
             }
+            R.id.btn_peak_index_in_mountain_array -> {
+                LogUtils.d(TAG, "852. 山脉数组的峰顶索引：${peakIndexInMountainArray(intArrayOf(1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1))}")
+            }
+            R.id.btn_valid_mountain_array -> {
+                LogUtils.d(TAG, "941. 有效的山脉数组：${validMountainArray(intArrayOf(3, 5, 5))}")
+            }
+            R.id.btn_get_number_same_as_index -> {
+                LogUtils.d(TAG, "数组中数值和下标相等的元素：${getNumberSameAsIndex(intArrayOf(-3, -1, 1, 3, 5))}")
+            }
             R.id.btn_sqrt -> {
                 LogUtils.d(TAG, "69. target 的平方根：${mySqrt(8)}")
-                LogUtils.d(TAG, "69. target 的平方根：${mySqrt1(8)}")
+            }
+            R.id.btn_find_peak_element -> {
+                LogUtils.d(TAG, "162. 寻找峰值：${findPeakElement(intArrayOf(3, 5, 5))}")
+            }
+            R.id.btn_search_matrix -> {
+//                [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
+                val array = arrayOf(intArrayOf(1, 4, 7, 11, 15),
+                        intArrayOf(2, 5, 6, 12, 19),
+                        intArrayOf(3, 6, 9, 16, 22),
+                        intArrayOf(10, 13, 14, 17, 24),
+                        intArrayOf(18, 21, 23, 26, 30))
+                LogUtils.d(TAG, "74. 搜索二维矩阵：${searchMatrix(array, 5)}")
             }
             else -> {
             }
@@ -247,7 +272,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
         while (l < r) {
             val m = l + (r - l) / 2
-            
+
             // 先处理掉能够取到的3个值。
             if (nums[l] == target) return l
             if (nums[m] == target) return m
@@ -336,8 +361,8 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         }
         return false
     }
-    
-    
+
+
     /**
      * 153. 寻找旋转排序数组中的最小值     5, 6, 7, 0, 1, 2
      *
@@ -408,108 +433,228 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * 941. 有效的山脉数组   方法一：双指针
+     *
+     * 时间复杂度：O(N)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/valid-mountain-array/solution/941-you-xiao-de-shan-mai-shu-zu-by-chen-buvws/
+     * @param nums
+     * @return
+     */
+    fun validMountainArray(nums: IntArray): Boolean {
+        var l = 0
+        var r = nums.size - 1
+
+        // 从左边往右边找，一直找到山峰为止
+        while (l + 1 < nums.size && nums[l] < nums[l + 1]) {
+            l++
+        }
+
+        // 从右边往左边找，一直找到山峰为止
+        while (r > 0 && nums[r - 1] > nums[r]) {
+            r--
+        }
+
+        // 判断从左边和从右边找的山峰是不是同一个
+        return l > 0 && r < nums.size - 1 && l == r
+    }
 
     /**
-     * 162. 寻找峰值   [1,2,1,3,5,6,4]  位置5->6
-     * 思路：出现了 nums[-1] = nums[n] = -∞，这就代表着 （只要数组中存在一个元素比相邻元素大，那么沿着它一定可以找到一个峰值）。因此，使用二分查找找到峰值。
+     * 852. 山脉数组的峰顶索引    1,2,3,4,5,6,5,4,3,2,1  nums[5] = 6大于左边和右边的所有元素，并且数组刚好是个山峰。
+     *
+     * 思路：提问破解法，找到下标，满足比左边和右边的元素都大。
+     *      1、第一步：要的是"数组的下标"，x 就是数组的下标，范围就是 [1, nums.size-1)。
+     *      2、第二步：满足约束条件的 f(x)=0。
+     *      3、第三步：不满足约束条件的 f(x) 设置为 -1 或者 1
+     *          1. 由于整个数组形成了一个山峰，山峰的左边是升序，山峰的右边是降序。
+     *          2. 山峰左边的元素满足 nums[i-1] < nums[i] < nums[i+1]，可以把这种关系记录为 -1；
+     *          3. 山峰元素满足 nums[i-1] < nums[i] && nums[i] > nums[i+1]，可以把这种关系记录 0；
+     *          4. 山峰右边的元素满足 nums[i-1] > nums[i] > nums[i+1]，可以把这种关系记录为 1。
+     *          5. nums[] = [1,2,3,4,5,6,5,4,3,2,1] --> 最终确定 f(x) 可以映射成一个有序数组 C[] = [-1,-1,-1,-1,0,1,1,1,1]
+     *      4、第四步：最优解 0 在 C[] 的最左边还是最右边，决定使用 lowerBound 还是 upperBound。
      *
      * 时间复杂度：O(logN)。
      * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
      *
-     * https://leetcode-cn.com/problems/find-peak-element/solution/162-xun-zhao-feng-zhi-by-chen-li-guan-1ooh/
-     * @param array
-     * @return
-     */
-    fun findPeakElement(array: IntArray): Int {
-        var left = 0
-        var right = array.size - 1
-
-        // 查找时，左指针 l，右指针 r，以其保持左右顺序为循环条件
-        while (left < right) {
-            // 根据左右指针计算中间位置 mid，并比较 mid 与 mid+1 的值
-            val mid = left + (right - left) / 2
-            if (array[mid] > array[mid + 1]) {
-                // 如果 mid 较大，则左侧存在峰值，r = mid
-                right = mid
-            } else {
-                // 如果 mid + 1 较大，则右侧存在峰值，l = mid + 1
-                left = mid + 1
-            }
-        }
-        return left
-    }
-
-    /**
-     * 方法二：线性扫描
-     *
-     * 时间复杂度 : O(n)。对长度为 n 的数组 nums 只进行一次遍历。
-     * 空间复杂度 : O(1)。只使用了常数空间。
+     * https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/solution/852-shan-mai-shu-zu-de-feng-ding-suo-yin-njqh/
      *
      * @param nums
      * @return
      */
-    fun findPeakElement1(nums: IntArray): Int {
-        for (i in 0 until nums.size - 1) {
-            if (nums[i] > nums[i + 1]) {
-                return i
-            }
-        }
-        return nums.size - 1
+    fun peakIndexInMountainArray(nums: IntArray): Int {
+        if (nums.size < 3) return -1
+
+        // 山峰元素就只有一个，可以认为是一个最左边的元素，那么只需要用 lowerBound 就可以了
+        val l = peakLowerBound(nums)
+
+        return l
     }
 
     /**
-     * 69. target 的平方根。方法一：二分查找
+     * 寻找数组中给定元素的下界
      *
-     * 思想：一个数的平方根肯定不会超过它自己，最小是0，范围最大是自己。例如 ：8的平方根，8的一半是4，4^2=16>8，
-     *      意即：如果一个数的一半的平方大于它自己，那么这个数的取值范围在小于4的一半：0-3
+     * 注意：求峰顶索引 nums.size >= 3，因此范围就是 [1, nums.size-1)
+     *
+     * @param nums
+     * @return
+     */
+    fun peakLowerBound(nums: IntArray): Int {
+        var l = 1
+        var r = nums.size - 1
+        while (l < r) {
+            val m = l + (r - l) / 2
+            // mov表示是中间映射的值
+            val mov = getC(nums, m)
+            if (mov < 0) {
+                l = m + 1
+            } else {
+                r = m
+            }
+        }
+
+        // 由于执行到最后 nums[l..r] 里一定存在插入元素的位置，并且退出循环的时候一定有 l == r 成立，因此直接返回 l 或者 r 均可。
+        return l
+    }
+
+    fun getC(nums: IntArray, i: Int): Int {
+        // 关键：不满足约束条件的 f(i) ，设置为 -1 或者 1
+        if (nums[i - 1] < nums[i] && nums[i] < nums[i + 1]) {
+            return -1
+        }
+
+        // 关键：找到下标，山峰元素满足比左边和右边的元素都大，设置为 0
+        if (nums[i - 1] < nums[i] && nums[i] > nums[i + 1]) {
+            return 0
+        }
+
+        // 关键：不满足约束条件的 f(i) ，设置为 -1 或者 1
+        return 1
+    }
+
+
+    /**
+     * 数组中数值和下标相等的元素
+     *
+     * 时间复杂度：O(logN)。
+     * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
+     *
+     * https://www.acwing.com/problem/content/65/
+     *
+     * @param nums
+     * @return
+     */
+    fun getNumberSameAsIndex(nums: IntArray): Int {
+        if (nums.isEmpty()) return -1
+
+        val l = getNumberLowerBound(nums)
+
+        if (l < nums.size && nums[l] == l) {
+            return l
+        }
+
+        return -1
+    }
+
+    /**
+     * 寻找数组中给定元素的下界
+     *
+     * 注意：范围就是 [0, nums.size)
+     *
+     * @param nums
+     * @return
+     */
+    fun getNumberLowerBound(nums: IntArray): Int {
+        var l = 0
+        var r = nums.size
+        while (l < r) {
+            val m = l + (r - l) / 2
+            val mov: Int = getX(nums, m)
+            if (mov < 0) {
+                l = m + 1
+            } else {
+                r = m
+            }
+        }
+
+        return l
+    }
+
+    fun getX(nums: IntArray, i: Int): Int {
+        val v = nums[i]
+        // 中间的数字与下标比较
+        if (v < i) {
+            // 如果数字小于下标，说明目标数字在右半段，对右半段进行二分查找
+            return -1
+        } else if (v > i) {
+            // 如果数字大于下标，说明数字在左半段，对左半段进行二分查找
+            return 1
+        } else {
+            // 如果等于下标，则是我们要找的
+            return 0
+        }
+    }
+
+
+    /**
+     * 69. target 的平方根。方法一：二分查找
      *
      * 时间复杂度：O(logX)，二分法的时间复杂度是对数级别的。
      * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
      *
      * https://leetcode-cn.com/problems/sqrtx/solution/69-target-de-ping-fang-gen-by-chen-li-guan-2/
      */
-    fun mySqrt(target: Int): Int {
-        // 特殊值判断
-        if (target == 0) return 0
-        if (target == 1) return 1
+    fun mySqrt(x: Int): Int {
+        val l = mySqrtLowerBound(x)
 
-        var left = 1
-        var right = target / 2
-
-        // 在区间 [left..right] 查找目标元素
-        while (left < right) {
-            val mid = left + (right - left + 1) / 2
-
-            // 注意：这里为了避免乘法溢出，改用除法
-            if (mid > target / mid) {
-                // 下一轮搜索区间是 [left..mid - 1]
-                right = mid - 1
-            } else {
-                // 下一轮搜索区间是 [mid..right]
-                left = mid
-            }
+        // 注意，当在映射之后的数组中不存在0的时候
+        // l 的下标是指向映射之后的 C[x] = 1 第一个位置，此时 l * l > m，所以这里需要返回 l - 1。因为按照题意，需要返回整数部分。
+        if (l * l == x) {
+            return l
         }
 
-        return left
+        // 8 的平方根是 2.82842...，l = 3，返回 l - 1 = 2
+        return l - 1
     }
 
     /**
-     * 69. target 的平方根。方法二：牛顿迭代，
+     * 寻找数组中给定元素的下界
      *
-     * 思想：v = (v + a/v)/2
+     * 注意：范围就是 [0, target)
      *
-     * 时间复杂度：O(logX)，此方法是二次收敛的，相较于二分查找更快。。
-     * 空间复杂度：O(1)，使用了常数个数的辅助空间用于存储和比较。
-     *
-     * https://leetcode-cn.com/problems/sqrtx/solution/69-target-de-ping-fang-gen-by-chen-li-guan-2/
+     * @param target
+     * @return
      */
-    fun mySqrt1(target: Int): Int {
-        var v = target.toLong()
-        while (target < v * v) {
-            v = (v + target / v) / 2
+    fun mySqrtLowerBound(target: Int): Int {
+        var l = 0
+        var r = target
+        while (l < r) {
+            val m = l + (r - l) / 2
+            val mov = getC(target.toLong(), m.toLong())
+            if (mov < 0) {
+                l = m + 1
+            } else {
+                r = m
+            }
         }
-        return v.toInt()
+
+        return l
     }
+
+    fun getC(x: Long, m: Long): Int {
+        if (m * m < x) {
+            // 如果结果小于x，说明目标数字在右半段，对右半段进行二分查找
+            return -1
+        } else if (m * m > x) {
+            // 如果结果大于x，说明数字在左半段，对左半段进行二分查找
+            return 1
+        } else {
+            // 如果结果等于x，则是我们要找的
+            return 0
+        }
+    }
+
 
     /**
      * 74. 搜索二维矩阵
@@ -544,5 +689,29 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return false
+    }
+
+
+    /**
+     * 162. 寻找峰值   [1,2,1,3,5,6,4]  位置5->6
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。只需要常数级别的空间存放变量。
+     *
+     * 情况 1. 所有的数字以降序排列。第一个元素即为峰值。首先检查当前元素是否大于下个元素。第一个元素满足这一条件，因此被正确判断为峰值。此时，我们不需要继续向下判断。
+     * 情况 2. 所有的数字以升序排列。会一直比较nums[i]与nums[i+1]以判断nums[i]是否是峰值元素。没有元素符合这一条件，说明处于上坡而非峰值。于是，在结尾，返回末尾元素作为峰值元素。
+     * 情况 3. 峰值出现在中间某处。在num[i]>num[i+1]的地方是"峰值"。
+     *
+     * https://leetcode-cn.com/problems/find-peak-element/solution/162-xun-zhao-feng-zhi-by-chen-li-guan-1ooh/
+     * @param array
+     * @return
+     */
+    fun findPeakElement(nums: IntArray): Int {
+        for (i in 0 until nums.size - 1) {
+            if (nums[i] > nums[i + 1]) {
+                return i
+            }
+        }
+        return nums.size - 1
     }
 }

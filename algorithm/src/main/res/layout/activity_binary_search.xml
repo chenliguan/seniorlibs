@@ -48,8 +48,33 @@
         android:text="154. 寻找旋转排序数组中的最小值 II" />
 
     <Button
+        android:id="@+id/btn_peak_index_in_mountain_array"
+        style="@style/BtnStyles"
+        android:text="852. 山脉数组的峰顶索引" />
+
+    <Button
+        android:id="@+id/btn_valid_mountain_array"
+        style="@style/BtnStyles"
+        android:text="941. 有效的山脉数组" />
+
+    <Button
+        android:id="@+id/btn_get_number_same_as_index"
+        style="@style/BtnStyles"
+        android:text="数组中数值和下标相等的元素" />
+
+    <Button
         android:id="@+id/btn_sqrt"
         style="@style/BtnStyles"
         android:text="69. x 的平方根" />
+
+    <Button
+        android:id="@+id/btn_find_peak_element"
+        style="@style/BtnStyles"
+        android:text="162. 寻找峰值" />
+
+    <Button
+        android:id="@+id/btn_search_matrix"
+        style="@style/BtnStyles"
+        android:text="74. 搜索二维矩阵" />
 
 </LinearLayout>
