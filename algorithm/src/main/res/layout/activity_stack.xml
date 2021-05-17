@@ -23,7 +23,17 @@
         android:text="150. 逆波兰表达式求值" />
 
     <Button
+        android:id="@+id/btn_remove_k_digits"
+        style="@style/BtnStyles"
+        android:text="402. 移掉K位数字" />
+
+    <Button
         android:id="@+id/btn_daily_temperatures"
         style="@style/BtnStyles"
         android:text="739. 每日温度" />
+
+    <Button
+        android:id="@+id/btn_find_max"
+        style="@style/BtnStyles"
+        android:text="找到数组中, 比左边所有数字都小, 比右边所有数字都大的数字" />
 </LinearLayout>

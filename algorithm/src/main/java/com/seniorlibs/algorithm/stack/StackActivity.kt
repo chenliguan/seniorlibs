@@ -40,7 +40,9 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_valid).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_stack).setOnClickListener(this)
         findViewById<View>(R.id.btn_eval_rpn).setOnClickListener(this)
+        findViewById<View>(R.id.btn_remove_k_digits).setOnClickListener(this)
         findViewById<View>(R.id.btn_daily_temperatures).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_max).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -69,6 +71,15 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_eval_rpn -> {
                 LogUtils.d(TAG, "150. 逆波兰表达式求值：${evalRPN(arrayOf("2","1","+","3","*"))}")
             }
+            R.id.btn_remove_k_digits -> {
+                LogUtils.d(TAG, "402. 移掉K位数字：${removeKdigits("1432219", 3)}")
+            }
+            R.id.btn_daily_temperatures -> {
+                LogUtils.d(TAG, "739. 每日温度：${dailyTemperatures(intArrayOf(73, 74, 75, 71, 69, 72, 76, 73))}")
+            }
+            R.id.btn_find_max -> {
+                LogUtils.d(TAG, "找到数组中, 比左边所有数字都小, 比右边所有数字都大的数字：${findMax(intArrayOf(3,3,1))}")
+            }
 //            R.id.btn_queue_stack -> {
 //                LogUtils.d(TAG, "225.两个队列实现栈")
 //            }
@@ -78,9 +89,6 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 //            R.id.btn_stack_queue -> {
 //                LogUtils.d(TAG, "232. 用栈实现队列")
 //            }
-            R.id.btn_daily_temperatures -> {
-                LogUtils.d(TAG, "739. 每日温度：${dailyTemperatures(intArrayOf(73, 74, 75, 71, 69, 72, 76, 73))}")
-            }
             else -> {
             }
         }
@@ -271,7 +279,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 找到数组中, 比左边所有数字都小, 比右边所有数字都大的 数字
+     * 找到数组中, 比左边所有数字都小, 比右边所有数字都大的数字
      *
      * 思路：维护一个单调递减栈，同时记录已遍历的最小值。遍历数组，对于数组当前值，小于最小值，则入栈，同时更新最小值；否则，出栈直到栈顶元素大于当前值。
      *
