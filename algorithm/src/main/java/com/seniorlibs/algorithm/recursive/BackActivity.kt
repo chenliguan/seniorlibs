@@ -43,7 +43,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_letter_combinations).setOnClickListener(this)
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
         findViewById<View>(R.id.btn_combine).setOnClickListener(this)
+        findViewById<View>(R.id.btn_combination_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_permute).setOnClickListener(this)
+        findViewById<View>(R.id.btn_permutation).setOnClickListener(this)
         findViewById<View>(R.id.btn_restore_ip_addresses).setOnClickListener(this)
         findViewById<View>(R.id.btn_solve_n_queens).setOnClickListener(this)
     }
@@ -57,8 +59,11 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_bracket_generate -> {
                 LogUtils.e(TAG, "22. 括号生成：${generateParenthesis(3)}")
             }
-            R.id.btn_letter_combinations -> {
-                LogUtils.e(TAG, "17. 电话号码的字母组合：${letterCombinations("23")}")
+            R.id.btn_permute -> {
+                LogUtils.e(TAG, "46. 全排列：${permute(intArrayOf(1, 2, 3))}")
+            }
+            R.id.btn_permutation -> {
+                LogUtils.e(TAG, "剑指 Offer 38. 字符串的排列：${permutation("abc")}")
             }
             R.id.btn_subsets -> {
                 LogUtils.e(TAG, "78. 子集：${subsets(intArrayOf(1, 2, 3))}")
@@ -66,8 +71,11 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_combine -> {
                 LogUtils.e(TAG, "77. 组合：${combine(4, 2)}")
             }
-            R.id.btn_permute -> {
-                LogUtils.e(TAG, "46. 全排列：${permute(intArrayOf(1, 2, 3))}")
+            R.id.btn_combination_sum -> {
+                LogUtils.e(TAG, "39. 组合总和：${combinationSum(intArrayOf(2, 3, 6, 7), 7)}")
+            }
+            R.id.btn_letter_combinations -> {
+                LogUtils.e(TAG, "17. 电话号码的字母组合：${letterCombinations("23")}")
             }
             R.id.btn_restore_ip_addresses -> {
                 LogUtils.e(TAG, "93. 复原 IP 地址：${restoreIpAddresses("25525511135")}")
@@ -100,7 +108,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         // ((()))
         // 添加 ( , 左括号只要小于 n，left 随时可以加
         // 添加 ) ，右括号之前必须有左括号，左括号个数 > 右括号个数
-        generate(0, 0,  n, StringBuilder(), res)
+        generate(0, 0, n, StringBuilder(), res)
 
         return res
     }
@@ -108,7 +116,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 可用的左括号数量为 left 个，可用的右括号数量为 right 个
      */
-    fun generate(left: Int, right: Int, n : Int, str : StringBuilder, res : MutableList<String>) {
+    fun generate(left: Int, right: Int, n: Int, str: StringBuilder, res: MutableList<String>) {
         // 若左括号比n多 或者 左括号比右括号少，说明不合法，即"剪枝"
         if (left > n || left < right) return
 
@@ -120,12 +128,12 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
         // 尝试添加一个左括号
         str.append("(")                               // 选择
-        generate(left + 1, right, n , str, res)
+        generate(left + 1, right, n, str, res)
         str.deleteCharAt(str.length - 1)       // 撤消选择
 
         // 尝试添加一个右括号
         str.append(")")
-        generate(left, right + 1, n , str, res)
+        generate(left, right + 1, n, str, res)
         str.deleteCharAt(str.length - 1)
     }
 
@@ -163,16 +171,16 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      * https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/solution/17-dian-hua-hao-ma-de-zi-mu-zu-he-by-che-psfq/
      */
     private val letterMap = arrayOf(
-        " ",  //0
-        "",  //1
-        "abc",  //2
-        "def",  //3
-        "ghi",  //4
-        "jkl",  //5
-        "mno",  //6
-        "pqrs",  //7
-        "tuv",  //8
-        "wxyz" //9
+            " ",  //0
+            "",  //1
+            "abc",  //2
+            "def",  //3
+            "ghi",  //4
+            "jkl",  //5
+            "mno",  //6
+            "pqrs",  //7
+            "tuv",  //8
+            "wxyz" //9
     )
 
     private var array = arrayListOf<String>()
@@ -185,7 +193,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         return array
     }
 
-    private fun findCombination(digits: String, index: Int, str : StringBuilder) {
+    private fun findCombination(digits: String, index: Int, str: StringBuilder) {
         if (index == digits.length) {
             array.add(str.toString())
             return
@@ -204,7 +212,6 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         }
         return
     }
-
 
 
     /**
@@ -280,7 +287,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         return res.toTypedArray()
     }
 
-    fun dfsPermutation(s: String, sb : StringBuilder, visited : BooleanArray, res: MutableSet<String>) {
+    fun dfsPermutation(s: String, sb: StringBuilder, visited: BooleanArray, res: MutableSet<String>) {
         // 区别1：到达叶子节点才加入 res
         if (sb.length == s.length) {
             // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
@@ -331,7 +338,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-    fun dfsSubsets(nums: IntArray, start : Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
+    fun dfsSubsets(nums: IntArray, start: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
         // 区别1：前序遍历的位置
         res.add(ArrayList(list))
 
@@ -361,13 +368,13 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      * @param k
      * @return
      */
-    fun combine(n: Int, k : Int): List<List<Int>> {
+    fun combine(n: Int, k: Int): List<List<Int>> {
         val res = mutableListOf<List<Int>>()
         difCombine(n, k, 1, mutableListOf(), res)
         return res
     }
 
-    fun difCombine(n: Int, k : Int, start : Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
+    fun difCombine(n: Int, k: Int, start: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
         // 区别1：到达叶子节点才加入 res（组合限制了高度为 k）
         if (k == list.size) {
             // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
@@ -432,7 +439,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             list.add(array[i])
 
             // 注意：由于每一个元素可以重复使用，下一轮搜索的起点依然是 i，这里非常容易弄错
-            dfs(array, i,target - array[i], list, res)
+            dfs(array, i, target - array[i], list, res)
 
             // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
             list.removeAt(list.size - 1)
