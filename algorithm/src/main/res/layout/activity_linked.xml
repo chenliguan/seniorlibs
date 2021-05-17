@@ -21,6 +21,12 @@
         android:text="141. 环形链表" />
 
     <Button
+        android:id="@+id/btn_detect_cycle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="142. 环形链表 II" />
+
+    <Button
         android:id="@+id/btn_reverse_link"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -66,5 +72,29 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="328. 奇偶链表" />
+
+    <Button
+        android:id="@+id/btn_get_intersection_node"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="160. 相交链表" />
+
+    <Button
+        android:id="@+id/btn_swap_pairs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="24. 两两交换链表中的节点" />
+
+    <Button
+        android:id="@+id/btn_delete_duplicates"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="82. 删除排序链表中的重复元素 II" />
+
+    <Button
+        android:id="@+id/btn_rotate_right"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="61. 旋转链表" />
 
 </LinearLayout>

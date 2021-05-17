@@ -44,6 +44,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.btn_handler_reuse).setOnClickListener(this)
         findViewById<View>(R.id.btn_has_cycle).setOnClickListener(this)
+        findViewById<View>(R.id.btn_detect_cycle).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_link).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_between).setOnClickListener(this)
         findViewById<View>(R.id.btn_middle_node).setOnClickListener(this)
@@ -52,6 +53,10 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_get_kth_from_end).setOnClickListener(this)
         findViewById<View>(R.id.btn_remove_nth_from_end).setOnClickListener(this)
         findViewById<View>(R.id.btn_odd_even_list).setOnClickListener(this)
+        findViewById<View>(R.id.btn_get_intersection_node).setOnClickListener(this)
+        findViewById<View>(R.id.btn_swap_pairs).setOnClickListener(this)
+        findViewById<View>(R.id.btn_delete_duplicates).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rotate_right).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -85,6 +90,16 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li22.next = li33
                 li33.next = li44
                 LogUtils.e(TAG, "141.环形链表2：${hasCycle(li11)}")
+            }
+            R.id.btn_detect_cycle -> {
+                val li11 = ListNode(5)
+                val li22 = ListNode(4)
+                val li33 = ListNode(3)
+                val li44 = ListNode(2)
+                li11.next = li22
+                li22.next = li33
+                li33.next = li44
+                LogUtils.e(TAG, "142. 环形链表 II：${detectCycle(li11)}")
             }
             R.id.btn_reverse_link -> {
                 val li11 = ListNode(5)
@@ -184,6 +199,58 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li4.next = li5
                 li5.next = null
                 LogUtils.e(TAG, "328. 奇偶链表：${oddEvenList(li1)}")
+            }
+            R.id.btn_get_intersection_node -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "160. 相交链表：${getIntersectionNode(li1, li2)}")
+            }
+            R.id.btn_swap_pairs -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "24. 两两交换链表中的节点：${swapPairs(li1)}")
+            }
+            R.id.btn_delete_duplicates -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "82. 删除排序链表中的重复元素 II：${deleteDuplicates(li1)}")
+            }
+            R.id.btn_rotate_right -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "61. 旋转链表：${rotateRight(li1, 3)}")
             }
             else -> {
             }
@@ -305,8 +372,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         fast = head
         while (slow !== fast) {
-            slow = slow!!.next
-            fast = fast!!.next
+            slow = slow?.next
+            fast = fast?.next
         }
         return fast
     }
