@@ -46,6 +46,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_postorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_n_preorder).setOnClickListener(this)
         findViewById<View>(R.id.btn_n_postorder).setOnClickListener(this)
+        findViewById<View>(R.id.btn_binary_tree_paths).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_depth).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_depth).setOnClickListener(this)
         findViewById<View>(R.id.btn_has_path_sum).setOnClickListener(this)
@@ -58,6 +59,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_level_order_bottom).setOnClickListener(this)
         findViewById<View>(R.id.btn_largest_values).setOnClickListener(this)
         findViewById<View>(R.id.btn_right_side_view).setOnClickListener(this)
+        findViewById<View>(R.id.btn_zigzag_level_order).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_symmetric).setOnClickListener(this)
+        findViewById<View>(R.id.btn_lowest_common_ancestor).setOnClickListener(this)
+        findViewById<View>(R.id.btn_flatten).setOnClickListener(this)
+        findViewById<View>(R.id.btn_diameter_of_binary_tree).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_balanced).setOnClickListener(this)
+        findViewById<View>(R.id.btn_sorted_array_to_bst).setOnClickListener(this)
         findViewById<View>(R.id.btn_ladder_length).setOnClickListener(this)
     }
 
@@ -130,6 +138,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "590. N叉树的后序遍历-递归：${postorder(node)}")   // [5, 6, 3, 2, 4, 1]
                 LogUtils.e(TAG, "590. N叉树的后序遍历-迭代：${postorder1(node)}")
             }
+            R.id.btn_binary_tree_paths -> {
+                val node = TreeNode(1)
+                val node1 = TreeNode(5)
+                node.left = node1
+                val node2 = TreeNode(8)
+                node1.left = node2
+                val node3 = TreeNode(10)
+                node2.left = node3
+                node1.right = TreeNode(4)
+                LogUtils.e(TAG, "257. 二叉树的所有路径：${binaryTreePaths(node)}")
+            }
             R.id.btn_max_depth -> {
                 val node = TreeNode(1)
                 val node1 = TreeNode(5)
@@ -196,19 +215,19 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_pre_in_build_tree -> {
                 LogUtils.e(
-                        TAG,
-                        "105. 从前序与中序遍历序列构造二叉树：${buildTree(
-                                intArrayOf(3, 9, 20, 15, 7),
-                                intArrayOf(9, 3, 15, 20, 7)
-                        )}"
+                    TAG,
+                    "105. 从前序与中序遍历序列构造二叉树：${buildTree(
+                        intArrayOf(3, 9, 20, 15, 7),
+                        intArrayOf(9, 3, 15, 20, 7)
+                    )}"
                 )
             }
             R.id.btn_in_post_build_tree -> {
                 LogUtils.e(
-                        TAG, "106. 从中序与后序遍历序列构造二叉树：${buildTree1(
+                    TAG, "106. 从中序与后序遍历序列构造二叉树：${buildTree1(
                         intArrayOf(9, 15, 7, 20, 3),
                         intArrayOf(9, 3, 15, 20, 7)
-                )}"
+                    )}"
                 )
             }
             R.id.btn_invert_tree -> {
@@ -287,6 +306,118 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 node_right.right = node_right2
 
                 LogUtils.e(TAG, "199. 二叉树的右视图 -- 方法一：BFS广度遍历-迭代：${rightSideView(node)}")
+            }
+            R.id.btn_zigzag_level_order -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(TAG, "103. 二叉树的锯齿形层序遍历：${zigzagLevelOrder(node)}")
+            }
+            R.id.btn_is_symmetric -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(TAG, "101. 对称二叉树：${isSymmetric(node)}")
+                LogUtils.e(TAG, "101. 对称二叉树q：${isSymmetric2(node)}")
+            }
+            R.id.btn_lowest_common_ancestor -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(
+                    TAG,
+                    "236. 二叉树的最近公共祖先：${lowestCommonAncestor(node, node_left, node_right)}"
+                )
+            }
+            R.id.btn_flatten -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(TAG, "114. 二叉树展开为链表：${flatten(node)}")
+            }
+            R.id.btn_diameter_of_binary_tree -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(TAG, "543. 二叉树的直径：${diameterOfBinaryTree(node)}")
+            }
+            R.id.btn_is_balanced -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(3)
+                val node_right = TreeNode(2)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(3)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.right = node_right2
+
+                LogUtils.e(TAG, "110. 平衡二叉树：${isBalanced(node)}")
+            }
+            R.id.btn_sorted_array_to_bst -> {
+                LogUtils.e(
+                    TAG,
+                    "108. 将有序数组转换为二叉搜索树：${sortedArrayToBST(intArrayOf(1, 2, 3, 4, 5, 6))}"
+                )
             }
             R.id.btn_ladder_length -> {
                 val list = mutableListOf("hot", "dot", "dog", "lot", "log", "cog")
@@ -802,7 +933,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 3.下探到下一层，关键：sum - root.`val`
-        return hasPathSum(root.left, targetSum - root.`val`) || hasPathSum(root.right, targetSum - root.`val`)
+        return hasPathSum(root.left, targetSum - root.`val`) || hasPathSum(
+            root.right,
+            targetSum - root.`val`
+        )
     }
 
     /**
@@ -871,7 +1005,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-    fun pathDfs(root: TreeNode?, targetSum: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
+    fun pathDfs(
+        root: TreeNode?,
+        targetSum: Int,
+        list: MutableList<Int>,
+        res: MutableList<List<Int>>
+    ) {
         // 如果到达叶子节点，就不能往下走了，直接 return
         if (root?.left == null && root?.right == null) {
             if (targetSum - root?.`val`!! == 0) {
@@ -1020,7 +1159,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root.`val` <= minValue || root.`val` >= maxValue) return false  // 左子树节点小于它的根节点
 
         return solution(root.left, minValue, root.`val`.toLong())
-                && solution(root.right, root.`val`.toLong(), maxValue
+                && solution(
+            root.right, root.`val`.toLong(), maxValue
         )
     }
 
@@ -1044,14 +1184,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         for (i in inorder.indices) map[inorder[i]] = i
 
         return buildTrees(
-                preorder, 0, preorder.size - 1,
-                inorder, 0, inorder.size - 1, map
+            preorder, 0, preorder.size - 1,
+            inorder, 0, inorder.size - 1, map
         )
     }
 
     private fun buildTrees(
-            preorder: IntArray, preStart: Int, preEnd: Int,
-            inorder: IntArray, inStart: Int, inEnd: Int, map: MutableMap<Int, Int>
+        preorder: IntArray, preStart: Int, preEnd: Int,
+        inorder: IntArray, inStart: Int, inEnd: Int, map: MutableMap<Int, Int>
     ): TreeNode? {
         // 1.递归终结条件：当后指针在前指针前时，返回null结束
         if (preStart > preEnd) return null
@@ -1069,14 +1209,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         val rootNode = TreeNode(rootVal)
         // 递归的构造左子树
         rootNode.left = buildTrees(
-                preorder, preStart + 1, preStart + leftSize,
-                inorder, inStart, rootIndex, map
+            preorder, preStart + 1, preStart + leftSize,
+            inorder, inStart, rootIndex, map
         )
 
         // 递归的构造右子树
         rootNode.right = buildTrees(
-                preorder, preStart + leftSize + 1, preEnd,
-                inorder, rootIndex + 1, inEnd, map
+            preorder, preStart + leftSize + 1, preEnd,
+            inorder, rootIndex + 1, inEnd, map
         )
         return rootNode
     }
@@ -1101,14 +1241,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         for (i in inorder.indices) map[inorder[i]] = i
 
         return buildTree1s(
-                postorder, 0, postorder.size - 1,
-                inorder, 0, inorder.size - 1, map
+            postorder, 0, postorder.size - 1,
+            inorder, 0, inorder.size - 1, map
         )
     }
 
     private fun buildTree1s(
-            postorder: IntArray, postStart: Int, postEnd: Int,
-            inorder: IntArray, inStart: Int, inEnd: Int, map: MutableMap<Int, Int>
+        postorder: IntArray, postStart: Int, postEnd: Int,
+        inorder: IntArray, inStart: Int, inEnd: Int, map: MutableMap<Int, Int>
     ): TreeNode? {
         // 1.递归终结条件：当后指针在前指针前时，返回null结束
         if (postStart > postEnd) return null
@@ -1126,14 +1266,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         val rootNode = TreeNode(rootVal)
         // 递归的构造左子树
         rootNode.left = buildTree1s(
-                postorder, postStart, postStart + leftSize - 1,
-                inorder, inStart, rootIndex, map
+            postorder, postStart, postStart + leftSize - 1,
+            inorder, inStart, rootIndex, map
         )
 
         // 递归的构造右子树
         rootNode.right = buildTree1s(
-                postorder, postStart + leftSize, postEnd - 1,
-                inorder, rootIndex + 1, inEnd, map
+            postorder, postStart + leftSize, postEnd - 1,
+            inorder, rootIndex + 1, inEnd, map
         )
         return rootNode
     }
@@ -1303,7 +1443,6 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-
     /**
      * 515. 在每个树行中找最大值 -- 方法一：BFS广度遍历-迭代：
      *
@@ -1403,22 +1542,22 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun rightSideView(root: TreeNode?): List<Int> {
         val res = mutableListOf<Int>()
-        if(root == null) return res
+        if (root == null) return res
 
         val queue = LinkedList<TreeNode>()
         queue.offer(root)
 
         var size = queue.size
-        while(size > 0) {
+        while (size > 0) {
 
-            for(i in 0 until size) {
+            for (i in 0 until size) {
                 val node = queue.poll()
-                if(i == size - 1) {
+                if (i == size - 1) {
                     res.add(node.`val`)
                 }
 
-                if(node.left != null) queue.offer(node.left)
-                if(node.right != null) queue.offer(node.right)
+                if (node.left != null) queue.offer(node.left)
+                if (node.right != null) queue.offer(node.right)
             }
 
             size = queue.size
@@ -1784,7 +1923,6 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         return root
     }
-
 
 
     /**

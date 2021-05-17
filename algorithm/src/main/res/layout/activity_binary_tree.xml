@@ -33,6 +33,11 @@
         android:text="590. N叉数的后序遍历" />
 
     <Button
+        android:id="@+id/btn_binary_tree_paths"
+        style="@style/BtnStyles"
+        android:text="257. 二叉树的所有路径" />
+
+    <Button
         android:id="@+id/btn_max_depth"
         style="@style/BtnStyles"
         android:text="104.二叉树的最大深度" />
@@ -91,6 +96,42 @@
         android:id="@+id/btn_right_side_view"
         style="@style/BtnStyles"
         android:text="199. 二叉树的右视图" />
+
+    <Button
+        android:id="@+id/btn_zigzag_level_order"
+        style="@style/BtnStyles"
+        android:text="103. 二叉树的锯齿形层序遍历" />
+
+    <Button
+        android:id="@+id/btn_is_symmetric"
+        style="@style/BtnStyles"
+        android:text="101. 对称二叉树" />
+
+    <Button
+        android:id="@+id/btn_lowest_common_ancestor"
+        style="@style/BtnStyles"
+        android:text="236. 二叉树的最近公共祖先" />
+
+    <Button
+        android:id="@+id/btn_flatten"
+        style="@style/BtnStyles"
+        android:text="114. 二叉树展开为链表" />
+
+    <Button
+        android:id="@+id/btn_diameter_of_binary_tree"
+        style="@style/BtnStyles"
+        android:text="543. 二叉树的直径" />
+
+    <Button
+        android:id="@+id/btn_is_balanced"
+        style="@style/BtnStyles"
+        android:text="110. 平衡二叉树" />
+
+    <Button
+        android:id="@+id/btn_sorted_array_to_bst"
+        style="@style/BtnStyles"
+        android:text="108. 将有序数组转换为二叉搜索树" />
+
 
     <Button
         android:id="@+id/btn_ladder_length"
