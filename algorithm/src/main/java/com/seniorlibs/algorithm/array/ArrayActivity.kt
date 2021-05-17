@@ -38,10 +38,16 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_trap).setOnClickListener(this)
         findViewById<View>(R.id.btn_two_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_three_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_three_sum_closest).setOnClickListener(this)
         findViewById<View>(R.id.btn_four_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_repeat_number).setOnClickListener(this)
+        findViewById<View>(R.id.btn_merge_interval).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_sub_arrayLen).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rotate).setOnClickListener(this)
+        findViewById<View>(R.id.btn_majority_element).setOnClickListener(this)
+        findViewById<View>(R.id.btn_intersection).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_duplicate).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -74,6 +80,10 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             LogUtils.d(TAG, "15. 三数之和：${threeSum(nums)}")
             LogUtils.d(TAG, "15. 三数之和1：${threeSum1(nums)}")
         }
+        R.id.btn_three_sum_closest -> {
+            val nums = intArrayOf(0, 4, -5, 2, -2, 4, 2, -1, 4)
+            LogUtils.d(TAG, "16. 最接近的三数之和：${threeSumClosest(nums, 8)}")
+        }
         R.id.btn_four_sum -> {
             val nums = intArrayOf(0, 4, -5, 2, -2, 4, 2, -1, 4)
             LogUtils.d(TAG, "18. 四数之和：${fourSum(nums, 12)}")
@@ -88,9 +98,35 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             val nums = intArrayOf(2, 3, 1, 0, 2, 5, 3)
             LogUtils.d(TAG, "03. 数组中重复的数字：${findRepeatNumber(nums)}")
         }
+        R.id.btn_merge_interval -> {
+            //  [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
+            val nums = arrayOf(intArrayOf(1, 4),
+                    intArrayOf(2, 5),
+                    intArrayOf(8, 16),
+                    intArrayOf(17, 24),
+                    intArrayOf(26, 30))
+            LogUtils.d(TAG, "56. 合并区间：${mergeInterval(nums)}")
+        }
         R.id.btn_min_sub_arrayLen -> {
             val nums = intArrayOf(2, 3, 1, 2, 4, 3)
             LogUtils.d(TAG, "209. 长度最小的子数组：${minSubArrayLen(7, nums)}")
+        }
+        R.id.btn_rotate -> {
+            val nums = intArrayOf(1, 2, 3, 4, 5, 6)
+            LogUtils.d(TAG, "189. 旋转数组：${rotate(nums, 3)}")
+        }
+        R.id.btn_majority_element -> {
+            val nums = intArrayOf(1, 2, 2, 2, 5, 6)
+            LogUtils.d(TAG, "169. 多数元素：${majorityElement(nums)}")
+        }
+        R.id.btn_intersection -> {
+            val nums1 = intArrayOf(1, 2, 2, 2, 5, 6)
+            val nums2 = intArrayOf(2, 5, 6)
+            LogUtils.d(TAG, "349. 两个数组的交集：${intersection(nums1, nums2)}")
+        }
+        R.id.btn_find_duplicate -> {
+            val nums = intArrayOf(1, 2, 2, 2, 5, 6)
+            LogUtils.d(TAG, "287. 寻找重复数：${findDuplicate(nums)}")
         }
         else -> {
         }
@@ -645,7 +681,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param intervals
      * @return
      */
-    fun merge(intervals: Array<IntArray>): Array<IntArray?>? {
+    fun mergeInterval(intervals: Array<IntArray>): Array<IntArray?>? {
         // 先按照区间起始位置排序
         Arrays.sort(intervals) { v1, v2 -> v1[0] - v2[0] }
 

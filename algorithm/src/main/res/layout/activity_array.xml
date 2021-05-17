@@ -38,6 +38,11 @@
         android:text="15. 三数之和" />
 
     <Button
+        android:id="@+id/btn_three_sum_closest"
+        style="@style/BtnStyles"
+        android:text="16. 最接近的三数之和" />
+
+    <Button
         android:id="@+id/btn_four_sum"
         style="@style/BtnStyles"
         android:text="18. 四数之和" />
@@ -52,10 +57,35 @@
         style="@style/BtnStyles"
         android:text="03. 数组中重复的数字" />
 
+    <Button
+        android:id="@+id/btn_merge_interval"
+        style="@style/BtnStyles"
+        android:text="56. 合并区间" />
+
 
     <Button
         android:id="@+id/btn_min_sub_arrayLen"
         style="@style/BtnStyles"
         android:text="209. 长度最小的子数组" />
+
+    <Button
+        android:id="@+id/btn_rotate"
+        style="@style/BtnStyles"
+        android:text="189. 旋转数组" />
+
+    <Button
+        android:id="@+id/btn_majority_element"
+        style="@style/BtnStyles"
+        android:text="169. 多数元素" />
+
+    <Button
+        android:id="@+id/btn_intersection"
+        style="@style/BtnStyles"
+        android:text="349. 两个数组的交集" />
+
+    <Button
+        android:id="@+id/btn_find_duplicate"
+        style="@style/BtnStyles"
+        android:text="287. 寻找重复数" />
 
 </LinearLayout>
