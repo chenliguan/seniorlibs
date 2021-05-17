@@ -49,6 +49,16 @@
             android:text="541. 反转字符串2" />
 
         <Button
+            android:id="@+id/btn_reverse_words"
+            style="@style/BtnStyles"
+            android:text="557. 反转字符串中的单词 III" />
+
+        <Button
+            android:id="@+id/btn_reverse_str_words"
+            style="@style/BtnStyles"
+            android:text="557. 反转字符串中的单词 III" />
+
+        <Button
             android:id="@+id/btn_reverse"
             style="@style/BtnStyles"
             android:text="7. 整数反转" />
@@ -94,9 +104,19 @@
             android:text="9. 是否是回文数" />
 
         <Button
+            android:id="@+id/btn_valid_palindrome"
+            style="@style/BtnStyles"
+            android:text="680. 验证回文字符串 Ⅱ" />
+
+        <Button
             android:id="@+id/btn_longest_palindrome"
             style="@style/BtnStyles"
             android:text="409. 最长回文串" />
+
+        <Button
+            android:id="@+id/btn_can_permute_palindrome"
+            style="@style/BtnStyles"
+            android:text="01.04. 回文排列（了解）" />
 
         <Button
             android:id="@+id/btn_add_strings"
@@ -158,5 +178,25 @@
             android:id="@+id/btn_find_anagrams"
             style="@style/BtnStyles"
             android:text="438. 找到字符串中所有字母异位词" />
+
+        <Button
+            android:id="@+id/btn_convert"
+            style="@style/BtnStyles"
+            android:text="6. Z 字形变换" />
+
+        <Button
+            android:id="@+id/btn_roman_to_int"
+            style="@style/BtnStyles"
+            android:text="13. 罗马数字转整数" />
+
+        <Button
+            android:id="@+id/btn_find_continuous_sequence"
+            style="@style/BtnStyles"
+            android:text="剑指 Offer 57 - II. 和为s的连续正数序列" />
+
+        <Button
+            android:id="@+id/btn_replace_space"
+            style="@style/BtnStyles"
+            android:text="剑指 Offer 05. 替换空格" />
     </LinearLayout>
 </ScrollView>

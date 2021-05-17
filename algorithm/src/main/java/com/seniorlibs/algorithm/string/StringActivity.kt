@@ -45,6 +45,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_my_atoi).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse_string2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_reverse_words).setOnClickListener(this)
+        findViewById<View>(R.id.btn_reverse_str_words).setOnClickListener(this)
         findViewById<View>(R.id.btn_reverse).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_common_prefix).setOnClickListener(this)
         findViewById<View>(R.id.btn_decode_string).setOnClickListener(this)
@@ -55,6 +57,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_palindrome_str).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_num).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
+        findViewById<View>(R.id.btn_can_permute_palindrome).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_two_numbers).setOnClickListener(this)
         findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
@@ -67,6 +70,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_count_binary_substrings).setOnClickListener(this)
         findViewById<View>(R.id.btn_check_inclusion).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_anagrams).setOnClickListener(this)
+        findViewById<View>(R.id.btn_convert).setOnClickListener(this)
+        findViewById<View>(R.id.btn_roman_to_int).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_continuous_sequence).setOnClickListener(this)
+        findViewById<View>(R.id.btn_replace_space).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -99,6 +106,12 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_reverse_string2 -> {
                 LogUtils.d(TAG, "541. 反转字符串2：${reverseStr("abcdefg", 2)}")
             }
+            R.id.btn_reverse_words -> {
+                LogUtils.d(TAG, "557. 反转字符串中的单词 III：${reverseWords("abc def ghij")}")
+            }
+            R.id.btn_reverse_str_words -> {
+                LogUtils.d(TAG, "557. 反转字符串中的单词 III：${reverseStrWords("abc def ghij")}")
+            }
             R.id.btn_reverse -> {
                 LogUtils.d(TAG, "7. 整数反转：${reverse(-123)}")
             }
@@ -128,8 +141,14 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_is_palindrome_num -> {
                 LogUtils.d(TAG, "9. 回文数：${isPalindrome(121)}")
             }
+            R.id.btn_valid_palindrome -> {
+                LogUtils.d(TAG, "680. 验证回文字符串 Ⅱ：${validPalindrome("abccbda")}")
+            }
             R.id.btn_longest_palindrome -> {
                 LogUtils.d(TAG, "409. 最长回文串：${longestPalindrome("abccccdd")}")
+            }
+            R.id.btn_can_permute_palindrome -> {
+                LogUtils.d(TAG, "01.04. 回文排列：${canPermutePalindrome("aabbaa")}")
             }
             R.id.btn_add_strings -> {
                 LogUtils.d(TAG, "415. 字符串相加（两个大数相加）：${addStrings("121", "12000000")}")
@@ -167,6 +186,18 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_find_anagrams -> {
                 LogUtils.d(TAG, "438. 找到字符串中所有字母异位词：${findAnagrams("abcdab", "ab")}")
+            }
+            R.id.btn_convert -> {
+                LogUtils.d(TAG, "6. Z 字形变换：${convert("abcdab", 2)}")
+            }
+            R.id.btn_roman_to_int -> {
+                LogUtils.d(TAG, "13. 罗马数字转整数：${romanToInt("IVCDX")}")
+            }
+            R.id.btn_find_continuous_sequence -> {
+                LogUtils.d(TAG, "剑指 Offer 57 - II. 和为s的连续正数序列：${findContinuousSequence(9)}")
+            }
+            R.id.btn_replace_space -> {
+                LogUtils.d(TAG, "剑指 Offer 05. 替换空格：${replaceSpace("abc ef")}")
             }
             else -> {
             }
@@ -1782,11 +1813,12 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 05. 替换空格
+     * 剑指 Offer 05. 替换空格
      *
      * 时间复杂度：O(n)。
      * 空间复杂度：O(1)。
      *
+     * https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/solution/05-ti-huan-kong-ge-by-chen-li-guan-y6se/
      * @param s
      * @return
      */
