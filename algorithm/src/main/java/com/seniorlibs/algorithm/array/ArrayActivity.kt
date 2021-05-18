@@ -445,25 +445,22 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             /* 核心3：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
             while (i < j) {
                 val sum = nums[k] + nums[i] + nums[j]
-                when {
-                    sum < 0 -> {
-                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                        while (i < j && nums[i] == nums[++i]) {
-                        }
+
+                if (sum < 0) {
+                    /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                    while (i < j && nums[i] == nums[++i]) {
                     }
-                    sum > 0 -> {
-                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                        while (i < j && nums[j] == nums[--j]) {
-                        }
+                } else if (sum > 0) {
+                    /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                    while (i < j && nums[j] == nums[--j]) {
                     }
-                    sum == 0 -> {
-                        /* 记录组合[k, i, j]到list */
-                        res.add(mutableListOf(nums[k], nums[i], nums[j]))
-                        /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
-                        while (i < j && nums[i] == nums[++i]) {
-                        }
-                        while (i < j && nums[j] == nums[--j]) {
-                        }
+                } else {
+                    /* 记录组合[k, i, j]到list */
+                    res.add(mutableListOf(nums[k], nums[i], nums[j]))
+                    /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                    while (i < j && nums[i] == nums[++i]) {
+                    }
+                    while (i < j && nums[j] == nums[--j]) {
                     }
                 }
             }
@@ -485,6 +482,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fourSum(nums: IntArray, target: Int): List<List<Int>> {
+        if (nums.isEmpty()) return mutableListOf<MutableList<Int>>()
+
         /* 核心1：对数组进行从小到大排序 */
         Arrays.sort(nums)
 
@@ -496,8 +495,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
             /* 核心3：第二层循环k，k从f+1开始遍历，最大值是nums.size-2（右边有i/j）；留下i和j */
             for (k in f + 1 until nums.size - 2) {
-                /* 注意：四数之和是target,和三数之和是0，注释以下判断条件 */
-//                if (nums[k] > 0) break
                 /* 当k的值与前面的值相等时忽略 */
                 if (k > f + 1 && nums[k] == nums[k - 1]) continue
                 /* 定义指针i指向k+1，指针j指向数组末尾，交替向中间移动 */
@@ -507,25 +504,21 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 /* 核心4：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
                 while (i < j) {
                     val sum = nums[f] + nums[k] + nums[i] + nums[j]
-                    when {
-                        sum < target -> {
-                            /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                            while (i < j && nums[i] == nums[++i]) {
-                            }
+                    if (sum < target) {
+                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                        while (i < j && nums[i] == nums[++i]) {
                         }
-                        sum > target -> {
-                            /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                            while (i < j && nums[j] == nums[--j]) {
-                            }
+                    } else if (sum > target) {
+                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                        while (i < j && nums[j] == nums[--j]) {
                         }
-                        sum == target -> {
-                            /* 记录组合[f, k, i, j]到list */
-                            res.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))
-                            /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
-                            while (i < j && nums[i] == nums[++i]) {
-                            }
-                            while (i < j && nums[j] == nums[--j]) {
-                            }
+                    } else {
+                        /* 记录组合[f, k, i, j]到list */
+                        res.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))
+                        /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                        while (i < j && nums[i] == nums[++i]) {
+                        }
+                        while (i < j && nums[j] == nums[--j]) {
                         }
                     }
                 }
@@ -533,6 +526,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         return res
     }
+
 
     /**
      * 18. 四数之和 优化版-深度剪枝
@@ -592,25 +586,21 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 /* 核心4：开始i指针和j指针的表演，计算当前和。如果等于目标值，++i并去重，--j并去重；如果当前和大于目标值时--j；如果当前和小于目标值时++i */
                 while (i < j) {
                     val sum = nums[f] + nums[k] + nums[i] + nums[j]
-                    when {
-                        sum < target -> {
-                            /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                            while (i < j && nums[i] == nums[++i]) {
-                            }
+                    if (sum < target) {
+                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                        while (i < j && nums[i] == nums[++i]) {
                         }
-                        sum > target -> {
-                            /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                            while (i < j && nums[j] == nums[--j]) {
-                            }
+                    } else if (sum > target) {
+                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                        while (i < j && nums[j] == nums[--j]) {
                         }
-                        sum == target -> {
-                            /* 记录组合[f, k, i, j]到list */
-                            res.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))
-                            /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
-                            while (i < j && nums[i] == nums[++i]) {
-                            }
-                            while (i < j && nums[j] == nums[--j]) {
-                            }
+                    } else {
+                        /* 记录组合[f, k, i, j]到list */
+                        res.add(mutableListOf(nums[f], nums[k], nums[i], nums[j]))
+                        /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                        while (i < j && nums[i] == nums[++i]) {
+                        }
+                        while (i < j && nums[j] == nums[--j]) {
                         }
                     }
                 }
