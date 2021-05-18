@@ -308,6 +308,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun threeSum(nums: IntArray): List<List<Int>> {
+        if (nums.isEmpty()) return mutableListOf<MutableList<Int>>()
+
         /* 核心1：对数组进行从小到大排序 */
         Arrays.sort(nums)
 
@@ -316,6 +318,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         for (k in 0 until nums.size - 2) {
             /* 当k的值与前面的值相等时忽略 */
             if (k > 0 && nums[k] == nums[k - 1]) continue
+
             /* 定义指针i指向k+1，指针j指向数组末尾，交替向中间移动 */
             var i = k + 1
             var j = nums.size - 1
@@ -324,21 +327,21 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             while (i < j) {
                 val sum = nums[k] + nums[i] + nums[j]
 
-                when {
-                    sum < 0 -> {
-                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                        while (i < j && nums[i] == nums[++i]) {}
+                if (sum < 0) {
+                    /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                    while (i < j && nums[i] == nums[++i]) {
                     }
-                    sum > 0 -> {
-                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                        while (i < j && nums[j] == nums[--j]) {}
+                } else if (sum > 0) {
+                    /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                    while (i < j && nums[j] == nums[--j]) {
                     }
-                    sum == 0 -> {
-                        /* 记录组合[k, i, j]到list */
-                        res.add(mutableListOf(nums[k], nums[i], nums[j]))
-                        /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
-                        while (i < j && nums[i] == nums[++i]) {}
-                        while (i < j && nums[j] == nums[--j]) {}
+                } else {
+                    /* 记录组合[k, i, j]到list */
+                    res.add(mutableListOf(nums[k], nums[i], nums[j]))
+                    /* 执行++i和--j并跳过所有相同复的nums[i]和nums[j] */
+                    while (i < j && nums[i] == nums[++i]) {
+                    }
+                    while (i < j && nums[j] == nums[--j]) {
                     }
                 }
             }
@@ -348,6 +351,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 16. 最接近的三数之和
+     * 题目：找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。
      *
      * 时间复杂度 O(n^2)：其中固定指针k循环复杂度O(n)，双指针i，j 复杂度O(n)。
      * 空间复杂度 O(1)：指针使用常数大小的额外空间。
@@ -358,12 +362,14 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun threeSumClosest(nums: IntArray, target: Int): Int {
+        if (nums.isEmpty()) return 0
+
         /* 核心1：对数组进行从小到大排序 */
         Arrays.sort(nums)
 
         /* 核心2：第二层循环k，k从f+1开始遍历，最大值是nums.size-2（右边有i/j）；留下i和j */
         var res = nums[0] + nums[1] + nums[2]
-        for (k in 0 until nums.size) {
+        for (k in 0 until nums.size - 2) {
             /* 当k的值与前面的值相等时忽略 */
             if (k > 0 && nums[k] == nums[k - 1]) continue
 
@@ -380,19 +386,18 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                     res = sum
                 }
 
-                when {
-                    sum < target -> {
-                        /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
-                        while (i < j && nums[i] == nums[++i]) {}
+                if (sum < target) {
+                    /* 实力太弱，把菜鸟那边右移一位，并跳过所有相同的nums[i]（注意：++i必须在前，先计算nums[i+1]） */
+                    while (i < j && nums[i] == nums[++i]) {
                     }
-                    sum > target -> {
-                        /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
-                        while (i < j && nums[j] == nums[--j]) {}
+                } else if (sum > target) {
+                    /* 实力太强，把大神那边左移一位，并跳过所有相同的nums[j] */
+                    while (i < j && nums[j] == nums[--j]) {
                     }
-                    sum == target -> {
-                        return res
-                    }
+                } else {
+                    return res
                 }
+
             }
         }
         return res
@@ -853,22 +858,22 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    /*
-    n->f(n)
-    0->1
-    1->3
-    2->4
-    3->2
-    类似链表一样的序列：0->1->3->2->4->null
+/*
+n->f(n)
+0->1
+1->3
+2->4
+3->2
+类似链表一样的序列：0->1->3->2->4->null
 
-    n->f(n)
-    0->1
-    1->3
-    2->4
-    3->2
-    4->2
-    类似链表一样的序列：0->1->3->2->4->2->4->2->... ，这里 2->4 是一个循环
-     */
+n->f(n)
+0->1
+1->3
+2->4
+3->2
+4->2
+类似链表一样的序列：0->1->3->2->4->2->4->2->... ，这里 2->4 是一个循环
+ */
 
     /**
      * 287. 寻找重复数
