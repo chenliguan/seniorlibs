@@ -59,6 +59,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
         findViewById<View>(R.id.btn_can_permute_palindrome).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_strings).setOnClickListener(this)
+        findViewById<View>(R.id.btn_add_binary).setOnClickListener(this)
         findViewById<View>(R.id.btn_add_two_numbers).setOnClickListener(this)
         findViewById<View>(R.id.btn_multiply).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_remove_to_make_valid).setOnClickListener(this)
@@ -153,8 +154,11 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_add_strings -> {
                 LogUtils.d(TAG, "415. 字符串相加（两个大数相加）：${addStrings("121", "12000000")}")
             }
+            R.id.btn_add_binary -> {
+                LogUtils.d(TAG, "67. 二进制求和：${addBinary("111", "111111")}")
+            }
             R.id.btn_add_two_numbers -> {
-//                LogUtils.d(TAG, "2. 两数相加：${addTwoNumbers(}")
+//                LogUtils.d(TAG, "2. 两数相加 == 链表求和：${addTwoNumbers(}")
             }
             R.id.btn_multiply -> {
                 LogUtils.d(TAG, "43. 字符串相乘：${multiply("123", "45")}")
@@ -1174,13 +1178,14 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 2. 两数相加
+     * 2. 两数相加 == 链表求和
      * 思路：设定 i，j 双指针分别指向 num1，num2 尾部，模拟人工加法
      *
      * 时间复杂度 O(max(M,N)))：其中 M，N 为 2 数字长度，按位遍历一遍数字（以较长的数字为准）；
      * 空间复杂度 O(1)：指针与变量使用常数大小空间。
      *
      * https://leetcode-cn.com/problems/add-two-numbers/solution/2-liang-shu-xiang-jia-by-chen-li-guan-cfp8/
+     * https://leetcode-cn.com/problems/sum-lists-lcci/solution/2-liang-shu-xiang-jia-lian-biao-qiu-he-b-onpq/
      * @param l1
      * @param l2
      * @return

@@ -124,6 +124,11 @@
             android:text="415. 字符串相加（两个大数相加）" />
 
         <Button
+            android:id="@+id/btn_add_binary"
+            style="@style/BtnStyles"
+            android:text="67. 二进制求和" />
+
+        <Button
             android:id="@+id/btn_add_two_numbers"
             style="@style/BtnStyles"
             android:text="2. 两数相加" />

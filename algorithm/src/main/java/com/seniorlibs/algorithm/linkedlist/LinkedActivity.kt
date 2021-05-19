@@ -17,6 +17,11 @@ import com.seniorlibs.baselib.utils.LogUtils
  * Mender:
  * Modify:
  * Description: 链表
+ *
+ * 几乎所有的链表题目，都具有相似的解题思路：
+ * 1.建一个「虚拟头节点」dummy 以减少边界判断，往后的答案链表会接在 dummy 后面；
+ * 2.使用 tail 代表当前有效链表的结尾；
+ * 3.通过原输入的 head 指针赋值给 cur 进行链表扫描。
  */
 open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -56,6 +61,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_get_intersection_node).setOnClickListener(this)
         findViewById<View>(R.id.btn_swap_pairs).setOnClickListener(this)
         findViewById<View>(R.id.btn_delete_duplicates).setOnClickListener(this)
+        findViewById<View>(R.id.btn_delete_duplicates2).setOnClickListener(this)
         findViewById<View>(R.id.btn_rotate_right).setOnClickListener(this)
     }
 
@@ -237,7 +243,20 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li3.next = li4
                 li4.next = li5
                 li5.next = null
-                LogUtils.e(TAG, "82. 删除排序链表中的重复元素 II：${deleteDuplicates(li1)}")
+                LogUtils.e(TAG, "83. 删除排序链表中的重复元素：${deleteDuplicates(li1)}")
+            }
+            R.id.btn_delete_duplicates2 -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "82. 删除排序链表中的重复元素 II：${deleteDuplicates2(li1)}")
             }
             R.id.btn_rotate_right -> {
                 val li1 = ListNode(1)
@@ -461,23 +480,23 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         val dummy = ListNode(0)
         dummy.next = head
 
-        // 定义两个指针，分别称之为 p、q
-        var p: ListNode? = dummy
+        // 定义两个指针，分别称之为 cur、q
+        var cur: ListNode? = dummy
         var q: ListNode? = dummy.next
 
-        // 将 p 移动到第一个要反转的节点的前面，将 q 移动到第一个要反转的节点的位置上
+        // 将 cur 移动到第一个要反转的节点的前面，将 q 移动到第一个要反转的节点的位置上
         for (i in 0 until left - 1) {
-            p = p?.next
+            cur = cur?.next
             q = q?.next
         }
 
-        // 将 p 后面的元素删除，然后插入到 p 的后面，也即头插法。（根据 left 和 right 重复此步骤）
-        for (i in 0 until right - left) {   // p = 1，q = 2
+        // 将 cur 后面的元素删除，然后插入到 cur 的后面，也即头插法。（根据 left 和 right 重复此步骤）
+        for (i in 0 until right - left) {   // cur = 1，q = 2
             val remove = q?.next      // remove = 3
             q?.next = q?.next?.next              // q?.next = 4  ->  1，2，4
 
-            remove?.next = p?.next               // 1、3、2
-            p?.next = remove
+            remove?.next = cur?.next               // 1、3、2
+            cur?.next = remove
         }
 
         // 返回虚拟头结点 dummy 的下一个节点，即是 头结点
@@ -570,24 +589,24 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         var l2 = l2
 
         val dummy = ListNode(0)
-        var p: ListNode? = dummy
+        var cur: ListNode? = dummy
 
         while (l1 != null && l2 != null) {
             if (l1.`val` <= l2.`val`) {
-                p?.next = l1
+                cur?.next = l1
                 l1 = l1.next
             } else {
-                p?.next = l2
+                cur?.next = l2
                 l2 = l2.next
             }
-            p = p?.next
+            cur = cur?.next
         }
 
         // 合并后 l1 和 l2 只有一个还未被合并完，直接将链表末尾指向未合并完的链表
         if (l1 == null) {
-            p?.next = l2
+            cur?.next = l2
         } else {
-            p?.next = l1
+            cur?.next = l1
         }
 
         return dummy.next
@@ -771,18 +790,18 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
         val dummy = ListNode(0)
         dummy.next = head
-        var p: ListNode? = dummy
+        var cur: ListNode? = dummy
 
-        while (p?.next != null && p.next?.next != null) {
+        while (cur?.next != null && cur.next?.next != null) {
             // temp -> 1 -> 2 -> n
-            val start = p.next       // 1
-            val end = p.next?.next   // 2
+            val start = cur.next       // 1
+            val end = cur.next?.next   // 2
 
-            p.next = end              // p -> 2
+            cur.next = end              // cur -> 2
             start?.next = end?.next   // 1 -> n
 
             end?.next = start         // 2 -> 1
-            p = start                 // p -> 1
+            cur = start                 // cur -> 1
         }
 
         return dummy.next
@@ -790,7 +809,37 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 83. 删除排序链表中的重复元素
+     * 区别：删除所有重复的元素，使每个元素 只出现一次 。
+     *
+     * 时间复杂度：O(n)，其中 n 是链表的长度。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/solution/83-shan-chu-pai-xu-lian-biao-zhong-de-zh-vlqd/
+     * @param head
+     * @return
+     */
+    fun deleteDuplicates(head: ListNode?): ListNode? {
+        // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next。注意：-100 <= Node.val <= 100
+        val dummy = ListNode(-101)
+        dummy.next = head
+        var cur: ListNode? = dummy
+
+        while (cur?.next != null) {
+            if (cur.`val` == cur.next?.`val`) {
+                // 跳过当前的重复节点，使得cur指向当前重复元素的最后一个位置
+                cur.next = cur.next?.next
+            } else {
+                // 不重复，移到下一个位置
+                cur = cur.next
+            }
+        }
+        return dummy.next
+    }
+
+    /**
      * 82. 删除排序链表中的重复元素 II
+     * 区别：删除链表中所有存在数字重复情况的节点，只保留原始链表中 没有重复出现 的数字。
      *
      * 时间复杂度：O(n)，其中 n 是链表的长度。
      * 空间复杂度：O(1)。
@@ -799,29 +848,31 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @param head
      * @return
      */
-    fun deleteDuplicates(head: ListNode?): ListNode? {
-        if (head == null) return head
-
+    fun deleteDuplicates2(head: ListNode?): ListNode? {
+        // 对链表进行一次遍历，就可以删除重复的元素。由于链表的头节点可能会被删除，因此我们需要额外使用一个 dummy 节点指向链表的头节点
         val dummy = ListNode(0)
         dummy.next = head
         var cur: ListNode? = dummy
 
-        while (cur?.next != null && cur.next?.next != null) {
-            if (cur.next?.`val` == cur.next?.next?.`val`) {
-                // 跳过当前的重复节点，使得cur指向当前重复元素的最后一个位置
-                val x = cur.next?.`val`
-                while (cur.next != null && cur.next?.`val` == x) {
-                    cur.next = cur.next?.next
-                }
+        while (cur?.next != null) {
+            // 记下元素值 x，随后不断将 cur.next 从链表中移除，直到 cur.next 为空节点或者其元素值不等于 x 为止
+            var x = cur.next
+            while (x != null && x.`val` == cur.next?.`val`) {
+                x = x.next
+            }
 
-            } else {
-                // 不重复，移到下一个位置
+            // 将 cur 指向 cur.next。相当于将链表中所有元素值为 x 的节点全部删除
+            if (x == cur.next?.next) {
                 cur = cur.next
+            } else {
+                cur.next = x
             }
         }
 
+        // 返回链表的的哑节点的下一个节点 dummy.next 即可
         return dummy.next
     }
+
 
 
     /**
