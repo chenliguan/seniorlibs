@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BaseMatchParent"
@@ -7,134 +7,146 @@
     tools:context=".main.MainActivity"
     tools:ignore="MissingDefaultResource">
 
-    <Button
-        android:id="@+id/btn_preorder"
-        style="@style/BtnStyles"
-        android:text="144. 二叉树的前序遍历" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
 
-    <Button
-        android:id="@+id/btn_ineorder"
-        style="@style/BtnStyles"
-        android:text="94. 二叉树的中序遍历" />
+        <Button
+            android:id="@+id/btn_preorder"
+            style="@style/BtnStyles"
+            android:text="144. 二叉树的前序遍历" />
 
-    <Button
-        android:id="@+id/btn_postorder"
-        style="@style/BtnStyles"
-        android:text="145. 二叉树的后序遍历" />
+        <Button
+            android:id="@+id/btn_ineorder"
+            style="@style/BtnStyles"
+            android:text="94. 二叉树的中序遍历" />
 
-    <Button
-        android:id="@+id/btn_n_preorder"
-        style="@style/BtnStyles"
-        android:text="589. N叉数的前序遍历" />
+        <Button
+            android:id="@+id/btn_postorder"
+            style="@style/BtnStyles"
+            android:text="145. 二叉树的后序遍历" />
 
-    <Button
-        android:id="@+id/btn_n_postorder"
-        style="@style/BtnStyles"
-        android:text="590. N叉数的后序遍历" />
+        <Button
+            android:id="@+id/btn_n_preorder"
+            style="@style/BtnStyles"
+            android:text="589. N叉数的前序遍历" />
 
-    <Button
-        android:id="@+id/btn_binary_tree_paths"
-        style="@style/BtnStyles"
-        android:text="257. 二叉树的所有路径" />
+        <Button
+            android:id="@+id/btn_n_postorder"
+            style="@style/BtnStyles"
+            android:text="590. N叉数的后序遍历" />
 
-    <Button
-        android:id="@+id/btn_max_depth"
-        style="@style/BtnStyles"
-        android:text="104.二叉树的最大深度" />
+        <Button
+            android:id="@+id/btn_binary_tree_paths"
+            style="@style/BtnStyles"
+            android:text="257. 二叉树的所有路径" />
 
-    <Button
-        android:id="@+id/btn_min_depth"
-        style="@style/BtnStyles"
-        android:text="104.二叉树的最小深度" />
+        <Button
+            android:id="@+id/btn_max_depth"
+            style="@style/BtnStyles"
+            android:text="104.二叉树的最大深度" />
 
-    <Button
-        android:id="@+id/btn_has_path_sum"
-        style="@style/BtnStyles"
-        android:text="112. 路径总和" />
+        <Button
+            android:id="@+id/btn_min_depth"
+            style="@style/BtnStyles"
+            android:text="104.二叉树的最小深度" />
 
-    <Button
-        android:id="@+id/btn_path_sum"
-        style="@style/BtnStyles"
-        android:text="113. 路径总和 II" />
+        <Button
+            android:id="@+id/btn_has_path_sum"
+            style="@style/BtnStyles"
+            android:text="112. 路径总和" />
 
-    <Button
-        android:id="@+id/btn_is_valid_bst"
-        style="@style/BtnStyles"
-        android:text="98. 验证二叉搜索树" />
+        <Button
+            android:id="@+id/btn_path_sum"
+            style="@style/BtnStyles"
+            android:text="113. 路径总和 II" />
 
-    <Button
-        android:id="@+id/btn_pre_in_build_tree"
-        style="@style/BtnStyles"
-        android:text="105. 从前序与中序遍历序列构造二叉树" />
+        <Button
+            android:id="@+id/btn_is_valid_bst"
+            style="@style/BtnStyles"
+            android:text="98. 验证二叉搜索树" />
 
-    <Button
-        android:id="@+id/btn_in_post_build_tree"
-        style="@style/BtnStyles"
-        android:text="106. 从中序与后序遍历序列构造二叉树" />
+        <Button
+            android:id="@+id/btn_pre_in_build_tree"
+            style="@style/BtnStyles"
+            android:text="105. 从前序与中序遍历序列构造二叉树" />
 
-    <Button
-        android:id="@+id/btn_invert_tree"
-        style="@style/BtnStyles"
-        android:text="226. 翻转二叉树" />
+        <Button
+            android:id="@+id/btn_in_post_build_tree"
+            style="@style/BtnStyles"
+            android:text="106. 从中序与后序遍历序列构造二叉树" />
 
-    <Button
-        android:id="@+id/btn_level_order"
-        style="@style/BtnStyles"
-        android:text="102. 二叉树的层序遍历" />
+        <Button
+            android:id="@+id/btn_invert_tree"
+            style="@style/BtnStyles"
+            android:text="226. 翻转二叉树" />
 
-    <Button
-        android:id="@+id/btn_level_order_bottom"
-        style="@style/BtnStyles"
-        android:text="107. 二叉树的层序遍历 II" />
+        <Button
+            android:id="@+id/btn_level_order"
+            style="@style/BtnStyles"
+            android:text="102. 二叉树的层序遍历" />
 
-    <Button
-        android:id="@+id/btn_largest_values"
-        style="@style/BtnStyles"
-        android:text="515. 在每个树行中找最大值" />
+        <Button
+            android:id="@+id/btn_level_order_bottom"
+            style="@style/BtnStyles"
+            android:text="107. 二叉树的层序遍历 II" />
 
-    <Button
-        android:id="@+id/btn_right_side_view"
-        style="@style/BtnStyles"
-        android:text="199. 二叉树的右视图" />
+        <Button
+            android:id="@+id/btn_largest_values"
+            style="@style/BtnStyles"
+            android:text="515. 在每个树行中找最大值" />
 
-    <Button
-        android:id="@+id/btn_zigzag_level_order"
-        style="@style/BtnStyles"
-        android:text="103. 二叉树的锯齿形层序遍历" />
+        <Button
+            android:id="@+id/btn_right_side_view"
+            style="@style/BtnStyles"
+            android:text="199. 二叉树的右视图" />
 
-    <Button
-        android:id="@+id/btn_is_symmetric"
-        style="@style/BtnStyles"
-        android:text="101. 对称二叉树" />
+        <Button
+            android:id="@+id/btn_zigzag_level_order"
+            style="@style/BtnStyles"
+            android:text="103. 二叉树的锯齿形层序遍历" />
 
-    <Button
-        android:id="@+id/btn_lowest_common_ancestor"
-        style="@style/BtnStyles"
-        android:text="236. 二叉树的最近公共祖先" />
+        <Button
+            android:id="@+id/btn_is_symmetric"
+            style="@style/BtnStyles"
+            android:text="101. 对称二叉树" />
 
-    <Button
-        android:id="@+id/btn_flatten"
-        style="@style/BtnStyles"
-        android:text="114. 二叉树展开为链表" />
+        <Button
+            android:id="@+id/btn_lowest_common_ancestor"
+            style="@style/BtnStyles"
+            android:text="236. 二叉树的最近公共祖先" />
 
-    <Button
-        android:id="@+id/btn_diameter_of_binary_tree"
-        style="@style/BtnStyles"
-        android:text="543. 二叉树的直径" />
+        <Button
+            android:id="@+id/btn_flatten"
+            style="@style/BtnStyles"
+            android:text="114. 二叉树展开为链表" />
 
-    <Button
-        android:id="@+id/btn_is_balanced"
-        style="@style/BtnStyles"
-        android:text="110. 平衡二叉树" />
+        <Button
+            android:id="@+id/btn_diameter_of_binary_tree"
+            style="@style/BtnStyles"
+            android:text="543. 二叉树的直径" />
 
-    <Button
-        android:id="@+id/btn_sorted_array_to_bst"
-        style="@style/BtnStyles"
-        android:text="108. 将有序数组转换为二叉搜索树" />
+        <Button
+            android:id="@+id/btn_is_balanced"
+            style="@style/BtnStyles"
+            android:text="110. 平衡二叉树" />
+
+        <Button
+            android:id="@+id/btn_sorted_array_to_bst"
+            style="@style/BtnStyles"
+            android:text="108. 将有序数组转换为二叉搜索树" />
+
+        <Button
+            android:id="@+id/btn_count_nodes"
+            style="@style/BtnStyles"
+            android:text="222. 完全二叉树的节点个数" />
 
 
-    <Button
-        android:id="@+id/btn_ladder_length"
-        style="@style/BtnStyles"
-        android:text="127. 单词接龙" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_ladder_length"
+            style="@style/BtnStyles"
+            android:text="127. 单词接龙" />
+    </LinearLayout>
+</ScrollView>

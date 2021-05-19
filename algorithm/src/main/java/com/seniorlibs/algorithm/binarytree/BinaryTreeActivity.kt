@@ -66,6 +66,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_diameter_of_binary_tree).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_balanced).setOnClickListener(this)
         findViewById<View>(R.id.btn_sorted_array_to_bst).setOnClickListener(this)
+        findViewById<View>(R.id.btn_count_nodes).setOnClickListener(this)
         findViewById<View>(R.id.btn_ladder_length).setOnClickListener(this)
     }
 
@@ -414,10 +415,23 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "110. 平衡二叉树：${isBalanced(node)}")
             }
             R.id.btn_sorted_array_to_bst -> {
-                LogUtils.e(
-                    TAG,
-                    "108. 将有序数组转换为二叉搜索树：${sortedArrayToBST(intArrayOf(1, 2, 3, 4, 5, 6))}"
-                )
+                LogUtils.e(TAG, "108. 将有序数组转换为二叉搜索树：${sortedArrayToBST(intArrayOf(1, 2, 3, 4, 5, 6))}")
+            }
+            R.id.btn_count_nodes -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(2)
+                val node_right = TreeNode(3)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(4)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.left = node_right2
+                LogUtils.e(TAG, "222. 完全二叉树的节点个数：${countNodes(node)}")
             }
             R.id.btn_ladder_length -> {
                 val list = mutableListOf("hot", "dot", "dog", "lot", "log", "cog")
@@ -1922,6 +1936,54 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         root.right = dfs(nums, mid + 1, right)
 
         return root
+    }
+
+
+    /**
+     * 222. 完全二叉树的节点个数   方法一：利用完全二叉树特点
+     *
+     * 完全二叉树的性质简化遍历次数，除最后一层外，其余层全部铺满；且最后一层向左停靠
+     *
+     * 时间复杂度：O(logN的平方)。每递归到一个节点，都要计算深度，二叉树深度计算，O(logN)。每一层只看一个节点，一共多少层？logN层。
+     * 空间复杂度：O(Height)，其中 Height 为二叉树的高度。
+     *
+     * https://leetcode-cn.com/problems/count-complete-tree-nodes/solution/222-wan-quan-er-cha-shu-de-jie-dian-ge-s-z64u/
+     * @param root
+     * @return
+     */
+    fun countNodes(root: TreeNode?): Int {
+        if (root == null) return 0
+        // 计算高度，注意这里不是树的实际高度
+        val height = treeHeight(root)
+
+        if (treeHeight(root.left) == height) {
+            // 如果根节点的左子树深度等于右子树深度，则说明左子树为满二叉树，通过公式计算左子树，只需要递归右子树就行了
+            // 注意：公式是：(1 << height) - 1，不要把根节点给忘了，在加上1就是：(1 << height)
+            // 1 << height == 2^height    -->    2^3 = 8 = 100   =   1 << 3 = 100
+            return (1 shl height) + countNodes(root.right)
+        } else {
+            // 如果根节点的左子树深度大于右子树深度，则说明右子树为满二叉树，通过公式计算右子树，只需要递归左子树就行了
+            return (1 shl height - 1) + countNodes(root.left)
+        }
+    }
+
+    // 计算树的高度，注意这个结果不是树的实际高度，如果树是满二叉树，他就是树的高度，如果不是满二叉树，他就是树的高度减1
+    private fun treeHeight(root: TreeNode?): Int {
+        return if (root == null) 0 else 1 + treeHeight(root.right)
+    }
+
+
+    /**
+     * 222. 完全二叉树的节点个数   方法二：暴力递归
+     */
+    fun countNodes1(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        val left = countNodes1(root.left)
+
+        val right = countNodes1(root.right)
+
+        return left + right + 1
     }
 
 
