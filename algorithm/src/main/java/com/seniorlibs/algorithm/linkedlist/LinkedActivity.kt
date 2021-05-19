@@ -878,7 +878,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 61. 旋转链表
      *
-     * 先转化为循环链表，再找头结点
+     * 题意：给你一个链表的头节点 head，旋转链表，将链表每个节点向右移动 k 个位置。
+     * 思路：先转化为循环链表，再找头结点
      *
      * 时间复杂度：O(n)，其中 n 是链表的长度。
      * 空间复杂度：O(1)。
@@ -893,7 +894,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         var k = k
 
-        // 1.计算链表的长度
+        // 1.计算链表的长度，将 p 指向链表的尾部节点  1,2,3,4,5  head->1,p->5
         var n = 1
         var p = head
         while (p?.next != null) {
@@ -901,13 +902,13 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             n++
         }
 
-        // 2.链表最后一位值的 next 指向原链表首位数字，转化为循环链表
+        // 2.链表的尾部节点的 next 指向原链表的头节点，转化为循环链表  1,2,3,4,5  p.next->1
         p?.next = head
 
-        // 避免 K 可能会大于最大长度
-        k = k % n
+        // 避免 k 可能会大于最大长度
+        k %= n
 
-        // 3.找到新表头的前驱节点
+        // 3.找到新链表的头节点 == 将链表每个节点向右移动 k 个位置  1,2,3,4,5  k=2,p.next->1,cur->3
         var count = 0
         var cur = head
         while (count < n - k - 1) {
@@ -916,9 +917,9 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             cur = cur?.next
         }
 
-        // 4.在新的头结点之前断环
-        val res = cur?.next
+        // 4.在新链表的头结点之前断环  1,2,3,4,5  newHead->4,cur->3,cur.next->null  4,5,1,2,3
+        val newHead = cur?.next
         cur?.next = null
-        return res
+        return newHead
     }
 }
