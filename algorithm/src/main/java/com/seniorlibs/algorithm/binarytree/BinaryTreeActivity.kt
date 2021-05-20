@@ -1944,7 +1944,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      *
      * 完全二叉树的性质简化遍历次数，除最后一层外，其余层全部铺满；且最后一层向左停靠
      *
-     * 时间复杂度：O(logN的平方)。每递归到一个节点，都要计算深度，二叉树深度计算，O(logN)。每一层只看一个节点，一共多少层？logN层。
+     * 时间复杂度：O(logn * logn)。每递归到一个节点，都要计算深度，二叉树深度计算，O(logN)。每一层只看一个节点，一共多少层？logN层。
      * 空间复杂度：O(Height)，其中 Height 为二叉树的高度。
      *
      * https://leetcode-cn.com/problems/count-complete-tree-nodes/solution/222-wan-quan-er-cha-shu-de-jie-dian-ge-s-z64u/
@@ -1953,23 +1953,29 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun countNodes(root: TreeNode?): Int {
         if (root == null) return 0
-        // 计算高度，注意这里不是树的实际高度
-        val height = treeHeight(root)
 
-        if (treeHeight(root.left) == height) {
+        val leftHeight = treeHeight(root.left)
+        val rightHeight = treeHeight(root.right)
+
+        if (leftHeight == rightHeight) {
             // 如果根节点的左子树深度等于右子树深度，则说明左子树为满二叉树，通过公式计算左子树，只需要递归右子树就行了
-            // 注意：公式是：(1 << height) - 1，不要把根节点给忘了，在加上1就是：(1 << height)
-            // 1 << height == 2^height    -->    2^3 = 8 = 100   =   1 << 3 = 100
-            return (1 shl height) + countNodes(root.right)
+            // 注意：公式是：(1 << height) - 1，加上根节点就是：(1 << height)
+            return (1 shl leftHeight) + countNodes(root.right)
         } else {
             // 如果根节点的左子树深度大于右子树深度，则说明右子树为满二叉树，通过公式计算右子树，只需要递归左子树就行了
-            return (1 shl height - 1) + countNodes(root.left)
+            return (1 shl rightHeight) + countNodes(root.left)
         }
     }
 
-    // 计算树的高度，注意这个结果不是树的实际高度，如果树是满二叉树，他就是树的高度，如果不是满二叉树，他就是树的高度减1
+    // 计算树的高度
     private fun treeHeight(root: TreeNode?): Int {
-        return if (root == null) 0 else 1 + treeHeight(root.right)
+        var root = root
+        var height = 0
+        while (root != null) {
+            root = root.left
+            height++
+        }
+        return height
     }
 
 

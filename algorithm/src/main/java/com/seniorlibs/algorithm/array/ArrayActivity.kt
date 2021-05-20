@@ -48,6 +48,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_majority_element).setOnClickListener(this)
         findViewById<View>(R.id.btn_intersection).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_duplicate).setOnClickListener(this)
+        findViewById<View>(R.id.btn_spiral_order).setOnClickListener(this)
+        findViewById<View>(R.id.btn_generate_matrix).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -127,6 +129,12 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_find_duplicate -> {
             val nums = intArrayOf(1, 2, 2, 2, 5, 6)
             LogUtils.d(TAG, "287. 寻找重复数：${findDuplicate(nums)}")
+        }
+        R.id.btn_spiral_order -> {
+//            LogUtils.d(TAG, "剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵：${spiralOrder()}")
+        }
+        R.id.btn_generate_matrix -> {
+//            LogUtils.d(TAG, "59. 螺旋矩阵 II：${generateMatrix()}")
         }
         else -> {
         }
@@ -912,7 +920,10 @@ n->f(n)
      * 剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵
      *
      * 时间复杂度 O(MN) ：M, N分别为矩阵行数和列数
-     * 空间复杂度 O(1) ：四个边界 l , r , t , b 使用常数大小的额外空间（res为必须使用的空间）
+     * 空间复杂度 O(n)
+     *
+     * https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/solution/jian-zhi-offer-29-shun-shi-zhen-da-yin-j-z25q/
+     * https://leetcode-cn.com/problems/spiral-matrix/solution/jian-zhi-offer-29-shun-shi-zhen-da-yin-j-92ui/
      *
      * @param matrix
      * @return
@@ -924,41 +935,41 @@ n->f(n)
         var r = matrix[0].size - 1
         var t = 0
         var b = matrix.size - 1
-        var x = 0
 
-        val res = IntArray((r + 1) * (b + 1))
+        var x = 0
+        val array = IntArray((r + 1) * (b + 1))
 
         while (true) {
-            for (i in l..r) {
-                // left to right.
-                res[x++] = matrix[t][i]
-            }
+            // 从左向右
+            for (i in l..r) array[x++] = matrix[t][i]
+            // 上边界 t 加 1，是否 t > b
             if (++t > b) break
 
-            for (i in t..b) {
-                // top to bottom.
-                res[x++] = matrix[i][r]
-            }
+            // 从上向下
+            for (i in t..b) array[x++] = matrix[i][r]
+            // 右边界 r 减 1，是否 l > r
             if (l > --r) break
 
-            for (i in r downTo l) {
-                // right to left
-                res[x++] = matrix[b][i]
-            }
+            // 从右向左
+            for (i in r downTo l) array[x++] = matrix[b][i]
+            // 下边界 b 减 1，是否 t > b
             if (t > --b) break
 
-            for (i in b downTo t) {
-                // bottom to top.
-                res[x++] = matrix[i][l]
-            }
+            // 从下向上
+            for (i in b downTo t) array[x++] = matrix[i][l]
+            // 左边界 l 加 1，是否 l > r
             if (++l > r) break
         }
-        return res
+        return array
     }
 
     /**
      * 59. 螺旋矩阵 II
      *
+     * 时间复杂度 O(MN) ：M, N分别为矩阵行数和列数
+     * 空间复杂度 O(n)
+     *
+     * https://leetcode-cn.com/problems/spiral-matrix-ii/solution/59-luo-xuan-ju-zhen-ii-by-chen-li-guan-mttp/
      * @param n
      * @return
      */
@@ -967,33 +978,26 @@ n->f(n)
         var r = n - 1
         var t = 0
         var b = n - 1
+
         val array = Array(n) { IntArray(n) }
         var num = 1
         val tar = n * n
 
         while (num <= tar) {
-            for (i in l..r) {
-                // left to right.
-                array[t][i] = num++
-            }
+            // left to right.
+            for (i in l..r) array[t][i] = num++
             t++
 
-            for (i in t..b) {
-                // top to bottom.
-                array[i][r] = num++
-            }
+            // top to bottom.
+            for (i in t..b) array[i][r] = num++
             r--
 
-            for (i in r downTo l) {
-                // right to left.
-                array[b][i] = num++
-            }
+            // right to left.
+            for (i in r downTo l) array[b][i] = num++
             b--
 
-            for (i in b downTo t) {
-                // bottom to top.
-                array[i][l] = num++
-            }
+            // bottom to top.
+            for (i in b downTo t) array[i][l] = num++
             l++
         }
         return array
