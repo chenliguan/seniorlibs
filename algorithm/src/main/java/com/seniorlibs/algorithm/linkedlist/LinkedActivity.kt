@@ -855,13 +855,13 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         var cur: ListNode? = dummy
 
         while (cur?.next != null) {
-            // 记下元素值 x，随后不断将 cur.next 从链表中移除，直到 cur.next 为空节点或者其元素值不等于 x 为止
+            // 记下值 x，不断移除 x 指向 cur.next 为空的节点或者其值不等于 x 的节点
             var x = cur.next
             while (x != null && x.`val` == cur.next?.`val`) {
                 x = x.next
             }
 
-            // 将 cur 指向 cur.next。相当于将链表中所有元素值为 x 的节点全部删除
+            // 将 cur.next 指向 x，相当于将链表中所有值为 x 的节点全部删除
             if (x == cur.next?.next) {
                 cur = cur.next
             } else {
