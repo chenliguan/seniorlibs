@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BaseMatchParent"
@@ -7,33 +7,41 @@
     tools:context=".main.MainActivity"
     tools:ignore="MissingDefaultResource">
 
-    <Button
-        android:id="@+id/btn_achieve_trie"
-        style="@style/BtnStyles"
-        android:text="208. 实现 Trie (前缀树)" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_exist"
-        style="@style/BtnStyles"
-        android:text="79. 单词搜索" />
+        <Button
+            android:id="@+id/btn_achieve_trie"
+            style="@style/BtnStyles"
+            android:text="208. 实现 Trie (前缀树)" />
 
-    <Button
-        android:id="@+id/btn_num_is_lands"
-        style="@style/BtnStyles"
-        android:text="200. 岛屿数量（DFS / BFS）" />
+        <Button
+            android:id="@+id/btn_exist"
+            style="@style/BtnStyles"
+            android:text="79. 单词搜索" />
 
-    <Button
-        android:id="@+id/btn_max_area_of_island"
-        style="@style/BtnStyles"
-        android:text="695. 岛屿的最大面积" />
+        <Button
+            android:id="@+id/btn_num_is_lands"
+            style="@style/BtnStyles"
+            android:text="200. 岛屿数量（DFS / BFS）" />
 
-    <Button
-        android:id="@+id/btn_surround_area"
-        style="@style/BtnStyles"
-        android:text="130. 被围绕的区域" />
+        <Button
+            android:id="@+id/btn_max_area_of_island"
+            style="@style/BtnStyles"
+            android:text="695. 岛屿的最大面积" />
 
-    <Button
-        android:id="@+id/btn_find_circle_num"
-        style="@style/BtnStyles"
-        android:text="547. 朋友圈" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_surround_area"
+            style="@style/BtnStyles"
+            android:text="130. 被围绕的区域" />
+
+        <Button
+            android:id="@+id/btn_find_circle_num"
+            style="@style/BtnStyles"
+            android:text="547. 朋友圈" />
+
+    </LinearLayout>
+</ScrollView>

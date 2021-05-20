@@ -247,7 +247,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_delete_duplicates2 -> {
                 val li1 = ListNode(1)
-                val li2 = ListNode(2)
+                val li2 = ListNode(3)
                 val li3 = ListNode(3)
                 val li4 = ListNode(4)
                 val li5 = ListNode(5)
@@ -855,17 +855,18 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         var cur: ListNode? = dummy
 
         while (cur?.next != null) {
-            // 记下值 x，不断移除 x 指向 cur.next 为空的节点或者其值不等于 x 的节点
+            // 记下值 x，不断移除 x 指向 cur.next 为空的节点或者其值不等于 x 的节点  1,3,3,4,5  cur->0,cur.next->1,x->1  cur->1,cur.next->3,x->3
             var x = cur.next
-            while (x != null && x.`val` == cur.next?.`val`) {
-                x = x.next
+            while (x != null && x.`val` == cur.next?.`val`) { // cur.next->1 == x->1  cur.next->3 == x->3 -- cur.next->3 == x->4
+                x = x.next  // x->3  x->3--x->4
             }
 
-            // 将 cur.next 指向 x，相当于将链表中所有值为 x 的节点全部删除
             if (x == cur.next?.next) {
-                cur = cur.next
+                // 将 cur 指向 cur.next，正常移动 cur 指针到下一个节点
+                cur = cur.next  // x->3 == cur.next.next->0.next->1.next->3  -->  cur->3
             } else {
-                cur.next = x
+                // 将 cur.next 指向 x，相当于将链表中所有值为 x 的节点全部删除
+                cur.next = x  // x->4 == cur.next.next->1.next->3.next->4  -->  cur.next->1.next->4
             }
         }
 

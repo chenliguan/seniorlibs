@@ -13,7 +13,9 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name">
 
-        <activity android:name=".main.MainActivity">
+        <activity
+            android:name=".main.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,43 +23,81 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.AlgorithmTestActivity" />
+        <activity
+            android:name=".main.AlgorithmTestActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".linkedlist.LinkedActivity" />
+        <activity
+            android:name=".linkedlist.LinkedActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".array.ArrayActivity" />
+        <activity
+            android:name=".array.ArrayActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".binarytree.BinaryTreeActivity" />
+        <activity
+            android:name=".binarytree.BinaryTreeActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".map.MapActivity" />
+        <activity
+            android:name=".map.MapActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".stack.StackActivity" />
+        <activity
+            android:name=".stack.StackActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".queue.QueueActivity" />
+        <activity
+            android:name=".queue.QueueActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".heap.HeapActivity" />
+        <activity
+            android:name=".heap.HeapActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".recursive.RecursiveActivity" />
+        <activity
+            android:name=".recursive.RecursiveActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".recursive.BackActivity" />
+        <activity
+            android:name=".recursive.BackActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".db.DbActivity" />
+        <activity
+            android:name=".db.DbActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".db.DbActivity2" />
+        <activity
+            android:name=".db.DbActivity2"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".greedy.GreedyActivity" />
+        <activity
+            android:name=".greedy.GreedyActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".binarysearch.BinarySearchActivity" />
+        <activity
+            android:name=".binarysearch.BinarySearchActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".trie.TrieActivity" />
+        <activity
+            android:name=".trie.TrieActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".bit.BitActivity" />
+        <activity
+            android:name=".bit.BitActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".other.OtherActivity" />
+        <activity
+            android:name=".other.OtherActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".string.StringActivity" />
+        <activity
+            android:name=".string.StringActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".sort.SortActivity" />
+        <activity
+            android:name=".sort.SortActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

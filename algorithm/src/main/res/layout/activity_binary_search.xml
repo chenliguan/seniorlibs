@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BaseMatchParent"
@@ -7,74 +7,81 @@
     tools:context=".main.MainActivity"
     tools:ignore="MissingDefaultResource">
 
-    <Button
-        android:id="@+id/btn_search1"
-        style="@style/BtnStyles"
-        android:text="704. 二分查找" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_search_insert"
-        style="@style/BtnStyles"
-        android:text="35. 搜索插入位置" />
+        <Button
+            android:id="@+id/btn_search1"
+            style="@style/BtnStyles"
+            android:text="704. 二分查找" />
 
-    <Button
-        android:id="@+id/btn_search_range"
-        style="@style/BtnStyles"
-        android:text="34. 在排序数组中查找元素的第一个和最后一个位置" />
+        <Button
+            android:id="@+id/btn_search_insert"
+            style="@style/BtnStyles"
+            android:text="35. 搜索插入位置" />
 
-    <Button
-        android:id="@+id/btn_search_times"
-        style="@style/BtnStyles"
-        android:text="剑指 Offer 53 - I. 在排序数组中查找数字 I" />
+        <Button
+            android:id="@+id/btn_search_range"
+            style="@style/BtnStyles"
+            android:text="34. 在排序数组中查找元素的第一个和最后一个位置" />
 
-    <Button
-        android:id="@+id/btn_search"
-        style="@style/BtnStyles"
-        android:text="33. 搜索旋转排序数组" />
+        <Button
+            android:id="@+id/btn_search_times"
+            style="@style/BtnStyles"
+            android:text="剑指 Offer 53 - I. 在排序数组中查找数字 I" />
 
-    <Button
-        android:id="@+id/btn_search_2"
-        style="@style/BtnStyles"
-        android:text="81. 搜索旋转排序数组 II" />
+        <Button
+            android:id="@+id/btn_search"
+            style="@style/BtnStyles"
+            android:text="33. 搜索旋转排序数组" />
 
-    <Button
-        android:id="@+id/btn_find_min"
-        style="@style/BtnStyles"
-        android:text="153. 寻找旋转排序数组中的最小值" />
+        <Button
+            android:id="@+id/btn_search_2"
+            style="@style/BtnStyles"
+            android:text="81. 搜索旋转排序数组 II" />
 
-    <Button
-        android:id="@+id/btn_find_min_2"
-        style="@style/BtnStyles"
-        android:text="154. 寻找旋转排序数组中的最小值 II" />
+        <Button
+            android:id="@+id/btn_find_min"
+            style="@style/BtnStyles"
+            android:text="153. 寻找旋转排序数组中的最小值" />
 
-    <Button
-        android:id="@+id/btn_peak_index_in_mountain_array"
-        style="@style/BtnStyles"
-        android:text="852. 山脉数组的峰顶索引" />
+        <Button
+            android:id="@+id/btn_find_min_2"
+            style="@style/BtnStyles"
+            android:text="154. 寻找旋转排序数组中的最小值 II" />
 
-    <Button
-        android:id="@+id/btn_valid_mountain_array"
-        style="@style/BtnStyles"
-        android:text="941. 有效的山脉数组" />
+        <Button
+            android:id="@+id/btn_peak_index_in_mountain_array"
+            style="@style/BtnStyles"
+            android:text="852. 山脉数组的峰顶索引" />
 
-    <Button
-        android:id="@+id/btn_get_number_same_as_index"
-        style="@style/BtnStyles"
-        android:text="数组中数值和下标相等的元素" />
+        <Button
+            android:id="@+id/btn_valid_mountain_array"
+            style="@style/BtnStyles"
+            android:text="941. 有效的山脉数组" />
 
-    <Button
-        android:id="@+id/btn_sqrt"
-        style="@style/BtnStyles"
-        android:text="69. x 的平方根" />
+        <Button
+            android:id="@+id/btn_get_number_same_as_index"
+            style="@style/BtnStyles"
+            android:text="数组中数值和下标相等的元素" />
 
-    <Button
-        android:id="@+id/btn_find_peak_element"
-        style="@style/BtnStyles"
-        android:text="162. 寻找峰值" />
+        <Button
+            android:id="@+id/btn_sqrt"
+            style="@style/BtnStyles"
+            android:text="69. x 的平方根" />
 
-    <Button
-        android:id="@+id/btn_search_matrix"
-        style="@style/BtnStyles"
-        android:text="74. 搜索二维矩阵" />
+        <Button
+            android:id="@+id/btn_find_peak_element"
+            style="@style/BtnStyles"
+            android:text="162. 寻找峰值" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_search_matrix"
+            style="@style/BtnStyles"
+            android:text="74. 搜索二维矩阵" />
+
+    </LinearLayout>
+</ScrollView>

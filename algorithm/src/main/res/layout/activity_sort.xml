@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BaseMatchParent"
@@ -7,33 +7,41 @@
     tools:context=".main.MainActivity"
     tools:ignore="MissingDefaultResource">
 
-    <Button
-        android:id="@+id/btn_quick_sort"
-        style="@style/BtnStyles"
-        android:text="快速排序" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_merge_sort"
-        style="@style/BtnStyles"
-        android:text="归并排序" />
+        <Button
+            android:id="@+id/btn_quick_sort"
+            style="@style/BtnStyles"
+            android:text="快速排序" />
 
-    <Button
-        android:id="@+id/btn_heap_sort"
-        style="@style/BtnStyles"
-        android:text="堆排序" />
+        <Button
+            android:id="@+id/btn_merge_sort"
+            style="@style/BtnStyles"
+            android:text="归并排序" />
 
-    <Button
-        android:id="@+id/btn_select_sort"
-        style="@style/BtnStyles"
-        android:text="选择排序（selection Sort）" />
+        <Button
+            android:id="@+id/btn_heap_sort"
+            style="@style/BtnStyles"
+            android:text="堆排序" />
 
-    <Button
-        android:id="@+id/btn_insert_sort"
-        style="@style/BtnStyles"
-        android:text="插入排序（insertion Sort）" />
+        <Button
+            android:id="@+id/btn_select_sort"
+            style="@style/BtnStyles"
+            android:text="选择排序（selection Sort）" />
 
-    <Button
-        android:id="@+id/btn_bubble_sort"
-        style="@style/BtnStyles"
-        android:text="冒泡排序（bubble Sort）" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_insert_sort"
+            style="@style/BtnStyles"
+            android:text="插入排序（insertion Sort）" />
+
+        <Button
+            android:id="@+id/btn_bubble_sort"
+            style="@style/BtnStyles"
+            android:text="冒泡排序（bubble Sort）" />
+
+    </LinearLayout>
+</ScrollView>
