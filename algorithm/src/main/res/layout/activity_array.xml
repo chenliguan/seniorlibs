@@ -13,86 +13,95 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_remove_duplicates"
-        style="@style/BtnStyles"
-        android:text="26. 删除排序数组中的重复项" />
+        <Button
+            android:id="@+id/btn_remove_duplicates"
+            style="@style/BtnStyles"
+            android:text="26. 删除排序数组中的重复项" />
 
-    <Button
-        android:id="@+id/btn_move_zeroes"
-        style="@style/BtnStyles"
-        android:text="283. 移动零" />
+        <Button
+            android:id="@+id/btn_move_zeroes"
+            style="@style/BtnStyles"
+            android:text="283. 移动零" />
 
-    <Button
-        android:id="@+id/btn_max_area"
-        style="@style/BtnStyles"
-        android:text="11. 盛最多水的容器" />
+        <Button
+            android:id="@+id/btn_max_area"
+            style="@style/BtnStyles"
+            android:text="11. 盛最多水的容器" />
 
-    <Button
-        android:id="@+id/btn_trap"
-        style="@style/BtnStyles"
-        android:text="42. 接雨水" />
+        <Button
+            android:id="@+id/btn_trap"
+            style="@style/BtnStyles"
+            android:text="42. 接雨水" />
 
-    <Button
-        android:id="@+id/btn_two_sum"
-        style="@style/BtnStyles"
-        android:text="1. 两数之和" />
+        <Button
+            android:id="@+id/btn_two_sum"
+            style="@style/BtnStyles"
+            android:text="1. 两数之和" />
 
-    <Button
-        android:id="@+id/btn_three_sum"
-        style="@style/BtnStyles"
-        android:text="15. 三数之和" />
+        <Button
+            android:id="@+id/btn_three_sum"
+            style="@style/BtnStyles"
+            android:text="15. 三数之和" />
 
-    <Button
-        android:id="@+id/btn_three_sum_closest"
-        style="@style/BtnStyles"
-        android:text="16. 最接近的三数之和" />
+        <Button
+            android:id="@+id/btn_three_sum_closest"
+            style="@style/BtnStyles"
+            android:text="16. 最接近的三数之和" />
 
-    <Button
-        android:id="@+id/btn_four_sum"
-        style="@style/BtnStyles"
-        android:text="18. 四数之和" />
+        <Button
+            android:id="@+id/btn_four_sum"
+            style="@style/BtnStyles"
+            android:text="18. 四数之和" />
 
-    <Button
-        android:id="@+id/btn_merge"
-        style="@style/BtnStyles"
-        android:text="88. 合并两个有序数组" />
+        <Button
+            android:id="@+id/btn_merge"
+            style="@style/BtnStyles"
+            android:text="88. 合并两个有序数组" />
 
-    <Button
-        android:id="@+id/btn_find_repeat_number"
-        style="@style/BtnStyles"
-        android:text="03. 数组中重复的数字" />
+        <Button
+            android:id="@+id/btn_find_repeat_number"
+            style="@style/BtnStyles"
+            android:text="03. 数组中重复的数字" />
 
-    <Button
-        android:id="@+id/btn_merge_interval"
-        style="@style/BtnStyles"
-        android:text="56. 合并区间" />
+        <Button
+            android:id="@+id/btn_merge_interval"
+            style="@style/BtnStyles"
+            android:text="56. 合并区间" />
 
 
-    <Button
-        android:id="@+id/btn_min_sub_arrayLen"
-        style="@style/BtnStyles"
-        android:text="209. 长度最小的子数组" />
+        <Button
+            android:id="@+id/btn_min_sub_arrayLen"
+            style="@style/BtnStyles"
+            android:text="209. 长度最小的子数组" />
 
-    <Button
-        android:id="@+id/btn_rotate"
-        style="@style/BtnStyles"
-        android:text="189. 旋转数组" />
+        <Button
+            android:id="@+id/btn_rotate"
+            style="@style/BtnStyles"
+            android:text="189. 旋转数组" />
 
-    <Button
-        android:id="@+id/btn_majority_element"
-        style="@style/BtnStyles"
-        android:text="169. 多数元素" />
+        <Button
+            android:id="@+id/btn_majority_element"
+            style="@style/BtnStyles"
+            android:text="169. 多数元素" />
 
-    <Button
-        android:id="@+id/btn_intersection"
-        style="@style/BtnStyles"
-        android:text="349. 两个数组的交集" />
+        <Button
+            android:id="@+id/btn_intersection"
+            style="@style/BtnStyles"
+            android:text="349. 两个数组的交集" />
 
-    <Button
-        android:id="@+id/btn_find_duplicate"
-        style="@style/BtnStyles"
-        android:text="287. 寻找重复数" />
+        <Button
+            android:id="@+id/btn_find_duplicate"
+            style="@style/BtnStyles"
+            android:text="287. 寻找重复数" />
 
+        <Button
+            android:id="@+id/btn_spiral_order"
+            style="@style/BtnStyles"
+            android:text="剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵" />
+
+        <Button
+            android:id="@+id/btn_generate_matrix"
+            style="@style/BtnStyles"
+            android:text="59. 螺旋矩阵 II" />
     </LinearLayout>
 </ScrollView>

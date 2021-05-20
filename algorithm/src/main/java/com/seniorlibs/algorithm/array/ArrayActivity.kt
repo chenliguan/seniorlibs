@@ -906,4 +906,97 @@ n->f(n)
         // 双指针第二次相遇
         return slow
     }
+
+
+    /**
+     * 剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵
+     *
+     * 时间复杂度 O(MN) ：M, N分别为矩阵行数和列数
+     * 空间复杂度 O(1) ：四个边界 l , r , t , b 使用常数大小的额外空间（res为必须使用的空间）
+     *
+     * @param matrix
+     * @return
+     */
+    fun spiralOrder(matrix: Array<IntArray>): IntArray {
+        if (matrix.isEmpty()) return IntArray(0)
+
+        var l = 0
+        var r = matrix[0].size - 1
+        var t = 0
+        var b = matrix.size - 1
+        var x = 0
+
+        val res = IntArray((r + 1) * (b + 1))
+
+        while (true) {
+            for (i in l..r) {
+                // left to right.
+                res[x++] = matrix[t][i]
+            }
+            if (++t > b) break
+
+            for (i in t..b) {
+                // top to bottom.
+                res[x++] = matrix[i][r]
+            }
+            if (l > --r) break
+
+            for (i in r downTo l) {
+                // right to left
+                res[x++] = matrix[b][i]
+            }
+            if (t > --b) break
+
+            for (i in b downTo t) {
+                // bottom to top.
+                res[x++] = matrix[i][l]
+            }
+            if (++l > r) break
+        }
+        return res
+    }
+
+    /**
+     * 59. 螺旋矩阵 II
+     *
+     * @param n
+     * @return
+     */
+    fun generateMatrix(n: Int): Array<IntArray>? {
+        var l = 0
+        var r = n - 1
+        var t = 0
+        var b = n - 1
+        val array = Array(n) { IntArray(n) }
+        var num = 1
+        val tar = n * n
+
+        while (num <= tar) {
+            for (i in l..r) {
+                // left to right.
+                array[t][i] = num++
+            }
+            t++
+
+            for (i in t..b) {
+                // top to bottom.
+                array[i][r] = num++
+            }
+            r--
+
+            for (i in r downTo l) {
+                // right to left.
+                array[b][i] = num++
+            }
+            b--
+
+            for (i in b downTo t) {
+                // bottom to top.
+                array[i][l] = num++
+            }
+            l++
+        }
+        return array
+    }
+
 }
