@@ -107,6 +107,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
                         intArrayOf(10, 13, 14, 17, 24),
                         intArrayOf(18, 21, 23, 26, 30))
                 LogUtils.d(TAG, "74. 搜索二维矩阵：${searchMatrix(array, 5)}")
+                LogUtils.d(TAG, "74. 搜索二维矩阵1：${searchMatrix1(array, 5)}")
             }
             else -> {
             }
@@ -659,9 +660,11 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 74. 搜索二维矩阵
+     * 74. 搜索二维矩阵 == 240. 搜索二维矩阵 II   方法一：二分
      *
-     * 时间复杂度：O(logmn)，其中 m 和 n 分别是矩阵的行数和列数。
+     * 思路：有序，第一反应就是二分查找。最直接的做法，一行一行的进行二分查找即可。
+     *
+     * 时间复杂度：O(mlogn)，其中 m 和 n 分别是矩阵的行数和列数。
      * 空间复杂度：O(1)。
      *
      * https://leetcode-cn.com/problems/search-a-2d-matrix/solution/74-sou-suo-er-wei-ju-zhen-by-chen-li-gua-rj3e/
@@ -672,6 +675,44 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun searchMatrix(matrix: Array<IntArray>, target: Int): Boolean {
+        if (matrix.isEmpty() || matrix[0].isEmpty()) return false
+
+        for (i in 0 until matrix.size) {
+            // 一行的第一个元素大于 target，直接返回 false
+            if (matrix[i][0] > target) break
+            // 一行的最后一个元素小于 target，当前行就不用考虑了，换下一行。
+            if (matrix[i][matrix[i].size - 1] < target) continue
+
+            if (lowerBoundMatrix(matrix[i], target)) return true
+        }
+        return false
+    }
+
+    /**
+     * 寻找数组中给定元素的下界
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun lowerBoundMatrix(nums: IntArray, target: Int): Boolean {
+        val col = lowerBound(nums, target)
+
+        // 注意：退出循环的时候，我们不能确定 nums[l] 是否等于 target，因此还需要单独做一次判断；
+        return col < nums.size && nums[col] == target
+    }
+
+    /**
+     * 74. 搜索二维矩阵  方法二：从左下角往右上遍历
+     *
+     * 时间复杂度：O(logmn)，其中 m 和 n 分别是矩阵的行数和列数。
+     * 空间复杂度：O(1)。
+     *
+     * @param matrix
+     * @param target
+     * @return
+     */
+    fun searchMatrix1(matrix: Array<IntArray>, target: Int): Boolean {
         var rows = matrix.size - 1
         var columns = 0
 
@@ -692,6 +733,7 @@ class BinarySearchActivity : AppCompatActivity(), View.OnClickListener {
 
         return false
     }
+
 
 
     /**

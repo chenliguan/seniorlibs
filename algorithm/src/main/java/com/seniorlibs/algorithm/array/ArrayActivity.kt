@@ -45,6 +45,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_merge_interval).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_sub_arrayLen).setOnClickListener(this)
         findViewById<View>(R.id.btn_rotate).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rotate_matrix).setOnClickListener(this)
         findViewById<View>(R.id.btn_majority_element).setOnClickListener(this)
         findViewById<View>(R.id.btn_intersection).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_duplicate).setOnClickListener(this)
@@ -117,6 +118,12 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             val nums = intArrayOf(1, 2, 3, 4, 5, 6)
             LogUtils.d(TAG, "189. 旋转数组：${rotate(nums, 3)}")
         }
+        R.id.btn_rotate_matrix -> {
+            val array = arrayOf(intArrayOf(1, 2, 3),
+                intArrayOf(4, 5, 6),
+                intArrayOf(7, 8, 9))
+            LogUtils.d(TAG, "01.07. 旋转矩阵 == 48. 旋转图像：${rotateMatrix(array)}")
+        }
         R.id.btn_majority_element -> {
             val nums = intArrayOf(1, 2, 2, 2, 5, 6)
             LogUtils.d(TAG, "169. 多数元素：${majorityElement(nums)}")
@@ -131,10 +138,13 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             LogUtils.d(TAG, "287. 寻找重复数：${findDuplicate(nums)}")
         }
         R.id.btn_spiral_order -> {
-//            LogUtils.d(TAG, "剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵：${spiralOrder()}")
+            val array = arrayOf(intArrayOf(1, 4, 7),
+                intArrayOf(2, 5, 6),
+                intArrayOf(3, 6, 9))
+            LogUtils.d(TAG, "剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵：${spiralOrder(array)}")
         }
         R.id.btn_generate_matrix -> {
-//            LogUtils.d(TAG, "59. 螺旋矩阵 II：${generateMatrix()}")
+            LogUtils.d(TAG, "59. 螺旋矩阵 II：${generateMatrix(3)}")
         }
         else -> {
         }
@@ -770,7 +780,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         // 首先对整个数组实行翻转，这样子原数组中需要翻转的子数组，就会跑到数组最前面  [1,2,3,4,5,6,7] -> [7,6,5,4,3,2,1]
         reverse(nums, 0, nums.size - 1)
-        // 从 k 处分隔数组，左右两数组，各自进行翻转  [7,6,5, 4,3,2,1] -> [5,6,7, 1,2,3,4]
+        // 从 k - 1 处分隔数组，左右两数组，各自进行翻转  [7,6,5, 4,3,2,1] -> [5,6,7, 1,2,3,4]
         reverse(nums, 0, k - 1)
         reverse(nums, k, nums.size - 1)
     }
@@ -788,6 +798,53 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             end--
         }
     }
+
+
+    /**
+     * 48. 旋转图像 == 01.07. 旋转矩阵
+     *
+     * 时间复杂度：O(n^2)。翻转 2 次每次都是操作 n^2 次。
+     * 空间复杂度：O(1)。都是原地翻转。
+     *
+     * https://leetcode-cn.com/problems/rotate-image/solution/48-xuan-zhuan-tu-xiang-0107-xuan-zhuan-j-ewnw/
+     * https://leetcode-cn.com/problems/rotate-matrix-lcci/solution/48-xuan-zhuan-tu-xiang-0107-xuan-zhuan-j-lhzk/
+     *
+     * @param matrix
+     */
+    fun rotateMatrix(matrix: Array<IntArray>) {
+        val n = matrix.size
+        // 先以对角线（左上-右下）为轴进行翻转
+        for (i in 0 until n - 1) {
+            for (j in i + 1 until n) {
+                val tmp = matrix[i][j]
+                matrix[i][j] = matrix[j][i]
+                matrix[j][i] = tmp
+            }
+        }
+
+        // 再对每一行以中点进行翻转
+        val mid = n / 2
+        for (i in 0 until n) {
+            for (j in 0 until mid) {
+                val tmp = matrix[i][j]
+                matrix[i][j] = matrix[i][n - 1 - j]
+                matrix[i][n - 1 - j] = tmp
+            }
+        }
+    }
+
+//    [1,2,3]
+//    [4,5,6]
+//    [7,8,9]
+//    先以对角线（1-5-9）为轴进行翻转
+//    [1,4,7]
+//    [2,5,8]
+//    [3,6,9]
+//    再对每一行以中点进行翻转
+//    [7,4,1]
+//    [8,5,2]
+//    [9,6,3]
+
 
     /**
      * 169. 多数元素
@@ -920,7 +977,7 @@ n->f(n)
      * 剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵
      *
      * 时间复杂度 O(MN) ：M, N分别为矩阵行数和列数
-     * 空间复杂度 O(n)
+     * 空间复杂度 O(MN)
      *
      * https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/solution/jian-zhi-offer-29-shun-shi-zhen-da-yin-j-z25q/
      * https://leetcode-cn.com/problems/spiral-matrix/solution/jian-zhi-offer-29-shun-shi-zhen-da-yin-j-92ui/
@@ -948,12 +1005,12 @@ n->f(n)
             // 从上向下
             for (i in t..b) array[x++] = matrix[i][r]
             // 右边界 r 减 1，是否 l > r
-            if (l > --r) break
+            if(--r < l) break
 
             // 从右向左
             for (i in r downTo l) array[x++] = matrix[b][i]
             // 下边界 b 减 1，是否 t > b
-            if (t > --b) break
+            if(--b < t) break
 
             // 从下向上
             for (i in b downTo t) array[x++] = matrix[i][l]
@@ -967,7 +1024,7 @@ n->f(n)
      * 59. 螺旋矩阵 II
      *
      * 时间复杂度 O(MN) ：M, N分别为矩阵行数和列数
-     * 空间复杂度 O(n)
+     * 空间复杂度 O(MN)
      *
      * https://leetcode-cn.com/problems/spiral-matrix-ii/solution/59-luo-xuan-ju-zhen-ii-by-chen-li-guan-mttp/
      * @param n

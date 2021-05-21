@@ -80,6 +80,11 @@
             android:text="189. 旋转数组" />
 
         <Button
+            android:id="@+id/btn_rotate_matrix"
+            style="@style/BtnStyles"
+            android:text="01.07. 旋转矩阵 == 48. 旋转图像" />
+
+        <Button
             android:id="@+id/btn_majority_element"
             style="@style/BtnStyles"
             android:text="169. 多数元素" />
