@@ -214,6 +214,10 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 11. 盛最多水的容器
      *
+     * 时间复杂度 O(N)，双指针遍历一次底边宽度 N。
+     * 空间复杂度 O(1)，指针使用常数额外空间。
+     *
+     * https://leetcode-cn.com/problems/container-with-most-water/solution/11-sheng-zui-duo-shui-de-rong-qi-2-by-chen-li-guan/
      * @param height
      * @return
      */
@@ -253,14 +257,13 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     fun trap(height: IntArray): Int {
         if (height.isEmpty()) return 0
 
-        val n: Int = height.size
         var left = 0
-        var right = n - 1
+        var right = height.size - 1
         var res = 0
 
         // l_max是height[0..left]中最高柱子的高度，r_max是height[right..n-1]的最高柱子的高度
         var l_max = height[0]
-        var r_max = height[n - 1]
+        var r_max = height[height.size - 1]
 
         while (left <= right) {
             l_max = Math.max(l_max, height[left])
@@ -307,7 +310,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
             // 3.如果表中存在 other，且不是 nums[i] 本身
             if (map.containsKey(other) && map[other] != i) {
-                return intArrayOf(i, map.getValue(other))
+                return intArrayOf(i, map[other]!!)
             }
         }
 
@@ -645,28 +648,26 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      */
     fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int) {
-        var p1 = m
-        var p2 = n
-        var k = p1 + p2 - 1
+        var p1 = m - 1
+        var p2 = n - 1
+        var k = p1 + p2 + 1
 
-        while (p1 > 0 && p2 > 0) {
-            if (nums1[p1 - 1] > nums2[p2 - 1]) {
-                nums1[k] = nums1[p1 - 1]
-                p1--
+        while (p1 >= 0 && p2 >= 0) {
+            if (nums1[p1] > nums2[p2]) {
+                nums1[k] = nums1[p1--]
             } else {
-                nums1[k] = nums2[p2 - 1]
-                p2--
+                nums1[k] = nums2[p2--]
             }
             k--
         }
 
         // 合并剩余的元素
-        for (i in 0 until p1) {
+        for (i in 0..p1) {
             nums1[i] = nums1[i]
         }
 
         // 当 p2 大于 0 并且 p1 小于 0 时，此时 nums1 数组所有元素已排列过了，而nums2中还剩下p2个元素，需要对nums1的前p2个赋值为nums2的前p2个（直接将前n个进行覆盖）
-        for (i in 0 until p2) {
+        for (i in 0..p2) {
             nums1[i] = nums2[i]
         }
     }
@@ -712,19 +713,20 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         // 遍历区间
         val res = Array(intervals.size) { IntArray(2) }
-        var idx = -1
-        for (interval in intervals) {
-            // 如果结果数组是空的，或者 当前区间的起始位置 > 结果数组中最后区间的终止位置，则不合并，直接将当前区间加入结果数组
-            if (idx == -1 || interval[0] > res[idx][1]) {
-                res[++idx] = interval
+        var x = -1
+        for (array in intervals) {
+            // 如果结果数组是空的，或者 当前数组的起始位置 > 结果中最后数组的终止位置，
+            // 则不合并，直接将当前数组加入结果数组 [15,18] -> [8,10] + [15,18]
+            if (x == -1 || array[0] > res[x][1]) {
+                res[++x] = array
             } else {
-                // 反之将当前区间合并至结果数组的 最后区间
-                res[idx][1] = Math.max(res[idx][1], interval[1])
+                // 反之将当前数组合并至结果中的 最后数组 [2,6] -> [1,3->6] == [1,6]
+                res[x][1] = Math.max(res[x][1], array[1])
             }
         }
 
-        // 复制指定的数组，以空值截断或填充：idx = 2，因此 +1 [[1,6],[8,10],[15,18],[0,0]] -> [[1,6],[8,10],[15,18]
-        return Arrays.copyOf(res, idx + 1)
+        // 复制指定的数组，以空值截断或填充：x = 2，因此 +1 [[1,6],[8,10],[15,18],[0,0]] -> [[1,6],[8,10],[15,18]
+        return Arrays.copyOf(res, x + 1)
     }
 
 
@@ -857,18 +859,17 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun majorityElement(nums: IntArray): Int {
-        val map = mutableMapOf<Int, Int>()
+        val map = mutableMapOf<Int,Int>()
         val half = nums.size / 2
-        for (num in nums) {
-            var n = 0
-            if (map.containsKey(num)) {
-                n = map[num]!!
-                if (n + 1 > half) {
-                    return num
-                }
-            }
 
+        for(num in nums) {
+            var n = 0
+            if(map.containsKey(num)) {
+                n = map[num]!!
+            }
             map[num] = n + 1
+
+            if(n + 1 > half) return num
         }
         return -1
     }
@@ -941,8 +942,8 @@ n->f(n)
      * @return
      */
     fun findDuplicate(nums: IntArray): Int {
-        var fast = 0
         var slow = 0
+        var fast = 0
 
         while (true) {
             slow = nums[slow]
@@ -959,16 +960,16 @@ n->f(n)
 
         // slow和fast同时每轮向前走 1 步；
         while (true) {
-            slow = nums[slow]
-            fast = nums[fast]
-
-            // 第一次相遇
+            // 第二次相遇
             if (slow == fast) {
                 break
             }
+
+            slow = nums[slow]
+            fast = nums[fast]
         }
 
-        // 双指针第二次相遇
+        // 返回 slow
         return slow
     }
 
@@ -1040,22 +1041,23 @@ n->f(n)
         var num = 1
         val tar = n * n
 
+        // 注意：<=，包含 =
         while (num <= tar) {
             // left to right.
             for (i in l..r) array[t][i] = num++
-            t++
+            ++t
 
             // top to bottom.
             for (i in t..b) array[i][r] = num++
-            r--
+            --r
 
             // right to left.
             for (i in r downTo l) array[b][i] = num++
-            b--
+            --b
 
             // bottom to top.
             for (i in b downTo t) array[i][l] = num++
-            l++
+            ++l
         }
         return array
     }

@@ -60,6 +60,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_odd_even_list).setOnClickListener(this)
         findViewById<View>(R.id.btn_get_intersection_node).setOnClickListener(this)
         findViewById<View>(R.id.btn_swap_pairs).setOnClickListener(this)
+        findViewById<View>(R.id.btn_remove_elements).setOnClickListener(this)
         findViewById<View>(R.id.btn_delete_duplicates).setOnClickListener(this)
         findViewById<View>(R.id.btn_delete_duplicates2).setOnClickListener(this)
         findViewById<View>(R.id.btn_rotate_right).setOnClickListener(this)
@@ -232,6 +233,19 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li5.next = null
                 LogUtils.e(TAG, "24. 两两交换链表中的节点：${swapPairs(li1)}")
             }
+            R.id.btn_remove_elements -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(3)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "203. 移除链表元素：${removeElements(li1, 3)}")
+            }
             R.id.btn_delete_duplicates -> {
                 val li1 = ListNode(1)
                 val li2 = ListNode(2)
@@ -377,24 +391,35 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun detectCycle(head: ListNode?): ListNode? {
-        var fast = head
         var slow = head
+        var fast = head
 
         while (true) {
-            if (fast?.next == null) return null
+            slow = slow?.next
+            fast = fast?.next?.next
 
-            fast = fast.next!!.next
-            slow = slow!!.next
-
-            if (fast === slow) break
+            // 第一次相遇
+            if (fast === slow) {
+                break
+            }
         }
 
+        // slow 指针位置不变，将 fast 指针重新 指向链表头部节点
         fast = head
-        while (slow !== fast) {
+
+        // slow和fast同时每轮向前走 1 步；
+        while (true) {
+            // 第二次相遇
+            if (slow == fast) {
+                break
+            }
+
             slow = slow?.next
             fast = fast?.next
         }
-        return fast
+
+        // 返回 slow
+        return slow
     }
 
     /**
@@ -409,11 +434,11 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun reverseList(head: ListNode?): ListNode? {
         var prev: ListNode? = null
-        var cur: ListNode? = head
+        var cur = head
 
         while (cur != null) {
             // 记录当前节点的下一个节点
-            val next: ListNode? = cur.next
+            val next = cur.next
             // 然后将当前节点指向 prev
             cur.next = prev
 
@@ -481,22 +506,22 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         dummy.next = head
 
         // 定义两个指针，分别称之为 cur、q
-        var cur: ListNode? = dummy
-        var q: ListNode? = dummy.next
+        var cur = dummy
+        var p = dummy.next
 
         // 将 cur 移动到第一个要反转的节点的前面，将 q 移动到第一个要反转的节点的位置上
         for (i in 0 until left - 1) {
-            cur = cur?.next
-            q = q?.next
+            cur = cur.next!!
+            p = p?.next
         }
 
         // 将 cur 后面的元素删除，然后插入到 cur 的后面，也即头插法。（根据 left 和 right 重复此步骤）
         for (i in 0 until right - left) {   // cur = 1，q = 2
-            val remove = q?.next      // remove = 3
-            q?.next = q?.next?.next              // q?.next = 4  ->  1，2，4
+            val remove = p?.next      // remove = 3
+            p?.next = p?.next?.next              // q?.next = 4  ->  1，2，4
 
-            remove?.next = cur?.next               // 1、3、2
-            cur?.next = remove
+            remove?.next = cur.next              // 1、3、2
+            cur.next = remove
         }
 
         // 返回虚拟头结点 dummy 的下一个节点，即是 头结点
@@ -547,8 +572,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     private fun isPalindrome(head: ListNode?): Boolean {
-        var slow: ListNode? = head
-        var fast: ListNode? = head
+        var slow = head
+        var fast = head
 
         // 通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
         while (fast?.next != null) {
@@ -557,13 +582,16 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 如果 fast 指针没有指向 null，说明链表的长度是奇数，slow 指针还得再向前进一步
-        if (fast != null) slow = slow!!.next
+        if (fast != null) {
+            slow = slow!!.next
+        }
 
         var left = head
         // 从 slow 开始反转后面的链表，然后开始比较回文串
         var right = reverseList(slow)
         while (right != null) {
             if (left!!.`val` != right.`val`) return false
+
             left = left.next
             right = right.next
         }
@@ -589,24 +617,26 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         var l2 = l2
 
         val dummy = ListNode(0)
-        var cur: ListNode? = dummy
+        var cur = dummy
 
         while (l1 != null && l2 != null) {
             if (l1.`val` <= l2.`val`) {
-                cur?.next = l1
+                cur.next = l1
                 l1 = l1.next
             } else {
-                cur?.next = l2
+                cur.next = l2
                 l2 = l2.next
             }
-            cur = cur?.next
+
+            // 指针往前移动
+            cur = cur.next!!
         }
 
         // 合并后 l1 和 l2 只有一个还未被合并完，直接将链表末尾指向未合并完的链表
         if (l1 == null) {
-            cur?.next = l2
+            cur.next = l2
         } else {
-            cur?.next = l1
+            cur.next = l1
         }
 
         return dummy.next
@@ -664,20 +694,27 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun getKthFromEnd(head: ListNode?, k: Int): ListNode? {
-        var fast = head
-        var slow = head
+        // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
+        val dummy = ListNode(0)
+        dummy.next = head
 
+        // 设定双指针 left 和 right，初始都指向虚拟节点 dummy
+        var left = dummy
+        var right = dummy
+
+        // 移动 right，直到 left 与 right 之间相隔的元素个数为 n
         for (i in 0 until k) {
-            if (fast == null) return null
-            fast = fast.next
+            right = right.next!!
         }
 
-        while (fast != null) {
-            fast = fast.next
-            slow = slow!!.next
+        // 同时移动 left 与 right，直到 right 指向 null（此时，left 指向待删除节点左节点）
+        while (right.next != null) {
+            left = left.next!!
+            right = right.next!!
         }
 
-        return slow
+        // 区别：left 指向倒数 k 个节点的前一个节点
+        return left.next
     }
 
     /**
@@ -697,22 +734,22 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         dummy.next = head
 
         // 设定双指针 left 和 right，初始都指向虚拟节点 dummy
-        var left: ListNode? = dummy
-        var right: ListNode? = dummy
+        var left = dummy
+        var right = dummy
 
         // 移动 right，直到 left 与 right 之间相隔的元素个数为 n
         for (i in 0 until n) {
-            right = right?.next
+            right = right.next!!
         }
 
         // 同时移动 left 与 right，直到 right 指向 null（此时，left 指向待删除节点左节点）
-        while (right?.next != null) {
-            left = left?.next
-            right = right?.next
+        while (right.next != null) {
+            left = left.next!!
+            right = right.next!!
         }
 
         // 删除节点：将 left 的下一个节点指向下下个节点
-        left?.next = left?.next?.next
+        left.next = left.next?.next
 
         return dummy.next
     }
@@ -730,12 +767,14 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun oddEvenList(head: ListNode?): ListNode? {
-        if (head?.next == null) return head
+        // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
+        val dummy = ListNode(0)
+        dummy.next = head
 
         // head 为奇数链表的头节点，odd 为奇数链表的尾节点
-        var odd = head
+        var odd = dummy.next
         // even 为偶数链表的头节点
-        var even = head.next
+        var even = dummy.next?.next
         // evenHead 为偶数链表的头节点
         val evenHead = even
 
@@ -749,7 +788,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         odd?.next = evenHead
-        return head
+
+        return dummy.next
     }
 
 
@@ -777,7 +817,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 24. 两两交换链表中的节点
+     * 24. 两两交换链表中的节点  [1,2,3,4] --> [2,1,4,3]
      *
      * 时间复杂度：O(n)；
      * 空间复杂度：O(1)；
@@ -790,23 +830,57 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
         val dummy = ListNode(0)
         dummy.next = head
-        var cur: ListNode? = dummy
+        var cur = dummy
 
-        while (cur?.next != null && cur.next?.next != null) {
-            // temp -> 1 -> 2 -> n
+        while (cur.next != null && cur.next?.next != null) {
+            // cur -> 1 -> 2 -> next
             val start = cur.next       // 1
             val end = cur.next?.next   // 2
 
-            cur.next = end              // cur -> 2
-            start?.next = end?.next   // 1 -> n
+            // cur -> 2 -> 1 -> next
+            start?.next = end?.next
+            end?.next = start
 
-            end?.next = start         // 2 -> 1
-            cur = start                 // cur -> 1
+            // cur -> 2 -> 1 -> next
+            cur.next = end
+            // 1 -> 2(cur) -> next
+            cur = start!!
         }
 
         return dummy.next
     }
 
+
+    /**
+     * 203. 移除链表元素    [1,2,6,3,4,5,6], val = 6  -->  [1,2,3,4,5]
+     *
+     * 时间复杂度：O(N)，只遍历了一次。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/remove-linked-list-elements/solution/203-yi-chu-lian-biao-yuan-su-by-chen-li-vzubk/
+     * @param head
+     * @param val
+     * @return
+     */
+    fun removeElements(head: ListNode?, `val`: Int): ListNode? {
+        // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next
+        val dummy = ListNode(0)
+        dummy.next = head
+
+        var pre = dummy
+        var cur = dummy.next
+
+        while (cur != null) {
+            if (cur.`val` == `val`) {
+                pre.next = cur.next
+            } else {
+                pre = cur
+            }
+            cur = cur.next
+        }
+
+        return dummy.next
+    }
 
     /**
      * 83. 删除排序链表中的重复元素
@@ -823,17 +897,18 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 虚拟头结点 dummy，使其指向 head，最终返回 dummy.next。注意：-100 <= Node.val <= 100
         val dummy = ListNode(-101)
         dummy.next = head
-        var cur: ListNode? = dummy
+        var cur = dummy
 
-        while (cur?.next != null) {
+        while (cur.next != null) {
             if (cur.`val` == cur.next?.`val`) {
                 // 跳过当前的重复节点，使得cur指向当前重复元素的最后一个位置
                 cur.next = cur.next?.next
             } else {
                 // 不重复，移到下一个位置
-                cur = cur.next
+                cur = cur.next!!
             }
         }
+
         return dummy.next
     }
 
@@ -852,9 +927,9 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 对链表进行一次遍历，就可以删除重复的元素。由于链表的头节点可能会被删除，因此我们需要额外使用一个 dummy 节点指向链表的头节点
         val dummy = ListNode(0)
         dummy.next = head
-        var cur: ListNode? = dummy
+        var cur = dummy
 
-        while (cur?.next != null) {
+        while (cur.next != null) {
             // 记下值 x，不断移除 x 指向 cur.next 为空的节点或者其值不等于 x 的节点  1,3,3,4,5  cur->0,cur.next->1,x->1  cur->1,cur.next->3,x->3
             var x = cur.next
             while (x != null && x.`val` == cur.next?.`val`) { // cur.next->1 == x->1  cur.next->3 == x->3 -- cur.next->3 == x->4
@@ -863,7 +938,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
             if (x == cur.next?.next) {
                 // 将 cur 指向 cur.next，正常移动 cur 指针到下一个节点
-                cur = cur.next  // x->3 == cur.next.next->0.next->1.next->3  -->  cur->3
+                cur = cur.next!!  // x->3 == cur.next.next->0.next->1.next->3  -->  cur->3
             } else {
                 // 将 cur.next 指向 x，相当于将链表中所有值为 x 的节点全部删除
                 cur.next = x  // x->4 == cur.next.next->1.next->3.next->4  -->  cur.next->1.next->4
@@ -912,7 +987,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 3.找到新链表的头节点 == 将链表每个节点向右移动 k 个位置  1,2,3,4,5  k=2,p.next->1,cur->3
         var count = 0
         var cur = head
-        while (count < n - k - 1) {
+        while (count < n - 1 - k) {
             // 记录步数
             count++
             cur = cur?.next

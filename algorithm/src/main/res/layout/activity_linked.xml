@@ -98,6 +98,12 @@
             android:text="83. 删除排序链表中的重复元素" />
 
         <Button
+            android:id="@+id/btn_remove_elements"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="203. 移除链表元素" />
+
+        <Button
             android:id="@+id/btn_delete_duplicates2"
             android:layout_width="match_parent"
             android:layout_height="48dp"
