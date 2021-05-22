@@ -194,7 +194,11 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
 
         // 比较两个小数组相应下标位置的数组大小，小的先放进缓存数组
         while (i <= mid && j <= right) {
-            temp[k++] = if (array[i] <= array[j]) array[i++] else array[j++]
+            if (array[i] <= array[j]) {
+                temp[k++] = array[i++]
+            } else {
+                temp[k++] = array[j++]
+            }
         }
 
         // 如果左边还有数据需要拷贝，把左边数组剩下的拷贝到缓存数组

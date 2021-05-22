@@ -128,9 +128,10 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 3. 最小堆中的k个元素即为前k个高频元素，遍历取出堆中的元素
-        for (i in heap) {
-            res.add(i)
+        for (i in 0 until k) {
+            res.add(heap.poll())
         }
+
         return res
     }
 
@@ -156,7 +157,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         if (array.isEmpty() || k == 0) return res
         if (array.size <= k) return array
 
-        // 优先堆队列：按升序用大顶堆保存次数最小的k个数
+        // 优先堆队列：按降序用小顶堆保存次数最小的k个数
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o2 - o1 })
         for (i in array) {
             if (heap.size < k) {
@@ -178,7 +179,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 40. 最小的k个数 - 方法二：快排变形
+     * 40. 最小的k个数 - 方法二：快排变形（了解）
      *
      * 思想：寻找最小的 k 个数。假设经过一次 partition 操作，枢纽元素位于下标 m，也就是说，左侧的数组有 m 个元素，是原数组中最小的 m 个数。那么：
      *
@@ -235,20 +236,19 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun findKthLargest(array: IntArray, k: Int): Int {
-        val len = array.size
         var left = 0
-        var right = len - 1
+        var right = array.size - 1
 
         // 转换一下，第 k 大元素的索引是 len - k
-        val target = len - k
+        val target = array.size - k
         while (true) {
-            val index = partition(array, left, right)
-            if (target == index) {
-                return array[index]
-            } else if (target < index) {
-                right = index - 1
+            val mid = partition(array, left, right)
+            if (mid == target) {
+                return array[mid]
+            } else if (mid < target) {
+                left = mid + 1
             } else {
-                left = index + 1
+                right = mid - 1
             }
         }
     }
