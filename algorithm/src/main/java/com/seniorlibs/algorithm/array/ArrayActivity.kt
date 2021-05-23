@@ -662,23 +662,22 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         var p2 = n - 1
         var k = p1 + p2 + 1
 
-        while (p1 >= 0 && p2 >= 0) {
-            if (nums1[p1] > nums2[p2]) {
-                nums1[k] = nums1[p1--]
+        while(p1 >= 0 && p2 >= 0) {
+            if(nums1[p1] > nums2[p2]) {
+                nums1[k--] = nums1[p1--]
             } else {
-                nums1[k] = nums2[p2--]
+                nums1[k--] = nums2[p2--]
             }
-            k--
         }
 
         // 合并剩余的元素
-        for (i in 0..p1) {
-            nums1[i] = nums1[i]
+        while(p1 >= 0) {
+            nums1[k--] = nums1[p1--]
         }
 
         // 当 p2 大于 0 并且 p1 小于 0 时，此时 nums1 数组所有元素已排列过了，而nums2中还剩下p2个元素，需要对nums1的前p2个赋值为nums2的前p2个（直接将前n个进行覆盖）
-        for (i in 0..p2) {
-            nums1[i] = nums2[i]
+        while(p2 >= 0) {
+            nums1[k--] = nums2[p2--]
         }
     }
 
@@ -752,27 +751,26 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun minSubArrayLen(target: Int, nums: IntArray): Int {
-        var left = 0
-        var right = 0
+        var left = -1
         // 总数，用于比较目标值
         var sum = 0
         // 最小区间
-        var min = Int.MAX_VALUE
+        var res = Int.MAX_VALUE
 
-        while (right < nums.size) {
+        for(i in 0 until nums.size) {
             // 移动右指针，扩大窗口，直到子数组和 >= 目标值 target
-            sum += nums[right]
-            right++
+            sum += nums[i]
 
             // 移动左指针，缩小窗口，直到子数组和 < 目标值 target
             while (sum >= target) {
-                min = Math.min(min, right - left)
-                sum -= nums[left]
-                left++
+                // 注意：必须满足其和 ≥ target，才会计算结果
+                res = Math.min(res, i - left)
+
+                sum -= nums[++left]
             }
         }
 
-        return if (min == Int.MAX_VALUE) 0 else min
+        return if (res == Int.MAX_VALUE) 0 else res
     }
 
     /**

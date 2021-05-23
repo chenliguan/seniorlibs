@@ -110,13 +110,13 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
         if (right <= left) return
 
         // 获取分区点
-        val q = partition(array, left, right)
+        val p = partition(array, left, right)
 
         // 对左边进行快排，直到序列为空或者只有一个元素
-        quickSort(array, left, q - 1)
+        quickSort(array, left, p - 1)
 
         // 对右边进行快排
-        quickSort(array, q + 1, right)
+        quickSort(array, p + 1, right)
     }
 
     /**
@@ -171,7 +171,7 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
      * @param right
      */
     fun mergeSort(array: IntArray, left: Int, right: Int) {
-        if (right <= left) return
+        if (left >= right) return
 
         // 取 left 和 right 的中间位置
         val mid = (left + right) / 2
@@ -188,31 +188,31 @@ class SortActivity : AppCompatActivity(), View.OnClickListener {
     fun merge(array: IntArray, left: Int, mid: Int, right: Int) {
         // 缓存数组
         val temp = IntArray(right - left + 1)
-        var i = left
-        var j = mid + 1
-        var k = 0
+        var p1 = mid  // left - mid
+        var p2 = right  // mid+1 - right
+        var k = right - left
 
         // 比较两个小数组相应下标位置的数组大小，小的先放进缓存数组
-        while (i <= mid && j <= right) {
-            if (array[i] <= array[j]) {
-                temp[k++] = array[i++]
+        while (p1 >= left && p2 >= mid + 1) {
+            if (array[p1] > array[p2]) {
+                temp[k--] = array[p1--]
             } else {
-                temp[k++] = array[j++]
+                temp[k--] = array[p2--]
             }
         }
 
         // 如果左边还有数据需要拷贝，把左边数组剩下的拷贝到缓存数组
-        while (i <= mid) {
-            temp[k++] = array[i++]
+        while (p1 >= left) {
+            temp[k--] = array[p1--]
         }
         // 如果右边还有数据需要拷贝，把右边数组剩下的拷贝到缓存数组
-        while (j <= right) {
-            temp[k++] = array[j++]
+        while (p2 >= mid + 1) {
+            temp[k--] = array[p2--]
         }
 
         // 将缓存数组中的内容复制回原数组
-        for (p in temp.indices) {
-            array[left + p] = temp[p]
+        for(i in 0 until temp.size) {
+            array[left + i] = temp[i]
         }
     }
 

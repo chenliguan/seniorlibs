@@ -384,10 +384,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
         // 2、处理正负号：如果出现符号字符，仅第1个有效，并记录正负
         var sign = 1
-        val ch = str[i]
-        if (ch == '+') {
+        if (str[i] == '+') {
             i++
-        } else if (ch == '-') {
+        } else if (str[i] == '-') {
             i++
             sign = -1
         }
@@ -400,12 +399,13 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
             // 3.2 先判断不合法的情况
             if (temp < 0 || temp > 9) break
-            // 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判断乘以 10 以后是否越界
+
+            // 3.3 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判断乘以 10 以后是否越界
             if (res > Int.MAX_VALUE / 10 || (res == Int.MAX_VALUE / 10 && temp > Int.MAX_VALUE % 10)) {
                 return if (sign == 1) Int.MAX_VALUE else Int.MIN_VALUE
             }
 
-            // 3.3 合法的情况下，才考虑转换
+            // 3.4 合法的情况下，才考虑转换
             res = res * 10 + temp
             i++
         }
@@ -598,7 +598,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
         // 从前往后遍历 0 行字符串的每一列 j
         for (j in 0 until strs[0].length) {
-            // 取 0 行 j 的字符 c
+            // 取 0 行 j 列的字符 c
             val c = strs[0][j]
 
             // 比较 1 行开始的每一行的 j 列上的所有字符是否与 c 相同，如果全相同则继续对下一列 j 进行比较
@@ -738,7 +738,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 394. 字符串解码
+     * 394. 字符串解码   "3[a]2[bc]" == "aaabcbc"
      *
      * 时间复杂度 O(N)，一次遍历 s；
      * 空间复杂度 O(N)，辅助栈在极端情况下需要线性空间，例如 2[2[a]]。
@@ -756,7 +756,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 0 until s.length) {
             if (s[i] in '0'..'9') {
                 // 算出倍数
-                num = num * 10 + s[i].toInt() - '0'.toInt()
+                num = num * 10 + (s[i] - '0')
 
             } else if (s[i] == '[') {
                 // 倍数 num 进入栈等待
@@ -804,26 +804,24 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun compressString(S: String): String {
-        val N = S.length
-        var i = 0
+        if(S.isEmpty()) return S
+
+        var left = 0
         val sb = StringBuilder()
 
-        while (i < N) {
-            var j = i
-            while (j < N && S[j] == S[i]) {
-                j++
-            }
+        for(i in 0 until S.length + 1) {
 
-            sb.append(S[i])
-            sb.append(j - i)
-            i = j
+            if (i == S.length || S[left] != S[i]) {
+                sb.append(S[left])
+                sb.append(i - left)
+                left = i
+            }
         }
 
         val res = sb.toString()
         // 若"压缩"后的字符串比原字符串长度更长，则返回原先的字符串
         return if (res.length < S.length) res else S
     }
-
 
     /**
      * 443. 压缩字符串（了解）
@@ -840,26 +838,26 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun compress(chars: CharArray): Int {
-        // 三指针：["a","a","b","b","b","c","c","c"] right = 4、right0 = 2、left = 3
-        var rightL = 0
+        // 三指针：["a","a","b","b","b","c","c","c"] i = 4、l = 2、left = 3
         var left = 0
+        var l = 0
 
         // 由于最后一个字符也需要判断，所以将右指针终点放到数组之外一格
-        for (right in 0..chars.size) {
+        for (i in 0 until chars.size + 1) {
             // 当遍历完成 或 右指针元素不等于左指针元素时，更新数组
-            if (right == chars.size || chars[right] != chars[rightL]) {
+            if (i == chars.size || chars[i] != chars[l]) {
                 // 更新字符
-                chars[left] = chars[rightL]
+                chars[left] = chars[l]
                 left++
 
                 // 更新计数，当个数大于 1 时才更新
-                if (right - rightL > 1) {
-                    chars[left] = '0' + (right - rightL)
+                if (i - l > 1) {
+                    chars[left] = '0' + (i - l)
                     left++
                 }
 
-                // 更新 rightL 指针为 right
-                rightL = right
+                // 更新 l 指针为 i
+                l = i
             }
         }
         return left
@@ -985,7 +983,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 680. 验证回文字符串 Ⅱ
+     * 680. 验证回文字符串 Ⅱ （了解）
      * 题目：给定一个非空字符串 s，最多删除一个字符。判断是否能成为回文字符串。
      *
      * 如果s[i]==s[j]继续i++、j--，判断是否回文
@@ -1289,15 +1287,15 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     fun multiply(num1: String, num2: String): String {
         if (num1.equals("0") || num2.equals("0")) return "0"
 
-        val m = num1.length
-        val n = num2.length
+        val m = num1.length - 1
+        val n = num2.length - 1
 
         // 结果最多为 m + n 位数
-        val array = IntArray(m + n)
+        val array = IntArray(m + n + 2)
 
         // 从个位数开始逐位相乘
-        for (i in m - 1 downTo 0) {
-            for (j in n - 1 downTo 0) {
+        for (i in m downTo 0) {
+            for (j in n downTo 0) {
                 // 一个字符与一个字符相乘
                 val mul = (num1[i] - '0') * (num2[j] - '0')
                 // 找出相乘的结果在 res 对应的位置添加
@@ -1450,9 +1448,9 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
     fun lengthOfLongestSubstring(s: String): Int {
         if (s.isEmpty()) return 0
 
-        val map = mutableMapOf<Char, Int>()
         var left = -1
         var res = 0
+        val map = mutableMapOf<Char, Int>()
 
         for (i in 0 until s.length) {
             // 先判断 右边新字符是否已重复，需要移动左边：直接将 left 移动到 map[s[i]] 的位置
@@ -1515,7 +1513,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 395. 至少有 K 个重复字符的最长子串
+     * 395. 至少有 K 个重复字符的最长子串（了解）
      *
      * 思想：过分治 缩小问题的规模，调用递归。
      *      如果一个字符 c 在 s 中出现的次数少于 k 次，那么 s 中所有的包含 c 的子字符串都不能满足题意。所以，应该在 s 的所有不包含 c 的子字符串中继续寻找结果

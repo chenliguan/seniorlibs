@@ -328,7 +328,7 @@ int maxLength(int[] A) {
     }
 
     // assert 此时(left, i]必然满足条件
-    res = max(ans, i - left);
+    res = max(res, i - left);
   }
 
   // 返回最优解
