@@ -29,7 +29,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private var list: MutableList<Int> = mutableListOf()
+    private var list = mutableListOf<Int>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -543,13 +543,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun preorderTraversal1(root: TreeNode?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()
+        val res = mutableListOf<Int>()
         if (root == null) return res
 
-        val stack: Deque<TreeNode> = LinkedList<TreeNode>()
+        val stack = LinkedList<TreeNode>()
         stack.push(root)
 
-        while (!stack.isEmpty()) {
+        while (stack.isNotEmpty()) {
             // 将根节点弹出，如果是标记null，则是将空节点弹出即可；如果不是null，下面再将根节点添加到栈中
             val node = stack.pop()
             if (node != null) {
@@ -581,13 +581,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun inorderTraversal1(root: TreeNode?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()
+        val res = mutableListOf<Int>()
         if (root == null) return res
 
-        val stack: Deque<TreeNode> = LinkedList<TreeNode>()
+        val stack = LinkedList<TreeNode>()
         stack.push(root)
 
-        while (!stack.isEmpty()) {
+        while (stack.isNotEmpty()) {
             // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
             val node = stack.pop()
             if (node != null) {
@@ -620,13 +620,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun postorderTraversal1(root: TreeNode?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()
+        val res = mutableListOf<Int>()
         if (root == null) return res
 
-        val stack: Deque<TreeNode> = LinkedList<TreeNode>()
+        val stack = LinkedList<TreeNode>()
         stack.push(root)
 
-        while (!stack.isEmpty()) {
+        while (stack.isNotEmpty()) {
             // 将根节点弹出，如果为标记null，则是将空节点弹出即可；如果不为null，下面再将根节点添加到栈中
             val node = stack.pop()
             if (node != null) {
@@ -684,13 +684,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun preorder1(root: Node?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()
+        val res = mutableListOf<Int>()
         if (root == null) return res
 
-        val stack: Deque<Node?> = LinkedList()
+        val stack = LinkedList<Node?>()
         stack.push(root)
 
-        while (!stack.isEmpty()) {
+        while (stack.isNotEmpty()) {
             // 将根节点弹出
             val node = stack.pop()
             if (node != null) {
@@ -746,13 +746,13 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun postorder1(root: Node?): List<Int> {
-        val res: MutableList<Int> = mutableListOf()
+        val res = mutableListOf<Int>()
         if (root == null) return res
 
-        val stack: Deque<Node?> = LinkedList()
+        val stack = LinkedList<Node?>()
         stack.push(root)
 
-        while (!stack.isEmpty()) {
+        while (stack.isNotEmpty()) {
             // 将根节点弹出
             val node = stack.pop()
             if (node != null) {
@@ -761,7 +761,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 // 根节点访问过，但还没有处理，需要做一下标记null
                 stack.push(null)
 
-                // 将该节点的子节点从左往右压入栈
+                // 将该节点的子节点从右往左压入栈
                 for (i in node.children.size - 1 downTo 0) {
                     stack.push(node.children[i])
                 }
@@ -848,7 +848,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return 0
 
         var level = 0
-        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
+        val queue = LinkedList<TreeNode>()
         queue.offer(root)
 
         var size = queue.size
@@ -904,7 +904,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (root == null) return 0
 
         var level = 0
-        val queue: Queue<TreeNode> = LinkedList<TreeNode>()
+        val queue = LinkedList<TreeNode>()
         queue.offer(root)
 
         var size = queue.size
@@ -947,10 +947,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 3.下探到下一层，关键：sum - root.`val`
-        return hasPathSum(root.left, targetSum - root.`val`) || hasPathSum(
-            root.right,
-            targetSum - root.`val`
-        )
+        val isLeftHas = hasPathSum(root.left, targetSum - root.`val`)
+
+        val isRightHas = hasPathSum(root.right, targetSum - root.`val`)
+
+        return isLeftHas || isRightHas
     }
 
     /**
@@ -998,7 +999,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 113. 路径总和 II
+     * 113. 路径总和 II == Offer 34. 二叉树中和为某一值的路径
      * 思想：一直向下找到叶子节点，同时判断节点的左右子树同时为空才是叶子节点
      *
      * 时间复杂度：O(n)，二叉树的每个节点最多被访问一次，因此时间复杂度为O(n)。
@@ -1019,12 +1020,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-    fun pathDfs(
-        root: TreeNode?,
-        targetSum: Int,
-        list: MutableList<Int>,
-        res: MutableList<List<Int>>
-    ) {
+    fun pathDfs(root: TreeNode?, targetSum: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
         // 如果到达叶子节点，就不能往下走了，直接 return
         if (root?.left == null && root?.right == null) {
             if (targetSum - root?.`val`!! == 0) {
@@ -1195,7 +1191,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun buildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
         val map = mutableMapOf<Int, Int>()
-        for (i in inorder.indices) map[inorder[i]] = i
+        for (i in 0 until inorder.size) map[inorder[i]] = i
 
         return buildTrees(
             preorder, 0, preorder.size - 1,
@@ -1252,7 +1248,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun buildTree1(postorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
         val map = mutableMapOf<Int, Int>()
-        for (i in inorder.indices) map[inorder[i]] = i
+        for (i in 0 until inorder.size) map[inorder[i]] = i
 
         return buildTree1s(
             postorder, 0, postorder.size - 1,
@@ -1383,7 +1379,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * 107. 二叉树的层序遍历 II -- 方法一：BFS广度遍历-迭代
      *
      * 时间复杂度：O(n)，每个点进队出队各一次，故渐进时间复杂度为 O(n)；
-     * 空间复杂度：O(n)，队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)。
+     * 空间复杂度：O(n)，队列中元素的个数不超过 n 个，故渐进空间复杂度为 O(n)。
      *
      * https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/solution/107-er-cha-shu-de-ceng-xu-bian-li-ii-by-txr7z/
      * @param root
@@ -1413,13 +1409,11 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 if (node.right != null) queue.offer(node.right)
             }
 
-            // 4 将结果的集合赋值到大集合中
-            res.add(list)
+            // 4 将结果的集合添加到集合的前面
+            res.add(0, list)
             size = queue.size
         }
 
-        // 翻转最终结果并返回
-        res.reverse()
         return res
     }
 
@@ -1741,6 +1735,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun lowestCommonAncestor(root: TreeNode?, p: TreeNode?, q: TreeNode?): TreeNode? {
         if (root == null) return root
+
         // 找到了一个根节点，返回 root 节点
         if (root == p || root == q) return root
 
@@ -1813,7 +1808,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 //        // 注意，上面的方法中，我们只是把第一个接点到最后一个节点串了起来，但并没有把第一个节点
 //        // 和最后一个节点串起来连成一个环形，所以这里还要把链表的首尾连接起来（这里pre已经是尾节点了）
 //        head.left = pre
-//        pre1.right = head
+//        pre.right = head
 //        return head
 //    }
 //
@@ -1834,6 +1829,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 //            pre.right = root
 //        }
 //        root.left = pre
+//
 //        // 前一个节点和当前节点串起来之后，就让当前节点变成前一个节点
 //        pre = root
 //
@@ -1854,7 +1850,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun diameterOfBinaryTree(root: TreeNode?): Int {
         depth(root)
-        // -1 是因为根节点是同一个
+        // -1 是因为根节点是同一个。计算左右深度，把根节点计算了2次
         return res - 1
     }
 
@@ -1864,12 +1860,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         if (node == null) return 0
 
         // 左儿子为根的子树的深度
-        val left = depth(node.left)
+        val left = depth(node.left) + 1
         // 右儿子为根的子树的深度
-        val right = depth(node.right)
+        val right = depth(node.right) + 1
 
         // 计算最大深度即 left + right - 1(因为+1了两次)，并更新 res
-        res = Math.max(res, left + right + 1)
+        res = Math.max(res, left + right - 1)
 
         // 返回该节点为根的子树的深度
         return Math.max(left, right)
@@ -1901,9 +1897,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         val right = recur(root.right)
         if (right == -1) return -1
 
-        // 当节点root 左 / 右子树的，高度差 < 2 ：则返回 最大深度 ，代表此子树是平衡树
-        //                          高度差 ≥ 2 ：则返回 −1 ，代表此子树不是平衡树
-        return if (Math.abs(left - right) < 2) Math.max(left, right) + 1 else -1
+        // 当节点 root 左/右子树的，高度差<2，则返回最大深度，继续计算。 高度差≥2，返回−1 ，表示子树不是平衡树
+        if (Math.abs(left - right) < 2) {
+            return Math.max(left, right) + 1
+        } else {
+            return -1
+        }
     }
 
 
@@ -1928,14 +1927,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 求高度平衡，因此以升序数组的中间元素作为根节点 root。
         val mid = left + (right - left) / 2
 
-        val root = TreeNode(nums[mid])
+        val rootNode = TreeNode(nums[mid])
 
         // 递归的构建 root 的左子树与右子树。
-        root.left = dfs(nums, left, mid - 1)
+        rootNode.left = dfs(nums, left, mid - 1)
 
-        root.right = dfs(nums, mid + 1, right)
+        rootNode.right = dfs(nums, mid + 1, right)
 
-        return root
+        return rootNode
     }
 
 

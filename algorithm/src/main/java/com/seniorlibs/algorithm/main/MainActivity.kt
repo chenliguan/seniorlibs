@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_queue).setOnClickListener(this)
         findViewById<View>(R.id.btn_heap).setOnClickListener(this)
         findViewById<View>(R.id.btn_binary_tree).setOnClickListener(this)
-        findViewById<View>(R.id.btn_dfs_bfs).setOnClickListener(this)
         findViewById<View>(R.id.btn_recursive).setOnClickListener(this)
         findViewById<View>(R.id.btn_back).setOnClickListener(this)
         findViewById<View>(R.id.btn_db).setOnClickListener(this)

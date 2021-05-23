@@ -41,11 +41,6 @@
             android:text="二叉树" />
 
         <Button
-            android:id="@+id/btn_dfs_bfs"
-            style="@style/BtnStyles"
-            android:text="深度优先遍历DFS、广度优先遍历BFS" />
-
-        <Button
             android:id="@+id/btn_map"
             style="@style/BtnStyles"
             android:text="Map" />
