@@ -232,7 +232,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         if (str.isEmpty()) return str
 
         val ch = str.toCharArray()
-        for (i in str.indices) {
+        for (i in 0 until str.length) {
             if (ch[i] in 'A'..'Z') {
                 ch[i] = ch[i] + 32
             }

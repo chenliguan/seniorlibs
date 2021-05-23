@@ -998,4 +998,19 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         cur?.next = null
         return newHead
     }
+
+
+    /**
+     * 237. 删除链表中的节点（没有头结点）
+     *
+     * 时间复杂度都是：O(1)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/delete-node-in-a-linked-list/solution/237-shan-chu-lian-biao-zhong-de-jie-dian-6b8v/
+     * @param node
+     */
+    fun deleteNode(node: ListNode) {
+        node.`val` = node.next!!.`val`
+        node.next = node.next!!.next
+    }
 }
