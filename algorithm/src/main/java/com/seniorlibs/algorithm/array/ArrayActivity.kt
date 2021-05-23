@@ -51,6 +51,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_find_duplicate).setOnClickListener(this)
         findViewById<View>(R.id.btn_spiral_order).setOnClickListener(this)
         findViewById<View>(R.id.btn_generate_matrix).setOnClickListener(this)
+        findViewById<View>(R.id.btn_subarray_sum).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -103,11 +104,13 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_merge_interval -> {
             //  [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
-            val nums = arrayOf(intArrayOf(1, 4),
-                    intArrayOf(2, 5),
-                    intArrayOf(8, 16),
-                    intArrayOf(17, 24),
-                    intArrayOf(26, 30))
+            val nums = arrayOf(
+                intArrayOf(1, 4),
+                intArrayOf(2, 5),
+                intArrayOf(8, 16),
+                intArrayOf(17, 24),
+                intArrayOf(26, 30)
+            )
             LogUtils.d(TAG, "56. 合并区间：${mergeInterval(nums)}")
         }
         R.id.btn_min_sub_arrayLen -> {
@@ -119,9 +122,11 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             LogUtils.d(TAG, "189. 旋转数组：${rotate(nums, 3)}")
         }
         R.id.btn_rotate_matrix -> {
-            val array = arrayOf(intArrayOf(1, 2, 3),
+            val array = arrayOf(
+                intArrayOf(1, 2, 3),
                 intArrayOf(4, 5, 6),
-                intArrayOf(7, 8, 9))
+                intArrayOf(7, 8, 9)
+            )
             LogUtils.d(TAG, "01.07. 旋转矩阵 == 48. 旋转图像：${rotateMatrix(array)}")
         }
         R.id.btn_majority_element -> {
@@ -138,13 +143,18 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             LogUtils.d(TAG, "287. 寻找重复数：${findDuplicate(nums)}")
         }
         R.id.btn_spiral_order -> {
-            val array = arrayOf(intArrayOf(1, 4, 7),
+            val array = arrayOf(
+                intArrayOf(1, 4, 7),
                 intArrayOf(2, 5, 6),
-                intArrayOf(3, 6, 9))
+                intArrayOf(3, 6, 9)
+            )
             LogUtils.d(TAG, "剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵：${spiralOrder(array)}")
         }
         R.id.btn_generate_matrix -> {
             LogUtils.d(TAG, "59. 螺旋矩阵 II：${generateMatrix(3)}")
+        }
+        R.id.btn_subarray_sum -> {
+            LogUtils.d(TAG, "560. 和为K的子数组：${subarraySum(intArrayOf(1, 1, 1), 2)}")
         }
         else -> {
         }
@@ -859,17 +869,17 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun majorityElement(nums: IntArray): Int {
-        val map = mutableMapOf<Int,Int>()
+        val map = mutableMapOf<Int, Int>()
         val half = nums.size / 2
 
-        for(num in nums) {
+        for (num in nums) {
             var n = 0
-            if(map.containsKey(num)) {
+            if (map.containsKey(num)) {
                 n = map[num]!!
             }
             map[num] = n + 1
 
-            if(n + 1 > half) return num
+            if (n + 1 > half) return num
         }
         return -1
     }
@@ -1006,12 +1016,12 @@ n->f(n)
             // 从上向下
             for (i in t..b) array[x++] = matrix[i][r]
             // 右边界 r 减 1，是否 l > r
-            if(--r < l) break
+            if (--r < l) break
 
             // 从右向左
             for (i in r downTo l) array[x++] = matrix[b][i]
             // 下边界 b 减 1，是否 t > b
-            if(--b < t) break
+            if (--b < t) break
 
             // 从下向上
             for (i in b downTo t) array[x++] = matrix[i][l]
@@ -1062,4 +1072,34 @@ n->f(n)
         return array
     }
 
+    /**
+     * 560. 和为K的子数组  方法一：构建前缀和数组，以快速计算区间和
+     *
+     * 时间复杂度：O(N^2)，这里 N 是数组的长度；
+     * 空间复杂度：O(N)。
+     *
+     * https://leetcode-cn.com/problems/subarray-sum-equals-k/solution/560-he-wei-kde-zi-shu-zu-by-chen-li-guan-6y6i/
+     * @param nums
+     * @param k
+     * @return
+     */
+    fun subarraySum(nums: IntArray, k: Int): Int {
+        // 计算前缀和数组
+        val preSum = IntArray(nums.size + 1)
+        preSum[0] = 0
+        for (i in 0 until nums.size) {
+            preSum[i + 1] = preSum[i] + nums[i]
+        }
+
+        var count = 0
+        for (left in 0 until nums.size) {
+            for (right in left until nums.size) {
+                // 区间和 [left..right]，注意下标偏移
+                if (preSum[right + 1] - preSum[left] == k) {
+                    count++
+                }
+            }
+        }
+        return count
+    }
 }

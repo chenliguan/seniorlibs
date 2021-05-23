@@ -108,5 +108,10 @@
             android:id="@+id/btn_generate_matrix"
             style="@style/BtnStyles"
             android:text="59. 螺旋矩阵 II" />
+
+        <Button
+            android:id="@+id/btn_subarray_sum"
+            style="@style/BtnStyles"
+            android:text="560. 和为K的子数组" />
     </LinearLayout>
 </ScrollView>
