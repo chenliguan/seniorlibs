@@ -363,8 +363,7 @@ int rangeCounter(int[] A) {
 }
 
 
-
-九、滑动窗口
+3、定长区间问题——滑动窗口。必杀技：长度固定；因此不需要满足单调性；子串必须满足某种条件
 
 void slidwindow(nums : IntArray)
 {
