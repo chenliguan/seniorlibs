@@ -39,6 +39,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_hamming_weight).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_power_of_two).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_the_difference).setOnClickListener(this)
+        findViewById<View>(R.id.btn_single_number).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -49,10 +50,10 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btn_hamming_weight -> {
                 // 00000000000000000000001000001001
+                LogUtils.e(TAG, "191. 位1的个数（求一个整数的二进制中 1 的个数）：" + hammingWeight(521))
                 LogUtils.e(TAG, "191. 位1的个数：" + hammingWeight(521))
-                LogUtils.e(TAG, "191. 位1的个数1：" + hammingWeight1(521))
                 // 00000000000000000000000000001011
-                LogUtils.e(TAG, "191. 位1的个数：" + hammingWeight(11))
+                LogUtils.e(TAG, "191. 位1的个数2：" + hammingWeight2(11))
             }
             R.id.btn_is_power_of_two -> {
                 LogUtils.e(TAG, "231. 2的幂：" + isPowerOfTwo(4))
@@ -60,9 +61,37 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_find_the_difference -> {
                 LogUtils.e(TAG, "389. 找不同：" + findTheDifference("abcd", "abcde"))
             }
+            R.id.btn_single_number -> {
+                LogUtils.e(TAG, "136. 只出现一次的数字：" + singleNumber(intArrayOf(4, 1, 2, 1, 2)))
+            }
             else -> {
             }
         }
+    }
+
+    /**
+     * 191. 位1的个数（求一个整数的二进制中 1 的个数）  方法1：位操作的小技巧（方法2的优化：推荐）
+     *
+     * 思路：不断把数字最后一个 1 反转，并把答案加一
+     *
+     * 时间复杂度：O(1) 。运行时间与n中位为1的有关。在最坏情况下， n中所有位都是1 。对于32位整数，运行时间是O(1)的。
+     * 空间复杂度：O(1) 。没有使用额外空间。
+     *
+     * https://leetcode-cn.com/problems/number-of-1-bits/solution/191-wei-1de-ge-shu-by-chen-li-guan/
+     * @param n
+     * @return
+     */
+    fun hammingWeight(n: Int): Int {
+        var n = n
+        var sum = 0
+        while (n != 0) {
+            sum++
+            // 10011 & 10010 = 10010
+            // 10010 & 10001 = 10000
+            // 10000 & 01000 = 00000
+            n = n and n - 1  // &
+        }
+        return sum
     }
 
     /**
@@ -77,7 +106,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      * @param n
      * @return
      */
-    fun hammingWeight(n: Int): Int {
+    fun hammingWeight2(n: Int): Int {
         var bits = 0
         var mask = 1
         for (i in 0..31) {
@@ -85,35 +114,12 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
             if (n and mask != 0) {  // &
                 bits++
             }
-            mask = mask shl 1  // 左移 <<（x >> 1-> x/2）， 1 / 10 / 100 / 1000 / ... / 1000000000000000000000000000000
+            mask =
+                mask shl 1  // 左移 <<（x >> 1-> x/2）， 1 / 10 / 100 / 1000 / ... / 1000000000000000000000000000000
         }
         return bits
     }
 
-    /**
-     * 191. 位1的个  方法2：位操作的小技巧（方法1的优化）
-     *
-     * 思路：不断把数字最后一个 1 反转，并把答案加一
-     *
-     * 时间复杂度：O(1) 。运行时间与n中位为1的有关。在最坏情况下， n中所有位都是1 。对于32位整数，运行时间是O(1)的。
-     * 空间复杂度：O(1) 。没有使用额外空间。
-     *
-     * https://leetcode-cn.com/problems/number-of-1-bits/solution/191-wei-1de-ge-shu-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    fun hammingWeight1(n: Int): Int {
-        var n = n
-        var sum = 0
-        while (n != 0) {
-            sum++
-            // 10011 & 10010 = 10010
-            // 10010 & 10001 = 10000
-            // 10000 & 01000 = 00000
-            n = n and n - 1  // &
-        }
-        return sum
-    }
 
 
     /**
@@ -168,6 +174,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 136. 只出现一次的数字
+     * 题意：除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素
      *
      * 时间复杂度：O(n)。
      * 空间复杂度：O(1)。

@@ -299,6 +299,71 @@ fun postorder1(root: Node?): List<Int> {
 
 
 
+九、双指针问题（包含滑动窗口）
+
+使用双指针算法来解决最长区间的问题，一般需要具备如下特点：给定一个条件、求最长区间/最长子串、题目给出的区间需要具备单调性。
+
+最长区间的面试必杀技，关键就两招：
+（1）两个指针，left 指针和 right 指针，两个指针形成的区间为 (left, right]。这里的开闭原则是左开右闭；
+（2）惰性原则，如果把 left 指针当成一个人，那么这个人是非常懒惰的，他总是要等到火烧屁股（条件不满足了）才向右移动。
+
+
+1、求最长区间的代码模板：
+
+int maxLength(int[] A) {
+  // 区间的左指针
+  int left = -1;
+  int res = 0;
+
+  for (int i = 0; i < A.length; i++) {
+    // assert 在加入A[i]之前，(left, i-1]是一个合法有效的区间
+    // step 1. 直接将A[i]加到区间中，形成(left, i]
+    // step 2. 将A[i]加入之后，惰性原则
+
+    /*TODO 检查区间状态是否满足条件*/
+    while (check((left, i]))) {
+      // 如果不满足条件，移动左指针
+      ++left;
+      // TODO 修改区间的状态
+    }
+
+    // assert 此时(left, i]必然满足条件
+    res = max(ans, i - left);
+  }
+
+  // 返回最优解
+  return ans;
+}
+
+2、区间计数
+
+int rangeCounter(int[] A) {
+  // 区间的左指针
+  int left = -1;
+  int res = 0;
+
+  // 不变式0: 最开始的区间为(-1, -1] 是一个空区间，认为空区间总是满足条件!
+  for (int i = 0; i < A.length; i++) {
+    // 不变式1: 在加入A[i]之前，(left, i-1]是一个合法有效的区间
+    // step 1. 直接将A[i]加到区间中，形成(left, i]
+    // step 2. 将A[i]加入之后，惰性原则
+
+    /*TODO 检查区间状态是否满足条件*/
+    while (check((left, i]))) {
+      // 如果不满足条件，移动左指针
+      ++left;
+      // TODO 修改区间的状态
+    }
+
+    // 不变式2：此时(left, i]必然合法，累计区间个数
+    res += i - left;
+  }
+
+  return res;
+}
+
+
+
 九、滑动窗口
 
 void slidwindow(nums : IntArray)

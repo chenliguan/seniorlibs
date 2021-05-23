@@ -1451,20 +1451,20 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         if (s.isEmpty()) return 0
 
         val map = mutableMapOf<Char, Int>()
-        var left = 0
+        var left = -1
         var res = 0
 
         for (i in 0 until s.length) {
-            // 先判断 右边新字符是否已重复
+            // 先判断 右边新字符是否已重复，需要移动左边：直接将 left 移动到 map[s[i]] 的位置
             if (map.containsKey(s[i])) {
                 left = Math.max(left, map[s[i]]!!)
             }
 
             // 扩大右边界并更新窗口状态
-            map[s[i]] = i + 1
+            map[s[i]] = i
 
             // 计算无重复字符的最长子串
-            res = Math.max(res, i - left + 1)
+            res = Math.max(res, i - left)
         }
 
         return res
@@ -1483,32 +1483,34 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun characterReplacement(s: String, k: Int): Int {
+        // 左指针
+        var left = -1
+        var res = 0
+
         // 窗口内相同元素的最大个数
         var maxSame = 0
         // 模拟 hashMap，很多场合都可以，大家可以总结一下
         val array = IntArray(26)
 
-        // 左右指针
-        var left = 0
-        var right = 0
-
-        while (right < s.length) {
+        for (i in 0 until s.length) {
             // 得出索引，ASCLL 码
-            val index = s[right] - 'A'
+            val c = s[i] - 'A'
             // 数目加1，要求出窗口内最多元素
-            array[index]++
-            right++
-            // 得出最大 maxSame
-            maxSame = Math.max(maxSame, array[index])
+            array[c]++
+            // 把出现次数最多的字符当成主力，得出最大 maxSame
+            maxSame = Math.max(maxSame, array[c])
 
             // 要替换次数大于 k 了，窗口超出范围了，缩小窗口左边
-            while (right - left - maxSame > k) {
-                array[s[left] - 'A']--
-                left++
+            while (i - left - maxSame > k) {
+                val old = s[++left]
+                array[old - 'A']--
             }
+
+            // 到这里为止，(left, i]就是一个满足要求的区间
+            res = Math.max(res, i - left)
         }
 
-        return right - left
+        return res
     }
 
 

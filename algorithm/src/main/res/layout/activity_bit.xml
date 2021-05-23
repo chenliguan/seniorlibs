@@ -16,7 +16,7 @@
         <Button
             android:id="@+id/btn_hamming_weight"
             style="@style/BtnStyles"
-            android:text="191. 位1的个数" />
+            android:text="191. 位1的个数（求一个整数的二进制中 1 的个数）" />
 
         <Button
             android:id="@+id/btn_is_power_of_two"
@@ -27,6 +27,11 @@
             android:id="@+id/btn_find_the_difference"
             style="@style/BtnStyles"
             android:text="389. 找不同" />
+
+        <Button
+            android:id="@+id/btn_single_number"
+            style="@style/BtnStyles"
+            android:text="136. 只出现一次的数字" />
 
     </LinearLayout>
 </ScrollView>
