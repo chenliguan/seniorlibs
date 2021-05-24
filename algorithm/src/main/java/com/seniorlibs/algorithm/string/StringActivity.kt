@@ -192,7 +192,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "438. 找到字符串中所有字母异位词：${findAnagrams("abcdab", "ab")}")
             }
             R.id.btn_convert -> {
-                LogUtils.d(TAG, "6. Z 字形变换：${convert("abcdab", 2)}")
+                LogUtils.d(TAG, "6. Z 字形变换：${convert("LEETCOD", 3)}")
             }
             R.id.btn_roman_to_int -> {
                 LogUtils.d(TAG, "13. 罗马数字转整数：${romanToInt("IVCDX")}")
