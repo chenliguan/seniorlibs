@@ -142,7 +142,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun evalRPN(ts: Array<String>): Int {
-        val stack: Deque<Int> = LinkedList()
+        val stack = LinkedList<Int>()
         for (s in ts) {
             if ("+-*/".contains(s)) {
                 // 遇到运算符时，从栈中取出两个数进行运算，并将结果放回栈内
@@ -205,6 +205,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(n)；
      * 空间复杂度：O(n)。栈存储数字需要线性的空间。
      *
+     * https://leetcode-cn.com/problems/remove-k-digits/solution/402-yi-diao-kwei-shu-zi-by-chen-li-guan-bqxq/
      * @param str
      * @param k
      * @return
@@ -301,13 +302,13 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
                 minLeft = num
                 stack.push(num)
             } else {
-                while (!stack.isEmpty() && num >= stack.peek()) {
+                while (stack.isNotEmpty() && num >= stack.peek()) {
                     stack.pop()
                 }
             }
         }
 
-        while (!stack.isEmpty()) {
+        while (stack.isNotEmpty()) {
             System.out.println(stack.pop())
         }
     }

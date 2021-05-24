@@ -16,8 +16,8 @@ import com.seniorlibs.algorithm.linkedlist.LinkedActivity
 import com.seniorlibs.algorithm.map.MapActivity
 import com.seniorlibs.algorithm.other.OtherActivity
 import com.seniorlibs.algorithm.queue.QueueActivity
-import com.seniorlibs.algorithm.recursive.BackActivity
-import com.seniorlibs.algorithm.recursive.RecursiveActivity
+import com.seniorlibs.algorithm.back.BackActivity
+import com.seniorlibs.algorithm.back.RecursiveActivity
 import com.seniorlibs.algorithm.sort.SortActivity
 import com.seniorlibs.algorithm.stack.StackActivity
 import com.seniorlibs.algorithm.string.StringActivity

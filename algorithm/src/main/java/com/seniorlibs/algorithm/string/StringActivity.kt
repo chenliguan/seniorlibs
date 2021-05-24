@@ -1699,6 +1699,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun convert(s: String, numRows: Int): String? {
+
         if (numRows < 2) return s
 
         var i = 0
@@ -1789,8 +1790,8 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         var i = 1
         var j = 1
         var sum = 0
-
         val res = mutableListOf<IntArray>()
+
         // 窗口的左边是窗口内的最小数字，只能小于等于target / 2, 因为题中要求的是至少含有两个数
         while (i <= target / 2) {
             if (sum < target) {

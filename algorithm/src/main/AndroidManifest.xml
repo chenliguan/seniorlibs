@@ -56,11 +56,11 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".recursive.RecursiveActivity"
+            android:name=".back.RecursiveActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".recursive.BackActivity"
+            android:name=".back.BackActivity"
             android:screenOrientation="portrait" />
 
         <activity
