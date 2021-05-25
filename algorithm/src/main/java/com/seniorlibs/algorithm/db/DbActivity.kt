@@ -901,14 +901,13 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun countSubstrings(s: String): Int {
-        // base case：只有一个字母的时候肯定是回文子串，数量是s.length
         val n = s.length
         // 记录回文子串数量
         var count = s.length
         // 第一维参数表示起始坐标，第二维参数表示终点坐标
         val dp = Array(n) { BooleanArray(n) }
 
-        // base case
+        // base case：只有一个字母的时候肯定是回文子串，数量是 s.length，eg："aaa"："a", "a", "a" 3个
         for (i in 0 until n) dp[i][i] = true
 
         // 反着遍历保证正确的状态转移
@@ -960,7 +959,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             for (j in i + 1 until n) {
                 // 状态转移方程 db
                 if (j - i < 2) {
-                    // 子字符串长度小于 2 的时候单独处理
+                    // 子字符串长度小于 2 的时候单独处理（因为i>j的dp是false，计算结果也是false）
                     // j - i == 0：一个字符，一定是回文子串。如：a(i=1,j=1)=true; j - i == 1：中间只有1个字符，如：aa(i=0,j=1)=true; ab=false
                     dp[i][j] = s[i] == s[j]
                 } else {

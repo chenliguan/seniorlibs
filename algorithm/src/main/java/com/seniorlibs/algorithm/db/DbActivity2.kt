@@ -605,7 +605,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                     // 选择不装入 coins[i] 这个面值的硬币，继承之前的结果，所以状态和不使用第i个硬币相同
                     // 选择装入 coins[i] 这个面值的硬币，那么关注如何剩余重量 j - coins[i-1]。
                     //    如果这个面值的硬币可以装满 剩余重量 [j-coins[i-1]；那么把这个面值的硬币装进去，也可装满背包 j 的总重量。硬币数 + 1
-                    dp[i][j] = Math.min(dp[i - 1][j], 1 + dp[i][j - coins[i - 1]])
+                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - coins[i - 1]] + 1)
                 }
 
             }
@@ -861,93 +861,6 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 123. 买卖股票的最佳时机 3  核心：k=2  解法1：动态规划
-     * 1、思路：之前的解法，都在穷举所有状态，只是之前的题目中 k 都被化简掉了。这道题由于没有消掉 k 的影响，所以必须要对 k 进行穷举
-     *
-     * // base case：
-     *
-     * // dp方程：
-     * // 第二个状态转移方程利用了
-     *
-     * 2、
-     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
-     * 空间复杂度：O(n)，虽然是三维数组，但是第三维是常数，与问题规模无关。
-     *
-     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/123-mai-mai-gu-piao-de-zui-jia-shi-ji-iii-by-chen-/
-     * @param prices
-     * @return
-     */
-    fun maxProfit31(prices: IntArray): Int {
-        if (prices.isEmpty()) return 0
-
-        val maxK = 2
-
-        // base case：
-        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
-        for (k in 1 until maxK + 1) {
-            dp[0][k][0] = 0
-            dp[0][k][1] = -prices[0]
-        }
-
-        // dp方程：
-        for (i in 1 until prices.size) {
-            for (k in 1 until maxK + 1) {
-                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
-                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
-
-                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
-                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
-            }
-        }
-
-        return dp[prices.size - 1][maxK][0]
-    }
-
-    /**
-     * 124. 买卖股票的最佳时机 4  核心：k为任意值  解法1：
-     * 1、思路：如果k为正无穷
-     *         (1)可以买入代表之前买入了k-1次，所以第二个状态转移方程是 dp[i-1][k-1][0]
-     *         (2)所以就可以认为k和k-1是一样的，所以第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0]
-     *    注意：你不能在买入股票前卖出股票。
-     *
-     *    本题和3的区别：一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
-     *
-     * 2、
-     * 时间复杂度：O(nk)，这里n表示股价数组的长度，k是最多可以完成交易的次数；
-     * 空间复杂度：O(nk)，三维dp数组的大小，第3维是常数，故忽略
-     *
-     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/188-mai-mai-gu-piao-de-zui-jia-shi-ji-iv-by-chen-l/
-     * @param prices
-     * @return
-     */
-    fun maxProfit41(maxK: Int, prices: IntArray): Int {
-        if (prices.isEmpty()) return 0
-
-        // 一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
-        if (maxK >= prices.size / 2) return maxProfit21(prices)
-
-        // base case：
-        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
-        for (k in 1 until maxK + 1) {
-            dp[0][k][0] = 0
-            dp[0][k][1] = -prices[0]
-        }
-
-        // dp方程：
-        for (i in 1 until prices.size) {
-            for (k in 1 until maxK + 1) {
-                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
-                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
-
-                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
-                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
-            }
-        }
-
-        return dp[prices.size - 1][maxK][0]
-    }
-
-    /**
      * 309. 买卖股票的最佳时机含冷冻期 5 核心：k 为正无穷但有冷却时间  解法1：动态规划
      * 1、思路：由于具有相同的 k 值，因此情况五和情况二非常相似，不同之处在于情况五有「冷却时间-1天」的限制--卖出股票后，你无法在第二天买入股票 (即冷冻期为1天)，只能在第三天买入股票
      *         所以，如果要在第i天买入股票，必须满足：手上无股票且不在冷冻期买入 --> 第二个状态转移方程中就不能使用 dp[i-1][0]，而应该使用 dp[i-2][0]，其他不变
@@ -974,7 +887,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
 
             // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)前天不持股，今天选择买入股票（现金数减少）
-            dp[i][1] = Math.max(dp[i - 1][1], (if (i > 1) dp[i - 2][0] else 0) - prices[i])
+            dp[i][1] = Math.max(dp[i - 1][1], (if (i >= 2) dp[i - 2][0] else 0) - prices[i])
         }
 
         return dp[prices.size - 1][0]
@@ -1087,4 +1000,99 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         // return dp[prices.size - 1][0]
         return dp_i_0
     }
+
+
+
+
+
+
+
+    /**
+     * 123. 买卖股票的最佳时机 3  核心：k=2  解法1：动态规划  （困难）
+     * 1、思路：之前的解法，都在穷举所有状态，只是之前的题目中 k 都被化简掉了。这道题由于没有消掉 k 的影响，所以必须要对 k 进行穷举
+     *
+     * // base case：
+     *
+     * // dp方程：
+     * // 第二个状态转移方程利用了
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：O(n)，虽然是三维数组，但是第三维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/123-mai-mai-gu-piao-de-zui-jia-shi-ji-iii-by-chen-/
+     * @param prices
+     * @return
+     */
+    fun maxProfit31(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        val maxK = 2
+
+        // base case：
+        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
+        for (k in 1 until maxK + 1) {
+            dp[0][k][0] = 0
+            dp[0][k][1] = -prices[0]
+        }
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            for (k in 1 until maxK + 1) {
+                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
+
+                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
+            }
+        }
+
+        return dp[prices.size - 1][maxK][0]
+    }
+
+    /**
+     * 124. 买卖股票的最佳时机 4  核心：k为任意值  解法1：  （困难）
+     * 1、思路：如果k为正无穷
+     *         (1)可以买入代表之前买入了k-1次，所以第二个状态转移方程是 dp[i-1][k-1][0]
+     *         (2)所以就可以认为k和k-1是一样的，所以第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0]
+     *    注意：你不能在买入股票前卖出股票。
+     *
+     *    本题和3的区别：一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
+     *
+     * 2、
+     * 时间复杂度：O(nk)，这里n表示股价数组的长度，k是最多可以完成交易的次数；
+     * 空间复杂度：O(nk)，三维dp数组的大小，第3维是常数，故忽略
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/188-mai-mai-gu-piao-de-zui-jia-shi-ji-iv-by-chen-l/
+     * @param prices
+     * @return
+     */
+    fun maxProfit41(maxK: Int, prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        // 一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
+        if (maxK >= prices.size / 2) return maxProfit21(prices)
+
+        // base case：
+        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
+        for (k in 1 until maxK + 1) {
+            dp[0][k][0] = 0
+            dp[0][k][1] = -prices[0]
+        }
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            for (k in 1 until maxK + 1) {
+                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
+
+                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
+            }
+        }
+
+        return dp[prices.size - 1][maxK][0]
+    }
+
+
 }
