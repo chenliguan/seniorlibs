@@ -664,9 +664,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         val dp = IntArray(n)
 
         // base case：
-        for (j in 0 until n) {
-            dp[j] = 0
-        }
+        // for (j in 0 until n) {
+        //     dp[j][0] = 0
+        // }
 
         // dp的定义：三角形
         for (i in n - 2 downTo 0) {
