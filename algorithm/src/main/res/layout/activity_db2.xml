@@ -74,16 +74,5 @@
             android:id="@+id/btn_max_profit_6"
             style="@style/BtnStyles"
             android:text="714. 买卖股票的最佳时机含手续费" />
-
-        <Button
-            android:id="@+id/btn_can_jump"
-            style="@style/BtnStyles"
-            android:text="55. 跳跃游戏" />
-
-        <Button
-            android:id="@+id/btn_jump"
-            style="@style/BtnStyles"
-            android:text="45. 跳跃游戏 ||" />
-
     </LinearLayout>
 </ScrollView>

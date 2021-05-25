@@ -94,7 +94,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_minimum_total -> {
                 val res = listOf(listOf(2), listOf(3, 4), listOf(6, 5, 7), listOf(4, 1, 8, 3))
-                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal4(res)}")
+                LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal1(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal2(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
@@ -613,6 +613,71 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 120. 三角形最小路径和  解法一：动态规划（自底向上）（记住）
+     *
+     * 注意：当计算三角形的最后一行时，需要额外一行辅助计算(默认值时0)，因此数组长度是n + 1。自底往上，计算的结果是dp[0][0]，因此是倒序遍历。
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n^2)，n为三角形的行数。
+     *
+     * https://leetcode-cn.com/problems/triangle/solution/120-san-jiao-xing-zui-xiao-lu-jing-he-by-chen-li-g/
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal(triangle: List<List<Int>>): Int {
+        val n = triangle.size + 1
+
+        // dp的定义：自底往上走到相邻的结点上 ———— 正下方(i+1,j) 和 右下方(i+1,j+1) 的最小路径和
+        val dp = Array(n) { IntArray(n) }
+
+        // base case：辅助空间的元素都初始化为 0
+        for (j in 0 until n) {
+            dp[j][0] = 0
+        }
+
+        // 从最后一行开始向第一行走，即从下到上
+        for (i in n - 2 downTo 0) {
+            // 从第一列向最后一列走，即从左到右
+            for (j in 0 until triangle[i].size) {
+                // 求下一层相邻的结点上 ———— 正下方(i+1,j) 和 右下方(i+1,j+1) 的最小路径和。因此需要添加辅助行
+                dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
+            }
+        }
+
+        // 自底往上，最终值时 dp[0][0]
+        return dp[0][0]
+    }
+
+    /**
+     * 120. 三角形最小路径和  解法二：动态规划(自底向上)，空间优化
+     *
+     * 时间复杂度：O(n^2)，n为三角形的行数。
+     * 空间复杂度：O(n)，n为三角形的行数。
+     *
+     * @param triangle
+     * @return
+     */
+    fun minimumTotal1(triangle: List<List<Int>>): Int {
+        val n = triangle.size + 1
+
+        // dp的定义：向下走到相邻的结点上 ———— 正下方(i+1,j) 和 右下方(i+1,j+1) 的最小路径和
+        val dp = IntArray(n)
+
+        // base case：
+        for (j in 0 until n) {
+            dp[j] = 0
+        }
+
+        // dp的定义：三角形
+        for (i in n - 2 downTo 0) {
+            for (j in 0 until triangle[i].size) {
+                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j]
+            }
+        }
+        return dp[0]
+    }
+
+    /**
      * 120. 三角形最小路径和  解法一：暴力递归(自顶向下)，导致 超时
      * 思路：与该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
      *
@@ -622,7 +687,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param triangle
      * @return
      */
-    fun minimumTotal1(triangle: List<List<Int>>): Int {
+    fun minimumTotal2(triangle: List<List<Int>>): Int {
         return dfs(triangle, 0, 0)
     }
 
@@ -643,7 +708,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
      * @param triangle
      * @return
      */
-    fun minimumTotal2(triangle: List<List<Int>>): Int {
+    fun minimumTotal3(triangle: List<List<Int>>): Int {
         val res = Array(triangle.size) { IntArray(triangle.size) }
         for (i in triangle.indices) {
             for (j in triangle.indices) {
@@ -668,66 +733,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return res[i][j]
     }
 
-    /**
-     * 120. 三角形最小路径和  解法一：动态规划（自底向上）（记住）
-     *
-     * 注意：当计算三角形的最后一行时，需要额外一行辅助计算(默认值时0)，因此数组长度是n + 1。自底往上，计算的结果是dp[0][0]，因此是倒序遍历。
-     *
-     * 时间复杂度：O(n^2)，n为三角形的行数。
-     * 空间复杂度：O(n^2)，n为三角形的行数。
-     *
-     * https://leetcode-cn.com/problems/triangle/solution/120-san-jiao-xing-zui-xiao-lu-jing-he-by-chen-li-g/
-     * @param triangle
-     * @return
-     */
-    fun minimumTotal3(triangle: List<List<Int>>): Int {
-        val n = triangle.size + 1
-
-        // dp的定义：向下走到相邻的结点上 ———— 正下方(i+1,j) 和 右下方(i+1,j+1) 的最小路径和
-        val dp = Array(n) { IntArray(n) }
-
-        // base case：
-        for (j in 0 until n) {
-            dp[j][0] = 0
-        }
-
-        // dp的定义：三角形
-        for (i in n - 2 downTo 0) {
-            for (j in 0 until triangle[i].size) {
-                dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle[i][j]
-            }
-        }
-        return dp[0][0]
-    }
-
-    /**
-     * 120. 三角形最小路径和  解法二：动态规划(自底向上)，空间优化
-     *
-     * 时间复杂度：O(n^2)，n为三角形的行数。
-     * 空间复杂度：O(n)，n为三角形的行数。
-     *
-     * @param triangle
-     * @return
-     */
-    fun minimumTotal4(triangle: List<List<Int>>): Int {
-        val n = triangle.size + 1
-
-        // dp的定义：向下走到相邻的结点上 ———— 正下方(i+1,j) 和 右下方(i+1,j+1) 的最小路径和
-        val dp = IntArray(n)
-
-        // base case：
-        for (j in 0 until n) {
-            dp[j] = 0
-        }
-
-        // dp的定义：三角形
-        for (i in n - 2 downTo 0) {
-            for (j in 0 until triangle[i].size) {
-                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j]
-            }
-        }
-        return dp[0]
-    }
 
 
     /**
@@ -746,13 +751,14 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
         val m: Int = s1.length + 1
         val n: Int = s2.length + 1
-        // dp数组宽高是s1.length+1和s2.length+1
+        // dp 定义是：s1的前i个子序列 和 s2的前i个子序列 的最长公共子序列长度。因此宽高是s1.length+1和s2.length+1
         val dp = Array(m) { IntArray(n) }
 
         // base case:  dp默认0行或0列是0，所以不需要设置了
 //        dp[0][..] = dp[..][0] = 0
 
         // 外层 for 循环在遍历s1所有状态的所有取值
+        // s1的前i个子序列 和 s2的前i个子序列
         for (i in 1 until m) {
             // 外层 for 循环在遍历s2所有状态的所有取值
             for (j in 1 until n) {
@@ -879,7 +885,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 647. 回文子串  动态规划（稍微了解）
+     * 647. 回文子串  动态规划
      *
      * "回文串”是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串、
      * "abc"："a", "b", "c"

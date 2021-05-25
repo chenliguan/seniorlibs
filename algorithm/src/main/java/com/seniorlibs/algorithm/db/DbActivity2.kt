@@ -49,8 +49,6 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_max_profit_4).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_5).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_6).setOnClickListener(this)
-        findViewById<View>(R.id.btn_can_jump).setOnClickListener(this)
-        findViewById<View>(R.id.btn_jump).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -73,8 +71,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "416. 分割等和子集1：${canPartition1(intArrayOf(1, 5, 11, 5))}")
             }
             R.id.btn_find_target_sum_ways -> {
-                LogUtils.e(TAG, "494. 目标和：${findTargetSumWays(intArrayOf(1,1,1,1,1), 3)}")
-                LogUtils.e(TAG, "494. 目标和1：${findTargetSumWays1(intArrayOf(1,1,1,1,1), 3)}")
+                LogUtils.e(TAG, "494. 目标和：${findTargetSumWays(intArrayOf(1, 1, 1, 1, 1), 3)}")
+                LogUtils.e(TAG, "494. 目标和1：${findTargetSumWays1(intArrayOf(1, 1, 1, 1, 1), 3)}")
             }
             R.id.btn_change_II -> {
                 LogUtils.e(TAG, "518. 零钱兑换 II：${changeII(5, intArrayOf(1, 2, 5))}")
@@ -118,12 +116,6 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                     TAG,
                     "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
                 )
-            }
-            R.id.btn_can_jump -> {
-                LogUtils.e(TAG, "55. 跳跃游戏：${canJump(intArrayOf(2, 3, 1, 1, 4))}")
-            }
-            R.id.btn_jump -> {
-                LogUtils.e(TAG, "45. 跳跃游戏 ||：${jump(intArrayOf(2, 3, 1, 1, 4))}")
             }
             else -> {
             }
@@ -466,7 +458,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     fun subsets1(nums: IntArray, sum: Int): Int {
         val m = nums.size + 1
         val n = sum + 1
-        val dp =  IntArray(n)
+        val dp = IntArray(n)
 
         // base case
         // 同于一般的背包问题，数组中是含有0值的，在考虑第i个数nums[i-1]时，若nums[i-1]=0且j=0,i!=0, dp[i][0]是不为1的。
@@ -674,7 +666,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     }
 
 
-  /**
+    /**
     1、用一个三维数组就可以装下这几种状态的全部组合：dp[i][k][0 or 1] (0<=i<=n-1,1<=k<=K)
      * i为天数
      * k为最多交易次数
@@ -709,7 +701,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     DP方程：
     dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
     dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
-  */
+     */
 
     /**
      * 121. 买卖股票的最佳时机 1 -- 最低点买入，最高点卖出 核心：k=1  解法1：动态规划
@@ -1094,57 +1086,5 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
         // return dp[prices.size - 1][0]
         return dp_i_0
-    }
-
-    /**
-     * 55. 跳跃游戏
-     * 思想：跳几步无所谓，关键在于可跳的覆盖范围。问题就转化为跳跃覆盖范围究竟可不可以覆盖到终点！
-     * 贪心算法局部最优解：每次取最大跳跃步数（取最大覆盖范围），最后得到整体最大覆盖范围，看是否能到终点。
-     *
-     * 时间复杂度：O(n)。
-     * 空间复杂度：O(1)。
-     * @param nums
-     * @return
-     */
-    fun canJump(nums: IntArray): Boolean {
-        val n = nums.size
-        var cover = 0
-        for (i in 0 until n - 1) {
-            // 不断计算可以覆盖的最大范围
-            cover = Math.max(cover, i + nums[i])
-            // 可能碰到了 0，卡住跳不动了 [0,2,3]
-            if (cover <= i) return false
-        }
-        // 说明可以覆盖到终点了
-        return cover >= n - 1
-    }
-
-    /**
-     * 45. 跳跃游戏 2
-     *
-     * 时间复杂度：O(n)。
-     * 空间复杂度：O(1)。
-     * @param nums
-     * @return
-     */
-    fun jump(nums: IntArray) : Int {
-        val n = nums.size
-
-        // 当前覆盖的最远距离下标
-        var end = 0
-        // 总覆盖的最远距离下标
-        var cover = 0
-        // 记录了跳跃次数
-        var jumps = 0
-
-        for (i in 0 until n - 1) {
-            cover = Math.max(nums[i] + i, cover)
-            // i 等于 当前覆盖的最远距离下标时，跳跃到下一个覆盖范围，更新为当前覆盖范围
-            if (i == end) {
-                jumps++
-                end = cover
-            }
-        }
-        return jumps
     }
 }

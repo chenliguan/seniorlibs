@@ -823,7 +823,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun rotateMatrix(matrix: Array<IntArray>) {
         val n = matrix.size
-        // 先以对角线（左上-右下）为轴进行翻转
+        // 先以对角线（左上-右下）为轴进行翻转 (0,0)   (0,1)(0,2) (1,0)(2,0)
         for (i in 0 until n - 1) {
             for (j in i + 1 until n) {
                 val tmp = matrix[i][j]

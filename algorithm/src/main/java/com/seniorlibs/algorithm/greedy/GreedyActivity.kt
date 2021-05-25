@@ -36,7 +36,9 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.btn_best_time_buy_stocks).setOnClickListener(this)
+        findViewById<View>(R.id.btn_can_jump).setOnClickListener(this)
+        findViewById<View>(R.id.btn_jump).setOnClickListener(this)
+        findViewById<View>(R.id.btn_can_complete_circuit).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -45,31 +47,116 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_best_time_buy_stocks -> {
-                LogUtils.d(TAG, "122. 买卖股票的最佳时机 II：${maxProfit(intArrayOf(7,1,5,3,6,4))}")
+            R.id.btn_can_jump -> {
+                LogUtils.e(TAG, "55. 跳跃游戏：${canJump(intArrayOf(2, 3, 1, 1, 4))}")
+            }
+            R.id.btn_jump -> {
+                LogUtils.e(TAG, "45. 跳跃游戏 ||：${jump(intArrayOf(2, 3, 1, 1, 4))}")
+            }
+            R.id.btn_can_complete_circuit -> {
+                LogUtils.e(
+                    TAG,
+                    "134. 加油站：${canCompleteCircuit(
+                        intArrayOf(1, 2, 3, 4, 5),
+                        intArrayOf(3, 4, 5, 1, 2)
+                    )}"
+                )
             }
             else -> {
             }
         }
     }
 
+    /**
+     * 55. 跳跃游戏
+     * 思想：跳几步无所谓，关键在于可跳的覆盖范围。问题就转化为跳跃覆盖范围究竟可不可以覆盖到终点！
+     * 贪心算法局部最优解：每次取最大跳跃步数（取最大覆盖范围），最后得到整体最大覆盖范围，看是否能到终点。
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     * @param nums
+     * @return
+     */
+    fun canJump(nums: IntArray): Boolean {
+        val n = nums.size
+        var cover = 0
+        for (i in 0 until n - 1) {
+            // 不断计算可以覆盖的最大范围
+            cover = Math.max(cover, i + nums[i])
+            // 可能碰到了 0，卡住跳不动了 [0,2,3]
+            if (cover <= i) return false
+        }
+        // 说明可以覆盖到终点了
+        return cover >= n - 1
+    }
 
     /**
-     * 122. 买卖股票的最佳时机 II（允许多次买卖，必须在再次购买前卖掉之前的股票）
+     * 45. 跳跃游戏 2
      *
-     * 思想：1.连续上涨交易日：每天都买卖，则第一天买最后一天卖收益最大；
-     *      2.连续下降交易日：则不买卖收益最大，即不会亏钱；
-     *      3.只要当前价格大于前一天价格，就把利润锁定。
-     *
-     * 时间复杂度：O(n)，遍历一次；
-     * 空间复杂度：O(1)，需要常量的空间。
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     * @param nums
+     * @return
      */
-    fun maxProfit(prices: IntArray): Int {
-        var profit = 0
-        for (i in 1 until prices.size) {
-            val tmp = prices[i] - prices[i - 1]  // 设 tmp 为第 i-1 日买入与第 i 日卖出赚取的利润
-            if (tmp > 0) profit += tmp
+    fun jump(nums: IntArray): Int {
+        val n = nums.size
+
+        // 当前覆盖的最远距离下标
+        var end = 0
+        // 总覆盖的最远距离下标
+        var cover = 0
+        // 记录了跳跃次数
+        var jumps = 0
+
+        for (i in 0 until n - 1) {
+            cover = Math.max(nums[i] + i, cover)
+            // i 等于 当前覆盖的最远距离下标时，跳跃到下一个覆盖范围，更新为当前覆盖范围
+            if (i == end) {
+                jumps++
+                end = cover
+            }
         }
-        return profit
+        return jumps
+    }
+
+    /**
+     * 134. 加油站
+     *
+     * 时间复杂度：O(N)；
+     * 空间复杂度：O(1)；
+     *
+     * https://leetcode-cn.com/problems/gas-station/solution/134-jia-you-zhan-by-chen-li-guan-rse3/
+     * @param G
+     * @param C
+     * @return
+     */
+    fun canCompleteCircuit(G: IntArray, C: IntArray): Int {
+        // 找一个子数组和最大的地方，那么也是相当于找一个子数组和最小的地方
+
+        // 出发时加油站的编号
+        var res = 0
+        // 车里剩余的油量
+        var left = 0
+        // 遍历计算每个加油站的总油量
+        var total = 0
+
+        for (i in 0 until G.size) {
+            val get = G[i]  // 第 i 个加油站的汽油 G[i] 升
+            val cost = C[i] // 从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 C[i] 升
+
+            total += get - cost
+
+            // 如果油量足够，还能开到下一站，那么继续开
+            if (left + get - cost >= 0) {
+                left += get - cost
+            } else {
+                // 油量不够，尝试新加油站出发
+                left = 0
+                res = i + 1
+            }
+        }
+
+        // 当总和 >= 0 时有解，返回 res
+        return if (total >= 0) res else -1
     }
 }
