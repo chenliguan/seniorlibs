@@ -284,7 +284,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 416. 分割等和子集   动态规划
+     * 416. 分割等和子集   动态规划 （了解）
      *
      * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和的一半，需要计算出所有的状态，每个状态在进行转移时的时间复杂度为 O(1)O(1)。
      * 空间复杂度：O(n * m)，其中 n 是数组的长度。空间复杂度取决于 dp 数组，在不进行空间优化的情况下，空间复杂度是 O(n * m)，
@@ -374,7 +374,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 494. 目标和  备注：这是 0-1背包问题的分割等和子集 和 完全背包问题的零钱兑换 II 的聚合题目
+     * 494. 目标和  备注：这是 0-1背包问题的分割等和子集 和 完全背包问题的零钱兑换 II 的聚合题目 （了解）
      *
      * 时间复杂度：O(n * m)，其中 n 是数组的长度，m 是整个数组的元素和 + 目标值 和的一半
      * 空间复杂度：O(n * m)，
@@ -596,11 +596,14 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         // base case
         // dp[0...i][0] = 0，表示凑成总金额为 0 所需的最少的硬币个数是 0
         for (i in 0 until m) dp[i][0] = 0
-        // dp[0][1...j] = n，表示凑成总金额为 n 所需的最多的硬币个数是 n = amount + 1，方便求最小值。（n 表示全部使用面值 1 的硬币进行换，是不可能达到的换取数量）
+        // dp[0][1...j] = n，表示凑成总金额为 n 所需的最多的硬币个数是 n = amount + 1。对应一维：必须将所有的 dp 赋最大值，因为要找最小值。
+        // （n 表示全部使用面值 1 的硬币进行换，是不可能达到的换取数量）
         for (j in 1 until n) dp[0][j] = n
 
         // dp 方程
+        // 从 1->coins.size + 1，表示前 1 个硬币，对应的 coins[] 就是 0 下标
         for (i in 1 until m) {
+            // 从 1->amount + 1，表示总金额是 1 起步，因为 0 在 base 已经计算了
             for (j in 1 until n) {
                 if (j - coins[i - 1] < 0) {
                     // 背包容量装不下当前硬币 coins[i]，选择不装入
@@ -648,7 +651,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         for (j in 1 until n) dp[j] = n
 
         // dp 方程
+        // 外层 for 循环在遍历硬币的面值，求所有选择的最小值
         for (i in 1 until m) {
+            // 内层 for 循环在遍历所有状态的所有取值
             for (j in 1 until n) {
                 if (j - coins[i - 1] >= 0) {
                     // 背包容量装得下。dp[i][j] 是「凑成总金额为 n 所需的最少的硬币个数」，值是以下 选择装和不装 结果的最小值
@@ -1026,7 +1031,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划（空间优化）
+     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划（空间优化）（了解）
      * 1、思路：由于具有相同的 k 值，因此情况六和情况二非常相似，不同之处在于情况六有「手续费」，因此在每次买入或卖出股票之后的收益需要扣除手续费
      *
      * 2、
@@ -1058,7 +1063,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划
+     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划（了解）
      * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
      *
      * 2、

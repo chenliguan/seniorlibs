@@ -771,7 +771,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 583. 两个字符串的删除操作 解法一：动态规划（自底向上）
+     * 583. 两个字符串的删除操作 解法一：动态规划（自底向上）（了解）
      *
      * 思路：最后这两个字符串会被删成的结果不就是它俩的最长公共子序列！
      * 先求出 最大的公共子序列值，两个字符串的删除操作次数 = 两个字符串的总长度 - 2 * 最大的公共子序列值。
@@ -792,7 +792,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 712. 两个字符串的最小ASCII删除和 解法一：动态规划（自底向上）
+     * 712. 两个字符串的最小ASCII删除和 解法一：动态规划（自底向上）（了解）
      *
      * 思路：先求出 最大的公共子序列对应的ASCII值，两个字符串的最小ASCII删除和 = 两个字符串的总ASCII值 - 2 * 最大的公共子序列对应的ASCII值。
      *
@@ -879,7 +879,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 647. 回文子串  动态规划
+     * 647. 回文子串  动态规划（稍微了解）
      *
      * "回文串”是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串、
      * "abc"："a", "b", "c"
@@ -975,7 +975,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 72. 编辑距离
+     * 72. 编辑距离（了解）
      *
      * 时间复杂度 ：O(mn)，其中 mm 为 word1 的长度，nn 为 word2 的长度。
      * 空间复杂度 ：O(mn)，我们需要大小为 O(mn)O(mn) 的 DD 数组来记录状态值。
