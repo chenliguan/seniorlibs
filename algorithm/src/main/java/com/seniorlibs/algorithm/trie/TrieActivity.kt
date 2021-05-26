@@ -131,7 +131,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 79. 单词搜索  解法 dfs 回溯算法
+     * 79. 单词搜索  解法 dfs 回溯算法（记住）
      *
      * 时间复杂度：O(mn*3^h)，其中m, n为网格的长度与宽度，h为字符串word的长度。在每次调用函数dfs时，
      * 除了第一次可以进入4个分支以外，其余最多会进入3个分支（每个位置只能走一次，走过的分支没法走回去）。
@@ -150,8 +150,8 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         if (board.isEmpty() || board[0].isEmpty() || word.isEmpty()) return false
 
         val words = word.toCharArray()
-        for (i in board.indices) {
-            for (j in board[0].indices) {
+        for (i in 0 until board.size) {
+            for (j in 0 until board[0].size) {
                 // 从[i,j]这个坐标开始查找，只要有一处返回true，说明网格中能够找到相应的单词，否则不能找到
                 if (dfs(board, words, i, j, 0)) return true
             }
@@ -160,7 +160,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun dfs(board: Array<CharArray>, words: CharArray, i: Int, j: Int, index: Int): Boolean {
-        // 如果越界直接返回false。index表示的是查找到字符串word的第几个字符， 如果这个字符不等于board[i][j]，说明这个坐标路径是走不通的，直接返回false
+        // 如果越界直接返回false。关键：如果这个字符不等于board[i][j]，说明这个坐标路径是走不通的，直接返回false
         if (i < 0 || i >= board.size || j < 0 || j >= board[0].size || board[i][j] != words[index]) return false
 
         // 如果word的每个字符都查找完了，直接返回true
@@ -170,7 +170,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         val tmp = board[i][j]
         // 然后修改当前坐标的值
         board[i][j] = '.'
-        // 走递归，沿着当前坐标的上下左右4个方向查找
+        // 关键：走递归，沿着当前坐标的上下左右4个方向查找
         val res = dfs(board, words, i + 1, j, index + 1)
                 || dfs(board, words, i - 1, j, index + 1)
                 || dfs(board, words, i, j + 1, index + 1)
@@ -181,14 +181,14 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 200. 岛屿数量——方法一：深度优先遍历DFS
+     * 200. 岛屿数量——方法一：深度优先遍历DFS（记住）
      *
-     * 目标：是找到矩阵中 “岛屿的数量” ，上下左右相连的 1 都被认为是连续岛屿。
+     * 目标：是找到矩阵中 "岛屿的数量"，上下左右相连的 1 都被认为是连续岛屿。
      * 思想：遍历整个矩阵，当遇到 grid[i][j] == '1' 时，从此点开始做深度优先搜索 dfs，岛屿数 count + 1 且在深度优先搜索中删除此岛屿。
      *
      * 步骤：1.从岛屿中的某一点 (i, j)向此点的上下左右 (i+1,j),(i-1,j),(i,j+1),(i,j-1) 做深度搜索；
      *      2.终止条件：(i, j) 越过矩阵边界; grid[i][j] == 0，代表此分支已越过岛屿边界；
-     *      3.搜索岛屿的同时，执行grid[i][j] = '0'，即将岛屿所有节点删除，以免之后重复搜索相同岛屿。
+     *      3.搜索岛屿的同时，执行 grid[i][j] = '0'，即将岛屿所有节点删除，以免之后重复搜索相同岛屿。
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
@@ -199,8 +199,8 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun numIslands(grid: Array<CharArray>): Int {
         var count = 0
-        for (i in grid.indices) {
-            for (j in grid[0].indices) {
+        for (i in 0 until grid.size) {
+            for (j in 0 until grid[0].size) {
                 if (grid[i][j] == '1') {
                     dfs(grid, i, j)
                     count++
@@ -270,7 +270,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 695. 岛屿的最大面积
+     * 695. 岛屿的最大面积（记住）
      *
      * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
      * 空间复杂度：O(mn)，在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到mn
@@ -281,10 +281,8 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun maxAreaOfIsland(board: Array<IntArray>): Int {
         var max = 0
-        val m = board.size
-        val n: Int = board[0].size
-        for (i in 0 until m) {
-            for (j in 0 until n) {
+        for (i in 0 until board.size) {
+            for (j in 0 until board[0].size) {
                 if (board[i][j] == 1) {
                     max = Math.max(max, areaDfs(board, i, j, 0))
                 }
@@ -309,7 +307,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 130. 被围绕的区域
+     * 130. 被围绕的区域（记住）
      *
      * 边界上的 O 要特殊处理，只要把边界上的 O 特殊处理了，那么剩下的 O 替换成 X 就可以了。问题转化为，如何寻找和边界联通的 O。
      *
@@ -350,19 +348,17 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
 
     fun edgeDfs(board: Array<CharArray>, i: Int, j: Int) {
         if (i >= 0 && i < board.size && j >= 0 && j < board[0].size && board[i][j] == 'O') {
-            board[i][j] = '#'
+            board[i][j] = '#' // 说明已经搜索过了.
             edgeDfs(board, i - 1, j) // 上
             edgeDfs(board, i + 1, j) // 下
             edgeDfs(board, i, j - 1) // 左
             edgeDfs(board, i, j + 1) // 右
         }
-
-        // board[i][j] == '#' 说明已经搜索过了.
     }
 
 
     /**
-     * 547. 朋友圈——方法2：深度优先遍历DFS
+     * 547. 朋友圈——方法2：深度优先遍历DFS（记住）
      *
      * 题解：M[i][j] = 1，表示已知第 i 个和 j 个学生互为朋友关系
      * 思路：从一个特定点开始，访问所有邻接的节点。然后对于这些邻接节点，我们依然通过访问邻接节点的方式，知道访问所有可以到达的节点。因此，我们按照一层一层的方式访问节点
