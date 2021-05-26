@@ -43,6 +43,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_can_partition).setOnClickListener(this)
         findViewById<View>(R.id.btn_change_II).setOnClickListener(this)
         findViewById<View>(R.id.btn_coin_change).setOnClickListener(this)
+        findViewById<View>(R.id.btn_word_break).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_1).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_2).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_profit_3).setOnClickListener(this)
@@ -82,6 +83,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "322. 零钱兑换：${coinChange(intArrayOf(1, 2, 5), 11)}")
                 LogUtils.e(TAG, "322. 零钱兑换 1：${coinChange1(intArrayOf(1, 2, 5), 11)}")
             }
+            R.id.btn_word_break -> {
+                LogUtils.e(TAG, "139. 单词拆分：${wordBreak("leetcode", arrayListOf<String>("leet","code"))}")
+            }
             R.id.btn_max_profit_1 -> {
                 LogUtils.e(TAG, "121. 买卖股票的最佳时机 11：${maxProfit11(intArrayOf(7, 1, 5, 3, 6, 4))}")
                 LogUtils.e(TAG, "121. 买卖股票的最佳时机 12：${maxProfit12(intArrayOf(7, 1, 5, 3, 6, 4))}")
@@ -99,22 +103,22 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_max_profit_5 -> {
                 LogUtils.e(
-                    TAG,
-                    "309. 买卖股票的最佳时机含冷冻期 51：${maxProfit51(intArrayOf(7, 1, 5, 3, 6, 4))}"
+                        TAG,
+                        "309. 买卖股票的最佳时机含冷冻期 51：${maxProfit51(intArrayOf(7, 1, 5, 3, 6, 4))}"
                 )
                 LogUtils.e(
-                    TAG,
-                    "309. 买卖股票的最佳时机含冷冻期 52：${maxProfit52(intArrayOf(7, 1, 5, 3, 6, 4))}"
+                        TAG,
+                        "309. 买卖股票的最佳时机含冷冻期 52：${maxProfit52(intArrayOf(7, 1, 5, 3, 6, 4))}"
                 )
             }
             R.id.btn_max_profit_6 -> {
                 LogUtils.e(
-                    TAG,
-                    "714. 买卖股票的最佳时机含手续费 61：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
+                        TAG,
+                        "714. 买卖股票的最佳时机含手续费 61：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
                 )
                 LogUtils.e(
-                    TAG,
-                    "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
+                        TAG,
+                        "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
                 )
             }
             else -> {
@@ -267,10 +271,10 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         if (nums.size == 1) return nums[0]
 
         return Math.max(
-            // 不偷第一个房子
-            rob11(Arrays.copyOfRange(nums, 1, nums.size)),
-            // 不偷最后一个房子
-            rob11(Arrays.copyOfRange(nums, 0, nums.size - 1))
+                // 不偷第一个房子
+                rob11(Arrays.copyOfRange(nums, 1, nums.size)),
+                // 不偷最后一个房子
+                rob11(Arrays.copyOfRange(nums, 0, nums.size - 1))
         )
     }
 
@@ -667,6 +671,44 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 139. 单词拆分
+     * 思路：转化为是否可以用 wordDict 中的词组合成 s，完全背包问题，并且为"考虑排列顺序的完全背包问题"，外层循环为 s ，内层循环为选择池 wordDict。
+     *
+     * 时间复杂度：O(s.length × wordDict.length)；
+     * 空间复杂度：O(wordDict.length)；
+     *
+     * https://leetcode-cn.com/problems/word-break/solution/139-dan-ci-chai-fen-by-chen-li-guan-gjki/
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        val n = s.length + 1
+        // dp[i]：以 i 结尾的字符串是否可以被 wordDict 中组合而成
+        val dp = BooleanArray(n)
+
+        // base case：表示空串且合法
+        dp[0] = true
+
+        // 遍历背包
+        for (i in 1 until n) {
+            // 遍历物品
+            for(word in wordDict) {
+                // 判断 s.substring(i - sz, i) == word：
+                // 若不相等，说明 从[i - sz]到i的字符 与 该word 不匹配，继续遍历；若相等，说明匹配。
+                val sz = word.length
+                if (i - sz >= 0 && s.substring(i - sz, i) == word) {
+                    dp[i] = dp[i] || dp[i - sz]
+                }
+            }
+        }
+
+        // 最后返回 dp[s.length]
+        return dp[n - 1]
+    }
+
+
+    /**
     1、用一个三维数组就可以装下这几种状态的全部组合：dp[i][k][0 or 1] (0<=i<=n-1,1<=k<=K)
      * i为天数
      * k为最多交易次数
@@ -1000,11 +1042,6 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         // return dp[prices.size - 1][0]
         return dp_i_0
     }
-
-
-
-
-
 
 
     /**

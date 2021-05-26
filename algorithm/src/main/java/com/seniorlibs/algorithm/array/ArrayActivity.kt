@@ -1100,40 +1100,4 @@ n->f(n)
         }
         return count
     }
-
-
-
-    fun findLength(A: IntArray, B: IntArray): Int {
-        val n = A.size
-        val m = B.size
-        var ret = 0
-
-        for (i in 0 until n) {
-            val len = Math.min(m, n - i)
-            val maxlen = maxLength(A, B, i, 0, len)
-            ret = Math.max(ret, maxlen)
-        }
-
-        for (i in 0 until m) {
-            val len = Math.min(n, m - i)
-            val maxlen = maxLength(A, B, 0, i, len)
-            ret = Math.max(ret, maxlen)
-        }
-        return ret
-    }
-
-    fun maxLength(A: IntArray, B: IntArray, addA: Int, addB: Int, len: Int): Int {
-        var ret = 0
-        var k = 0
-        for (i in 0 until len) {
-            if (A[addA + i] == B[addB + i]) {
-                k++
-            } else {
-                k = 0
-            }
-            ret = Math.max(ret, k)
-        }
-        return ret
-    }
-
 }

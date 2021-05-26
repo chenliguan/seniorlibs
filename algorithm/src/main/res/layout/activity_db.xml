@@ -54,6 +54,11 @@
         android:text="1143. 最长公共子序列" />
 
     <Button
+        android:id="@+id/btn_find_length"
+        style="@style/BtnStyles"
+        android:text="718. 最长重复子数组" />
+
+    <Button
         android:id="@+id/btn_min_distance"
         style="@style/BtnStyles"
         android:text="583. 两个字符串的删除操作" />

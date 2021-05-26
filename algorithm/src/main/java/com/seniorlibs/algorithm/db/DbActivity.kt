@@ -45,6 +45,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_length).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_longest_palindrome_sub_seq).setOnClickListener(this)
@@ -102,6 +103,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_longest_common_sub_sequence -> {
                 LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
             }
+            R.id.btn_find_length -> {
+                LogUtils.e(TAG, "718. 最长重复子数组：${findLength(intArrayOf(1, 2, 3, 2, 1), intArrayOf(3, 2, 1, 4, 7))}")
+            }
             R.id.btn_min_distance -> {
                 LogUtils.e(TAG, "583. 两个字符串的删除操作：${minDistance("ace", "abcde")}")
             }
@@ -123,8 +127,8 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_max_sub_array -> {
                 LogUtils.e(
-                    TAG,
-                    "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}"
+                        TAG,
+                        "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}"
                 )
             }
             R.id.btn_max_product -> {
@@ -132,12 +136,12 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_length_of_LIS -> {
-                LogUtils.e(TAG, "300. 最长递增子序列：${lengthOfLIS(intArrayOf(10,9,2,5,3,7,101,18))}")
+                LogUtils.e(TAG, "300. 最长递增子序列：${lengthOfLIS(intArrayOf(10, 9, 2, 5, 3, 7, 101, 18))}")
             }
             R.id.btn_maximal_square -> {
                 val paths = arrayOf(
-                    charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
-                    charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
+                        charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
+                        charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
                 )
                 LogUtils.e(TAG, "221. 最大正方形1：${maximalSquare(paths)}")
                 LogUtils.e(TAG, "221. 最大正方形2：${maximalSquare2(paths)}")
@@ -590,7 +594,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         val n = grid[0].size
 
         // dp定义：向下走m步，以及向右走n步，路径上的数字最小和
-        val dp = Array(m) {IntArray(n)}
+        val dp = Array(m) { IntArray(n) }
 
         // base case
         dp[0][0] = grid[0][0]
@@ -726,13 +730,12 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
         // 该点相邻两点到底边的最小路径和中的较小值，再加上该点本身的值
         res[i][j] = Math.min(
-            dfs1(triangle, res, i + 1, j),
-            dfs1(triangle, res, i + 1, j + 1)
+                dfs1(triangle, res, i + 1, j),
+                dfs1(triangle, res, i + 1, j + 1)
         ) + triangle[i][j]
 
         return res[i][j]
     }
-
 
 
     /**
@@ -758,9 +761,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 //        dp[0][..] = dp[..][0] = 0
 
         // 外层 for 循环在遍历s1所有状态的所有取值
-        // s1的前i个子序列 和 s2的前i个子序列
+        // s1的前i个子序列 和 s2的前j个子序列
         for (i in 1 until m) {
-            // 外层 for 循环在遍历s2所有状态的所有取值
+            // 内层 for 循环在遍历s2所有状态的所有取值
             for (j in 1 until n) {
                 // dp默认0行或0列是0，真实存值是从1行和1列开始，而s1和s2还是从0行或0列开始；现在i和j从1开始，所以s1要减1
                 if (s1[i - 1] == s2[j - 1]) {
@@ -775,6 +778,55 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
         return dp[m - 1][n - 1]
     }
+
+
+    /**
+     * 718. 最长重复子数组
+     *
+     * 区别：本题与公共子序列不同，子序列不一定都是连续的，只要前面有相同的子序列，哪怕当前比较的字符不一样，
+     * 那么当前字符串之前的子序列也不会为 0。而子串(子数组)是连续的，若当前比较的字符不相同，则当前位置的最长公共子数组(子串)的长度为 0，即 dp[i][j] = 0(就是没有)
+     *
+     * 时间复杂度：O(mn)；
+     * 空间复杂度：O(mn)；
+     *
+     * https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/solution/718-zui-chang-zhong-fu-zi-shu-zu-by-chen-j9zz/
+     * @param A
+     * @param B
+     * @return
+     */
+    fun findLength(A: IntArray, B: IntArray): Int {
+        val m = A.size + 1
+        val n = B.size + 1
+
+        // dp[i][j]：表示第一个数组A前i个元素和数组B前j个元素组成的最长公共子数组(相当于子串)的长度。
+        val dp = Array(m) { IntArray(n) }
+
+        // 外层 for 循环在遍历s1所有状态的所有取值
+        // s1的前i个子序列 和 s2的前j个子序列
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                // 若当前两个元素值相同，即 A[i] == B[j]，则说明当前元素可以构成公共子数组，所以还要加上它们的前一个元素构成的最长公共子数组的长度(在原来的基础上加 1)
+                if (A[i - 1] == B[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                } else {
+                    // 若当前两个元素值不同，即 A[i] != B[j]，则说明当前元素无法构成公共子数组 (就是：当前元素不能成为公共子数组里的一员)。
+                    // 因为公共子数组必须是连续的，而此时的元素值不同，相当于直接断开了，此时状态转移方程：dp[i][j] = 0。
+                    dp[i][j] = 0
+                }
+            }
+        }
+
+        // 遍历 dp[i][j]，计算最大的值
+        var res = 0
+        for (i in 1 until m) {
+            for (j in 1 until n) {
+                res = Math.max(res, dp[i][j])
+            }
+        }
+
+        return res
+    }
+
 
     /**
      * 583. 两个字符串的删除操作 解法一：动态规划（自底向上）（了解）
@@ -1007,12 +1059,12 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                     dp[i][j] = dp[i - 1][j - 1]
                 } else {
                     dp[i][j] = min(
-                        // s1中插入一个和s2[j]一样的字符，s2[j]就被匹配了，前移j，继续跟i对比。操作数+1
-                        dp[i][j - 1] + 1,
-                        // 把s1[i]这个字符删掉，前移i，继续跟j对比。操作数+1
-                        dp[i - 1][j] + 1,
-                        // 把s1[i]替换成s2[j]，它俩就匹配了，同时前移i，j，继续对比。操作数+1
-                        dp[i - 1][j - 1] + 1
+                            // s1中插入一个和s2[j]一样的字符，s2[j]就被匹配了，前移j，继续跟i对比。操作数+1
+                            dp[i][j - 1] + 1,
+                            // 把s1[i]这个字符删掉，前移i，继续跟j对比。操作数+1
+                            dp[i - 1][j] + 1,
+                            // 把s1[i]替换成s2[j]，它俩就匹配了，同时前移i，j，继续对比。操作数+1
+                            dp[i - 1][j - 1] + 1
                     )
                 }
             }
@@ -1025,7 +1077,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     fun min(a: Int, b: Int, c: Int): Int {
         return Math.min(a, Math.min(b, c))
     }
-
 
 
     /**
@@ -1143,7 +1194,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         }
         return res
     }
-
 
 
     /**
