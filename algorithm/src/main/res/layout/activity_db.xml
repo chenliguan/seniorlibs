@@ -10,104 +10,100 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_climb_stairs"
-        style="@style/BtnStyles"
-        android:text="70. 爬楼梯" />
+        <Button
+            android:id="@+id/btn_max_sub_array"
+            style="@style/BtnStyles"
+            android:text="53. 最大子序和" />
 
-    <Button
-        android:id="@+id/btn_min_cost_climb_stairs"
-        style="@style/BtnStyles"
-        android:text="746. 使用最小花费爬楼梯" />
+        <Button
+            android:id="@+id/btn_max_product"
+            style="@style/BtnStyles"
+            android:text="152. 乘积最大子数组" />
 
-    <Button
-        android:id="@+id/btn_fib"
-        style="@style/BtnStyles"
-        android:text="509. 斐波那契数" />
-
-    <Button
-        android:id="@+id/btn_unique_paths"
-        style="@style/BtnStyles"
-        android:text="62. 不同路径" />
-
-    <Button
-        android:id="@+id/btn_unique_paths_with_obstacles"
-        style="@style/BtnStyles"
-        android:text="63. 不同路径 II" />
-
-    <Button
-        android:id="@+id/btn_min_path_sum"
-        style="@style/BtnStyles"
-        android:text="64. 最小路径和" />
-
-    <Button
-        android:id="@+id/btn_minimum_total"
-        style="@style/BtnStyles"
-        android:text="120. 三角形最小路径和" />
-
-    <Button
-        android:id="@+id/btn_longest_common_sub_sequence"
-        style="@style/BtnStyles"
-        android:text="1143. 最长公共子序列" />
-
-    <Button
-        android:id="@+id/btn_find_length"
-        style="@style/BtnStyles"
-        android:text="718. 最长重复子数组" />
-
-    <Button
-        android:id="@+id/btn_min_distance"
-        style="@style/BtnStyles"
-        android:text="583. 两个字符串的删除操作" />
-
-    <Button
-        android:id="@+id/btn_minimum_delete_sum"
-        style="@style/BtnStyles"
-        android:text="712. 两个字符串的最小ASCII删除和" />
-
-    <Button
-        android:id="@+id/btn_max_sub_array"
-        style="@style/BtnStyles"
-        android:text="53. 最大子序和" />
+        <Button
+            android:id="@+id/btn_length_of_LIS"
+            style="@style/BtnStyles"
+            android:text="300. 最长递增子序列" />
 
 
-    <Button
-        android:id="@+id/btn_longest_palindrome_sub_seq"
-        style="@style/BtnStyles"
-        android:text="516. 最长回文子序列" />
+        <Button
+            android:id="@+id/btn_rob"
+            style="@style/BtnStyles"
+            android:text="198. 打家劫舍" />
 
-    <Button
-        android:id="@+id/btn_count_sub_strings"
-        style="@style/BtnStyles"
-        android:text="647. 回文子串" />
+        <Button
+            android:id="@+id/btn_rob_2"
+            style="@style/BtnStyles"
+            android:text="213. 打家劫舍 II" />
 
-    <Button
-        android:id="@+id/btn_longest_palindrome"
-        style="@style/BtnStyles"
-        android:text="5. 最长回文子串" />
+        <Button
+            android:id="@+id/btn_max_profit_1"
+            style="@style/BtnStyles"
+            android:text="121. 买卖股票的最佳时机 1" />
 
-    <Button
-        android:id="@+id/btn_min_edit_distance"
-        style="@style/BtnStyles"
-        android:text="72. 编辑距离" />
+        <Button
+            android:id="@+id/btn_max_profit_2"
+            style="@style/BtnStyles"
+            android:text="122. 买卖股票的最佳时机 2" />
 
-    <Button
-        android:id="@+id/btn_max_product"
-        style="@style/BtnStyles"
-        android:text="152. 乘积最大子数组" />
+        <Button
+            android:id="@+id/btn_max_profit_3"
+            style="@style/BtnStyles"
+            android:text="123. 买卖股票的最佳时机 3" />
 
-    <Button
-        android:id="@+id/btn_length_of_LIS"
-        style="@style/BtnStyles"
-        android:text="300. 最长递增子序列" />
+        <Button
+            android:id="@+id/btn_max_profit_4"
+            style="@style/BtnStyles"
+            android:text="188. 买卖股票的最佳时机 4" />
 
-    <Button
-        android:id="@+id/btn_maximal_square"
-        style="@style/BtnStyles"
-        android:text="221. 最大正方形" />
+        <Button
+            android:id="@+id/btn_max_profit_5"
+            style="@style/BtnStyles"
+            android:text="309. 买卖股票的最佳时机含冷冻期" />
 
+        <Button
+            android:id="@+id/btn_max_profit_6"
+            style="@style/BtnStyles"
+            android:text="714. 买卖股票的最佳时机含手续费" />
+
+
+        <Button
+            android:id="@+id/btn_unique_paths"
+            style="@style/BtnStyles"
+            android:text="62. 不同路径" />
+
+        <Button
+            android:id="@+id/btn_unique_paths_with_obstacles"
+            style="@style/BtnStyles"
+            android:text="63. 不同路径 II" />
+
+        <Button
+            android:id="@+id/btn_min_path_sum"
+            style="@style/BtnStyles"
+            android:text="64. 最小路径和" />
+
+        <Button
+            android:id="@+id/btn_minimum_total"
+            style="@style/BtnStyles"
+            android:text="120. 三角形最小路径和" />
+
+
+        <Button
+            android:id="@+id/btn_longest_palindrome_sub_seq"
+            style="@style/BtnStyles"
+            android:text="516. 最长回文子序列" />
+
+        <Button
+            android:id="@+id/btn_count_sub_strings"
+            style="@style/BtnStyles"
+            android:text="647. 回文子串" />
+
+        <Button
+            android:id="@+id/btn_longest_palindrome"
+            style="@style/BtnStyles"
+            android:text="5. 最长回文子串" />
     </LinearLayout>
 </ScrollView>

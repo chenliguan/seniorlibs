@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
+import java.util.*
 
 
 /**
@@ -37,25 +38,28 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.btn_climb_stairs).setOnClickListener(this)
-        findViewById<View>(R.id.btn_fib).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
+        findViewById<View>(R.id.btn_length_of_LIS).setOnClickListener(this)
+
+        findViewById<View>(R.id.btn_rob).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rob_2).setOnClickListener(this)
+
+        findViewById<View>(R.id.btn_max_profit_1).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_profit_2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_profit_3).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_profit_4).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_profit_5).setOnClickListener(this)
+        findViewById<View>(R.id.btn_max_profit_6).setOnClickListener(this)
+
         findViewById<View>(R.id.btn_unique_paths).setOnClickListener(this)
         findViewById<View>(R.id.btn_unique_paths_with_obstacles).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_path_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_minimum_total).setOnClickListener(this)
 
-        findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
-        findViewById<View>(R.id.btn_find_length).setOnClickListener(this)
-        findViewById<View>(R.id.btn_max_sub_array).setOnClickListener(this)
-
         findViewById<View>(R.id.btn_longest_palindrome_sub_seq).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_sub_strings).setOnClickListener(this)
         findViewById<View>(R.id.btn_longest_palindrome).setOnClickListener(this)
-        findViewById<View>(R.id.btn_min_edit_distance).setOnClickListener(this)
-        findViewById<View>(R.id.btn_max_product).setOnClickListener(this)
-        findViewById<View>(R.id.btn_length_of_LIS).setOnClickListener(this)
-
-        findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -64,22 +68,67 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_climb_stairs -> {
-                LogUtils.e(TAG, "70. 爬楼梯1：${fun1(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯2：${fun2(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯3：${fun3(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯4：${fun4(5)}")
-                LogUtils.e(TAG, "70. 爬楼梯5：${fun5(5)}")
+            R.id.btn_max_sub_array -> {
+                LogUtils.e(
+                        TAG,
+                        "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}"
+                )
             }
-            R.id.btn_min_cost_climb_stairs -> {
-                LogUtils.e(TAG, "746. 使用最小花费爬楼梯：${minCostClimbingStairs(intArrayOf(1, 100, 1, 1, 1, 100, 1, 1, 100, 1))}")
+            R.id.btn_max_product -> {
+                LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
             }
-            R.id.btn_fib -> {
-                LogUtils.e(TAG, "509. 斐波那契数：${fib1(5)}")
-                LogUtils.e(TAG, "509. 斐波那契数：${fib2(5)}")
-                LogUtils.e(TAG, "509. 斐波那契数：${fib3(5)}")
-                LogUtils.e(TAG, "509. 斐波那契数：${fib4(5)}")
+
+            R.id.btn_length_of_LIS -> {
+                LogUtils.e(TAG, "300. 最长递增子序列：${lengthOfLIS(intArrayOf(10, 9, 2, 5, 3, 7, 101, 18))}")
             }
+
+
+            R.id.btn_rob -> {
+                LogUtils.e(TAG, "198. 打家劫舍11：${rob11(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍12：${rob12(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍21：${rob21(intArrayOf(2, 7, 9, 3, 1))}")
+                LogUtils.e(TAG, "198. 打家劫舍22：${rob22(intArrayOf(2, 7, 9, 3, 1))}")
+            }
+            R.id.btn_rob_2 -> {
+                LogUtils.e(TAG, "213. 打家劫舍 II：${robII(intArrayOf(2, 7, 9, 3, 1))}")
+            }
+            R.id.btn_max_profit_1 -> {
+                LogUtils.e(TAG, "121. 买卖股票的最佳时机 11：${maxProfit11(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                LogUtils.e(TAG, "121. 买卖股票的最佳时机 12：${maxProfit12(intArrayOf(7, 1, 5, 3, 6, 4))}")
+            }
+            R.id.btn_max_profit_2 -> {
+                LogUtils.e(TAG, "122. 买卖股票的最佳时机 21：${maxProfit21(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                LogUtils.e(TAG, "122. 买卖股票的最佳时机 22：${maxProfit22(intArrayOf(7, 1, 5, 3, 6, 4))}")
+            }
+            R.id.btn_max_profit_3 -> {
+                LogUtils.e(TAG, "123. 买卖股票的最佳时机 31：${maxProfit31(intArrayOf(7, 1, 5, 3, 6, 4))}")
+                LogUtils.e(TAG, "123. 买卖股票的最佳时机 32：${maxProfit31(intArrayOf(7, 1, 5, 3, 6, 4))}")
+            }
+            R.id.btn_max_profit_4 -> {
+                LogUtils.e(TAG, "188. 买卖股票的最佳时机 41：${maxProfit41(2, intArrayOf(7, 1, 5, 3, 6, 4))}")
+            }
+            R.id.btn_max_profit_5 -> {
+                LogUtils.e(
+                        TAG,
+                        "309. 买卖股票的最佳时机含冷冻期 51：${maxProfit51(intArrayOf(7, 1, 5, 3, 6, 4))}"
+                )
+                LogUtils.e(
+                        TAG,
+                        "309. 买卖股票的最佳时机含冷冻期 52：${maxProfit52(intArrayOf(7, 1, 5, 3, 6, 4))}"
+                )
+            }
+            R.id.btn_max_profit_6 -> {
+                LogUtils.e(
+                        TAG,
+                        "714. 买卖股票的最佳时机含手续费 61：${maxProfit61(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
+                )
+                LogUtils.e(
+                        TAG,
+                        "714. 买卖股票的最佳时机含手续费 62：${maxProfit62(intArrayOf(7, 1, 5, 3, 6, 4), 1)}"
+                )
+            }
+            
+            
             R.id.btn_unique_paths -> {
                 LogUtils.e(TAG, "62. 不同路径：${uniquePaths(3, 7)}")
                 LogUtils.e(TAG, "62. 不同路径：${uniquePaths1(3, 7)}")
@@ -100,18 +149,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal2(res)}")
                 LogUtils.e(TAG, "120. 三角形最小路径和：${minimumTotal3(res)}")
             }
-            R.id.btn_longest_common_sub_sequence -> {
-                LogUtils.e(TAG, "1143. 最长公共子序列：${longestCommonSubsequence("ace", "abcde")}")
-            }
-            R.id.btn_find_length -> {
-                LogUtils.e(TAG, "718. 最长重复子数组：${findLength(intArrayOf(1, 2, 3, 2, 1), intArrayOf(3, 2, 1, 4, 7))}")
-            }
-            R.id.btn_min_distance -> {
-                LogUtils.e(TAG, "583. 两个字符串的删除操作：${minDistance("ace", "abcde")}")
-            }
-            R.id.btn_minimum_delete_sum -> {
-                LogUtils.e(TAG, "712. 两个字符串的最小ASCII删除和：${minimumDeleteSum("ace", "abcde")}")
-            }
 
             R.id.btn_longest_palindrome_sub_seq -> {
                 LogUtils.e(TAG, "516. 最长回文子序列：${longestPalindromeSubseq("bbcbab")}")
@@ -122,314 +159,716 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_longest_palindrome -> {
                 LogUtils.e(TAG, "5. 最长回文子串：${longestPalindrome("abbc")}")
             }
-            R.id.btn_min_edit_distance -> {
-                LogUtils.e(TAG, "72. 编辑距离：${minEditDistance("horse", "ros")}")
-            }
-            R.id.btn_max_sub_array -> {
-                LogUtils.e(
-                        TAG,
-                        "53. 最大子序和：${maxSubArray(intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4))}"
-                )
-            }
-            R.id.btn_max_product -> {
-                LogUtils.e(TAG, "152. 乘积最大子数组：${maxProduct(intArrayOf(2, 3, -2, 4, -1))}")
-            }
-
-            R.id.btn_length_of_LIS -> {
-                LogUtils.e(TAG, "300. 最长递增子序列：${lengthOfLIS(intArrayOf(10, 9, 2, 5, 3, 7, 101, 18))}")
-            }
-            R.id.btn_maximal_square -> {
-                val paths = arrayOf(
-                        charArrayOf('1', '0', '1', '0', '0'), charArrayOf('1', '0', '1', '1', '1'),
-                        charArrayOf('1', '1', '1', '1', '1'), charArrayOf('1', '0', '0', '1', '0')
-                )
-                LogUtils.e(TAG, "221. 最大正方形1：${maximalSquare(paths)}")
-                LogUtils.e(TAG, "221. 最大正方形2：${maximalSquare2(paths)}")
-            }
             else -> {
             }
         }
     }
 
 
-    /**
-     * 70. 爬楼梯 方法一：暴力递归(自顶向下)
-     *
-     * 时间复杂度：O(2^n)。树形递归的大小为2^n；
-     * 空间复杂度：O(n)。递归树的深度可以达到n
-     *
-     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    fun fun1(n: Int): Int {
-        if (n <= 1) return 1
-        if (n == 2) return 2
-
-        return fun1(n - 1) + fun1(n - 2)
-    }
-
-    /**
-     * 70. 爬楼梯  解法二：备忘录递归(自顶向下)，解法一递归的升级版（记住）
-     *
-     * 时间复杂度：O(n)。树形递归的大小可以达到 n；
-     * 空间复杂度：O(n)。递归树的深度可以达到 n
-     *
-     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    fun fun2(n: Int): Int {
-        if (n <= 1) return 1
-        if (n == 2) return 2
-
-        val cache = IntArray(n + 1)
-        cache[0] = 0
-        cache[1] = 1
-
-        return funs(n, cache)
-    }
-
-    private fun funs(n: Int, cache: IntArray): Int {
-        // 如果 N 对应的楼梯数存在，则返回
-        if (cache[n] != 0) return cache[n]
-
-        // 计算 N 对应的楼梯数为 memoize(N-1) + memoize(N-2)
-        cache[n] = funs(n - 1, cache) + funs(n - 2, cache)
-
-        return cache[n]
-    }
-
-    /**
-     * 70. 爬楼梯  解法2.1：备忘录递归(自顶向下)，解法二递归的升级版
-     *
-     * 时间复杂度：O(n)。树形递归的大小可以达到 n；
-     * 空间复杂度：O(n)。递归树的深度可以达到 n
-     *
-     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    fun fun3(n: Int): Int {
-        return funss(n, 1, 2)
-    }
-
-    fun funss(n: Int, first: Int, second: Int): Int {
-        if (n <= 1) return first
-        if (n == 2) return second
-
-        // 5 -> 4 -> 3 (2->1)
-        return funss(n - 1, second, first + second)
-    }
-
-    /**
-     * 70. 爬楼梯  解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级（记住）
-     *
-     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
-     * 空间复杂度：O(n)。用了n空间的数组辅助，空间复杂度为。
-     *
-     * base case：
-     *    f(0) = 1
-     *    f(1) = 1
-     *    f(2) = 2
-     *
-     * DP方程：dp(n) = dp(n-1) + dp(n-2)
-     *
-     * https://leetcode-cn.com/problems/climbing-stairs/solution/70-pa-lou-ti-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    fun fun4(n: Int): Int {
-        if (n == 1) return 1
-        if (n == 2) return 2
-
-        val dp = IntArray(n + 1)
-        // base case
-        // dp[0] = 1
-        dp[1] = 1
-        dp[2] = 2
-
-        // dp方程：f(n) = f(n-1) + f(n-2)
-        for (i in 3 until n + 1) {
-            dp[i] = dp[i - 1] + dp[i - 2]
-        }
-
-        return dp[n]
-    }
 
 
     /**
-     * 70. 爬楼梯  方法四：动态规划优化(自底向上)，斐波那契数。数组当前值是依赖他前面两个值的（前两个除外），我们只需要用两个临时变量即可，不需要申请一个数组
+     * 53. 最大子序和（最大子数组）   解法一：动态规划
      *
-     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
-     * 空间复杂度：O(1)。只用了常数个变量作为辅助空间。
+     * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
+     * 空间复杂度：O(1)，只需要常数空间存放若干变量。
      *
-     * @param n
+     * https://leetcode-cn.com/problems/maximum-subarray/solution/53-zui-da-zi-xu-he-by-chen-li-guan/
+     * @param nums
      * @return
      */
-    fun fun5(n: Int): Int {
-        if (n == 1) return 1
-        if (n == 2) return 2
-
-        var first = 1
-        var second = 2
-        var sum = 0
-
-        for (i in 3 until n + 1) {
-            sum = first + second
-            first = second
-            second = sum
-        }
-
-        return sum
-    }
-
-
-    /**
-     * 746. 使用最小花费爬楼梯
-     * 思想：dp[i]表示的是跳到第i个台阶所需要的的最小花费。如果要跳到第i个台阶，可以从第i-1个台阶跳上来，
-     *       也可以从第i-2个台阶跳上来，哪个花费最小，我们就从哪个台阶跳上来。
-     *
-     * 注意：1.踏上第i级台阶花费cost[i]，直接迈一大步跨过而不踏上去则不用花费。
-     *      2. dp 开 n + 1 个空间，所以 dp 的范围是从 1 -> n-1，cost 的范围是从 0 -> n。dp[1]->cost[0]，dp[2]->cost[0]...cost[1]，dp[n]->cost[n-2]...cost[n-1]
-     *
-     *
-     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
-     * 空间复杂度：O(n)。用了n空间的数组辅助，空间复杂度为。
-     *
-     * https://leetcode-cn.com/problems/min-cost-climbing-stairs/solution/746-shi-yong-zui-xiao-hua-fei-pa-lou-ti-69t5n/
-     * @param cost
-     * @return
-     */
-    fun minCostClimbingStairs(cost: IntArray): Int {
-        val n = cost.size
-
-        val dp = IntArray(n + 1)
-        // base case
-        dp[1] = 0
-        dp[2] = Math.min(cost[0], cost[1])
-
-        // dp方程：参考爬楼梯 dp[i] = dp[i - 1] + dp[i - 2]
-        for (i in 3 until n + 1) {
-            dp[i] = Math.min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2])
-        }
-
-        return dp[n]
-    }
-
-
-    /**
-     * 509. 斐波那契数  解法一：暴力递归(自顶向下)
-     *
-     * 时间复杂度：O(2^N)。这是计算斐波那契数最慢的方法。因为它需要指数的时间。
-     * 空间复杂度：O(N)，在堆栈中需要与 N 成正比的空间大小。该堆栈跟踪 fib(N) 的函数调用，随着堆栈的不断增长如果没有足够的内存则会导致 StackOverflowError。
-     *
-     * https://leetcode-cn.com/problems/fibonacci-number/solution/509-fei-bo-na-qi-shu-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    fun fib1(n: Int): Int {
-        if (n <= 0) return 0
-        if (n == 1 || n == 2) return 1
-
-        return fib1(n - 1) + fib1(n - 2)
-    }
-
-    /**
-     * 509. 斐波那契数   解法二：备忘录递归(自顶向下)，解法一递归的升级版（记住）
-     *
-     * 思想：比解法一多了个"备忘录"储存，"剪枝"处理技巧，可以去除重复的调用计算
-     *
-     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
-     * 空间复杂度：O(n)，内存中使用的堆栈大小
-     *
-     * https://leetcode-cn.com/problems/fibonacci-number/solution/509-fei-bo-na-qi-shu-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    private var cache = IntArray(31)
-
-    fun fib2(n: Int): Int {
-        if (n <= 0) return 0
-        if (n == 1 || n == 2) return 1
-
-        cache[0] = 0
-        cache[1] = 1
-        return fibs(n)
-    }
-
-    private fun fibs(n: Int): Int {
-        // 如果 N 对应的斐波那契数存在，则返回
-        if (cache[n] != 0) return cache[n]
-
-        // 计算 N 对应的斐波那契数为 fb(N-1) + fb(N-2)
-        cache[n] = fibs(n - 1) + fibs(n - 2)
-        return cache[n]
-    }
-
-    /**
-     * 509. 斐波那契数  解法三：动态规划(自底向上)，解法二备忘录存储技巧的升级（记住）
-     *
-     * 思想：自底向上通过迭代计算子问题并存储已计算的值，通过已计算的值进行计算，减少递归带来的重复计算
-     *
-     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
-     * 空间复杂度：O(n)，使用了空间大小为 N 的数组
-     *
-     * base case：
-     *    f(0) = 0
-     *    f(1) = 1
-     *    f(2) = 1
-     *
-     * DP方程：dp(n) = dp(n-1) + dp(n-2)
-     *
-     * https://leetcode-cn.com/problems/fibonacci-number/solution/509-fei-bo-na-qi-shu-by-chen-li-guan/
-     * @param n
-     * @return
-     */
-    fun fib3(n: Int): Int {
+    fun maxSubArray(nums: IntArray): Int {
+        val n = nums.size
         if (n == 0) return 0
-        if (n == 1) return 1
 
-        val size = n + 1
-        val dp = IntArray(size)
+        val dp = IntArray(n)
+        // base case 第一个元素前面没有子数组
+        dp[0] = nums[0]
+
+        // dp状态转移方程
+        for (i in 1 until n) {
+            // 要么自成一派，要么和前面的子数组合并
+            dp[i] = Math.max(nums[i], nums[i] + dp[i - 1])
+        }
+
+        // 计算最大子序和
+        var res = Int.MIN_VALUE
+        for (i in 0 until n) {
+            res = Math.max(res, dp[i])
+        }
+
+        return res
+    }
+
+    /**
+     * 152. 乘积最大子数组  解法：动态规划
+     *
+     * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
+     * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
+     *
+     * https://leetcode-cn.com/problems/maximum-product-subarray/solution/152-cheng-ji-zui-da-zi-shu-zu-by-chen-li-7gd0/
+     * @param nums
+     * @return
+     */
+    fun maxProduct(nums: IntArray): Int {
+        val n = nums.size
+        if (n == 0) return 0
+
+        // 当选中第 i 状态时，以 nums[i] 结尾的连续子数组的最值，计算最大值还是最小值由 j 来表示，j 就两个状态值；
+        // dp[i][0]：以 nums[i] 结尾的连续子数组的最小值。dp[i][1]：以 nums[i] 结尾的连续子数组的最大值
+        val dp = Array(n) { IntArray(2) }
+
+        // base case，由于 nums[i] 必须被选取，那么
+        dp[0][0] = nums[0]
+        dp[0][1] = nums[0]
+
+        // dp 方程
+        for (i in 1 until n) {
+            if (nums[i] >= 0) {
+                // 正数 * 前面的最小值 依然是最小值；
+                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][0])
+                // 正数 * 前面的最大值 依然是最大值；（同一个正数）
+                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][1])
+            } else {
+                // 负数 * 前面的最大值 变成了最小值；
+                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][1])
+                // 负数 * 前面的最小值 变成最大值；（同一个负数）
+                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][0])
+            }
+        }
+
+        // 只关心最大值，需要遍历 dp[i][1]，计算最大的值
+        var res = Int.MIN_VALUE
+        for (i in 0 until n) {
+            res = Math.max(res, dp[i][1])
+        }
+        return res
+    }
+
+
+    /**
+     * 300. 最长递增子序列  解法：动态规划
+     *
+     * 时间复杂度：O(N^2)，这里 N 是数组的长度，写了两个 for 循环；
+     * 空间复杂度：O(N)，要使用和输入数组长度相等的状态数组，因此空间复杂度是 O(N)。
+     *
+     * https://leetcode-cn.com/problems/longest-increasing-subsequence/
+     * @param nums
+     * @return
+     */
+    fun lengthOfLIS(nums: IntArray): Int {
+        val n = nums.size
+        if (n == 0) return 0
+
+        // dp定义
+        val dp = IntArray(n)
+
         // base case
-        dp[0] = 0
-        dp[1] = 1
+        for (i in 0 until n) dp[i] = 1
+
+        // dp方程
+        for (i in 0 until n) {
+            for (j in 0 until i) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1)
+                }
+            }
+        }
+
+        // 只关心最大值，需要遍历 dp[i]，计算最大的值
+        var res = 0
+        for (i in 0 until n) {
+            res = Math.max(res, dp[i])
+        }
+        return res
+    }
+
+
+    /**
+     * 198. 打家劫舍  解法1.1：动态规划（记住）
+     *
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
+     *
+     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
+     * @param nums
+     * @return
+     */
+    fun rob11(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        // dp 定义：前 i 间房屋可偷窃最高的金额
+        val dp = IntArray(nums.size)
+
+        // base case：dp[0]=只有一间房屋，则偷窃该房屋；
+        //            dp[1]=只有两间房屋，选择其中金额较高的房屋进行偷窃
+        dp[0] = nums[0]
+        dp[1] = Math.max(nums[0], nums[1])
+
+        // dp方程
+        for (i in 2 until nums.size) {
+            // 对于第i(i>2)间房屋，有两个选项：
+            // 1.偷第i间房屋，就不能偷第i−1间房屋，总金额为：第i间房屋的金额 + 前i−2间房屋的总金额
+            // 2.不偷第i间房屋，偷窃总金额为：前i−1间房屋的总金额
+            dp[i] = Math.max(nums[i] + dp[i - 2], dp[i - 1])
+        }
+        return dp[nums.size - 1]
+    }
+
+    /**
+     * 198. 打家劫舍  解法1.2：动态规划（空间优化）（记住）
+     *
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(1)，分别使用两个滚动变量，将一维数组状态优化到常数大小。
+     *
+     * https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
+     * @param nums
+     * @return
+     */
+    fun rob12(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        // base case
+        var pre = nums[0]
+        var cur = Math.max(nums[0], nums[1])
 
         // dp
-        for (i in 2 until size) {
-            dp[i] = dp[i - 1] + dp[i - 2]
+        for (i in 2 until nums.size) {
+            // 记录当前 i-1 时的值 temp = cur，在下一次遍历时就等于 i-2 的值了
+            val temp = cur
+            cur = Math.max(nums[i] + pre, cur)
+            pre = temp
         }
-
-        return dp[n]
+        return cur
     }
 
     /**
-     * 509. 斐波那契数   解法四：动态规划(自底向上)
-     *
-     * 解法三的优化，利用(状态压缩技巧)，其实状态只跟前一个数和当前数有关，不需要像第三种解法那样用一个数组进行存储，只需用两个值存储即可
-     *
-     * 时间复杂度：O(n)。
-     * 空间复杂度：O(1)，仅仅使用了 current，prev1，prev2
-     *
-     * @param n
+     * 198. 打家劫舍  解法2.1：动态规划（思路优化）
+     * 1、思路：按二维的0/1背包问题思路结局，更加通用
+     * 2、
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(n)，使用数组存储整个数组的结果，因此空间复杂度是O(n)；
+     * 3、https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
+     * @param nums
      * @return
      */
-    fun fib4(n: Int): Int {
-        if (n <= 0) return 0
-        if (n == 1 || n == 2) return 1
+    fun rob21(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
 
-        var pre = 1   // fib(1)
-        var cur = 1   // fib(2)
+        val dp = Array(nums.size) { IntArray(2) }
 
-        for (i in 3 until n + 1) {
-            val sum = pre + cur
-            pre = cur
-            cur = sum
+        // base case：dp[0][0] = 0，第1天不偷窃房屋；dp[0][1]，第1天偷窃房屋
+        dp[0][0] = 0
+        dp[0][1] = nums[0]
+
+        // dp方程：
+        for (i in 1 until nums.size) {
+            // 1.第i天没偷房子，选择 第i-1天没偷房子 和 第i-1天偷了房子 中金额最高的
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1])
+            // 2.第i天偷了房子，第i-1天没偷房子+第i天偷房子的金额(第i-1天不能偷房子)
+            dp[i][1] = dp[i - 1][0] + nums[i]
         }
 
-        return cur
+        // 3.第nums.size天选择偷或不偷时，选择其中金额最高的方式
+        return Math.max(dp[nums.size - 1][0], dp[nums.size - 1][1])
     }
+
+    /**
+     * 198. 打家劫舍  解法2.2：动态规划（空间优化）
+     * 1、思路：新状态和相邻的一个状态的 偷 或 不偷 都有关，其实不用整个 dp 数组，需要变量储存相邻的那个状态+临时变量储存第i-1天没偷房子的旧状态
+     * 2、
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(1)，分别使用两个滚动变量，将一维数组状态优化到常数大小。
+     * 3、https://leetcode-cn.com/problems/house-robber/solution/198-da-jia-jie-she-by-chen-li-guan/
+     * @param nums
+     * @return
+     */
+    fun rob22(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+
+        // base case：
+        // dp[0][0] = 0        --> dp[i][0] = 0
+        // dp[0][1] = nums[0]  --> dp[i][1] = nums[0]
+        var dp_i_0 = 0
+        var dp_i_1 = nums[0]
+
+        // dp方程：
+        for (i in 1 until nums.size) {
+            // 需要临时变量储存第i-1天没偷房子的旧状态，因为dp_i_1需要旧的dp_i_0状态
+            val temp = dp_i_0
+            // dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1])
+            dp_i_0 = Math.max(temp, dp_i_1)
+            // dp[i][1] = dp[i - 1][0] + nums[i]
+            dp_i_1 = temp + nums[i]
+        }
+
+        // return Math.max(dp[nums.size - 1][0], dp[nums.size - 1][1])
+        return Math.max(dp_i_0, dp_i_1)
+    }
+
+
+    /**
+     * 213. 打家劫舍 II  解法一：动态规划（空间优化）
+     * 思想：环状排列意味着第一个房子和最后一个房子中只能选择一个偷窃，因此可以把此环状排列房间问题约化为两个单排排列房间子问题：
+     *  1.在不偷窃第一个房子的情况下（即nums[0]），最大金额是p1；
+     *  2.在不偷窃最后一个房子的情况下（即nums[n-1]），最大金额是p2；
+     *  3.综合偷窃最大金额： 为以上两种情况的较大值，即 max(p1, p2)。
+     *
+     * 时间复杂度：O(n)，其中n是数组长度。只需要对数组遍历一次；
+     * 空间复杂度：O(1)，不使用滚动数组，只存储前两间房屋的最高总金额，而不需要存储整个数组的结果，因此空间复杂度是O(1)；
+     *
+     * https://leetcode-cn.com/problems/house-robber-ii/solution/213-da-jia-jie-she-ii-by-chen-li-guan/
+     * @param nums
+     * @return
+     */
+    fun robII(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        if (nums.size == 1) return nums[0]
+
+        return Math.max(
+                // 不偷第一个房子
+                rob11(Arrays.copyOfRange(nums, 1, nums.size)),
+                // 不偷最后一个房子
+                rob11(Arrays.copyOfRange(nums, 0, nums.size - 1))
+        )
+    }
+
+
+
+    /**
+    1、用一个三维数组就可以装下这几种状态的全部组合：dp[i][k][0 or 1] (0<=i<=n-1,1<=k<=K)
+     * i为天数
+     * k为最多交易次数
+     * [0,1]为是否持有股票
+    总状态数: n*K*2种状态
+
+    for 0 <= i < n:
+    for 1 <= k <= K:
+    for s in {0, 1}:
+    dp[i][k][s] = max(buy, sell, rest)
+
+    2、状态转移框架分析
+
+    // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+    dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+    没持有股票 = max(   选择 休息 ,     选择 卖出      )
+
+    // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票。注意：只允许交易一次，因此手上的现金数就是当天的股价的相反数
+    dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+    持有股票   = max(   选择 休息 ,     选择 买入      )
+
+    dp[-1][k][0] = 0          // 因为 i 是从 0 开始的，所以 i = -1 意味着还没有开始，这时候的利润当然是 0 。
+    dp[-1][k][1] = -infinity  // 还没开始的时候，是不可能持有股票的，用负无穷表示这种不可能。
+    dp[i][0][0] = 0           // 因为 k 是从 1 开始的，所以 k = 0 意味着根本不允许交易，这时候利润当然是 0 。
+    dp[i][0][1] = -infinity   // 不允许交易的情况下，是不可能持有股票的，用负无穷表示这种不可能。
+
+    3、总结一下 base case 和  DP方程
+    base case：
+    dp[-1][k][0] = dp[i][0][0] = 0
+    dp[-1][k][1] = dp[i][0][1] = -infinity
+
+    DP方程：
+    dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+    dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+     */
+
+    /**
+     * 121. 买卖股票的最佳时机 1 -- 最低点买入，最高点卖出 核心：k=1  解法1：动态规划
+     * 1、思路：k都是1，不会改变，即k对状态转移已经没有影响了，可以进行进一步化简去掉所有 k
+     *         (1)可以买入代表之前最多买入了0次，所以第二个状态转移方程是 dp[i-1][0][0]。--> 必须满足：手上无股票买入
+     *         (2)第二个状态转移方程利用了 dp[i-1][1-1][0] = dp[i][0][0] = 0，理解为只允许交易一次，所以买入前利润都是0
+     *    注意：你不能在买入股票前卖出股票。
+     *
+     * // base case：
+     * dp[i][0][0] = dp[i][0] --> dp[0][0] = 0
+     * dp[i][0][1] = dp[i][1] --> dp[0][1] = -prices[0]
+     *
+     * // dp方程：
+     * dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])   --> dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+     * dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][1-1][0] - prices[i]) --> dp[i][1] = Math.max(dp[i - 1][1], 0 - prices[i])
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/121-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
+     * @param prices
+     * @return
+     */
+    fun maxProfit11(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        val m = prices.size
+        val dp = Array(m) { IntArray(2) }
+
+        // base case：
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
+
+        // dp方程：
+        for (i in 1 until m) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+            dp[i][1] = Math.max(dp[i - 1][1], 0 - prices[i])
+        }
+
+        return dp[m - 1][0]
+    }
+
+
+    /**
+     * 121. 买卖股票的最佳时机 1 -- 最低点买入，最高点卖出 解法2：动态规划（空间优化 -- 考虑使用「滚动变量」（「滚动数组」技巧））
+     * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/121-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
+     * @param prices
+     * @return
+     */
+    fun maxProfit12(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        // base case:
+        // dp[0][0] = 0           --> dp[i][0] = 0
+        // dp[0][1] = -prices[0]  --> dp[i][1] = -prices[0]
+        var dp_i_0 = 0
+        var dp_i_1 = -prices[0]
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+            dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i])
+            // dp[i][1] = max(dp[i-1][1], 0 - prices[i])
+            dp_i_1 = Math.max(dp_i_1, -prices[i])
+        }
+
+        // return dp[prices.size - 1][0]
+        return dp_i_0
+    }
+
+    /**
+     * 122. 买卖股票的最佳时机 2 -- 跌了最低点买入，涨了最高点卖出  核心：k为正无穷  解法1：动态规划
+     * 1、思路：如果k为正无穷
+     *         (1)可以买入代表之前买入了k-1次，所以第二个状态转移方程是 dp[i-1][k-1][0]
+     *         (2)所以就可以认为k和k-1是一样的，所以第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0]
+     *    注意：你不能在买入股票前卖出股票。--> 必须满足：手上无股票且不在冷冻期（1天）买入
+     *
+     * // base case：
+     * dp[i][0][0] = dp[i][0] --> dp[0][0] = 0
+     * dp[i][0][1] = dp[i][1] --> dp[0][1] = -prices[0]
+     *
+     * // dp方程：
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])   --> dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i]) --> dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i])
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/solution/122-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
+     * @param prices
+     * @return
+     */
+    fun maxProfit21(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        val m = prices.size
+        val dp = Array(prices.size) { IntArray(2) }
+
+        // base case：
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
+
+        // dp方程：
+        for (i in 1 until m) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i])
+        }
+
+        return dp[m - 1][0]
+    }
+
+    /**
+     * 122. 买卖股票的最佳时机 2 -- 跌到最低点买入，涨到最高点卖出  核心：k为正无穷  解法2：动态规划（空间优化）
+     * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/solution/122-mai-mai-gu-piao-de-zui-jia-shi-ji-1-by-chen-li/
+     * @param prices
+     * @return
+     */
+    fun maxProfit22(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        // base case:
+        // dp[0][0] = 0           --> dp[i][0] = 0
+        // dp[0][1] = -prices[0]  --> dp[i][1] = -prices[0]
+        var dp_i_0 = 0
+        var dp_i_1 = -prices[0]
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            val temp = dp_i_0
+            // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+            dp_i_0 = Math.max(temp, dp_i_1 + prices[i])
+            // dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+            dp_i_1 = Math.max(dp_i_1, temp - prices[i])
+        }
+
+        // return dp[prices.size - 1][0]
+        return dp_i_0
+    }
+
+
+    /**
+     * 309. 买卖股票的最佳时机含冷冻期 5 核心：k 为正无穷但有冷却时间  解法1：动态规划
+     * 1、思路：由于具有相同的 k 值，因此情况五和情况二非常相似，不同之处在于情况五有「冷却时间-1天」的限制--卖出股票后，你无法在第二天买入股票 (即冷冻期为1天)，只能在第三天买入股票
+     *         所以，如果要在第i天买入股票，必须满足：手上无股票且不在冷冻期买入 --> 第二个状态转移方程中就不能使用 dp[i-1][0]，而应该使用 dp[i-2][0]，其他不变
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/309-zui-jia-mai-mai-gu-piao-shi-ji-han-leng-don-41/
+     * @param prices
+     * @return
+     */
+    fun maxProfit51(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        val m = prices.size
+        val dp = Array(m) { IntArray(2) }
+
+        // base case：
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
+
+        // dp方程：
+        for (i in 1 until m) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)前天不持股，今天选择买入股票（现金数减少）
+            dp[i][1] = Math.max(dp[i - 1][1], (if (i >= 2) dp[i - 2][0] else 0) - prices[i])
+        }
+
+        return dp[m - 1][0]
+    }
+
+
+    /**
+     * 309. 买卖股票的最佳时机含冷冻期 5 核心：k 为正无穷但有冷却时间  解法2：动态规划（空间优化）
+     * 1、思路：第 i 天的最大收益只和第 i - 1 天和第 i - 2 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/309-zui-jia-mai-mai-gu-piao-shi-ji-han-leng-don-41/
+     * @param prices
+     * @return
+     */
+    fun maxProfit52(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        // base case:
+        // dp[0][0] = 0           --> dp[i][0] = 0
+        // dp[0][1] = -prices[0]  --> dp[i][1] = -prices[0]
+        var dp_i_0 = 0
+        var dp_i_1 = -prices[0]
+        // 代表 dp[i-2][0]
+        var dp_i_2_0 = 0
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            // 记录 dp[i-1][0]
+            val temp = dp_i_0
+
+            // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+            dp_i_0 = Math.max(temp, dp_i_1 + prices[i])
+            // dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+            dp_i_1 = Math.max(dp_i_1, dp_i_2_0 - prices[i])
+
+            // 记录 dp[i-2][0]
+            dp_i_2_0 = temp
+        }
+
+        // return dp[prices.size - 1][0]
+        return dp_i_0
+    }
+
+    /**
+     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划（空间优化）（了解）
+     * 1、思路：由于具有相同的 k 值，因此情况六和情况二非常相似，不同之处在于情况六有「手续费」，因此在每次买入或卖出股票之后的收益需要扣除手续费
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：O(n)，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/714-mai-mai-gu-piao-de-zui-jia-shi-ji-han-shou-1-7/
+     * @param prices
+     * @return
+     */
+    fun maxProfit61(prices: IntArray, fee: Int): Int {
+        if (prices.isEmpty()) return 0
+
+        val m = prices.size
+        val dp = Array(m) { IntArray(2) }
+
+        // base case：
+        dp[0][0] = 0
+        dp[0][1] = -prices[0] - fee
+
+        // dp方程：
+        for (i in 1 until m) {
+            // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+
+            // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i] - fee)
+        }
+
+        return dp[m - 1][0]
+    }
+
+    /**
+     * 714. 买卖股票的最佳时机含手续费 6  核心：k 为正无穷但有手续费   解法1：动态规划（了解）
+     * 1、思路：第 i 天的最大收益只和第 i - 1 天的最大收益相关，其实不用整个 dp 数组，只需要一个变量储存相邻的那个状态就足够了
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：1，虽然是二维数组，但是第二维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/714-mai-mai-gu-piao-de-zui-jia-shi-ji-han-shou-1-7/
+     * @param prices
+     * @return
+     */
+    fun maxProfit62(prices: IntArray, fee: Int): Int {
+        if (prices.isEmpty()) return 0
+
+        // base case:
+        // dp[0][0] = 0           --> dp[i][0] = 0
+        // dp[0][1] = -prices[0]  --> dp[i][1] = -prices[0] - fee
+        var dp_i_0 = 0
+        var dp_i_1 = -prices[0] - fee
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            val temp = dp_i_0
+            // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+            dp_i_0 = Math.max(temp, dp_i_1 + prices[i])
+            // dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i]) - fee
+            dp_i_1 = Math.max(dp_i_1, temp - prices[i] - fee)
+        }
+
+        // return dp[prices.size - 1][0]
+        return dp_i_0
+    }
+
+
+    /**
+     * 123. 买卖股票的最佳时机 3  核心：k=2  解法1：动态规划  （困难）
+     * 1、思路：之前的解法，都在穷举所有状态，只是之前的题目中 k 都被化简掉了。这道题由于没有消掉 k 的影响，所以必须要对 k 进行穷举
+     *
+     * // base case：
+     *
+     * // dp方程：
+     * // 第二个状态转移方程利用了
+     *
+     * 2、
+     * 时间复杂度：O(n)，这里 n 表示股价数组的长度；
+     * 空间复杂度：O(n)，虽然是三维数组，但是第三维是常数，与问题规模无关。
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/123-mai-mai-gu-piao-de-zui-jia-shi-ji-iii-by-chen-/
+     * @param prices
+     * @return
+     */
+    fun maxProfit31(prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        val maxK = 2
+
+        // base case：
+        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
+        for (k in 1 until maxK + 1) {
+            dp[0][k][0] = 0
+            dp[0][k][1] = -prices[0]
+        }
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            for (k in 1 until maxK + 1) {
+                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
+
+                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
+            }
+        }
+
+        return dp[prices.size - 1][maxK][0]
+    }
+
+    /**
+     * 124. 买卖股票的最佳时机 4  核心：k为任意值  解法1：  （困难）
+     * 1、思路：如果k为正无穷
+     *         (1)可以买入代表之前买入了k-1次，所以第二个状态转移方程是 dp[i-1][k-1][0]
+     *         (2)所以就可以认为k和k-1是一样的，所以第二个状态转移方程利用了 dp[i-1][k-1][0] = dp[i-1][k][0]
+     *    注意：你不能在买入股票前卖出股票。
+     *
+     *    本题和3的区别：一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
+     *
+     * 2、
+     * 时间复杂度：O(nk)，这里n表示股价数组的长度，k是最多可以完成交易的次数；
+     * 空间复杂度：O(nk)，三维dp数组的大小，第3维是常数，故忽略
+     *
+     * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/188-mai-mai-gu-piao-de-zui-jia-shi-ji-iv-by-chen-l/
+     * @param prices
+     * @return
+     */
+    fun maxProfit41(maxK: Int, prices: IntArray): Int {
+        if (prices.isEmpty()) return 0
+
+        // 一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = 正无穷 --> 买卖股票的最佳时机 2
+        if (maxK >= prices.size / 2) return maxProfit21(prices)
+
+        // base case：
+        val dp = Array(prices.size) { Array(maxK + 1) { IntArray(2) } }
+        for (k in 1 until maxK + 1) {
+            dp[0][k][0] = 0
+            dp[0][k][1] = -prices[0]
+        }
+
+        // dp方程：
+        for (i in 1 until prices.size) {
+            for (k in 1 until maxK + 1) {
+                // 今天没持有股，有两种情况：(1)昨天不持股，今天选择休息；(2)昨天持股，今天选择卖出股票（现金数增加）
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
+
+                // 今天持有股，有两种情况：(1)昨天持股，今天选择休息；(2)昨天不持股，今天选择买入股票（现金数减少）
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
+            }
+        }
+
+        return dp[prices.size - 1][maxK][0]
+    }
+
+
+
+
 
 
     /**
@@ -635,9 +1074,9 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         val dp = Array(n) { IntArray(n) }
 
         // base case：辅助空间的元素都初始化为 0
-        for (j in 0 until n) {
-            dp[j][0] = 0
-        }
+//        for (j in 0 until n) {
+//            dp[j][0] = 0
+//        }
 
         // 从最后一行开始向第一行走，即从下到上
         for (i in n - 2 downTo 0) {
@@ -738,168 +1177,6 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    /**
-     * 1143. 最长公共子序列  解法一：动态规划（自底向上）
-     *
-     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
-     *
-     * https://leetcode-cn.com/problems/longest-common-subsequence/solution/1143-zui-chang-gong-gong-zi-xu-lie-by-chen-li-guan/
-     * @param s1
-     * @param s2
-     * @return
-     */
-    fun longestCommonSubsequence(s1: String, s2: String): Int {
-        if (s1.isEmpty() || s2.isEmpty()) return 0
-
-        val m: Int = s1.length + 1
-        val n: Int = s2.length + 1
-        // dp 定义是：s1的前i个子序列 和 s2的前i个子序列 的最长公共子序列长度。因此宽高是s1.length+1和s2.length+1
-        val dp = Array(m) { IntArray(n) }
-
-        // base case:  dp默认0行或0列是0，所以不需要设置了
-//        dp[0][..] = dp[..][0] = 0
-
-        // 外层 for 循环在遍历s1所有状态的所有取值
-        // s1的前i个子序列 和 s2的前j个子序列
-        for (i in 1 until m) {
-            // 内层 for 循环在遍历s2所有状态的所有取值
-            for (j in 1 until n) {
-                // dp默认0行或0列是0，真实存值是从1行和1列开始，而s1和s2还是从0行或0列开始；现在i和j从1开始，所以s1要减1
-                if (s1[i - 1] == s2[j - 1]) {
-                    // 如果s1[i-1] == s2[j-1]，说明这个字符 s1[i-1]和s2[j-1] 一定在 最长公共子序列长度 中
-                    dp[i][j] = 1 + dp[i - 1][j - 1]
-                } else {
-                    // 如果s1[i-1] != s2[j-1]，s1[i-1] 和 s2[j-1] 至少有一个不在最长公共子序列长度 中，穷举三种情况的结果，取其中的最大结果
-                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j])
-                }
-            }
-        }
-
-        return dp[m - 1][n - 1]
-    }
-
-
-    /**
-     * 718. 最长重复子数组
-     *
-     * 区别：本题与公共子序列不同，子序列不一定都是连续的，只要前面有相同的子序列，哪怕当前比较的字符不一样，
-     * 那么当前字符串之前的子序列也不会为 0。而子串(子数组)是连续的，若当前比较的字符不相同，则当前位置的最长公共子数组(子串)的长度为 0，即 dp[i][j] = 0(就是没有)
-     *
-     * 时间复杂度：O(mn)；
-     * 空间复杂度：O(mn)；
-     *
-     * https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/solution/718-zui-chang-zhong-fu-zi-shu-zu-by-chen-j9zz/
-     * @param A
-     * @param B
-     * @return
-     */
-    fun findLength(A: IntArray, B: IntArray): Int {
-        val m = A.size + 1
-        val n = B.size + 1
-
-        // dp[i][j]：表示第一个数组A前i个元素和数组B前j个元素组成的最长公共子数组(相当于子串)的长度。
-        val dp = Array(m) { IntArray(n) }
-
-        // 外层 for 循环在遍历s1所有状态的所有取值
-        // s1的前i个子序列 和 s2的前j个子序列
-        for (i in 1 until m) {
-            for (j in 1 until n) {
-                // 若当前两个元素值相同，即 A[i] == B[j]，则说明当前元素可以构成公共子数组，所以还要加上它们的前一个元素构成的最长公共子数组的长度(在原来的基础上加 1)
-                if (A[i - 1] == B[j - 1]) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1
-                } else {
-                    // 若当前两个元素值不同，即 A[i] != B[j]，则说明当前元素无法构成公共子数组 (就是：当前元素不能成为公共子数组里的一员)。
-                    // 因为公共子数组必须是连续的，而此时的元素值不同，相当于直接断开了，此时状态转移方程：dp[i][j] = 0。
-                    dp[i][j] = 0
-                }
-            }
-        }
-
-        // 遍历 dp[i][j]，计算最大的值
-        var res = 0
-        for (i in 1 until m) {
-            for (j in 1 until n) {
-                res = Math.max(res, dp[i][j])
-            }
-        }
-
-        return res
-    }
-
-
-    /**
-     * 583. 两个字符串的删除操作 解法一：动态规划（自底向上）（了解）
-     *
-     * 思路：最后这两个字符串会被删成的结果不就是它俩的最长公共子序列！
-     * 先求出 最大的公共子序列值，两个字符串的删除操作次数 = 两个字符串的总长度 - 2 * 最大的公共子序列值。
-     *
-     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
-     *
-     * @param s1
-     * @param s2
-     * @return
-     */
-    fun minDistance(s1: String, s2: String): Int {
-        if (s1.isEmpty() || s2.isEmpty()) return 0
-
-        // 那么，要计算删除的次数，就可以通过最长公共子序列的长度推导出来
-        val lcs = longestCommonSubsequence(s1, s2)
-        return s1.length - lcs + s2.length - lcs
-    }
-
-    /**
-     * 712. 两个字符串的最小ASCII删除和 解法一：动态规划（自底向上）（了解）
-     *
-     * 思路：先求出 最大的公共子序列对应的ASCII值，两个字符串的最小ASCII删除和 = 两个字符串的总ASCII值 - 2 * 最大的公共子序列对应的ASCII值。
-     *
-     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
-     *
-     * @param s1
-     * @param s2
-     * @return
-     */
-    fun minimumDeleteSum(s1: String, s2: String): Int {
-        // 求出 最大的公共子序列对应的ASCII值，利用两个字符串的总ASCII值 - 2 * 最大的公共子序列对应的ASCII值
-        if (s1.isEmpty()) return getASCII(s2.toCharArray())
-        if (s2.isEmpty()) return getASCII(s1.toCharArray())
-
-        val m: Int = s1.length + 1
-        val n: Int = s2.length + 1
-        // dp数组宽高是s1.length+1和s2.length+1
-        val dp = Array(m) { IntArray(n) }
-
-        // base case:  dp默认0行或0列是0，所以不需要设置了
-//        dp[0][..] = dp[..][0] = 0
-
-        // 外层 for 循环在遍历s1所有状态的所有取值
-        for (i in 1 until m) {
-            // 外层 for 循环在遍历s2所有状态的所有取值
-            for (j in 1 until n) {
-                // dp默认0行或0列是0，真实存值是从1行和1列开始，而s1和s2还是从0行或0列开始；现在i和j从1开始，所以s1要减1
-                if (s1[i - 1] == s2[j - 1]) {
-                    // 如果s1[i-1] == s2[j-1]，说明这个字符 s1[i-1]和s2[j-1] 一定在 最长公共子序列长度 中，累加ASCII值
-                    dp[i][j] = s1.codePointAt(i - 1) + dp[i - 1][j - 1]
-                } else {
-                    // 如果s1[i-1] != s2[j-1]，s1[i-1] 和 s2[j-1] 至少有一个不在最长公共子序列长度 中，穷举三种情况的结果，取其中的最大结果
-                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j])
-                }
-            }
-        }
-
-        return getASCII(s1.toCharArray()) + getASCII(s2.toCharArray()) - 2 * dp[m - 1][n - 1]
-    }
-
-    fun getASCII(charArr: CharArray): Int {
-        var ret = 0
-        for (c in charArr) {
-            ret += c.toInt()
-        }
-        return ret
-    }
-
 
     /**
      * 516. 最长回文子序列
@@ -937,7 +1214,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 647. 回文子串  动态规划
+     * 647. 回文子串（个数）  动态规划
      *
      * "回文串”是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串、
      * "abc"："a", "b", "c"
@@ -1030,252 +1307,4 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         return s.substring(begin, begin + maxLen)
     }
 
-
-    /**
-     * 72. 编辑距离（了解）
-     *
-     * 时间复杂度 ：O(mn)，其中 mm 为 word1 的长度，nn 为 word2 的长度。
-     * 空间复杂度 ：O(mn)，我们需要大小为 O(mn)O(mn) 的 DD 数组来记录状态值。
-     *
-     * @param word1
-     * @param word2
-     * @return
-     */
-    fun minEditDistance(s1: String, s2: String): Int {
-        val m = s1.length + 1
-        val n = s2.length + 1
-
-        val dp = Array(m) { IntArray(n) }
-
-        // base case
-        for (i in 0 until m) dp[i][0] = i
-        for (j in 0 until n) dp[0][j] = j
-
-        // dp
-        for (i in 1 until m) {
-            for (j in 1 until n) {
-                if (s1[i - 1] == s2[j - 1]) {
-                    // s1[i]和s2[j] 跳过 ，啥都不做
-                    dp[i][j] = dp[i - 1][j - 1]
-                } else {
-                    dp[i][j] = min(
-                            // s1中插入一个和s2[j]一样的字符，s2[j]就被匹配了，前移j，继续跟i对比。操作数+1
-                            dp[i][j - 1] + 1,
-                            // 把s1[i]这个字符删掉，前移i，继续跟j对比。操作数+1
-                            dp[i - 1][j] + 1,
-                            // 把s1[i]替换成s2[j]，它俩就匹配了，同时前移i，j，继续对比。操作数+1
-                            dp[i - 1][j - 1] + 1
-                    )
-                }
-            }
-        }
-
-        // 返回 s1[0..m-1] 和 s2[0..n-1] 的最小编辑距离
-        return dp[m - 1][n - 1]
-    }
-
-    fun min(a: Int, b: Int, c: Int): Int {
-        return Math.min(a, Math.min(b, c))
-    }
-
-
-    /**
-     * 53. 最大子序和（最大子数组）   解法一：动态规划
-     *
-     * 时间复杂度：O(n)，其中n为nums数组的长度，只需要遍历一遍数组即可求得答案。
-     * 空间复杂度：O(1)，只需要常数空间存放若干变量。
-     *
-     * https://leetcode-cn.com/problems/maximum-subarray/solution/53-zui-da-zi-xu-he-by-chen-li-guan/
-     * @param nums
-     * @return
-     */
-    fun maxSubArray(nums: IntArray): Int {
-        val n = nums.size
-        if (n == 0) return 0
-
-        val dp = IntArray(n)
-        // base case 第一个元素前面没有子数组
-        dp[0] = nums[0]
-
-        // dp状态转移方程
-        for (i in 1 until n) {
-            // 要么自成一派，要么和前面的子数组合并
-            dp[i] = Math.max(nums[i], nums[i] + dp[i - 1])
-        }
-
-        // 计算最大子序和
-        var res = Int.MIN_VALUE
-        for (i in 0 until n) {
-            res = Math.max(res, dp[i])
-        }
-
-        return res
-    }
-
-    /**
-     * 152. 乘积最大子数组  解法：动态规划
-     *
-     * 时间复杂度：程序一次循环遍历了nums，故时间复杂度为O(n)。
-     * 空间复杂度：优化后只使用常数个临时变量作为辅助空间，与n无关，故空间复杂度为O(1)。
-     *
-     * https://leetcode-cn.com/problems/maximum-product-subarray/solution/152-cheng-ji-zui-da-zi-shu-zu-by-chen-li-7gd0/
-     * @param nums
-     * @return
-     */
-    fun maxProduct(nums: IntArray): Int {
-        val n = nums.size
-        if (n == 0) return 0
-
-        // 当选中第 i 状态时，以 nums[i] 结尾的连续子数组的最值，计算最大值还是最小值由 j 来表示，j 就两个状态值；
-        // dp[i][0]：以 nums[i] 结尾的连续子数组的最小值。dp[i][1]：以 nums[i] 结尾的连续子数组的最大值
-        val dp = Array(n) { IntArray(2) }
-
-        // base case，由于 nums[i] 必须被选取，那么
-        dp[0][0] = nums[0]
-        dp[0][1] = nums[0]
-
-        // dp 方程
-        for (i in 1 until n) {
-            if (nums[i] >= 0) {
-                // 正数 * 前面的最小值 依然是最小值；
-                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][0])
-                // 正数 * 前面的最大值 依然是最大值；（同一个正数）
-                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][1])
-            } else {
-                // 负数 * 前面的最大值 变成了最小值；
-                dp[i][0] = Math.min(nums[i], nums[i] * dp[i - 1][1])
-                // 负数 * 前面的最小值 变成最大值；（同一个负数）
-                dp[i][1] = Math.max(nums[i], nums[i] * dp[i - 1][0])
-            }
-        }
-
-        // 只关心最大值，需要遍历 dp[i][1]，计算最大的值
-        var res = Int.MIN_VALUE
-        for (i in 0 until n) {
-            res = Math.max(res, dp[i][1])
-        }
-        return res
-    }
-
-
-    /**
-     * 300. 最长递增子序列  解法：动态规划
-     *
-     * 时间复杂度：O(N^2)，这里 N 是数组的长度，写了两个 for 循环；
-     * 空间复杂度：O(N)，要使用和输入数组长度相等的状态数组，因此空间复杂度是 O(N)。
-     *
-     * https://leetcode-cn.com/problems/longest-increasing-subsequence/
-     * @param nums
-     * @return
-     */
-    fun lengthOfLIS(nums: IntArray): Int {
-        val n = nums.size
-        if (n == 0) return 0
-
-        // dp定义
-        val dp = IntArray(n)
-
-        // base case
-        for (i in 0 until n) dp[i] = 1
-
-        // dp方程
-        for (i in 0 until n) {
-            for (j in 0 until i) {
-                if (nums[i] > nums[j]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1)
-                }
-            }
-        }
-
-        // 只关心最大值，需要遍历 dp[i]，计算最大的值
-        var res = 0
-        for (i in 0 until n) {
-            res = Math.max(res, dp[i])
-        }
-        return res
-    }
-
-
-    /**
-     * 221. 最大正方形 解法一：动态规划
-     *
-     * 思想：以(i,j)为根据点，它最大的正方形的边长取决于(上, 左, 左上)边长最短的那一个
-     *
-     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(mn)，使用了空间大小为mn的数组
-     *
-     * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
-     * @param matrix
-     * @return
-     */
-    fun maximalSquare(matrix: Array<CharArray>): Int {
-        if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
-
-        val m = matrix.size + 1
-        val n = matrix[0].size + 1
-
-        // 初始化base case：定义 dp 数组，相当于已经预处理新增第一行、第一行均为0
-        val dp = Array(m) { IntArray(n) }
-
-        // 根据状态转移方程：dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1，进行递推
-        for (i in 1 until m) {
-            for (j in 1 until n) {
-                if (matrix[i - 1][j - 1] == '1') {
-                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i - 1][j]), dp[i][j - 1]) + 1
-                } else {
-                    dp[i][j] = 0
-                }
-            }
-        }
-
-        // 遍历 dp[i][j]，计算最大的值
-        var res = 0
-        for (i in 1 until m) {
-            for (j in 1 until n) {
-                res = Math.max(res, dp[i][j])
-            }
-        }
-        return res * res
-    }
-
-    /**
-     * 221. 最大正方形 解法一：动态规划（空间优化）
-     *
-     * 思路：增加 northwest 西北角解决"左上角"的问题
-     *
-     * 时间复杂度：O(mn)，其中m和n分别为行数和列数；
-     * 空间复杂度：O(n)，使用了空间大小为n的数组
-     *
-     * https://leetcode-cn.com/problems/maximal-square/solution/221-zui-da-zheng-fang-xing-by-chen-li-guan/
-     * @param matrix
-     * @return
-     */
-    fun maximalSquare2(matrix: Array<CharArray>): Int {
-        if (matrix.isEmpty() || matrix[0].isEmpty()) return 0
-
-        val m = matrix.size
-        val n = matrix[0].size
-        var max = 0
-
-        // 初始化base case：定义 dp 数组，相当于已经预处理新增第一行为0
-        val dp = IntArray(n + 1)
-        // 西北角/左上角
-        var northWest = dp[0]
-
-        // 根据状态转移方程 dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1 进行递推
-        for (i in 1..m) {
-            for (j in 1..n) {
-                // 提前一轮赋值，在下一轮循环使用 对应dp[i-1]；赋值的是为改变值前的dp[j]，也就是改变值后中上一行的dp[j-1]；结果就是dp[i-1][j-1]
-                val temp = dp[j]
-                if (matrix[i - 1][j - 1] == '1') {
-                    dp[j] = Math.min(dp[j - 1], Math.min(dp[j], northWest)) + 1
-                    max = Math.max(dp[j], max)
-                } else {
-                    dp[j] = 0
-                }
-                northWest = temp
-            }
-        }
-        return max * max
-    }
 }

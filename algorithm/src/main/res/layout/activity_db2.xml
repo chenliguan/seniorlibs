@@ -14,14 +14,21 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_rob"
+            android:id="@+id/btn_climb_stairs"
             style="@style/BtnStyles"
-            android:text="198. 打家劫舍" />
+            android:text="70. 爬楼梯" />
 
         <Button
-            android:id="@+id/btn_rob_2"
+            android:id="@+id/btn_min_cost_climb_stairs"
             style="@style/BtnStyles"
-            android:text="213. 打家劫舍 II" />
+            android:text="746. 使用最小花费爬楼梯" />
+
+        <Button
+            android:id="@+id/btn_fib"
+            style="@style/BtnStyles"
+            android:text="509. 斐波那契数" />
+
+
 
         <Button
             android:id="@+id/btn_can_partition"
@@ -51,33 +58,34 @@
 
 
         <Button
-            android:id="@+id/btn_max_profit_1"
+            android:id="@+id/btn_longest_common_sub_sequence"
             style="@style/BtnStyles"
-            android:text="121. 买卖股票的最佳时机 1" />
+            android:text="1143. 最长公共子序列" />
 
         <Button
-            android:id="@+id/btn_max_profit_2"
+            android:id="@+id/btn_find_length"
             style="@style/BtnStyles"
-            android:text="122. 买卖股票的最佳时机 2" />
+            android:text="718. 最长重复子数组" />
 
         <Button
-            android:id="@+id/btn_max_profit_3"
+            android:id="@+id/btn_min_distance"
             style="@style/BtnStyles"
-            android:text="123. 买卖股票的最佳时机 3" />
+            android:text="583. 两个字符串的删除操作" />
 
         <Button
-            android:id="@+id/btn_max_profit_4"
+            android:id="@+id/btn_minimum_delete_sum"
             style="@style/BtnStyles"
-            android:text="188. 买卖股票的最佳时机 4" />
+            android:text="712. 两个字符串的最小ASCII删除和" />
 
         <Button
-            android:id="@+id/btn_max_profit_5"
+            android:id="@+id/btn_maximal_square"
             style="@style/BtnStyles"
-            android:text="309. 买卖股票的最佳时机含冷冻期" />
+            android:text="221. 最大正方形" />
 
         <Button
-            android:id="@+id/btn_max_profit_6"
+            android:id="@+id/btn_min_edit_distance"
             style="@style/BtnStyles"
-            android:text="714. 买卖股票的最佳时机含手续费" />
+            android:text="72. 编辑距离" />
+
     </LinearLayout>
 </ScrollView>
