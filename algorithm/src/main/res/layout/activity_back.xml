@@ -24,6 +24,11 @@
             android:text="46. 全排列" />
 
         <Button
+            android:id="@+id/btn_permute_unique"
+            style="@style/BtnStyles"
+            android:text="47. 全排列 II" />
+
+        <Button
             android:id="@+id/btn_permutation"
             style="@style/BtnStyles"
             android:text="剑指 Offer 38. 字符串的排列" />

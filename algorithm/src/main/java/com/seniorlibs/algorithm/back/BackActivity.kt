@@ -2,11 +2,14 @@ package com.seniorlibs.algorithm.back
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
+import java.lang.String.join
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -45,6 +48,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_combine).setOnClickListener(this)
         findViewById<View>(R.id.btn_combination_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_permute).setOnClickListener(this)
+        findViewById<View>(R.id.btn_permute_unique).setOnClickListener(this)
         findViewById<View>(R.id.btn_permutation).setOnClickListener(this)
         findViewById<View>(R.id.btn_restore_ip_addresses).setOnClickListener(this)
         findViewById<View>(R.id.btn_solve_n_queens).setOnClickListener(this)
@@ -62,6 +66,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_permute -> {
                 LogUtils.e(TAG, "46. 全排列：${permute(intArrayOf(1, 2, 3))}")
             }
+            R.id.btn_permute_unique -> {
+                LogUtils.e(TAG, "47. 全排列 II：${permuteUnique(intArrayOf(1, 2, 3))}")
+            }
             R.id.btn_permutation -> {
                 LogUtils.e(TAG, "剑指 Offer 38. 字符串的排列：${permutation("abc")}")
             }
@@ -78,7 +85,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "17. 电话号码的字母组合：${letterCombinations("23")}")
             }
             R.id.btn_restore_ip_addresses -> {
-                LogUtils.e(TAG, "93. 复原 IP 地址：${restoreIpAddresses("25525511135")}")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LogUtils.e(TAG, "93. 复原 IP 地址：${restoreIpAddresses("25525511135")}")
+                }
             }
             R.id.btn_solve_n_queens -> {
                 LogUtils.e(TAG, "51. N 皇后：${solveNQueens(4)}")
@@ -183,32 +192,32 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             "wxyz" //9
     )
 
-    private var array = arrayListOf<String>()
 
     fun letterCombinations(digits: String): List<String> {
-        if (digits == "") return array
+        val res = arrayListOf<String>()
+        if (digits == "") return res
 
-        findCombination(digits, 0, StringBuilder())
+        // "23" --> "abc" + "def"
+        findCombination(digits, 0, StringBuilder(), res)
 
-        return array
+        return res
     }
 
-    private fun findCombination(digits: String, index: Int, str: StringBuilder) {
-        if (index == digits.length) {
-            array.add(str.toString())
+    private fun findCombination(digits: String, index: Int, sb: StringBuilder, res : ArrayList<String>) {
+        if (sb.length == digits.length) {
+            res.add(sb.toString())
             return
         }
 
-        val c = digits[index]
-        val letters = letterMap[c - '0']
+        val letters = letterMap[digits[index] - '0']
 
         for (i in 0 until letters.length) {
             // a + d
-            str.append(letters[i])                        // 选择
+            sb.append(letters[i])                        // 选择
 
-            findCombination(digits, index + 1, str)
+            findCombination(digits, index + 1, sb, res)
 
-            str.delete(str.length - 1, str.length)        // 撤消选择
+            sb.deleteCharAt(sb.length - 1)        // 撤消选择
         }
         return
     }
@@ -504,73 +513,69 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      * 时间复杂度：O(3^n×4)，其中 n 为序列的长度。
      * 空间复杂度：O(4)
      *
+     * https://leetcode-cn.com/problems/restore-ip-addresses/solution/93-fu-yuan-ip-di-zhi-by-chen-li-guan-kk9v/
      * @param s
      * @return
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun restoreIpAddresses(s: String): List<String?>? {
-        val res: MutableList<String?> = ArrayList()
+        val res = mutableListOf<String>()
         // 如果长度不够，不搜索
-        if (s.length < 4 || s.length > 12) {
-            return res
-        }
+        if (s.length < 4 || s.length > 12) return res
 
-        val path = LinkedList<String>()
-        val splitTimes = 0
-        dfs(s, s.length, splitTimes, 0, path, res)
+        dfs(s, 0, 0, mutableListOf(), res)
         return res
     }
 
-    private fun dfs(s: String, len: Int, split: Int, begin: Int, path: LinkedList<String>, res: MutableList<String?>) {
-        if (begin == len) {
-            if (split == 4) {
-//                res.add(String.join(".", path))
-            }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun dfs(str: String, n: Int, start: Int, list: MutableList<String>, res: MutableList<String>) {
+        // 由于 ip 段最多就 4 个段，因此这棵三叉树最多 4 层
+        if (start == str.length && n == 4) {
+            res.add(join(".", list))
             return
         }
 
         // 看到剩下的不够了，就退出（剪枝），len - begin 表示剩余的还未分割的字符串的位数
-        if (len - begin < 4 - split || len - begin > 3 * (4 - split)) {
-            return
-        }
+//        if (str.length - start < 4 - n || str.length - start > 3 * (4 - n)) return
 
-        for (i in 0..2) {
-            if (begin + i >= len) {
-                break
-            }
-            val ipSegment = judgeIfIpSegment(s, begin, begin + i)
-            if (ipSegment != -1) {
-                // 在判断是 ip 段的情况下，才去做截取
-                path.addLast(ipSegment.toString() + "")
-                dfs(s, len, split + 1, begin + i + 1, path, res)
-                path.removeLast()
+        // 每一个结点可以选择截取的方法只有 3 种：截 1 位、截 2 位、截 3 位，因此每一个结点可以生长出的分支最多只有 3 条分支；
+        for (i in 0 until 3) {
+            if (start + i >= str.length) break
+
+            // 先转成 int
+            val ipSeg = judgeIfIpSegment(str, start, start + i)
+            if (ipSeg != -1) {
+                // 在判断是合法 ip 段的情况下，才去做截取
+                list.add(ipSeg.toString() + "")
+
+                dfs(str,n + 1, start + i + 1, list, res)
+
+                list.removeAt(list.size - 1)
             }
         }
     }
 
     /**
-     * 判断 s 的子区间 [left, right] 是否能够成为一个 ip 段
-     * 判断的同时顺便把类型转了
+     * 先转成 int
      *
      * @param s
      * @param left
      * @param right
      * @return
      */
-    private fun judgeIfIpSegment(s: String, left: Int, right: Int): Int {
-        val len = right - left + 1
-
+    private fun judgeIfIpSegment(str: String, left: Int, right: Int): Int {
         // 大于 1 位的时候，不能以 0 开头
-        if (len > 1 && s[left] == '0') {
-            return -1
-        }
+        if (right - left + 1 > 1 && str[left] == '0') return -1
 
-        // 转成 int 类型
+        // 先转成 int，是合法的 ip 段数值以后，再截取
         var res = 0
-        for (i in left..right) {
-            res = res * 10 + s[i].toInt() - '0'.toInt()
+        for (i in left until right + 1) {
+            res = res * 10 + str[i].toInt() - '0'.toInt()
         }
         return if (res > 255) -1 else res
     }
+
+
 
 
     /**
