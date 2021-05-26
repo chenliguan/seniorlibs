@@ -1216,14 +1216,16 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
-        if (carry == 1) cur?.next = ListNode(carry)
+        if (carry == 1) {
+            cur?.next = ListNode(carry)
+        }
 
         // 返回虚拟头结点 dummy 的下一个节点，即是 头结点
         return dummy.next
     }
 
     /**
-     * 445. 两数相加 II（了解）
+     * 445. 两数相加 II
      *
      * 时间复杂度 O(max(M,N)))：其中 M，N 为 2 数字长度，按位遍历一遍数字（以较长的数字为准）；
      * 空间复杂度 O(1)：指针与变量使用常数大小空间。
@@ -1252,8 +1254,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             l2 = l2.next
         }
 
-        // carry == 1 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
-        while (stack1.isNotEmpty() || stack2.isNotEmpty() || carry == 1) {
+        while (stack1.isNotEmpty() || stack2.isNotEmpty()) {
             val a = if (stack1.isEmpty()) 0 else stack1.pop()
             val b = if (stack2.isEmpty()) 0 else stack2.pop()
 
@@ -1263,6 +1264,14 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
             // 添加下一个节点
             val curNode = ListNode(sum)
+            curNode.next = cur
+            cur = curNode
+        }
+
+        // carry == 1 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
+        if(carry == 1) {
+            // 添加下一个节点
+            val curNode = ListNode(carry)
             curNode.next = cur
             cur = curNode
         }

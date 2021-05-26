@@ -242,11 +242,11 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun permute(nums: IntArray): List<List<Int>> {
         val res = mutableListOf<List<Int>>()
-        dfsPermute(nums, mutableListOf(), res)
+        dfsPermute(nums, mutableListOf(), BooleanArray(nums.size), res)
         return res
     }
 
-    fun dfsPermute(nums: IntArray, list: MutableList<Int>, res: MutableList<List<Int>>) {
+    fun dfsPermute(nums: IntArray, list: MutableList<Int>, visited: BooleanArray, res: MutableList<List<Int>>) {
         // 区别1：到达叶子节点才加入 res
         if (list.size == nums.size) {
             // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
@@ -257,18 +257,69 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         // 区别2：从 0 开始，允许产生重复的组合，例如：1-2、2-1
         for (i in 0 until nums.size) {
             // 区别2：排除 list 中相同的元素的情况，eg：list={1}，i=1 --> 返回
-            if (list.contains(nums[i])) continue
+            if (visited[i]) continue
 
             // 做选择
             list.add(nums[i])
+            visited[i] = true
 
             // 进入下一层决策树
-            dfsPermute(nums, list, res)
+            dfsPermute(nums, list, visited, res)
 
             // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
             list.removeAt(list.size - 1)
+            visited[i] = false
         }
     }
+
+
+    /**
+     * 47. 全排列 II，给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。  方法：回溯
+     *
+     * 时间复杂度：O(n×n!)，其中 n 为序列的长度。
+     * 空间复杂度：O(n)
+     *
+     * https://leetcode-cn.com/problems/permutations-ii/solution/47-quan-pai-lie-ii-by-chen-li-guan-teyy/
+     * @param nums
+     * @return
+     */
+    fun permuteUnique(nums: IntArray): List<List<Int>> {
+        val res = mutableSetOf<List<Int>>()
+        dfsPermuteUnique(nums, mutableListOf(), BooleanArray(nums.size), res)
+
+        val result = mutableListOf<List<Int>>()
+        for (list in res) {
+            result.add(list)
+        }
+        return result
+    }
+
+    fun dfsPermuteUnique(nums: IntArray, list: MutableList<Int>, visited: BooleanArray, res: MutableSet<List<Int>>) {
+        // 区别1：到达叶子节点才加入 res
+        if (list.size == nums.size) {
+            // dfs 完成以后，回到了根结点，成为空列表。因为指向的是同一块内存地址，因此看到6个空的列表对象。
+            res.add(ArrayList(list))
+            return
+        }
+
+        // 区别2：从 0 开始，允许产生重复的组合，例如：1-2、2-1
+        for (i in 0 until nums.size) {
+            // 区别2：排除 list 中相同的元素的情况，eg：list={1}，i=1 --> 返回
+            if (visited[i]) continue
+
+            // 做选择
+            list.add(nums[i])
+            visited[i] = true
+
+            // 进入下一层决策树
+            dfsPermuteUnique(nums, list, visited, res)
+
+            // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
+            list.removeAt(list.size - 1)
+            visited[i] = false
+        }
+    }
+
 
     /**
      * 剑指 Offer 38. 字符串的排列

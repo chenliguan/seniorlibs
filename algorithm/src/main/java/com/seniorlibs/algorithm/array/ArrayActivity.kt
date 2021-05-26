@@ -1090,10 +1090,10 @@ n->f(n)
         }
 
         var count = 0
-        for (left in 0 until nums.size) {
-            for (right in left until nums.size) {
-                // 区间和 [left..right]，注意下标偏移
-                if (preSum[right + 1] - preSum[left] == k) {
+        for (i in 0 until nums.size) {
+            for (j in i until nums.size) {
+                // 区间和 [i..j]/[left..right]，注意下标偏移
+                if (preSum[j + 1] - preSum[i] == k) {
                     count++
                 }
             }

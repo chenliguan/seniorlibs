@@ -260,7 +260,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         val n = nums.size
         if (n == 0) return 0
 
-        // dp定义
+        // dp定义：表示以 nums[i] 结尾的「上升子序列」的长度（不连续）
         val dp = IntArray(n)
 
         // base case
@@ -269,7 +269,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         // dp方程
         for (i in 0 until n) {
             for (j in 0 until i) {
-                if (nums[i] > nums[j]) {
+                if (nums[j] < nums[i]) {
                     dp[i] = Math.max(dp[i], dp[j] + 1)
                 }
             }
