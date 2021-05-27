@@ -81,6 +81,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_combination_sum -> {
                 LogUtils.e(TAG, "39. 组合总和：${combinationSum(intArrayOf(2, 3, 6, 7), 7)}")
             }
+            R.id.btn_partition -> {
+                LogUtils.e(TAG, "131. 分割回文串：${partition("aab")}")
+            }
             R.id.btn_letter_combinations -> {
                 LogUtils.e(TAG, "17. 电话号码的字母组合：${letterCombinations("23")}")
             }
@@ -199,7 +202,6 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
         // "23" --> "abc" + "def"
         findCombination(digits, 0, StringBuilder(), res)
-
         return res
     }
 
@@ -213,7 +215,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
         for (i in 0 until letters.length) {
             // a + d
-            sb.append(letters[i])                        // 选择
+            sb.append(letters[i])                 // 选择
 
             findCombination(digits, index + 1, sb, res)
 
@@ -416,6 +418,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
     /**
      * 77. 组合  方法：回溯
      * 题目：给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
@@ -469,19 +472,19 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      * @param target
      * @return
      */
-    fun combinationSum(array: IntArray, target: Int): List<List<Int?>?>? {
+    fun combinationSum(nums: IntArray, target: Int): List<List<Int?>?>? {
         val res = mutableListOf<List<Int>>()
-        if (array.isEmpty()) {
+        if (nums.isEmpty()) {
             return res
         }
 
         // 排序是剪枝的前提：排序后，如果比 target 大，后面的就不需要递归了，因为后面的数会更大
-        Arrays.sort(array)
-        dfs(array, 0, target, mutableListOf(), res)
+        Arrays.sort(nums)
+        dfs(nums, 0, target, mutableListOf(), res)
         return res
     }
 
-    private fun dfs(array: IntArray, start: Int, target: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
+    private fun dfs(nums: IntArray, start: Int, target: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
         // 由于进入更深层的时候，小于 0 的部分被剪枝，因此递归终止条件值只判断等于 0 的情况
         if (target == 0) {
             res.add(ArrayList(list))
@@ -489,22 +492,79 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 下一个遍历起点的数字都是递增的，即是当前选择的数字(i) +1
-        for (i in start until array.size) {
+        for (i in start until nums.size) {
             // 重点理解这里剪枝，前提是候选数组已经有序，
-            if (target - array[i] < 0) {
+            if (target - nums[i] < 0) {
                 break
             }
 
             // 做选择
-            list.add(array[i])
+            list.add(nums[i])
 
             // 注意：由于每一个元素可以重复使用，下一轮搜索的起点依然是 i，这里非常容易弄错
-            dfs(array, i, target - array[i], list, res)
+            dfs(nums, i, target - nums[i], list, res)
 
             // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
             list.removeAt(list.size - 1)
         }
     }
+
+
+    /**
+     * 131. 分割回文串
+     *
+     * 时间复杂度：O(n⋅2^n)，其中 n 是字符串 s 的长度；
+     * 空间复杂度：O(n^2)；
+     *
+     * https://leetcode-cn.com/problems/palindrome-partitioning/solution/131-fen-ge-hui-wen-chuan-by-chen-li-guan-3q98/
+     *
+     * @param str
+     * @return
+     */
+    fun partition(str: String): List<List<String>> {
+        val res = mutableListOf<List<String>>()
+        if (str.isEmpty()) return res
+
+        dfsPartition(str, 0, mutableListOf(), res)
+        return res
+    }
+
+    private fun dfsPartition(str: String, start: Int, list: MutableList<String>, res: MutableList<List<String>>) {
+        // 区别：这里是 start，不是 list.size，因为"aab"->[["a","a","b"],["aa","b"]]，会截取1-多个字符，因此list.size不符合。
+        if (start == str.length) {
+            res.add(ArrayList(list))
+            return
+        }
+
+        for (i in start until str.length) {
+            // 区别：因为截取字符串是消耗性能的，因此，采用传子串下标的方式判断一个子串是否是回文子串
+            if (!isPalindrome(str, start, i)) continue
+
+            // 区别：添加的不是 str[i]，而是一段回文串
+            list.add(str.substring(start, i + 1))
+
+            dfsPartition(str, i + 1, list, res)
+
+            list.removeAt(list.size - 1)
+        }
+    }
+
+    /**
+     * 判断是否是回文子串
+     */
+    private fun isPalindrome(s: String, i: Int, j: Int): Boolean {
+        var i = i
+        var j = j
+        while (i < j) {
+            if (s[i] != s[j]) {
+                return false
+            }
+            i++
+            j--
+        }
+        return true
+    }
+
 
 
     /**
@@ -529,8 +589,8 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun dfs(str: String, n: Int, start: Int, list: MutableList<String>, res: MutableList<String>) {
-        // 由于 ip 段最多就 4 个段，因此这棵三叉树最多 4 层
-        if (start == str.length && n == 4) {
+        // 区别：区别：这里是 start，不是 list.size，因为 ip 段最多就 4 个段，因此这棵三叉树最多 4 层
+        if (start == str.length || n == 4) {
             res.add(join(".", list))
             return
         }
@@ -541,17 +601,16 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         // 每一个结点可以选择截取的方法只有 3 种：截 1 位、截 2 位、截 3 位，因此每一个结点可以生长出的分支最多只有 3 条分支；
         for (i in 0 until 3) {
             if (start + i >= str.length) break
-
-            // 先转成 int
+            // 区别：先转成 int
             val ipSeg = judgeIfIpSegment(str, start, start + i)
-            if (ipSeg != -1) {
-                // 在判断是合法 ip 段的情况下，才去做截取
-                list.add(ipSeg.toString() + "")
+            if (ipSeg == -1) continue
 
-                dfs(str,n + 1, start + i + 1, list, res)
+            // 在判断是合法 ip 段的情况下，才去做截取
+            list.add(ipSeg.toString())
 
-                list.removeAt(list.size - 1)
-            }
+            dfs(str, n + 1, start + i + 1, list, res)
+
+            list.removeAt(list.size - 1)
         }
     }
 
@@ -570,10 +629,11 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         // 先转成 int，是合法的 ip 段数值以后，再截取
         var res = 0
         for (i in left until right + 1) {
-            res = res * 10 + str[i].toInt() - '0'.toInt()
+            res = res * 10 + (str[i].toInt() - '0'.toInt())
         }
         return if (res > 255) -1 else res
     }
+
 
 
 

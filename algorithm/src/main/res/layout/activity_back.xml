@@ -29,6 +29,11 @@
             android:text="47. 全排列 II" />
 
         <Button
+            android:id="@+id/btn_letter_combinations"
+            style="@style/BtnStyles"
+            android:text="17. 电话号码的字母组合" />
+
+        <Button
             android:id="@+id/btn_permutation"
             style="@style/BtnStyles"
             android:text="剑指 Offer 38. 字符串的排列" />
@@ -49,14 +54,15 @@
             android:text="39. 组合总和" />
 
         <Button
+            android:id="@+id/btn_partition"
+            style="@style/BtnStyles"
+            android:text="131. 分割回文串" />
+
+        <Button
             android:id="@+id/btn_restore_ip_addresses"
             style="@style/BtnStyles"
             android:text="93. 复原 IP 地址" />
 
-        <Button
-            android:id="@+id/btn_letter_combinations"
-            style="@style/BtnStyles"
-            android:text="17. 电话号码的字母组合" />
 
 
         <Button

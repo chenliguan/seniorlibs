@@ -106,24 +106,24 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "130. 被围绕的区域——方法一：深度优先遍历DFS：${solve(grid)}")
             }
             R.id.btn_find_circle_num -> {
+                val grid1: Array<IntArray> = Array(3) { intArrayOf() }
+                grid1[0] = intArrayOf(1, 1, 0)
+                grid1[1] = intArrayOf(1, 1, 0)
+                grid1[2] = intArrayOf(0, 0, 1)
+                LogUtils.e(TAG, "547. 朋友圈——方法一：深度优先遍历DFS：${findCircleNum(grid1)}")
+
                 val grid: Array<IntArray> = Array(3) { intArrayOf() }
                 grid[0] = intArrayOf(1, 1, 0)
                 grid[1] = intArrayOf(1, 1, 0)
                 grid[2] = intArrayOf(0, 0, 1)
                 val unionFind = FindCircleNum()
-                LogUtils.e(TAG, "547. 朋友圈——方法三：并查集（最优解）：${unionFind.findCircleNum(grid)}")
-
-                val grid1: Array<IntArray> = Array(3) { intArrayOf() }
-                grid1[0] = intArrayOf(1, 1, 0)
-                grid1[1] = intArrayOf(1, 1, 0)
-                grid1[2] = intArrayOf(0, 0, 1)
-                LogUtils.e(TAG, "547. 朋友圈——方法一：深度优先遍历DFS：${findCircleNum2(grid1)}")
+                LogUtils.e(TAG, "547. 朋友圈——方法二：并查集（最优解）：${unionFind.findCircleNum(grid)}")
 
                 val grid2: Array<IntArray> = Array(3) { intArrayOf() }
                 grid2[0] = intArrayOf(1, 1, 0)
                 grid2[1] = intArrayOf(1, 1, 0)
                 grid2[2] = intArrayOf(0, 0, 1)
-                LogUtils.e(TAG, "547. 朋友圈——方法二：广度优先遍历BFS：${findCircleNum3(grid2)}")
+                LogUtils.e(TAG, "547. 朋友圈——方法三：广度优先遍历BFS：${findCircleNum3(grid2)}")
             }
             else -> {
             }
@@ -142,41 +142,40 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      *
      * https://leetcode-cn.com/problems/word-search/solution/79-dan-ci-sou-suo-by-chen-li-guan/
      *
-     * @param board
+     * @param grid
      * @param word
      * @return
      */
-    fun exist(board: Array<CharArray>, word: String): Boolean {
-        if (board.isEmpty() || board[0].isEmpty() || word.isEmpty()) return false
-
-        val words = word.toCharArray()
-        for (i in 0 until board.size) {
-            for (j in 0 until board[0].size) {
+    fun exist(grid: Array<CharArray>, word: String): Boolean {
+        for (i in 0 until grid.size) {
+            for (j in 0 until grid[0].size) {
                 // 从[i,j]这个坐标开始查找，只要有一处返回true，说明网格中能够找到相应的单词，否则不能找到
-                if (dfs(board, words, i, j, 0)) return true
+                if(dfs(grid, word, i, j, 0)) {
+                    return true
+                }
             }
         }
         return false
     }
 
-    fun dfs(board: Array<CharArray>, words: CharArray, i: Int, j: Int, index: Int): Boolean {
+    fun dfs(grid: Array<CharArray>, word: String, i: Int, j: Int, index: Int): Boolean {
         // 如果越界直接返回false。关键：如果这个字符不等于board[i][j]，说明这个坐标路径是走不通的，直接返回false
-        if (i < 0 || i >= board.size || j < 0 || j >= board[0].size || board[i][j] != words[index]) return false
+        if (i < 0 || i >= grid.size || j < 0 || j >= grid[0].size || grid[i][j] != word[index]) return false
 
-        // 如果word的每个字符都查找完了，直接返回true
-        if (index == words.size - 1) return true
+        // 区别：如果word的每个字符都查找完了，直接返回true
+        if (index == word.length - 1) return true
 
-        // 把当前坐标的值保存下来，为了在最后复原
-        val tmp = board[i][j]
+        // 区别：把当前坐标的值保存下来，为了在最后复原
+        val tmp = grid[i][j]
         // 然后修改当前坐标的值
-        board[i][j] = '.'
+        grid[i][j] = '.'
         // 关键：走递归，沿着当前坐标的上下左右4个方向查找
-        val res = dfs(board, words, i + 1, j, index + 1)
-                || dfs(board, words, i - 1, j, index + 1)
-                || dfs(board, words, i, j + 1, index + 1)
-                || dfs(board, words, i, j - 1, index + 1)
+        val res = dfs(grid, word, i + 1, j, index + 1)
+                || dfs(grid, word, i - 1, j, index + 1)
+                || dfs(grid, word, i, j + 1, index + 1)
+                || dfs(grid, word, i, j - 1, index + 1)
         // 递归之后再把当前的坐标复原
-        board[i][j] = tmp
+        grid[i][j] = tmp
         return res
     }
 
@@ -211,13 +210,14 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun dfs(grid: Array<CharArray>, i: Int, j: Int) {
-        if (i >= 0 && i < grid.size && j >= 0 && j < grid[0].size && grid[i][j] == '1') {
-            grid[i][j] = '0'
-            dfs(grid, i + 1, j)
-            dfs(grid, i, j + 1)
-            dfs(grid, i - 1, j)
-            dfs(grid, i, j - 1)
-        }
+        if (i < 0 || i >= grid.size || j < 0 || j >= grid[0].size || grid[i][j] == '0') return
+
+        // 每次找到岛屿，则直接把找到的岛屿改成0，这是传说中的沉岛思想
+        grid[i][j] = '0'
+        dfs(grid, i + 1, j)
+        dfs(grid, i, j + 1)
+        dfs(grid, i - 1, j)
+        dfs(grid, i, j - 1)
     }
 
     /**
@@ -252,7 +252,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         var i = i1
         var j = j1
 
-        val queue: Queue<IntArray> = LinkedList()
+        val queue = LinkedList<IntArray>()
         queue.offer(intArrayOf(i, j))
         while (!queue.isEmpty()) {
             val cur = queue.poll()
@@ -284,25 +284,25 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 0 until board.size) {
             for (j in 0 until board[0].size) {
                 if (board[i][j] == 1) {
-                    max = Math.max(max, areaDfs(board, i, j, 0))
+                    max = Math.max(max, areaDfs(board, i, j))
                 }
             }
         }
         return max
     }
 
-    private fun areaDfs(board: Array<IntArray>, i: Int, j: Int, value: Int): Int {
-        var result = value
-        if (i >= 0 && i < board.size && j >= 0 && j < board[0].size && board[i][j] == 1) {
-            board[i][j] = 0
-            result = value + 1
-            result = areaDfs(board, i + 1, j, result)
-            result = areaDfs(board, i, j + 1, result)
-            result = areaDfs(board, i - 1, j, result)
-            result = areaDfs(board, i, j - 1, result)
-        }
+    private fun areaDfs(board: Array<IntArray>, i: Int, j: Int): Int {
+        if (i < 0 || i >= board.size || j < 0 || j >= board[0].size || board[i][j] == 0) return 0
 
-        return result
+        // 每次找到岛屿，则直接把找到的岛屿改成0，这是传说中的沉岛思想
+        board[i][j] = 0
+
+        var num = 1
+        num += areaDfs(board, i + 1, j)
+        num += areaDfs(board, i, j + 1)
+        num += areaDfs(board, i - 1, j)
+        num += areaDfs(board, i, j - 1)
+        return num
     }
 
 
@@ -317,14 +317,10 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * @param board
      */
     fun solve(board: Array<CharArray>) {
-        if (board.isEmpty()) return
-
-        val m = board.size
-        val n = board[0].size
-        for (i in 0 until m) {
-            for (j in 0 until n) {
+        for (i in 0 until board.size) {
+            for (j in 0 until board[0].size) {
                 // 1 从边缘开始 dfs 搜索 O，都替换为 #
-                val isEdge = i == 0 || j == 0 || i == m - 1 || j == n - 1
+                val isEdge = i == 0 || j == 0 || i == board.size - 1 || j == board[0].size - 1
                 if (isEdge && board[i][j] == 'O') {
                     edgeDfs(board, i, j)
                 }
@@ -332,8 +328,8 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 2 待搜索结束之后
-        for (i in 0 until m) {
-            for (j in 0 until n) {
+        for (i in 0 until board.size) {
+            for (j in 0 until board[0].size) {
                 // 2.1 遇到 O 替换为 X（和边界不连通的 O）
                 if (board[i][j] == 'O') {
                     board[i][j] = 'X'
@@ -347,18 +343,20 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun edgeDfs(board: Array<CharArray>, i: Int, j: Int) {
-        if (i >= 0 && i < board.size && j >= 0 && j < board[0].size && board[i][j] == 'O') {
-            board[i][j] = '#' // 说明已经搜索过了.
-            edgeDfs(board, i - 1, j) // 上
-            edgeDfs(board, i + 1, j) // 下
-            edgeDfs(board, i, j - 1) // 左
-            edgeDfs(board, i, j + 1) // 右
+        if (i < 0 || i >= board.size || j < 0 || j >= board[0].size || board[i][j] != 'O') {
+            return
         }
+
+        board[i][j] = '#' // 说明已经搜索过了.
+        edgeDfs(board, i - 1, j) // 上
+        edgeDfs(board, i + 1, j) // 下
+        edgeDfs(board, i, j - 1) // 左
+        edgeDfs(board, i, j + 1) // 右
     }
 
 
     /**
-     * 547. 朋友圈——方法2：深度优先遍历DFS（记住）
+     * 547. 朋友圈——方法1：深度优先遍历DFS（记住）
      *
      * 题解：M[i][j] = 1，表示已知第 i 个和 j 个学生互为朋友关系
      * 思路：从一个特定点开始，访问所有邻接的节点。然后对于这些邻接节点，我们依然通过访问邻接节点的方式，知道访问所有可以到达的节点。因此，我们按照一层一层的方式访问节点
@@ -370,11 +368,11 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
      * @param M
      * @return
      */
-    fun findCircleNum2(M: Array<IntArray>): Int {
+    fun findCircleNum(M: Array<IntArray>): Int {
         // 标记学生是否被访问过
         val visited = BooleanArray(M.size)
         var count = 0
-        for (i in M.indices) {
+        for (i in 0 until M.size) {
             if (!visited[i]) {
                 // 从i层遍历：i：0,1,2....
                 dfs(M, visited, i)
@@ -385,7 +383,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun dfs(M: Array<IntArray>, visited: BooleanArray, i: Int) {
-        for (j in M.indices) {
+        for (j in 0 until M.size) {
             // i和j是朋友，且j未被访问过
             if (M[i][j] == 1 && !visited[j]) {
                 visited[j] = true
