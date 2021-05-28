@@ -47,6 +47,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
         findViewById<View>(R.id.btn_combine).setOnClickListener(this)
         findViewById<View>(R.id.btn_combination_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_partition).setOnClickListener(this)
         findViewById<View>(R.id.btn_permute).setOnClickListener(this)
         findViewById<View>(R.id.btn_permute_unique).setOnClickListener(this)
         findViewById<View>(R.id.btn_permutation).setOnClickListener(this)
