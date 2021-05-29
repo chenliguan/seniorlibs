@@ -29,6 +29,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    class ListNode(var `val`: Int) {
+        var next: ListNode? = null
+    }
+
     private var list = mutableListOf<Int>()
 
 
@@ -66,6 +70,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_diameter_of_binary_tree).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_balanced).setOnClickListener(this)
         findViewById<View>(R.id.btn_sorted_array_to_bst).setOnClickListener(this)
+        findViewById<View>(R.id.btn_sorted_list_to_bst).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_nodes).setOnClickListener(this)
         findViewById<View>(R.id.btn_ladder_length).setOnClickListener(this)
     }
@@ -415,7 +420,16 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "110. 平衡二叉树：${isBalanced(node)}")
             }
             R.id.btn_sorted_array_to_bst -> {
-                LogUtils.e(TAG, "108. 将有序数组转换为二叉搜索树：${sortedArrayToBST(intArrayOf(1, 2, 3, 4, 5, 6))}")
+                LogUtils.e(
+                    TAG,
+                    "108. 将有序数组转换为二叉搜索树：${sortedArrayToBST(intArrayOf(1, 2, 3, 4, 5, 6))}"
+                )
+            }
+            R.id.btn_sorted_list_to_bst -> {
+                LogUtils.e(
+                    TAG,
+                    "109. 有序链表转换二叉搜索树：${sortedListToBST(ListNode(0))}"
+                )
             }
             R.id.btn_count_nodes -> {
                 val node = TreeNode(1)
@@ -1020,7 +1034,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return res
     }
 
-    fun pathDfs(root: TreeNode?, targetSum: Int, list: MutableList<Int>, res: MutableList<List<Int>>) {
+    fun pathDfs(
+        root: TreeNode?,
+        targetSum: Int,
+        list: MutableList<Int>,
+        res: MutableList<List<Int>>
+    ) {
         // 如果到达叶子节点，就不能往下走了，直接 return
         if (root?.left == null && root?.right == null) {
             if (targetSum - root?.`val`!! == 0) {
@@ -1936,6 +1955,54 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
         return root
     }
+
+
+    /**
+     * 109. 有序链表转换二叉搜索树
+     *
+     * 时间复杂度：O(n)，其中 n 是链表的长度。
+     * 空间复杂度：O(logn)，这里只计算除了返回答案之外的空间。平衡二叉树的高度为 O(logn)，即为递归过程中栈的最大深度，也就是需要的空间。
+     *
+     * https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/solution/109-you-xu-lian-biao-zhuan-huan-er-cha-s-4zzl/
+     * @param head
+     * @return
+     */
+    var dummy: ListNode? = null
+
+    fun sortedListToBST(head: ListNode?): TreeNode? {
+        dummy = head
+        val length = listLength(head)
+        return buildTree(0, length - 1)
+    }
+
+    fun buildTree(l: Int, r: Int): TreeNode? {
+        if (l > r) return null
+
+        val mid = l + (r - l) / 2
+
+        val root = TreeNode(0)
+
+        root.left = buildTree(l, mid - 1)
+
+        // 关键：二叉搜索树的中序遍历结果就是链表本身，因此获取当前链表节点，赋值
+        root.`val` = dummy?.`val`!!
+        dummy = dummy?.next
+
+        root.right = buildTree(mid + 1, r)
+        return root
+    }
+
+    // 计算链表的长度
+    fun listLength(head: ListNode?): Int {
+        var head = head
+        var length = 0
+        while (head != null) {
+            length++
+            head = head.next
+        }
+        return length
+    }
+
 
 
     /**
