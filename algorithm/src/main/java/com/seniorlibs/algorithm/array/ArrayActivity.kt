@@ -52,6 +52,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_spiral_order).setOnClickListener(this)
         findViewById<View>(R.id.btn_generate_matrix).setOnClickListener(this)
         findViewById<View>(R.id.btn_subarray_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_next_permutation).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -155,6 +156,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_subarray_sum -> {
             LogUtils.d(TAG, "560. 和为K的子数组：${subarraySum(intArrayOf(1, 1, 1), 2)}")
+        }
+        R.id.btn_next_permutation -> {
+            LogUtils.d(TAG, "31. 下一个排列：${nextPermutation(intArrayOf(1, 3, 5, 4, 1))}")
         }
         else -> {
         }
@@ -1100,4 +1104,58 @@ n->f(n)
         }
         return count
     }
+
+
+    /**
+     * 31. 下一个排列     [1,3,5,4,1]，k=3，
+     *
+     * 时间复杂度：对数组线性遍历。复杂度为 O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/next-permutation/solution/31-xia-yi-ge-pai-lie-by-chen-li-guan-gq77/
+     * @param nums
+     */
+    fun nextPermutation(nums: IntArray) {
+        var k = nums.size - 1
+
+        // 1.从后往前找，找到第一个下降的位置，计为 k - 1。eg：nums[k - 1]=3
+        while (k - 1 >= 0 && nums[k - 1] >= nums[k]) {
+            k--
+        }
+
+        if (k == 0) {
+            // 如果找不到直接翻转数组。eg:[3,2,1]->[1,2,3]
+            reverses(nums, 0, nums.size - 1)
+        } else {
+            // 2.从 k - 1 往后找到最小的比 k - 1 大的数，计为 t。eg：nums[t - 1]=4
+            var t = k - 1
+            while (t + 1 <= nums.size - 1 && nums[t + 1] > nums[k - 1]) {
+                t++
+            }
+
+            // 3.将两者交换。注意此时 k 以后的位置仍然是降序的
+            swap(nums, k - 1, t)
+
+            // 4.直接将 k 以后的部分翻转，变为升序（保证下一个排列增加幅度最小）
+            reverses(nums, k, nums.size - 1)
+        }
+    }
+
+    fun reverses(nums: IntArray, l: Int, r: Int) {
+        var l = l
+        var r = r
+
+        while (l < r) {
+            swap(nums, l, r)
+            l++
+            r--
+        }
+    }
+
+    fun swap(nums: IntArray, l: Int, r: Int) {
+        val temp = nums[l]
+        nums[l] = nums[r]
+        nums[r] = temp
+    }
+
 }

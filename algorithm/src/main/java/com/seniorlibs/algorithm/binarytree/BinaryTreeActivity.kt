@@ -1927,14 +1927,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 求高度平衡，因此以升序数组的中间元素作为根节点 root。
         val mid = left + (right - left) / 2
 
-        val rootNode = TreeNode(nums[mid])
+        val root = TreeNode(nums[mid])
 
         // 递归的构建 root 的左子树与右子树。
-        rootNode.left = dfs(nums, left, mid - 1)
+        root.left = dfs(nums, left, mid - 1)
 
-        rootNode.right = dfs(nums, mid + 1, right)
+        root.right = dfs(nums, mid + 1, right)
 
-        return rootNode
+        return root
     }
 
 
@@ -1993,7 +1993,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 127. 单词接龙  方法一：双向BFS
+     * 127. 单词接龙  方法一：双向BFS（困难）
      *
      * 时间复杂度：O(M×N)，其中 MM 是单词的长度N是单词表中单词的总数。与单向搜索相同的是，找到所有的变换需要M * N次操作。
      *          但是搜索时间会被缩小一半，因为两个搜索会在中间某处相遇。
@@ -2012,14 +2012,14 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 1 先将 wordList 放到哈希表里，便于判断某个单词是否在 wordList 里
         val wordList = wordList as MutableList<String>
         wordList.add(beginWord)
-        val allWordSet: Set<String> = HashSet(wordList)
+        val allWordSet = HashSet(wordList)
 
         // 2.1 创建一个队列，将新访问到的节点放入其中
-        var queue1: Queue<String> = LinkedList()
-        var queue2: Queue<String> = LinkedList()
+        var queue1 = LinkedList<String>()
+        var queue2 = LinkedList<String>()
         // 2.2 已经访问过的 word 添加到 visited 哈希表里
-        var visited1: MutableSet<String?> = HashSet()
-        var visited2: MutableSet<String?> = HashSet()
+        var visited1 = hashSetOf<String?>()
+        var visited2 = hashSetOf<String?>()
         queue1.offer(beginWord)
         queue2.offer(endWord)
         visited1.add(beginWord)
