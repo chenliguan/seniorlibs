@@ -47,6 +47,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_subsets).setOnClickListener(this)
         findViewById<View>(R.id.btn_combine).setOnClickListener(this)
         findViewById<View>(R.id.btn_combination_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_combination_sum2).setOnClickListener(this)
         findViewById<View>(R.id.btn_partition).setOnClickListener(this)
         findViewById<View>(R.id.btn_permute).setOnClickListener(this)
         findViewById<View>(R.id.btn_permute_unique).setOnClickListener(this)
@@ -81,6 +82,9 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_combination_sum -> {
                 LogUtils.e(TAG, "39. 组合总和：${combinationSum(intArrayOf(2, 3, 6, 7), 7)}")
+            }
+            R.id.btn_combination_sum2 -> {
+                LogUtils.e(TAG, "40. 组合总和 II：${combinationSum2(intArrayOf(2, 3, 6, 7), 7)}")
             }
             R.id.btn_partition -> {
                 LogUtils.e(TAG, "131. 分割回文串：${partition("aab")}")
