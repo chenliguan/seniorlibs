@@ -55,6 +55,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_middle_node).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_linked).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge_two_lists).setOnClickListener(this)
+        findViewById<View>(R.id.btn_sort_list).setOnClickListener(this)
         findViewById<View>(R.id.btn_get_kth_from_end).setOnClickListener(this)
         findViewById<View>(R.id.btn_remove_nth_from_end).setOnClickListener(this)
         findViewById<View>(R.id.btn_odd_even_list).setOnClickListener(this)
@@ -167,6 +168,19 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li22.next = li33
                 LogUtils.e(TAG, "21. 合并两个有序链表：${mergeTwoLists(li1, li11)}")
                 LogUtils.e(TAG, "21. 合并两个有序链表1：${mergeTwoLists1(li1, li11)}")
+            }
+            R.id.btn_sort_list -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(5)
+                val li3 = ListNode(3)
+                val li4 = ListNode(9)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "148. 排序链表：${sortList(li1)}")
             }
             R.id.btn_get_kth_from_end -> {
                 val li1 = ListNode(1)
@@ -540,13 +554,13 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun middleNode(head: ListNode?): ListNode? {
-        var slow: ListNode? = head
-        var fast: ListNode? = head
+        var slow = head
+        var fast = head
 
         // 通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
         while (fast?.next != null) {
-            slow = slow!!.next
-            fast = fast.next!!.next
+            slow = slow?.next!!
+            fast = fast?.next?.next
         }
 
         return slow
@@ -674,6 +688,51 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             // 每一层调用都返回排序好的链表头
             return l2
         }
+    }
+
+
+    /**
+     * 148. 排序链表
+     *
+     * 时间复杂度：O(nlogn)，其中 n 是链表的长度。
+     * 空间复杂度：O(logn)，其中 n 是链表的长度。空间复杂度主要取决于递归调用的栈空间。
+     *
+     * https://leetcode-cn.com/problems/sort-list/solution/148-pai-xu-lian-biao-by-chen-li-guan-xlom/
+     *
+     * @param head
+     * @return
+     */
+    fun sortList(head: ListNode?): ListNode? {
+        if (head?.next == null) return head
+
+        // 获取链表的中间结点
+        val slow = middleNode1(head)
+
+        // 分治递归
+        val head2 = slow?.next
+        slow?.next = null
+
+        return mergeTwoLists(sortList(head),sortList(head2))
+    }
+
+    /**
+     * 注意：和 876. 链表的中间结点 的区别，那是 fast = head
+     *
+     * @param head
+     * @return
+     */
+    fun middleNode1(head: ListNode?): ListNode? {
+        var slow = head
+        // 区别：
+        var fast = head?.next
+
+        // 通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
+        while (fast?.next != null) {
+            slow = slow?.next!!
+            fast = fast.next?.next
+        }
+
+        return slow
     }
 
 

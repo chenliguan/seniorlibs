@@ -62,6 +62,12 @@
             android:text="21. 合并两个有序链表" />
 
         <Button
+            android:id="@+id/btn_sort_list"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="148. 排序链表" />
+
+        <Button
             android:id="@+id/btn_get_kth_from_end"
             android:layout_width="match_parent"
             android:layout_height="48dp"
