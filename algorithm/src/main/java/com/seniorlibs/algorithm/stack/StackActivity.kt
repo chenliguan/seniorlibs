@@ -43,6 +43,7 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_remove_k_digits).setOnClickListener(this)
         findViewById<View>(R.id.btn_daily_temperatures).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_max).setOnClickListener(this)
+        findViewById<View>(R.id.btn_find_132_pattern).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -69,16 +70,19 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "155. 最小栈：${param_3} ${param_4}")
             }
             R.id.btn_eval_rpn -> {
-                LogUtils.d(TAG, "150. 逆波兰表达式求值：${evalRPN(arrayOf("2","1","+","3","*"))}")
+                LogUtils.d(TAG, "150. 逆波兰表达式求值：${evalRPN(arrayOf("2", "1", "+", "3", "*"))}")
             }
             R.id.btn_remove_k_digits -> {
                 LogUtils.d(TAG, "402. 移掉K位数字：${removeKdigits("1432219", 3)}")
             }
             R.id.btn_daily_temperatures -> {
-                LogUtils.d(TAG, "739. 每日温度：${dailyTemperatures(intArrayOf(73, 74, 75, 71, 69, 72, 76, 73))}")
+                LogUtils.d(
+                    TAG,
+                    "739. 每日温度：${dailyTemperatures(intArrayOf(73, 74, 75, 71, 69, 72, 76, 73))}"
+                )
             }
             R.id.btn_find_max -> {
-                LogUtils.d(TAG, "找到数组中, 比左边所有数字都小, 比右边所有数字都大的数字：${findMax(intArrayOf(3,3,1))}")
+                LogUtils.d(TAG, "找到数组中, 比左边所有数字都小, 比右边所有数字都大的数字：${findMax(intArrayOf(3, 3, 1))}")
             }
 //            R.id.btn_queue_stack -> {
 //                LogUtils.d(TAG, "225.两个队列实现栈")
@@ -89,6 +93,9 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 //            R.id.btn_stack_queue -> {
 //                LogUtils.d(TAG, "232. 用栈实现队列")
 //            }
+            R.id.btn_find_132_pattern -> {
+                LogUtils.d(TAG, "456. 132 模式：${find132pattern(intArrayOf(3, 1, 4, 2))}")
+            }
             else -> {
             }
         }
@@ -236,9 +243,9 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 如果栈空了，返回"0"，如果栈非空，转成字符串返回
-        if(stack.isEmpty()) return "0"
+        if (stack.isEmpty()) return "0"
 
-        while(stack.isNotEmpty()) {
+        while (stack.isNotEmpty()) {
             res += stack.pollLast()
         }
         return res
@@ -311,5 +318,41 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         while (stack.isNotEmpty()) {
             System.out.println(stack.pop())
         }
+    }
+
+
+    /**
+     * 456. 132 模式  方法：使用单调递减栈维护 3。最大元素在栈底，次大元素在栈底的第二元素。eg：3、1、4、2
+     * 题意：32 模式的子序列 由三个整数 nums[i]、nums[j] 和 nums[k] 组成，并同时满足：i < j < k 和 nums[i] < nums[k] < nums[j]。
+     *
+     * 时间复杂度：O(n)，由于每一个元素最多被加入和弹出单调栈各一次，因此操作单调栈的时间复杂度一共为 O(n)。
+     * 空间复杂度：O(n)，即为单调栈需要使用的空间
+     *
+     * https://leetcode-cn.com/problems/132-pattern/solution/456-132-mo-shi-by-chen-li-guan-hqgb/
+     *
+     * @param nums
+     * @return
+     */
+    fun find132pattern(nums: IntArray): Boolean {
+        val stack = LinkedList<Int>()
+        // stack = [2]
+        stack.push(nums[nums.size - 1])
+
+        var twoNumber = Int.MIN_VALUE
+        for (i in nums.size - 2 downTo 0) {
+            // 4 > 2，twoNumber = 2。1 !> 4
+            while (stack.isNotEmpty() && nums[i] > stack.peek()) {
+                twoNumber = stack.pop()
+            }
+
+            // stack = [4, 1]
+            stack.push(nums[i])
+
+            // 4 !< 2。   1 < 2  --> 1,4,2，符合模式
+            if (nums[i] < twoNumber) {
+                return true
+            }
+        }
+        return false
     }
 }
