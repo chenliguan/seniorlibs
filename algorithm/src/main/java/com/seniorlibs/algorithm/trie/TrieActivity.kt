@@ -42,6 +42,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_num_is_lands).setOnClickListener(this)
         findViewById<View>(R.id.btn_max_area_of_island).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_circle_num).setOnClickListener(this)
+        findViewById<View>(R.id.btn_lexical_order).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -110,7 +111,7 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                 grid1[0] = intArrayOf(1, 1, 0)
                 grid1[1] = intArrayOf(1, 1, 0)
                 grid1[2] = intArrayOf(0, 0, 1)
-                LogUtils.e(TAG, "547. 朋友圈——方法一：深度优先遍历DFS：${findCircleNum(grid1)}")
+                LogUtils.e(TAG, "547. 朋友圈/547. 省份数量——方法一：深度优先遍历DFS：${findCircleNum(grid1)}")
 
                 val grid: Array<IntArray> = Array(3) { intArrayOf() }
                 grid[0] = intArrayOf(1, 1, 0)
@@ -124,6 +125,10 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                 grid2[1] = intArrayOf(1, 1, 0)
                 grid2[2] = intArrayOf(0, 0, 1)
                 LogUtils.e(TAG, "547. 朋友圈——方法三：广度优先遍历BFS：${findCircleNum3(grid2)}")
+            }
+            R.id.btn_lexical_order -> {
+                LogUtils.e(TAG, "386. 字典序排数：${lexicalOrder(9)}")
+                LogUtils.e(TAG, "386. 字典序排数2：${lexicalOrder2(9)}")
             }
             else -> {
             }
@@ -437,5 +442,65 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return count
+    }
+
+
+    /**
+     * 386. 字典序排数  方法一：递归，深度遍历
+     *
+     * 给定一个整数 n, 返回从 1 到 n 的字典顺序。
+     * 给定 n = 13，返回 [1,10,11,12,13,2,3,4,5,6,7,8,9]
+     *
+     * https://leetcode-cn.com/problems/lexicographical-numbers/solution/386-zi-dian-xu-pai-shu-by-chen-li-guan-p6gr/
+     *
+     * @param n
+     * @return
+     */
+    fun lexicalOrder(n: Int): List<Int>? {
+        val list = mutableListOf<Int>()
+        for (i in 1..9) {
+            dfs(n, i, list)
+        }
+        return list
+    }
+
+    private fun dfs(n: Int, i: Int, list: MutableList<Int>) {
+        if (i > n) return
+
+        // 先序遍历
+        list.add(i)
+
+        for (j in 0..9) {
+            dfs(n, i * 10 + j, list)
+        }
+    }
+
+
+    /**
+     * 方法二：用栈实现
+     *
+     * @param n
+     * @return
+     */
+    fun lexicalOrder2(n: Int): List<Int>? {
+        val res = mutableListOf<Int>()
+        val stack = LinkedList<Int>()
+
+        for (i in Math.min(n, 9) downTo 1) {
+            // 保证数据的从小到大排序在进栈时从大到小进
+            stack.push(i)
+        }
+
+        while (stack.isNotEmpty()) {
+            val x = stack.pop()
+            res.add(x)
+            for (i in 9 downTo 0) {
+                if (x * 10 + i <= n) {
+                    // 保证数据的从小到大排序在进栈时从大到小进
+                    stack.push(x * 10 + i)
+                }
+            }
+        }
+        return res
     }
 }
