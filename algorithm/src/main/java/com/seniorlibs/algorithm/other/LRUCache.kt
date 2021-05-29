@@ -58,7 +58,7 @@ class LRUCache(private val cap: Int) {
         // 链表头部的第一个元素就是最久未使用的
         val deletedNode = cache.removeFirst()
         // 同时别忘了从 map 中删除它的 key
-        val deletedKey = deletedNode!!.key
+        val deletedKey = deletedNode?.key
         map.remove(deletedKey)
     }
 
@@ -104,9 +104,9 @@ class LRUCache(private val cap: Int) {
 
         // 在链表尾部添加节点 x，时间 O(1)
         fun addLast(x: Node?) {
-            x!!.prev = tail.prev
-            x.next = tail
-            tail.prev!!.next = x
+            x?.prev = tail.prev
+            x?.next = tail
+            tail.prev?.next = x
             tail.prev = x
             size++
         }
@@ -114,8 +114,8 @@ class LRUCache(private val cap: Int) {
         // 删除链表中的 x 节点（x 一定存在）
         // 由于是双链表且给的是目标 Node 节点，时间 O(1)
         fun remove(x: Node?) {
-            x!!.prev!!.next = x.next
-            x.next!!.prev = x.prev
+            x?.prev?.next = x?.next
+            x?.next?.prev = x?.prev
             size--
         }
 

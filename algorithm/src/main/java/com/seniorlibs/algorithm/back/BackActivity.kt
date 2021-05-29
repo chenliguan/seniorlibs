@@ -297,6 +297,7 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun permuteUnique(nums: IntArray): List<List<Int>> {
         val res = mutableSetOf<List<Int>>()
+
         dfsPermuteUnique(nums, mutableListOf(), BooleanArray(nums.size), res)
 
         val result = mutableListOf<List<Int>>()
@@ -502,8 +503,61 @@ class BackActivity : AppCompatActivity(), View.OnClickListener {
             // 做选择
             list.add(nums[i])
 
-            // 注意：由于每一个元素可以重复使用，下一轮搜索的起点依然是 i，这里非常容易弄错
+            // 区别：由于每一个元素可以重复使用，下一轮搜索的起点依然是 i，这里非常容易弄错
             dfs(nums, i, target - nums[i], list, res)
+
+            // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
+            list.removeAt(list.size - 1)
+        }
+    }
+
+    /**
+     * 40. 组合总和 II
+     * 题目：给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+     *      candidates 中的每个数字在每个组合中只能使用一次。注意：解集不能包含重复的组合。
+     *
+     * 时间复杂度：O(n×2^n)。一共2^n个状态，每种状态需要O(n)的时间来构造子集；
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/combination-sum-ii/solution/40-zu-he-zong-he-ii-by-chen-li-guan-0bcc/
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    fun combinationSum2(nums: IntArray, target: Int): List<List<Int?>?>? {
+        val res = mutableSetOf<List<Int>>()
+
+        // 排序是剪枝的前提：排序后，如果比 target 大，后面的就不需要递归了，因为后面的数会更大
+        Arrays.sort(nums)
+        dfs(nums, 0, target, mutableListOf(), res)
+
+        val result = mutableListOf<List<Int>>()
+        for (list in res) {
+            result.add(list)
+        }
+        return result
+    }
+
+    private fun dfs(nums: IntArray, start: Int, target: Int, list: MutableList<Int>, res: MutableSet<List<Int>>) {
+        // 由于进入更深层的时候，小于 0 的部分被剪枝，因此递归终止条件值只判断等于 0 的情况
+        if (target == 0) {
+            res.add(ArrayList(list))
+            return
+        }
+
+        // 下一个遍历起点的数字都是递增的，即是当前选择的数字(i) +1
+        for (i in start until nums.size) {
+            // 重点理解这里剪枝，前提是候选数组已经有序，
+            if (target - nums[i] < 0) {
+                break
+            }
+
+            // 做选择
+            list.add(nums[i])
+
+            // 区别：由于每个数字在每个组合中只能使用一次，下一轮搜索的起点是 i + 1，这里非常容易弄错
+            dfs(nums, i + 1, target - nums[i], list, res)
 
             // 取消选择：回溯发生在从 深层结点 回到 浅层结点 的过程，代码在形式上和递归之前是对称的
             list.removeAt(list.size - 1)
