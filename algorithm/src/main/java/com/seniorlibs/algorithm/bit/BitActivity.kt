@@ -40,6 +40,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_is_power_of_two).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_the_difference).setOnClickListener(this)
         findViewById<View>(R.id.btn_single_number).setOnClickListener(this)
+        findViewById<View>(R.id.btn_single_numbers).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -63,6 +64,12 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_single_number -> {
                 LogUtils.e(TAG, "136. 只出现一次的数字：" + singleNumber(intArrayOf(4, 1, 2, 1, 2)))
+            }
+            R.id.btn_single_numbers -> {
+                LogUtils.e(
+                    TAG,
+                    "剑指 Offer 56 - I. 数组中数字出现的次数：" + singleNumbers(intArrayOf(3, 3, 5, 5, 6, 7))
+                )
             }
             else -> {
             }
@@ -119,7 +126,6 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
         }
         return bits
     }
-
 
 
     /**
@@ -189,6 +195,46 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
             res = res xor num
         }
         return res
+    }
+
+
+    /**
+     * 剑指 Offer 56 - I. 数组中数字出现的次数
+     *
+     * 时间复杂度：O(n)，只需要遍历数组两次
+     * 空间复杂度：O(1)，只需要常数的空间存放若干变量
+     *
+     * https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/solution/jian-zhi-offer-56-i-shu-zu-zhong-shu-zi-fyloj/
+     *
+     * @param nums
+     * @return
+     */
+    fun singleNumbers(nums: IntArray): IntArray? {
+        // 1.对所有数字进行一次异或，得到两个出现一次的数字的异或值的结果 k，k!=0。eg：335567，最终求出 6,7
+        var k = 0
+        for (num in nums) {
+            k = k xor num
+        }
+
+        // 2.根据k找到67相互嫌弃的点在哪，即获得k中最低位的1。eg：6:1 1 0，7:1 1 1
+        var mask = 1
+        // mask = k & (-k) 这种方法也可以得到mask
+        while (k and mask == 0) {
+            mask = mask shl 1
+        }
+
+        // 3.根据这个互相嫌弃的点，分成两组，对所有的数字进行遍历，6,7就不会被分到一个组了，成对出现的数字分到一组
+        var a = 0
+        var b = 0
+        for (num in nums) {
+            // 在每个组内进行异或操作，最终剩下6，7分在不同组里
+            if (num and mask == 0) {
+                a = a xor num
+            } else {
+                b = b xor num
+            }
+        }
+        return intArrayOf(a, b)
     }
 
 }

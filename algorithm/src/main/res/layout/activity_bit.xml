@@ -33,5 +33,10 @@
             style="@style/BtnStyles"
             android:text="136. 只出现一次的数字" />
 
+        <Button
+            android:id="@+id/btn_single_numbers"
+            style="@style/BtnStyles"
+            android:text="剑指 Offer 56 - I. 数组中数字出现的次数" />
+
     </LinearLayout>
 </ScrollView>
