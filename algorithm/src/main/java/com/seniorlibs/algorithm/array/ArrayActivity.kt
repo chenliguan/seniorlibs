@@ -57,6 +57,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_generate_matrix).setOnClickListener(this)
         findViewById<View>(R.id.btn_subarray_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_next_permutation).setOnClickListener(this)
+        findViewById<View>(R.id.btn_generate).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -141,7 +142,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 LogUtils.d(TAG, "253. 会议室 II：${minMeetingRooms(nums)}")
             } else {
-                TODO("VERSION.SDK_INT < N")
+
             }
         }
         R.id.btn_min_sub_arrayLen -> {
@@ -189,6 +190,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_next_permutation -> {
             LogUtils.d(TAG, "31. 下一个排列：${nextPermutation(intArrayOf(1, 3, 5, 4, 1))}")
+        }
+        R.id.btn_generate -> {
+            LogUtils.d(TAG, "118. 杨辉三角：${generate(5)}")
         }
         else -> {
         }
@@ -1248,4 +1252,32 @@ n->f(n)
         nums[r] = temp
     }
 
+
+    /**
+     * 118. 杨辉三角
+     *
+     * 时间复杂度：O(numRows^2)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/pascals-triangle/solution/118-yang-hui-san-jiao-by-chen-li-guan-z1tc/
+     *
+     * @param numRows
+     * @return
+     */
+    fun generate(numRows: Int): List<List<Int>>? {
+        val res = arrayListOf<List<Int>>()
+        for (i in 0 until numRows) {
+            val row = arrayListOf<Int>()
+            // 注意：0-i
+            for (j in 0 until i + 1) {
+                if (j == 0 || j == i) {
+                    row.add(1)
+                } else {
+                    row.add(res[i - 1][j - 1] + res[i - 1][j])
+                }
+            }
+            res.add(row)
+        }
+        return res
+    }
 }

@@ -128,5 +128,10 @@
             android:id="@+id/btn_next_permutation"
             style="@style/BtnStyles"
             android:text="31. 下一个排列" />
+
+        <Button
+            android:id="@+id/btn_generate"
+            style="@style/BtnStyles"
+            android:text="118. 杨辉三角" />
     </LinearLayout>
 </ScrollView>
