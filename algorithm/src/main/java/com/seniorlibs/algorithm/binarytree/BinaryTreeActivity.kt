@@ -1883,18 +1883,18 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun isBalanced(root: TreeNode?): Boolean {
-        return recur(root) != -1
+        return balanced(root) != -1
     }
 
-    fun recur(root: TreeNode?): Int {
+    fun balanced(root: TreeNode?): Int {
         // 当越过叶子节点时，返回高度 0
         if (root == null) return 0
 
-        val left = recur(root.left)
+        val left = balanced(root.left)
         // 当左（右）子树高度 left== -1 时，代表此子树的 左（右）子树 不是平衡树，因此直接返回 -1−1 ；
         if (left == -1) return -1
 
-        val right = recur(root.right)
+        val right = balanced(root.right)
         if (right == -1) return -1
 
         // 当节点 root 左/右子树的，高度差<2，则返回最大深度，继续计算。 高度差≥2，返回−1 ，表示子树不是平衡树
@@ -1921,18 +1921,18 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         return dfs(nums, 0, nums.size - 1)
     }
 
-    private fun dfs(nums: IntArray, left: Int, right: Int): TreeNode? {
-        if (left > right) return null
+    private fun dfs(nums: IntArray, l: Int, r: Int): TreeNode? {
+        if (l > r) return null
 
         // 求高度平衡，因此以升序数组的中间元素作为根节点 root。
-        val mid = left + (right - left) / 2
+        val mid = l + (r - l) / 2
 
         val root = TreeNode(nums[mid])
 
         // 递归的构建 root 的左子树与右子树。
-        root.left = dfs(nums, left, mid - 1)
+        root.left = dfs(nums, l, mid - 1)
 
-        root.right = dfs(nums, mid + 1, right)
+        root.right = dfs(nums, mid + 1, r)
 
         return root
     }

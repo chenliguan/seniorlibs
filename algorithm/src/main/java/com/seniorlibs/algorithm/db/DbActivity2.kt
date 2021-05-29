@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
-import java.util.*
 
 
 /**
@@ -41,6 +40,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_climb_stairs).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_cost_climb_stairs).setOnClickListener(this)
         findViewById<View>(R.id.btn_fib).setOnClickListener(this)
+        findViewById<View>(R.id.btn_fib_2).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_can_partition).setOnClickListener(this)
         findViewById<View>(R.id.btn_change_II).setOnClickListener(this)
@@ -74,6 +74,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib2(5)}")
                 LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib3(5)}")
                 LogUtils.e(DbActivity.TAG, "509. 斐波那契数：${fib4(5)}")
+            }
+            R.id.btn_fib_2 -> {
+                LogUtils.e(DbActivity.TAG, "剑指 Offer 10- I. 斐波那契数列：${fib(5)}")
             }
 
 
@@ -368,14 +371,13 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         if (n == 0) return 0
         if (n == 1) return 1
 
-        val size = n + 1
-        val dp = IntArray(size)
+        val dp = IntArray(n + 1)
         // base case
         dp[0] = 0
         dp[1] = 1
 
         // dp
-        for (i in 2 until size) {
+        for (i in 2 until n + 1) {
             dp[i] = dp[i - 1] + dp[i - 2]
         }
 
@@ -409,6 +411,34 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         return cur
     }
 
+
+    /**
+     * 剑指 Offer 10- I. 斐波那契数列
+     * 区别：答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+     *
+     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
+     * 空间复杂度：O(n)，使用了空间大小为 N 的数组
+     *
+     * https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/solution/jian-zhi-offer-10-i-fei-bo-na-qi-shu-lie-iqtw/
+     * @param n
+     * @return
+     */
+    fun fib(n: Int): Int {
+        if (n == 0) return 0
+        if (n == 1) return 1
+
+        val dp = IntArray(n + 1)
+        // base case
+        dp[0] = 0
+        dp[1] = 1
+
+        // dp
+        for (i in 2 until n + 1) {
+            dp[i] = (dp[i - 1] + dp[i - 2]) % 1000000007
+        }
+
+        return dp[n]
+    }
 
 
 
