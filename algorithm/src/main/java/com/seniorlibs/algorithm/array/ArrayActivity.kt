@@ -2,8 +2,10 @@ package com.seniorlibs.algorithm.array
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.baselib.utils.LogUtils
@@ -43,6 +45,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_merge).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_repeat_number).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge_interval).setOnClickListener(this)
+        findViewById<View>(R.id.btn_can_attend_meetings).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_meeting_rooms).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_sub_arrayLen).setOnClickListener(this)
         findViewById<View>(R.id.btn_rotate).setOnClickListener(this)
         findViewById<View>(R.id.btn_rotate_matrix).setOnClickListener(this)
@@ -113,6 +117,32 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 intArrayOf(26, 30)
             )
             LogUtils.d(TAG, "56. 合并区间：${mergeInterval(nums)}")
+        }
+        R.id.btn_can_attend_meetings -> {
+            //  [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
+            val nums = arrayOf(
+                intArrayOf(1, 4),
+                intArrayOf(2, 5),
+                intArrayOf(8, 16),
+                intArrayOf(17, 24),
+                intArrayOf(26, 30)
+            )
+            LogUtils.d(TAG, "252. 会议室：${canAttendMeetings(nums)}")
+        }
+        R.id.btn_min_meeting_rooms -> {
+            //  [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
+            val nums = arrayOf(
+                intArrayOf(1, 4),
+                intArrayOf(2, 5),
+                intArrayOf(8, 16),
+                intArrayOf(17, 24),
+                intArrayOf(26, 30)
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                LogUtils.d(TAG, "253. 会议室 II：${minMeetingRooms(nums)}")
+            } else {
+                TODO("VERSION.SDK_INT < N")
+            }
         }
         R.id.btn_min_sub_arrayLen -> {
             val nums = intArrayOf(2, 3, 1, 2, 4, 3)
@@ -727,19 +757,79 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         // 遍历区间
         val res = Array(intervals.size) { IntArray(2) }
         var x = -1
-        for (array in intervals) {
+        for (i in 1 until intervals.size) {
             // 如果结果数组是空的，或者 当前数组的起始位置 > 结果中最后数组的终止位置，
             // 则不合并，直接将当前数组加入结果数组 [15,18] -> [8,10] + [15,18]
-            if (x == -1 || array[0] > res[x][1]) {
-                res[++x] = array
+            if (x == -1 || intervals[i][0] > res[x][1]) {
+                res[++x] = intervals[i]
             } else {
                 // 反之将当前数组合并至结果中的 最后数组 [2,6] -> [1,3->6] == [1,6]
-                res[x][1] = Math.max(res[x][1], array[1])
+                res[x][1] = Math.max(res[x][1], intervals[i][1])
             }
         }
 
         // 复制指定的数组，以空值截断或填充：x = 2，因此 +1 [[1,6],[8,10],[15,18],[0,0]] -> [[1,6],[8,10],[15,18]
         return Arrays.copyOf(res, x + 1)
+    }
+
+
+    /**
+     * 252. 会议室
+     *
+     * 时间复杂度: O(nlogn)。时间复杂度由排序决定。一旦排序完成，只需要 O(n) 的时间来判断交叠。
+     * 空间复杂度: O(1)。没有使用额外空间
+     *
+     * https://leetcode-cn.com/problems/meeting-rooms/solution/252-hui-yi-shi-by-chen-li-guan-obsi/
+     * @param intervals
+     * @return
+     */
+    fun canAttendMeetings(intervals: Array<IntArray>): Boolean {
+        // 先按照区间起始位置排序
+        Arrays.sort(intervals) {v1, v2 -> v1[0] - v2[0]}
+
+        for (i in 1 until intervals.size) {
+            if (intervals[i][0] < intervals[i - 1][1]) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+
+    /**
+     * 253. 会议室 II
+     *
+     * 时间复杂度：O(NlogN)；
+     * 空间复杂度：O(N)；
+     *
+     * https://leetcode-cn.com/problems/meeting-rooms-ii/solution/253-hui-yi-shi-ii-by-chen-li-guan-n8yr/
+     * @param intervals
+     * @return
+     */
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun minMeetingRooms(intervals: Array<IntArray>): Int {
+        // 先按照区间起始位置排序
+        Arrays.sort(intervals) {v1, v2 -> v1[0] - v2[0]}
+
+        val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o1 - o2 })
+
+        // 添加第一次会议
+        heap.add(intervals[0][1])
+
+        // 迭代剩余的间隔
+        for (i in 1 until intervals.size) {
+            // 如果最早空闲的房间空闲，则将该房间分配给本次会议。
+            if (intervals[i][0] >= heap.peek()!!) {
+                heap.poll()
+            }
+
+            // 如果要分配一个新房间，添加到堆中。如果分配了旧房间，那么也必须添加到具有更新结束时间的堆中
+            heap.add(intervals[i][1])
+        }
+
+        // 堆的大小告诉我们所有会议所需的最少房间数。
+        return heap.size
     }
 
 

@@ -68,6 +68,16 @@
             style="@style/BtnStyles"
             android:text="56. 合并区间" />
 
+        <Button
+            android:id="@+id/btn_can_attend_meetings"
+            style="@style/BtnStyles"
+            android:text="252. 会议室" />
+
+        <Button
+            android:id="@+id/btn_min_meeting_rooms"
+            style="@style/BtnStyles"
+            android:text="253. 会议室 II" />
+
 
         <Button
             android:id="@+id/btn_min_sub_arrayLen"
