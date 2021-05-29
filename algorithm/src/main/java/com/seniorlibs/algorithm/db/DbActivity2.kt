@@ -48,6 +48,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_word_break).setOnClickListener(this)
 
         findViewById<View>(R.id.btn_longest_common_sub_sequence).setOnClickListener(this)
+        findViewById<View>(R.id.btn_min_distance).setOnClickListener(this)
+        findViewById<View>(R.id.btn_minimum_delete_sum).setOnClickListener(this)
+        findViewById<View>(R.id.btn_num_decodings).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_length).setOnClickListener(this)
         findViewById<View>(R.id.btn_maximal_square).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_edit_distance).setOnClickListener(this)
@@ -111,6 +114,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_minimum_delete_sum -> {
                 LogUtils.e(DbActivity.TAG, "712. 两个字符串的最小ASCII删除和：${minimumDeleteSum("ace", "abcde")}")
+            }
+            R.id.btn_num_decodings -> {
+                LogUtils.e(DbActivity.TAG, " 91. 解码方法：${numDecodings("226")}")
             }
 
             R.id.btn_maximal_square -> {
@@ -1114,6 +1120,43 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         }
         return ret
     }
+
+
+    /**
+     * 91. 解码方法
+     * 题意：一个解码内容为一个 item。
+     *
+     * 时间复杂度：O(n)；
+     * 空间复杂度：O(n)；
+     *
+     * https://leetcode-cn.com/problems/decode-ways/solution/91-jie-ma-fang-fa-by-chen-li-guan-marj/
+     *
+     * @param s
+     * @return
+     */
+    fun numDecodings(s: String): Int {
+        // dp 定义是：「位置 i 自己能否形成独立 item 」和「位置 i 能够与上一位置（i-1）能否形成 item」
+        val dp = IntArray(s.length + 1)
+
+        // base case
+        dp[0] = 1
+
+        for (i in 1 until s.length + 1) {
+            // 如果当前字符不是0，则至少有一条转移路径，从 dp[i-1] 而来
+            if (s[i - 1] != '0') {
+                dp[i] = dp[i - 1]
+            }
+
+            // 只能由位置 i 的与前一位置（i-1）共同作为一个 item --> dp[i] 由 dp[i - 2] 转移过来
+            // 位置 i 既能作为独立 item 也能与上一位置形成 item  --> dp[i] 由 dp[i - 1] + dp[i - 2] 转移过来
+            if (i > 1 && s[i - 2] != '0' && ((s[i - 2] - '0') * 10 + (s[i - 1] - '0')) <= 26) {
+                dp[i] = dp[i] + dp[i - 2]
+            }
+        }
+        return dp[s.length]
+    }
+
+
 
     /**
      * 72. 编辑距离（了解）

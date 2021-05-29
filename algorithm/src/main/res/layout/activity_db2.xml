@@ -82,6 +82,11 @@
             android:text="712. 两个字符串的最小ASCII删除和" />
 
         <Button
+            android:id="@+id/btn_num_decodings"
+            style="@style/BtnStyles"
+            android:text="91. 解码方法" />
+
+        <Button
             android:id="@+id/btn_maximal_square"
             style="@style/BtnStyles"
             android:text="221. 最大正方形" />
