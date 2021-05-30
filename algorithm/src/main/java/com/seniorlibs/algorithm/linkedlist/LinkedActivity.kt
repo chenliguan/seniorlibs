@@ -65,6 +65,8 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_delete_duplicates).setOnClickListener(this)
         findViewById<View>(R.id.btn_delete_duplicates2).setOnClickListener(this)
         findViewById<View>(R.id.btn_rotate_right).setOnClickListener(this)
+        findViewById<View>(R.id.btn_delete_node).setOnClickListener(this)
+        findViewById<View>(R.id.btn_copy_random_list).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -298,6 +300,32 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li4.next = li5
                 li5.next = null
                 LogUtils.e(TAG, "61. 旋转链表：${rotateRight(li1, 3)}")
+            }
+            R.id.btn_delete_node -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "237. 删除链表中的节点（没有头结点）：${deleteNode(li2)}")
+            }
+            R.id.btn_copy_random_list -> {
+                val li1 = ListNode(1)
+                val li2 = ListNode(2)
+                val li3 = ListNode(3)
+                val li4 = ListNode(4)
+                val li5 = ListNode(5)
+                li1.next = li2
+                li2.next = li3
+                li3.next = li4
+                li4.next = li5
+                li5.next = null
+                LogUtils.e(TAG, "138. 复制带随机指针的链表：${copyRandomList(li2)}")
             }
             else -> {
             }
@@ -1072,4 +1100,51 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         node.`val` = node.next!!.`val`
         node.next = node.next!!.next
     }
+
+
+    /**
+     * 138. 复制带随机指针的链表
+     *
+     * 时间复杂度：O(N)；
+     * 空间复杂度：O(1)；
+     *
+     * https://leetcode-cn.com/problems/copy-list-with-random-pointer/solution/138-fu-zhi-dai-sui-ji-zhi-zhen-de-lian-b-c8d5/
+     *
+     * @param head
+     * @return
+     */
+    fun copyRandomList(head: ListNode?): ListNode? {
+        if (head == null) return null
+
+        // 创建一个哈希表，key 是原节点，value 是新节点
+        val map = hashMapOf<ListNode, ListNode>()
+        var p = head
+        // 将原节点作为 key，新节点作为 value 放入哈希表中
+        while (p != null) {
+            val newNode = ListNode(p.`val`)
+            map[p] = newNode
+            p = p.next
+        }
+
+        // 重新执行原链表头结点
+        p = head
+        // 遍历原链表，设置新节点的 next 和 random 指针
+        while (p != null) {
+            val newNode = map[p]
+            // p 是原节点，map[p] 是对应的新节点。p.next 是原节点的next，map[p.next] 是原节点的next对应的 新节点的next
+            if (p.next != null) {
+                newNode?.next = map[p.next!!]
+            }
+            // p.random 是原节点随机指向，map[p.random] 是原节点随机指向对应的新节点
+//            if (p.random != null) {
+//                newNode.random = map[p.random]
+//            }
+            // 移动旧链表
+            p = p.next
+        }
+
+        // 返回头结点，即原头节点对应的 新链表的头节点
+        return map[head]
+    }
+
 }

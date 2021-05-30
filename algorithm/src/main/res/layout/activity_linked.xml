@@ -121,5 +121,17 @@
             android:layout_height="48dp"
             android:text="61. 旋转链表" />
 
+        <Button
+            android:id="@+id/btn_delete_node"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="237. 删除链表中的节点（没有头结点）" />
+
+        <Button
+            android:id="@+id/btn_copy_random_list"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="138. 复制带随机指针的链表" />
+
     </LinearLayout>
 </ScrollView>
