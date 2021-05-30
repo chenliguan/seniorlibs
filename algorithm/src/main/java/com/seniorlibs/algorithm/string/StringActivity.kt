@@ -2,12 +2,15 @@ package com.seniorlibs.algorithm.string
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.algorithm.R
 import com.seniorlibs.algorithm.array.ArrayActivity
 import com.seniorlibs.baselib.utils.LogUtils
+import java.lang.String.join
 import java.util.*
 
 /**
@@ -1923,5 +1926,53 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
         // 版本号相同，则返回 0
         return 0
+    }
+
+
+    /**
+     * 71. 简化路径 （了解）
+     *
+     * https://leetcode-cn.com/problems/simplify-path/solution/71-jian-hua-lu-jing-by-chen-li-guan-etd3/
+     * @param path
+     * @return
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun simplifyPath(path: String?): String? {
+        // 如果路径为空,直接返回"/"
+        if (path == null || path.isEmpty()) return "/"
+
+        val res = arrayListOf<String>()
+        val names = mutableListOf<String>()
+
+        // 获取每个目录名称
+        var i = 0
+        while (i < path.length) {
+            if (path[i] != '/') {
+                var j = i
+                while (j < path.length && path[j] != '/') {
+                    j++
+                }
+                names.add(path.substring(i, j))
+                i = j
+            }
+            i++
+        }
+
+        // 构造路径
+        for (i in 0 until names.size + 1) {
+            // 如果目录名称为"..",需要特殊判断
+            if (names[i] == "..") {
+                // 如果此时路径还有目录,则返回上一级;否则,忽略它
+                if (res.size > 0) {
+                    res.removeAt(res.size - 1)
+                }
+            } else if (names[i] != ".") {
+                // 如果目录名称不为"."(即当前目录),则加入路径
+                res.add(names[i])
+            }
+            // 如果上述情况都没匹配到,则说明该目录名称为"."(即当前目录),直接忽略
+        }
+
+        return "/" + join("/", res)
     }
 }
