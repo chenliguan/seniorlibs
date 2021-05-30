@@ -72,6 +72,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_sorted_array_to_bst).setOnClickListener(this)
         findViewById<View>(R.id.btn_sorted_list_to_bst).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_nodes).setOnClickListener(this)
+        findViewById<View>(R.id.btn_is_sub_structure).setOnClickListener(this)
         findViewById<View>(R.id.btn_ladder_length).setOnClickListener(this)
     }
 
@@ -446,6 +447,23 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
                 val node_right2 = TreeNode(9)
                 node_right.left = node_right2
                 LogUtils.e(TAG, "222. 完全二叉树的节点个数：${countNodes(node)}")
+                LogUtils.e(TAG, "222. 完全二叉树的节点个数2：${countNodes2(node)}")
+            }
+            R.id.btn_is_sub_structure -> {
+                val node = TreeNode(1)
+                val node_left = TreeNode(2)
+                val node_right = TreeNode(3)
+                node.left = node_left
+                node.right = node_right
+
+                val node_right1 = TreeNode(4)
+                node_left.right = node_right1
+                val node_left1 = TreeNode(5)
+                node_left.left = node_left1
+
+                val node_right2 = TreeNode(9)
+                node_right.left = node_right2
+                LogUtils.e(TAG, "剑指 Offer 26. 树的子结构：${isSubStructure(node, node_right1)}")
             }
             R.id.btn_ladder_length -> {
                 val list = mutableListOf("hot", "dot", "dog", "lot", "log", "cog")
@@ -1210,7 +1228,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun buildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
         val map = mutableMapOf<Int, Int>()
-        for (i in 0 until inorder.size) map[inorder[i]] = i
+        for (i in 0 until inorder.size) {
+            map[inorder[i]] = i
+        }
 
         return buildTrees(
             preorder, 0, preorder.size - 1,
@@ -1222,7 +1242,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         preorder: IntArray, preStart: Int, preEnd: Int,
         inorder: IntArray, inStart: Int, inEnd: Int, map: MutableMap<Int, Int>
     ): TreeNode? {
-        // 1.递归终结条件：当后指针在前指针前时，返回null结束
+        // 1.递归终结条件：当后指针在前指针前时，返回 null 结束
         if (preStart > preEnd) return null
 
         // 2.处理当前层逻辑
@@ -1267,7 +1287,9 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun buildTree1(postorder: IntArray, inorder: IntArray): TreeNode? {
         // 构造哈希映射，帮助我们快速定位中序数组根节点
         val map = mutableMapOf<Int, Int>()
-        for (i in 0 until inorder.size) map[inorder[i]] = i
+        for (i in 0 until inorder.size) {
+            map[inorder[i]] = i
+        }
 
         return buildTree1s(
             postorder, 0, postorder.size - 1,
@@ -1486,10 +1508,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     fun largestValues(root: TreeNode?): List<Int> {
         // 1.1 创建一个存放最终结果的集合 和 存放节点的队列
         val res = mutableListOf<Int>()
-        val queue = LinkedList<TreeNode>()
 
         // 1.2 创建一个队列，将根节点放入其中
-        if (root == null) return res else queue.offer(root)
+        if (root == null) return res
+
+        val queue = LinkedList<TreeNode>()
+        queue.offer(root)
 
         // 2.1 遍历每一层前，存下当前队列的长度
         var size = queue.size
@@ -1618,7 +1642,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 2.1 遍历每一层前，当前层的队列不为空，继续遍历
         var size = queue.size
         while (size > 0) {
-            val list: MutableList<Int> = mutableListOf()
+            val list = mutableListOf<Int>()
             // 2.2 将这一层的元素全部取出（因为长度已确定，不会遍历新加入的左右节点）
             for (i in 0 until size) {
                 val node = queue.poll()
@@ -1658,9 +1682,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun isSymmetric(root: TreeNode?): Boolean {
-        if (root == null) {
-            return true
-        }
+        if (root == null) return true
 
         // 调用递归函数，比较左节点，右节点
         return dfs(root.left, root.right)
@@ -1668,17 +1690,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
     fun dfs(left: TreeNode?, right: TreeNode?): Boolean {
         // 递归的终止条件是两个节点都为空，返回 true
-        if (left == null && right == null) {
-            return true
-        }
+        if (left == null && right == null) return true
 
         // 两个节点中有一个为空，或者两个节点的值不相等，返回 false
-        if (left == null || right == null) {
-            return false
-        }
-        if (left.`val` != right.`val`) {
-            return false
-        }
+        if (left == null || right == null) return false
+
+        if (left.`val` != right.`val`) return false
 
         // 再递归的比较 左节点的左孩子 和 右节点的右孩子，以及比较 左节点的右孩子 和 右节点的左孩子
         return dfs(left.left, right.right) && dfs(left.right, right.left)
@@ -2048,14 +2065,52 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 222. 完全二叉树的节点个数   方法二：暴力递归
      */
-    fun countNodes1(root: TreeNode?): Int {
+    fun countNodes2(root: TreeNode?): Int {
         if (root == null) return 0
 
-        val left = countNodes1(root.left)
+        val left = countNodes2(root.left)
 
-        val right = countNodes1(root.right)
+        val right = countNodes2(root.right)
 
         return left + right + 1
+    }
+
+
+    /**
+     * 剑指 Offer 26. 树的子结构
+     * 思路：若树 B 是树 A 的子结构，则子结构的根节点可能为树 A 的任意一个节点。
+     *
+     * 时间复杂度 O(MN)：其中 M,N 分别为树 A 和 树 B 的节点数量；先序遍历树 A 占用 O(M)，每次调用 recur(A, B) 判断占用 O(N)。
+     * 空间复杂度 O(M)：当树 A 和树 B 都退化为链表时，递归调用深度最大。
+     *
+     * @param A
+     * @param B
+     * @return
+     */
+    fun isSubStructure(A: TreeNode?, B: TreeNode?): Boolean {
+        // 约定空树不是任意一个树的子结构
+        if (A == null || B == null) return false
+
+        // 判断 A 树和 B 树的 根节点值 和 孩子节点值 是否对应相等
+        if (helper(A, B)) return true
+
+        // 递归判断 A 树的左、右子树是否包含 B 树
+        return isSubStructure(A.left, B) || isSubStructure(A.right, B)
+    }
+
+    /**
+     * 判断 A 树和 B 树的根节点值是否相等，
+     * 若不等，返回 false；
+     * 若相等，再递归判断 A 树和 B 树的的孩子节点是否对应相等，如果相等了，就说明 A 的子结构包含 B 树，返回 true。否者就不包含，返回 false
+     */
+    fun helper(A: TreeNode?, B: TreeNode?): Boolean {
+        if (B == null) return true
+
+        // A 树为空或者 A 节点的值不等于 B 结点的值，返回 false
+        if (A == null || A.`val` != B.`val`) return false
+
+        // 当 A.val == B.val 时，递归判断A树的子节点和B树的子节点是否对应相等
+        return helper(A.left, B.left) && helper(A.right, B.right)
     }
 
 

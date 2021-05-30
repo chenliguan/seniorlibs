@@ -1618,8 +1618,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-//    https://leetcode-cn.com/problems/course-schedule/
-
 //    https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/
 
 //    https://leetcode-cn.com/problems/simplify-path/
