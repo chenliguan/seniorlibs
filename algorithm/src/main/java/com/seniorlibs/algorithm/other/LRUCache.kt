@@ -12,6 +12,8 @@ package com.seniorlibs.algorithm.other
  * 为什么使用双向链表？在删除一个元素时，虽然能 O(1) 的找到目标结点，但是要删除该结点需要拿到前一个结点的指针，遍历到前一个结点复杂度会变为 O(N），所以用双链表实现比较合适。
  * 为什么要在链表中同时存储 key 和 val，而不是只存储 val？当缓存容量已满，我们不仅仅要删除最后一个 Node 节点，还要把 map 中映射到该节点的 key 同时删除，而这个 key 只能由 Node 得到。
  * @constructor Create empty L r u cache
+ *
+ * https://leetcode-cn.com/problems/lru-cache-lcci/solution/mian-shi-ti-1625-lru-huan-cun-by-chen-li-arrn/
  */
 class LRUCache(private val cap: Int) {
 

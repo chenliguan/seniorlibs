@@ -38,6 +38,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_climb_stairs).setOnClickListener(this)
+        findViewById<View>(R.id.btn_num_ways).setOnClickListener(this)
         findViewById<View>(R.id.btn_min_cost_climb_stairs).setOnClickListener(this)
         findViewById<View>(R.id.btn_fib).setOnClickListener(this)
         findViewById<View>(R.id.btn_fib_2).setOnClickListener(this)
@@ -68,6 +69,9 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(DbActivity.TAG, "70. 爬楼梯3：${fun3(5)}")
                 LogUtils.e(DbActivity.TAG, "70. 爬楼梯4：${fun4(5)}")
                 LogUtils.e(DbActivity.TAG, "70. 爬楼梯5：${fun5(5)}")
+            }
+            R.id.btn_num_ways -> {
+                LogUtils.e(DbActivity.TAG, "剑指 Offer 10- II. 青蛙跳台阶问题：${numWays(5)}")
             }
             R.id.btn_min_cost_climb_stairs -> {
                 LogUtils.e(DbActivity.TAG, "746. 使用最小花费爬楼梯：${minCostClimbingStairs(intArrayOf(1, 100, 1, 1, 1, 100, 1, 1, 100, 1))}")
@@ -225,23 +229,21 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun fun4(n: Int): Int {
-        if (n == 1) return 1
+        if (n == 0 || n == 1) return 1
         if (n == 2) return 2
 
-        val n = n + 1
-
-        val dp = IntArray(n)
+        val dp = IntArray(n + 1)
         // base case
         // dp[0] = 1
         dp[1] = 1
         dp[2] = 2
 
         // dp方程：f(n) = f(n-1) + f(n-2)
-        for (i in 3 until n) {
+        for (i in 3 until n + 1) {
             dp[i] = dp[i - 1] + dp[i - 2]
         }
 
-        return dp[n - 1]
+        return dp[n]
     }
 
 
@@ -271,6 +273,40 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         return sum
     }
 
+    /**
+     * 剑指 Offer 10- II. 青蛙跳台阶问题  解法一：动态规划(自底向上)（记住）
+     *
+     * 时间复杂度：O(n)。循环执行n次，每次花费常数的时间代价；
+     * 空间复杂度：O(n)。用了n空间的数组辅助，空间复杂度为。
+     *
+     * base case：
+     *    f(0) = 1
+     *    f(1) = 1
+     *    f(2) = 2
+     *
+     * DP方程：dp(n) = dp(n-1) + dp(n-2)
+     *
+     * https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/solution/jian-zhi-offer-10-ii-qing-wa-tiao-tai-ji-24d7/
+     * @param n
+     * @return
+     */
+    fun numWays(n: Int): Int {
+        if (n == 0 || n == 1) return 1
+        if (n == 2) return 2
+
+        val dp = IntArray(n + 1)
+        // base case
+        // dp[0] = 1
+        dp[1] = 1
+        dp[2] = 2
+
+        // dp方程：f(n) = f(n-1) + f(n-2)
+        for (i in 3 until n + 1) {
+            dp[i] = (dp[i - 1] + dp[i - 2]) % 1000000007
+        }
+
+        return dp[n]
+    }
 
     /**
      * 746. 使用最小花费爬楼梯
@@ -289,19 +325,17 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun minCostClimbingStairs(cost: IntArray): Int {
-        val n = cost.size + 1
-
-        val dp = IntArray(n)
+        val dp = IntArray(cost.size + 1)
         // base case
         dp[1] = 0
         dp[2] = Math.min(cost[0], cost[1])
 
         // dp方程：参考爬楼梯 dp[i] = dp[i - 1] + dp[i - 2]
-        for (i in 3 until n) {
+        for (i in 3 until cost.size + 1) {
             dp[i] = Math.min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2])
         }
 
-        return dp[n -1]
+        return dp[cost.size]
     }
 
 

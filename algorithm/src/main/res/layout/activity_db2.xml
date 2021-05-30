@@ -19,6 +19,11 @@
             android:text="70. 爬楼梯" />
 
         <Button
+            android:id="@+id/btn_num_ways"
+            style="@style/BtnStyles"
+            android:text="剑指 Offer 10- II. 青蛙跳台阶问题" />
+
+        <Button
             android:id="@+id/btn_min_cost_climb_stairs"
             style="@style/BtnStyles"
             android:text="746. 使用最小花费爬楼梯" />
