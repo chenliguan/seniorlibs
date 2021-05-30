@@ -39,6 +39,7 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_can_jump).setOnClickListener(this)
         findViewById<View>(R.id.btn_jump).setOnClickListener(this)
         findViewById<View>(R.id.btn_can_complete_circuit).setOnClickListener(this)
+        findViewById<View>(R.id.btn_maxi_mum_swap).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -61,6 +62,9 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
                         intArrayOf(3, 4, 5, 1, 2)
                     )}"
                 )
+            }
+            R.id.btn_maxi_mum_swap -> {
+                LogUtils.e(TAG, "670. 最大交换：${maximumSwap(2736)}")
             }
             else -> {
             }
@@ -131,8 +135,6 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun canCompleteCircuit(G: IntArray, C: IntArray): Int {
-        // 找一个子数组和最大的地方，那么也是相当于找一个子数组和最小的地方
-
         // 出发时加油站的编号
         var res = 0
         // 车里剩余的油量
@@ -158,5 +160,49 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
 
         // 当总和 >= 0 时有解，返回 res
         return if (total >= 0) res else -1
+    }
+
+
+    /**
+     * 670. 最大交换
+     * 思路：核心，就是把第一个小数和它后面最大的大数进行交换
+     *
+     * 时间复杂度：O(N)。其中 N 是输入数字的总位数。每个数字最多只考虑一次。
+     * 空间复杂度：O(1)，last 使用的额外空间最多只有 10 个。
+     *
+     * https://leetcode-cn.com/problems/maximum-swap/solution/670-zui-da-jiao-huan-by-chen-li-guan-x4ig/
+     *
+     * @param num
+     * @return
+     */
+    fun maximumSwap(num: Int): Int {
+        val s = num.toString()
+        val ch = s.toCharArray()
+
+        // 记录每个数字出现的最后一次出现的下标
+        val array = IntArray(10)
+        for (i in 0 until s.length) {
+            array[ch[i] - '0'] = i
+        }
+
+        // 原数组从左到右遍历，找到当前位置右边的最大的数字并交换
+        for (i in 0 until s.length - 1) {
+            // 遇到比当前位值大的，交换，因为索引数组从后往前遍历的，所以保证了值为最大
+            for (j in 9 downTo ch[i] - '0' + 1) {
+                if (array[j] > i) {
+                    swap(ch, i, array[j])
+                    // 只允许交换一次，因此直接返回
+                    return String(ch).toInt()
+                }
+            }
+        }
+
+        return num
+    }
+
+    fun swap(ch: CharArray, index1: Int, index2: Int) {
+        val temp = ch[index1]
+        ch[index1] = ch[index2]
+        ch[index2] = temp
     }
 }

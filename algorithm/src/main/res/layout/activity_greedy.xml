@@ -28,5 +28,10 @@
             style="@style/BtnStyles"
             android:text="134. 加油站" />
 
+        <Button
+            android:id="@+id/btn_maxi_mum_swap"
+            style="@style/BtnStyles"
+            android:text="670. 最大交换" />
+
     </LinearLayout>
 </ScrollView>

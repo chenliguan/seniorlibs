@@ -1551,9 +1551,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-//    https://leetcode-cn.com/problems/next-greater-element-iii/
-//
-//    https://leetcode-cn.com/problems/compare-version-numbers/
 //
 //    https://leetcode-cn.com/problems/maximum-swap/
 

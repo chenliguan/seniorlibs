@@ -75,6 +75,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_roman_to_int).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_continuous_sequence).setOnClickListener(this)
         findViewById<View>(R.id.btn_replace_space).setOnClickListener(this)
+        findViewById<View>(R.id.btn_compare_version).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -202,6 +203,10 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_replace_space -> {
                 LogUtils.d(TAG, "剑指 Offer 05. 替换空格：${replaceSpace("abc ef")}")
+            }
+            R.id.btn_compare_version -> {
+                LogUtils.d(TAG, "165. 比较版本号：${compareVersion("1.01", "1.01.1")}")
+                LogUtils.d(TAG, "165. 比较版本号2：${compareVersion2("1.01", "1.01.1.1")}")
             }
             else -> {
             }
@@ -804,12 +809,12 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun compressString(S: String): String {
-        if(S.isEmpty()) return S
+        if (S.isEmpty()) return S
 
         var left = 0
         val sb = StringBuilder()
 
-        for(i in 0 until S.length + 1) {
+        for (i in 0 until S.length + 1) {
 
             if (i == S.length || S[left] != S[i]) {
                 sb.append(S[left])
@@ -1269,7 +1274,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // carry == 1 处理最后一个的进位（当循环结束后，是不是还可能会有一个进位）
-        if(carry == 1) {
+        if (carry == 1) {
             // 添加下一个节点
             val curNode = ListNode(carry)
             curNode.next = cur
@@ -1847,5 +1852,76 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return res.toString()
+    }
+
+    /**
+     * 165. 比较版本号 方法一：双指针，一次遍历，常数空间
+     *
+     * 时间复杂度：O(max(N,M))。其中 N 和 M 指的是输入字符串的长度。
+     * 空间复杂度：O(1)，没有使用额外的数据结构。
+     *
+     * https://leetcode-cn.com/problems/compare-version-numbers/solution/165-bi-jiao-ban-ben-hao-by-chen-li-guan-cuti/
+     *
+     * @param version1
+     * @param version2
+     * @return
+     */
+    fun compareVersion(version1: String, version2: String): Int {
+        var index1 = 0
+        var index2 = 0
+
+        while (index1 < version1.length || index2 < version2.length) {
+            if (index1 < version1.length && version1[index1] == '.') index1++
+            if (index2 < version2.length && version2[index2] == '.') index2++
+
+            // 指针 p1 和 p2 分别指向 version1 和 version2 的起始位置：p1=p2=0。
+            var curr1 = 0
+            var curr2 = 0
+
+            // 并行遍历两个字符串。
+            while (index1 < version1.length && version1[index1] != '.') {
+                curr1 = curr1 * 10 + (version1[index1++] - '0')
+            }
+            while (index2 < version2.length && version2[index2] != '.') {
+                curr2 = curr2 * 10 + (version2[index2++] - '0')
+            }
+
+            if (curr1 != curr2) {
+                return if (curr1 < curr2) -1 else 1
+            }
+        }
+        return 0
+    }
+
+    /**
+     * 165. 比较版本号  方法二：分割+解析，两次遍历，线性空间
+     *
+     * 时间复杂度：O(N+M+max(N,M))。其中 N 和 M 指的是输入字符串的长度。
+     * 空间复杂度：O(N+M)，使用了两个数组 nums1 和 nums2 存储两个字符串的块。
+     *
+     * @param version1
+     * @param version2
+     * @return
+     */
+    fun compareVersion2(version1: String, version2: String): Int {
+        // 分割两个字符串将分割的结果存储到数组中
+        val nums1 = version1.split("\\.".toRegex()).toTypedArray()
+        val nums2 = version2.split("\\.".toRegex()).toTypedArray()
+
+        // 遍历较长数组并逐个比较块。如果其中一个数组结束了，实际上可以根据需要添加尽可能多的零，以继续与较长的数组进行比较。
+        var i1: Int
+        var i2: Int
+        for (i in 0 until Math.max(nums1.size, nums2.size)) {
+            i1 = if (i < nums1.size) nums1[i].toInt() else 0
+            i2 = if (i < nums2.size) nums2[i].toInt() else 0
+
+            // 如果两个版本号不同，则返回 1 或 -1
+            if (i1 != i2) {
+                return if (i1 > i2) 1 else -1
+            }
+        }
+
+        // 版本号相同，则返回 0
+        return 0
     }
 }

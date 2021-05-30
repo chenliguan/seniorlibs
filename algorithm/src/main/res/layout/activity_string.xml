@@ -203,5 +203,10 @@
             android:id="@+id/btn_replace_space"
             style="@style/BtnStyles"
             android:text="剑指 Offer 05. 替换空格" />
+
+        <Button
+            android:id="@+id/btn_compare_version"
+            style="@style/BtnStyles"
+            android:text="165. 比较版本号" />
     </LinearLayout>
 </ScrollView>
