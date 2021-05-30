@@ -1280,4 +1280,190 @@ n->f(n)
         }
         return res
     }
+
+
+    /**
+     * 470. 用 Rand7() 实现 Rand10()
+     *
+     * 时间复杂度：O(1)；
+     * 空间复杂度：O(1)；
+
+     * https://leetcode-cn.com/problems/implement-rand10-using-rand7/solution/263-chou-shu-by-chen-li-guan-9uky/
+     *
+     * @return
+     */
+    fun rand10(): Int {
+        // 首先得到一个数
+        var num = (rand7() - 1) * 7 + rand7()
+        // 只要它还大于40，那你就给我不断生成吧
+        while (num > 40) num = (rand7() - 1) * 7 + rand7()
+        // 返回结果，+1是为了解决 40%10为0的情况
+        return 1 + num % 10
+    }
+
+    fun rand7(): Int {
+        return 1
+    }
+
+
+    /**
+     * 263. 丑数
+     * 题意：丑数 就是只包含质因数 2、3 和/或 5 的正整数。
+     *
+     * 时间复杂度：当 n 是以 2 为底的对数时，需要除以 logn 次。复杂度为 O(logn)；
+     * 空间复杂度：O(1)；
+     *
+     * https://leetcode-cn.com/problems/ugly-number/solution/263-chou-shu-by-chen-li-guan-cqha/
+     *
+     * @param n
+     * @return
+     */
+    fun isUgly(n: Int): Boolean {
+        var n = n
+        if (n <= 0) return false
+        while (n % 2 == 0) n /= 2
+        while (n % 3 == 0) n /= 3
+        while (n % 5 == 0) n /= 5
+        return n == 1
+    }
+
+    /**
+     * 264. 丑数 II   方法一：优先队列（小根堆）解法
+     * 题意：给你一个整数 n ，请你找出并返回第 n 个 丑数。n = 10，[1, 2, 3, 4, 5, 6, 8, 9, 10, 12]，输出：12
+     *
+     * 时间复杂度：从优先队列中取最小值为 O(1)，往优先队列中添加元素复杂度为 O(logn)。整体复杂度为 O(nlogn)。
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/ugly-number-ii/solution/264-chou-shu-ii-by-chen-li-guan-8l4f/
+     *
+     * @param n
+     * @return
+     */
+    fun nthUglyNumber(n: Int): Int {
+        val nums = intArrayOf(2, 3, 5)
+
+        val set = hashSetOf<Long>()
+        val pq = PriorityQueue<Long>()
+
+        // 先将最小丑数 1 放入队列
+        set.add(1L)
+        pq.add(1L)
+
+        // 循环多次，第 n 次出队的值即是答案
+        for (i in 1 until n + 1) {
+            // 每次从队列取出最小值 x
+            val x = pq.poll()
+            if (i == n) {
+                return x.toInt()
+            }
+
+            // 然后将 x 所对应的丑数 2x、3x 和 5x 进行入队
+            for (num in nums) {
+                val t = num * x
+                if (!set.contains(t)) {
+                    set.add(t)
+                    pq.add(t)
+                }
+            }
+        }
+        return -1
+    }
+
+
+    /**
+     * 179. 最大数
+     *
+     * 时间复杂度：O(nlogn)
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/largest-number/solution/179-zui-da-shu-by-chen-li-guan-nwk6/
+     *
+     * @param nums
+     * @return
+     */
+    fun largestNumber(nums: IntArray): String? {
+        val numToWords = arrayOfNulls<String>(nums.size)
+        for (i in 0 until nums.size) {
+            numToWords[i] = nums[i].toString()
+        }
+        // compareTo()方法比较的时候是按照ASCII码逐位比较的
+        // 通过比较(a+b)和(b+a)的大小，就可以判断出a,b两个字符串谁应该在前面
+        // 所以[3,30,34]排序后变为[34,3,30]，[233，23333]排序后变为[23333，233]
+        Arrays.sort(numToWords) { a, b -> (b + a).compareTo(a + b) }
+        // 如果排序后的第一个元素是0，那后面的元素肯定小于或等于0，则可直接返回0
+        if (numToWords[0] == "0") {
+            return "0"
+        }
+
+        val sb = StringBuilder()
+        for (i in 0 until nums.size) {
+            sb.append(numToWords[i])
+        }
+        return sb.toString()
+    }
+
+
+    /**
+     * 38. 外观数列
+     *
+     * 时间复杂度：循环 n 次，复杂度为 O(n)O(n)；每次循环处理一遍当前的 s 字符串，复杂度为 O(n) 。整体复杂度为 O(n^2)。
+     * 空间复杂度：O(n)。
+     *
+     * https://leetcode-cn.com/problems/count-and-say/solution/38-wai-guan-shu-lie-by-chen-li-guan-cia2/
+     *
+     * @param n
+     * @return
+     */
+    fun countAndSay(n: Int): String? {
+        var s = "1"
+        for (i in 2 until n + 1) {
+            // 只需要统计字符串 s 中每一段连续出现的字符的类型和出现次数即可
+            s = nextString(s)
+        }
+        return s
+    }
+
+    fun nextString(s: String): String {
+        // 往结尾添加一个"哨兵"，使用「哨兵技巧」来简化我们统计的逻辑，避免在循环外统计最后一次字符
+        var s = s
+        s = s + "a"
+        val sb = StringBuilder()
+
+        var c = s[0]
+        var cnt = 1
+        for (i in 1 until s.length) {
+            val cur = s[i]
+            if (cur == c) {
+                cnt++
+            } else {
+                sb.append(cnt)
+                sb.append(c)
+
+                c = cur
+                cnt = 1
+            }
+        }
+        return sb.toString()
+    }
+
+
+
+
+//    https://leetcode-cn.com/problems/next-greater-element-iii/
+//
+//    https://leetcode-cn.com/problems/compare-version-numbers/
+//
+//    https://leetcode-cn.com/problems/maximum-swap/
+
+//    https://leetcode-cn.com/problems/course-schedule/
+
+//    https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/
+
+//    https://leetcode-cn.com/problems/simplify-path/
+
+//    https://leetcode-cn.com/problems/copy-list-with-random-pointer/
+
+//    https://leetcode-cn.com/problems/lru-cache-lcci/
 }
+
+
