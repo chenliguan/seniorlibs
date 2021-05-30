@@ -68,7 +68,7 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_single_numbers -> {
                 LogUtils.e(
                     TAG,
-                    "剑指 Offer 56 - I. 数组中数字出现的次数：" + singleNumbers(intArrayOf(3, 3, 5, 5, 6, 7))
+                    "剑指 Offer 56 - I. 数组中数字出现的次数：" + singleNumbers(intArrayOf(3, 3, 5, 5, 6, 1))
                 )
             }
             else -> {
@@ -210,24 +210,24 @@ class BitActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun singleNumbers(nums: IntArray): IntArray? {
-        // 1.对所有数字进行一次异或，得到两个出现一次的数字的异或值的结果 k，k!=0。eg：335567，最终求出 6,7
+        // 1.对所有数字进行一次异或，得到两个出现一次的数字的异或值的结果 k，k!=0。eg：335561，最终求出 6,1
         var k = 0
         for (num in nums) {
             k = k xor num
         }
 
-        // 2.根据k找到67相互嫌弃的点在哪，即获得k中最低位的1。eg：6:1 1 0，7:1 1 1
+        // 2.根据k找到6,1相互嫌弃的点在哪，即获得k中最低位的 1 (不嫌弃的点异或结果是0)。eg：6:110 xor 1:001 = k:111
         var mask = 1
-        // mask = k & (-k) 这种方法也可以得到mask
+        // eg：k and mask == 111，因此选 mask = 1
         while (k and mask == 0) {
             mask = mask shl 1
         }
 
-        // 3.根据这个互相嫌弃的点，分成两组，对所有的数字进行遍历，6,7就不会被分到一个组了，成对出现的数字分到一组
+        // 3.根据这个互相嫌弃的点，分成两组，对所有的数字进行遍历，6,1就不会被分到一个组了，成对出现的数字分到一组
         var a = 0
         var b = 0
         for (num in nums) {
-            // 在每个组内进行异或操作，最终剩下6，7分在不同组里
+            // 在每个组内进行异或操作，最终剩下6，1分在不同组里  eg：6:110 & 001 = 0，1:001 & 001 = 1
             if (num and mask == 0) {
                 a = a xor num
             } else {

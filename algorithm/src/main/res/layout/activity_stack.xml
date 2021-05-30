@@ -48,5 +48,15 @@
             style="@style/BtnStyles"
             android:text="456. 132 模式" />
 
+        <Button
+            android:id="@+id/btn_next_greater_element"
+            style="@style/BtnStyles"
+            android:text="496. 下一个更大元素 1" />
+
+        <Button
+            android:id="@+id/btn_next_greater_element2"
+            style="@style/BtnStyles"
+            android:text="503. 下一个更大元素 2" />
+
     </LinearLayout>
 </ScrollView>

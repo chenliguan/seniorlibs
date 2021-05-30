@@ -130,8 +130,33 @@
             android:text="31. 下一个排列" />
 
         <Button
+            android:id="@+id/btn_next_greater_element3"
+            style="@style/BtnStyles"
+            android:text="556. 下一个更大元素 3" />
+
+        <Button
             android:id="@+id/btn_generate"
             style="@style/BtnStyles"
             android:text="118. 杨辉三角" />
+
+        <Button
+            android:id="@+id/btn_rand10"
+            style="@style/BtnStyles"
+            android:text="470. 用 Rand7() 实现 Rand10()" />
+
+        <Button
+            android:id="@+id/btn_nth_ugly_number"
+            style="@style/BtnStyles"
+            android:text="264. 丑数 II" />
+
+        <Button
+            android:id="@+id/btn_largest_number"
+            style="@style/BtnStyles"
+            android:text="179. 最大数" />
+
+        <Button
+            android:id="@+id/btn_count_and_say"
+            style="@style/BtnStyles"
+            android:text="38. 外观数列" />
     </LinearLayout>
 </ScrollView>

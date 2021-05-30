@@ -44,6 +44,8 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_daily_temperatures).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_max).setOnClickListener(this)
         findViewById<View>(R.id.btn_find_132_pattern).setOnClickListener(this)
+        findViewById<View>(R.id.btn_next_greater_element).setOnClickListener(this)
+        findViewById<View>(R.id.btn_next_greater_element2).setOnClickListener(this)
     }
 
     private fun initData() {
@@ -95,6 +97,12 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 //            }
             R.id.btn_find_132_pattern -> {
                 LogUtils.d(TAG, "456. 132 模式：${find132pattern(intArrayOf(3, 1, 4, 2))}")
+            }
+            R.id.btn_next_greater_element -> {
+                LogUtils.d(TAG, "496. 下一个更大元素 1：${nextGreaterElement(intArrayOf(4,1,2), intArrayOf(1,3,4,2))}")
+            }
+            R.id.btn_next_greater_element2 -> {
+                LogUtils.d(TAG, "503. 下一个更大元素 2：${nextGreaterElements2(intArrayOf(1,2,1))}")
             }
             else -> {
             }
@@ -354,5 +362,74 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         return false
+    }
+
+
+    /**
+     * 496. 下一个更大元素 I
+     * 题意：找出 nums1 中每个元素在 nums2 中的下一个比其大的值。
+     *
+     * 时间复杂度：O(N + M)，分别遍历数组 nums1 和数组 nums2 各一次即可，对于 nums2 中的每个元素，进栈一次，出栈一次。
+     * 空间复杂度：O(N)。
+     *
+     * https://leetcode-cn.com/problems/next-greater-element-i/solution/496-xia-yi-ge-geng-da-yuan-su-i-by-chen-uskkx/
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    fun nextGreaterElement(nums1: IntArray, nums2: IntArray): IntArray? {
+        val map = hashMapOf<Int, Int>()
+        val stack = LinkedList<Int>()
+
+        // 先行将 nums2 中的数字，对应的下一个更大的数字已经找出来，然后放到哈希表中
+        for (i in 0 until nums2.size) {
+            while (stack.isNotEmpty() && nums2[i] > nums2[stack.peek()]) {
+                val j = stack.pop()
+                map[nums2[j]] = nums2[i]
+            }
+
+            // 下标入栈
+            stack.push(i)
+        }
+
+        // 供后面 nums1 直接使用即可
+        val res = IntArray(nums1.size)
+        for (i in 0 until nums1.size) {
+            if (map.containsKey(nums1[i])) {
+                res[i] = map[nums1[i]]!!
+            } else {
+                res[i] = -1
+            }
+        }
+        return res
+    }
+
+    /**
+     * 503. 下一个更大元素 II
+     * 思路：如何实现循环数组？把这个循环数组「拉直」，即复制该序列的前 n-1 个元素拼接在原序列的后面，遍历该数组中每个元素最多 2 次。
+     *
+     * 时间复杂度: O(n)；
+     * 空间复杂度: O(n)；
+     *
+     * https://leetcode-cn.com/problems/next-greater-element-ii/solution/503-xia-yi-ge-geng-da-yuan-su-ii-by-chen-ds81/
+     *
+     * @param nums
+     * @return
+     */
+    fun nextGreaterElements2(nums: IntArray): IntArray? {
+        val res = IntArray(nums.size)
+        val stack = LinkedList<Int>()
+
+        Arrays.fill(res, -1)
+
+        for (i in 0 until nums.size * 2 - 1) {
+            while (stack.isNotEmpty() && nums[i % nums.size] > nums[stack.peek()]) {
+                res[stack.pop()] = nums[i % nums.size]
+            }
+
+            stack.push(i % nums.size)
+        }
+        return res
     }
 }

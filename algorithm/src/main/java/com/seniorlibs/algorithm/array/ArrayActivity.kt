@@ -57,7 +57,12 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_generate_matrix).setOnClickListener(this)
         findViewById<View>(R.id.btn_subarray_sum).setOnClickListener(this)
         findViewById<View>(R.id.btn_next_permutation).setOnClickListener(this)
+        findViewById<View>(R.id.btn_next_greater_element3).setOnClickListener(this)
         findViewById<View>(R.id.btn_generate).setOnClickListener(this)
+        findViewById<View>(R.id.btn_rand10).setOnClickListener(this)
+        findViewById<View>(R.id.btn_nth_ugly_number).setOnClickListener(this)
+        findViewById<View>(R.id.btn_largest_number).setOnClickListener(this)
+        findViewById<View>(R.id.btn_count_and_say).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -111,33 +116,33 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_merge_interval -> {
             //  [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
             val nums = arrayOf(
-                intArrayOf(1, 4),
-                intArrayOf(2, 5),
-                intArrayOf(8, 16),
-                intArrayOf(17, 24),
-                intArrayOf(26, 30)
+                    intArrayOf(1, 4),
+                    intArrayOf(2, 5),
+                    intArrayOf(8, 16),
+                    intArrayOf(17, 24),
+                    intArrayOf(26, 30)
             )
             LogUtils.d(TAG, "56. 合并区间：${mergeInterval(nums)}")
         }
         R.id.btn_can_attend_meetings -> {
             //  [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
             val nums = arrayOf(
-                intArrayOf(1, 4),
-                intArrayOf(2, 5),
-                intArrayOf(8, 16),
-                intArrayOf(17, 24),
-                intArrayOf(26, 30)
+                    intArrayOf(1, 4),
+                    intArrayOf(2, 5),
+                    intArrayOf(8, 16),
+                    intArrayOf(17, 24),
+                    intArrayOf(26, 30)
             )
             LogUtils.d(TAG, "252. 会议室：${canAttendMeetings(nums)}")
         }
         R.id.btn_min_meeting_rooms -> {
             //  [[1,4,7,11,15],[2,5,6,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]
             val nums = arrayOf(
-                intArrayOf(1, 4),
-                intArrayOf(2, 5),
-                intArrayOf(8, 16),
-                intArrayOf(17, 24),
-                intArrayOf(26, 30)
+                    intArrayOf(1, 4),
+                    intArrayOf(2, 5),
+                    intArrayOf(8, 16),
+                    intArrayOf(17, 24),
+                    intArrayOf(26, 30)
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 LogUtils.d(TAG, "253. 会议室 II：${minMeetingRooms(nums)}")
@@ -155,9 +160,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_rotate_matrix -> {
             val array = arrayOf(
-                intArrayOf(1, 2, 3),
-                intArrayOf(4, 5, 6),
-                intArrayOf(7, 8, 9)
+                    intArrayOf(1, 2, 3),
+                    intArrayOf(4, 5, 6),
+                    intArrayOf(7, 8, 9)
             )
             LogUtils.d(TAG, "01.07. 旋转矩阵 == 48. 旋转图像：${rotateMatrix(array)}")
         }
@@ -176,9 +181,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_spiral_order -> {
             val array = arrayOf(
-                intArrayOf(1, 4, 7),
-                intArrayOf(2, 5, 6),
-                intArrayOf(3, 6, 9)
+                    intArrayOf(1, 4, 7),
+                    intArrayOf(2, 5, 6),
+                    intArrayOf(3, 6, 9)
             )
             LogUtils.d(TAG, "剑指 Offer 29. 顺时针打印矩阵 == 54. 螺旋矩阵：${spiralOrder(array)}")
         }
@@ -191,8 +196,24 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         R.id.btn_next_permutation -> {
             LogUtils.d(TAG, "31. 下一个排列：${nextPermutation(intArrayOf(1, 3, 5, 4, 1))}")
         }
+        R.id.btn_next_greater_element3 -> {
+            LogUtils.d(TAG, "556. 下一个更大元素 3：${nextGreaterElement3(12)}")
+        }
         R.id.btn_generate -> {
             LogUtils.d(TAG, "118. 杨辉三角：${generate(5)}")
+        }
+        R.id.btn_rand10 -> {
+            LogUtils.d(TAG, "470. 用 Rand7() 实现 Rand10()：${rand10()}")
+        }
+        R.id.btn_nth_ugly_number -> {
+            LogUtils.d(TAG, "263. 丑数：${isUgly(5)}")
+            LogUtils.d(TAG, "264. 丑数 II：${nthUglyNumber(7)}")
+        }
+        R.id.btn_largest_number -> {
+            LogUtils.d(TAG, "179. 最大数：${largestNumber(intArrayOf(3, 30, 34))}")
+        }
+        R.id.btn_count_and_say -> {
+            LogUtils.d(TAG, "38. 外观数列：${countAndSay(5)}")
         }
         else -> {
         }
@@ -700,8 +721,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         var p2 = n - 1
         var k = p1 + p2 + 1
 
-        while(p1 >= 0 && p2 >= 0) {
-            if(nums1[p1] > nums2[p2]) {
+        while (p1 >= 0 && p2 >= 0) {
+            if (nums1[p1] > nums2[p2]) {
                 nums1[k--] = nums1[p1--]
             } else {
                 nums1[k--] = nums2[p2--]
@@ -709,12 +730,12 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 合并剩余的元素
-        while(p1 >= 0) {
+        while (p1 >= 0) {
             nums1[k--] = nums1[p1--]
         }
 
         // 当 p2 大于 0 并且 p1 小于 0 时，此时 nums1 数组所有元素已排列过了，而nums2中还剩下p2个元素，需要对nums1的前p2个赋值为nums2的前p2个（直接将前n个进行覆盖）
-        while(p2 >= 0) {
+        while (p2 >= 0) {
             nums1[k--] = nums2[p2--]
         }
     }
@@ -789,7 +810,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun canAttendMeetings(intervals: Array<IntArray>): Boolean {
         // 先按照区间起始位置排序
-        Arrays.sort(intervals) {v1, v2 -> v1[0] - v2[0]}
+        Arrays.sort(intervals) { v1, v2 -> v1[0] - v2[0] }
 
         for (i in 1 until intervals.size) {
             if (intervals[i][0] < intervals[i - 1][1]) {
@@ -814,10 +835,10 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.N)
     fun minMeetingRooms(intervals: Array<IntArray>): Int {
         // 先按照区间起始位置排序
-        Arrays.sort(intervals) {v1, v2 -> v1[0] - v2[0]}
+        Arrays.sort(intervals) { v1, v2 -> v1[0] - v2[0] }
 
+        // 大顶堆，堆顶数据是最大的一个
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o1 - o2 })
-
         // 添加第一次会议
         heap.add(intervals[0][1])
 
@@ -855,7 +876,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         // 最小区间
         var res = Int.MAX_VALUE
 
-        for(i in 0 until nums.size) {
+        for (i in 0 until nums.size) {
             // 移动右指针，扩大窗口，直到子数组和 >= 目标值 target
             sum += nums[i]
 
@@ -1020,22 +1041,22 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-/*
-n->f(n)
-0->1
-1->3
-2->4
-3->2
-类似链表一样的序列：0->1->3->2->4->null
-
-n->f(n)
-0->1
-1->3
-2->4
-3->2
-4->2
-类似链表一样的序列：0->1->3->2->4->2->4->2->... ，这里 2->4 是一个循环
- */
+    /**
+     * n->f(n)
+     * 0->1
+     * 1->3
+     * 2->4
+     * 3->2
+     * 类似链表一样的序列：0->1->3->2->4->null
+     *
+     * n->f(n)
+     * 0->1
+     * 1->3
+     * 2->4
+     * 3->2
+     * 4->2
+     * 类似链表一样的序列：0->1->3->2->4->2->4->2->...，这里 2->4 是一个循环
+     */
 
     /**
      * 287. 寻找重复数
@@ -1254,7 +1275,80 @@ n->f(n)
 
 
     /**
+     * 556. 下一个更大元素 III     n = 12，res = 21
+     *
+     * 时间复杂度：对数组线性遍历。复杂度为 O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * https://leetcode-cn.com/problems/next-greater-element-iii/solution/556-xia-yi-ge-geng-da-yuan-su-iii-by-che-i47u/
+     * @param nums
+     */
+    fun nextGreaterElement3(n: Int): Int {
+        val nums = n.toString().toCharArray()
+
+        // 下一个排列
+        nextPermutation(nums)
+
+        var res = 0
+        for (i in 0 until nums.size) {
+            res = res * 10 + (nums[i] - '0') % 10
+        }
+        return if(res > n) res else -1
+    }
+
+    /**
+     * 31. 下一个排列
+     * https://leetcode-cn.com/problems/next-permutation/solution/31-xia-yi-ge-pai-lie-by-chen-li-guan-gq77/
+     * @param nums
+     */
+    fun nextPermutation(nums: CharArray) {
+        var k = nums.size - 1
+
+        // 1.从后往前找，找到第一个下降的位置，计为 k - 1。eg：nums[k - 1]=3
+        while (k - 1 >= 0 && nums[k - 1] >= nums[k]) {
+            k--
+        }
+
+        if (k == 0) {
+            // 如果找不到直接翻转数组。eg:[3,2,1]->[1,2,3]
+            reverses(nums, 0, nums.size - 1)
+        } else {
+            // 2.从 k - 1 往后找到最小的比 k - 1 大的数，计为 t。eg：nums[t - 1]=4
+            var t = k - 1
+            while (t + 1 <= nums.size - 1 && nums[t + 1] > nums[k - 1]) {
+                t++
+            }
+
+            // 3.将两者交换。注意此时 k 以后的位置仍然是降序的
+            swap(nums, k - 1, t)
+
+            // 4.直接将 k 以后的部分翻转，变为升序（保证下一个排列增加幅度最小）
+            reverses(nums, k, nums.size - 1)
+        }
+    }
+
+    fun reverses(nums: CharArray, l: Int, r: Int) {
+        var l = l
+        var r = r
+
+        while (l < r) {
+            swap(nums, l, r)
+            l++
+            r--
+        }
+    }
+
+    fun swap(nums: CharArray, l: Int, r: Int) {
+        val temp = nums[l]
+        nums[l] = nums[r]
+        nums[r] = temp
+    }
+
+
+
+    /**
      * 118. 杨辉三角
+     * 题意：每个数是它左上方和右上方的数的和
      *
      * 时间复杂度：O(numRows^2)。
      * 空间复杂度：O(1)。
@@ -1273,6 +1367,7 @@ n->f(n)
                 if (j == 0 || j == i) {
                     row.add(1)
                 } else {
+                    // 每个数是它 左上方 和 右上方 的数的 和
                     row.add(res[i - 1][j - 1] + res[i - 1][j])
                 }
             }
@@ -1296,7 +1391,9 @@ n->f(n)
         // 首先得到一个数
         var num = (rand7() - 1) * 7 + rand7()
         // 只要它还大于40，那你就给我不断生成吧
-        while (num > 40) num = (rand7() - 1) * 7 + rand7()
+        while (num > 40) {
+            num = (rand7() - 1) * 7 + rand7()
+        }
         // 返回结果，+1是为了解决 40%10为0的情况
         return 1 + num % 10
     }
@@ -1329,7 +1426,7 @@ n->f(n)
 
     /**
      * 264. 丑数 II   方法一：优先队列（小根堆）解法
-     * 题意：给你一个整数 n ，请你找出并返回第 n 个 丑数。n = 10，[1, 2, 3, 4, 5, 6, 8, 9, 10, 12]，输出：12
+     * 题意：给你一个整数 n ，请你找出并返回第 n 个 丑数。n = 7，[1, 2, 3, 4, 5, 6, 8]，输出：8
      *
      * 时间复杂度：从优先队列中取最小值为 O(1)，往优先队列中添加元素复杂度为 O(logn)。整体复杂度为 O(nlogn)。
      * 空间复杂度：O(n)。
@@ -1373,6 +1470,10 @@ n->f(n)
     /**
      * 179. 最大数
      *
+     * 字符串比较：a.compareTo(b) 比较的时候是按照ASCII码逐位比较的，如果大于0，返回值为正数，就会交换a和b
+     * 如果a的第一个字符和b的第一个字符不等，结束比较，返回他们之间的长度差值；
+     * 如果a的第一个字符和b的第一个字符相等，则a的第二个字符和b的第二个字符做比较；
+     *
      * 时间复杂度：O(nlogn)
      * 空间复杂度：O(n)。
      *
@@ -1386,9 +1487,9 @@ n->f(n)
         for (i in 0 until nums.size) {
             numToWords[i] = nums[i].toString()
         }
-        // compareTo()方法比较的时候是按照ASCII码逐位比较的
-        // 通过比较(a+b)和(b+a)的大小，就可以判断出a,b两个字符串谁应该在前面
-        // 所以[3,30,34]排序后变为[34,3,30]，[233，23333]排序后变为[23333，233]
+
+        // 通过比较 (a+b) 和 (b+a) 的大小，就可以判断出a,b两个字符串，正序逆序相加的值大的在前面
+        // 所以 [3,30,34] 排序后变为 [34,3,30]。eg：a="30",b="3" -> b+a="330",a+b="303",(b+a).compareTo(a+b)=3>1, 不交换 3,30 --> 3,30
         Arrays.sort(numToWords) { a, b -> (b + a).compareTo(a + b) }
         // 如果排序后的第一个元素是0，那后面的元素肯定小于或等于0，则可直接返回0
         if (numToWords[0] == "0") {
@@ -1405,8 +1506,12 @@ n->f(n)
 
     /**
      * 38. 外观数列
+     * 1.     1       第一项是数字 1
+     * 2.     11      描述前一项，这个数是 1 即 “一 个 1 ”，记作 "11"
+     * 3.     21      描述前一项，这个数是 11 即 “二 个 1 ” ，记作 "21"
+     * 4.     1211    描述前一项，这个数是 21 即 “一 个 2 + 一 个 1 ” ，记作 "1211"
      *
-     * 时间复杂度：循环 n 次，复杂度为 O(n)O(n)；每次循环处理一遍当前的 s 字符串，复杂度为 O(n) 。整体复杂度为 O(n^2)。
+     * 时间复杂度：循环 n 次，复杂度为 O(n)；每次循环处理一遍当前的 s 字符串，复杂度为 O(n) 。整体复杂度为 O(n^2)。
      * 空间复杂度：O(n)。
      *
      * https://leetcode-cn.com/problems/count-and-say/solution/38-wai-guan-shu-lie-by-chen-li-guan-cia2/
@@ -1425,28 +1530,25 @@ n->f(n)
 
     fun nextString(s: String): String {
         // 往结尾添加一个"哨兵"，使用「哨兵技巧」来简化我们统计的逻辑，避免在循环外统计最后一次字符
-        var s = s
-        s = s + "a"
+        val s = s + "a"
         val sb = StringBuilder()
 
-        var c = s[0]
+        var pre = s[0]
         var cnt = 1
         for (i in 1 until s.length) {
             val cur = s[i]
-            if (cur == c) {
+            if (cur == pre) {
                 cnt++
             } else {
                 sb.append(cnt)
-                sb.append(c)
+                sb.append(pre)
 
-                c = cur
+                pre = cur
                 cnt = 1
             }
         }
         return sb.toString()
     }
-
-
 
 
 //    https://leetcode-cn.com/problems/next-greater-element-iii/

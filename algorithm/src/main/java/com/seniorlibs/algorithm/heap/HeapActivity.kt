@@ -73,7 +73,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.d(TAG, "347. 前 K 个高频元素 ：" + topKFrequent(nums, 3))
             }
             R.id.btn_get_least_numbers -> {
-                LogUtils.d(TAG, "40. 最小的k个数 ：" + getLeastNumbers(intArrayOf(3, 2, 1), 2))
+                LogUtils.d(TAG, "40. 最小的k个数 ：" + getLeastNumbers(intArrayOf(3, 4, 5, 2, 1), 2))
             }
             R.id.btn_find_kth_largest -> {
                 LogUtils.d(TAG, "215. 数组中的第K个最大元素 ：" + findKthLargest(intArrayOf(3, 2, 3, 1, 2, 4, 5, 5, 6), 4))
@@ -157,7 +157,7 @@ class HeapActivity : AppCompatActivity(), View.OnClickListener {
         if (array.isEmpty() || k == 0) return res
         if (array.size <= k) return array
 
-        // 优先堆队列：按降序用小顶堆保存次数最小的k个数
+        // 优先堆队列：按降序用小顶堆保存次数最小的k个数   3, 4, 2, 1 --> 4, 3, 2, 1   o1：4, o2：3, (o2 - o1)：-1 < 0, 交换 3,4 --> 4,3
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o2 - o1 })
         for (i in array) {
             if (heap.size < k) {

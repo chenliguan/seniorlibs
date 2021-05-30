@@ -848,32 +848,31 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      *
      * https://leetcode-cn.com/problems/word-break/solution/139-dan-ci-chai-fen-by-chen-li-guan-gjki/
      * @param s
-     * @param wordDict
+     * @param wordList
      * @return
      */
-    fun wordBreak(s: String, wordDict: List<String>): Boolean {
-        val n = s.length + 1
-        // dp[i]：以 i 结尾的字符串是否可以被 wordDict 中组合而成
-        val dp = BooleanArray(n)
+    fun wordBreak(s: String, wordList : List<String>): Boolean {
+        // dp[i]：以 i 结尾的字符串是否可以被 wordDict集合子串 组合而成
+        val dp = BooleanArray(s.length + 1)
 
         // base case：表示空串且合法
         dp[0] = true
 
         // 遍历背包：字符串 s
-        for (i in 1 until n) {
+        for (i in 1 until s.length + 1) {
             // 遍历物品：wordDict 中的词
-            for(word in wordDict) {
-                // 判断 s.substring(i - sz, i) == word：
-                // 若不相等，说明 从[i - sz]到i的字符 与 该word 不匹配，继续遍历；若相等，说明匹配。
-                val sz = word.length
-                if (i - sz >= 0 && s.substring(i - sz, i) == word) {
-                    dp[i] = dp[i] || dp[i - sz]
+            for(j in 0 until wordList.size) {
+                // 判断 s.substring(i - wordLen, i) == wordList[j]：
+                // 若不相等，说明 从[i - wordLen]到i的字符 与该word不匹配，继续遍历；若相等，说明匹配。
+                val wordLen = wordList[j].length
+                if (i - wordLen >= 0 && s.substring(i - wordLen, i) == wordList[j]) {
+                    dp[i] = dp[i] || dp[i - wordLen]
                 }
             }
         }
 
         // 最后返回 dp[s.length]
-        return dp[n - 1]
+        return dp[s.length]
     }
 
 
@@ -1124,7 +1123,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 91. 解码方法
-     * 题意：一个解码内容为一个 item。
+     * 题意：一个解码内容为一个 item。"226" = 3。解码为 "BZ" (2 26), "VF" (22 6), 或者 "BBF" (2 2 6) 。
      *
      * 时间复杂度：O(n)；
      * 空间复杂度：O(n)；
@@ -1148,7 +1147,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
             }
 
             // 只能由位置 i 的与前一位置（i-1）共同作为一个 item --> dp[i] 由 dp[i - 2] 转移过来
-            // 位置 i 既能作为独立 item 也能与上一位置形成 item  --> dp[i] 由 dp[i - 1] + dp[i - 2] 转移过来
+            // 位置 i 既能作为独立 item 也能与上一位置形成 item  --> dp[i] 由 dp[i - 1] 转移过来，dp[i-1] 计算到 dp[i] 了
             if (i > 1 && s[i - 2] != '0' && ((s[i - 2] - '0') * 10 + (s[i - 1] - '0')) <= 26) {
                 dp[i] = dp[i] + dp[i - 2]
             }
