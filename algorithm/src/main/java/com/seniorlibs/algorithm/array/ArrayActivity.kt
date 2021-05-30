@@ -1300,7 +1300,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 0 until nums.size) {
             res = res * 10 + (nums[i] - '0') % 10
         }
-        return if(res > n) res else -1
+        return if (res > n) res else -1
     }
 
     /**
@@ -1350,7 +1350,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         nums[l] = nums[r]
         nums[r] = temp
     }
-
 
 
     /**

@@ -54,6 +54,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_reverse_between).setOnClickListener(this)
         findViewById<View>(R.id.btn_middle_node).setOnClickListener(this)
         findViewById<View>(R.id.btn_is_palindrome_linked).setOnClickListener(this)
+        findViewById<View>(R.id.btn_reorder_list).setOnClickListener(this)
         findViewById<View>(R.id.btn_merge_two_lists).setOnClickListener(this)
         findViewById<View>(R.id.btn_sort_list).setOnClickListener(this)
         findViewById<View>(R.id.btn_get_kth_from_end).setOnClickListener(this)
@@ -155,6 +156,16 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 li22.next = li33
                 li33.next = li44
                 LogUtils.d(StringActivity.TAG, "234. 回文链表：${isPalindrome(li11)}")
+            }
+            R.id.btn_reorder_list -> {
+                val li11 = ListNode(1)
+                val li22 = ListNode(2)
+                val li33 = ListNode(3)
+                val li44 = ListNode(4)
+                li11.next = li22
+                li22.next = li33
+                li33.next = li44
+                LogUtils.d(StringActivity.TAG, "143. 重排链表：${reorderList(li11)}")
             }
             R.id.btn_merge_two_lists -> {
                 val li1 = ListNode(1)
@@ -638,6 +649,65 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             right = right.next
         }
         return true
+    }
+
+
+    /**
+     * 143. 重排链表
+     *
+     * 时间复杂度：O(n)。
+     * 空间复杂度：O(1)。
+     *
+     * 1 -> 2 -> 3 -> 4 -> 5 -> 6
+     * 第一步，将链表平均分成两半
+     * 1 -> 2 -> 3
+     * 4 -> 5 -> 6
+
+     * 第二步，反转第二个链表
+     * 1 -> 2 -> 3
+     * 6 -> 5 -> 4
+     *
+     * 第三步，依次连接两个链表
+     * 1 -> 6 -> 2 -> 5 -> 3 -> 4
+     *
+     * https://leetcode-cn.com/problems/reorder-list/solution/143-zhong-pai-lian-biao-by-chen-li-guan-d4y8/
+     *
+     * @param head
+     */
+    fun reorderList(head: ListNode?) {
+        if (head?.next == null || head.next?.next == null) return
+        var head = head
+
+        // 1.通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
+        var slow = head
+        var fast = head
+        while (fast?.next != null && fast.next!!.next != null) {
+            slow = slow!!.next
+            fast = fast.next!!.next
+        }
+
+        // 2.
+        // 链表分成两个
+        var l1 = head
+        var l2 = slow?.next
+        slow?.next = null
+        // 反转第二个链表
+        l2 = reverseList(l2)
+
+        // 3.合并两个链表（交叉着合并）
+        var temp1: ListNode? = null
+        var temp2: ListNode? = null
+        while (l1 != null && l2 != null) {
+            // 缓存两个链表的 next 指针，为链表正常往后指
+            temp1 = l1.next
+            temp2 = l2.next
+
+            l1.next = l2
+            l1 = temp1
+
+            l2.next = l1
+            l2 = temp2
+        }
     }
 
 

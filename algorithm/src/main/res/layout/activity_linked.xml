@@ -56,6 +56,11 @@
             android:text="234. 回文链表" />
 
         <Button
+            android:id="@+id/btn_reorder_list"
+            style="@style/BtnStyles"
+            android:text="143. 重排链表" />
+
+        <Button
             android:id="@+id/btn_merge_two_lists"
             android:layout_width="match_parent"
             android:layout_height="48dp"
