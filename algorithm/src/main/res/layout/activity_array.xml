@@ -160,6 +160,11 @@
             android:text="38. 外观数列" />
 
         <Button
+            android:id="@+id/btn_longest_consecutive"
+            style="@style/BtnStyles"
+            android:text="128. 最长连续序列" />
+
+        <Button
             android:id="@+id/btn_can_finish"
             style="@style/BtnStyles"
             android:text="207. 课程表" />

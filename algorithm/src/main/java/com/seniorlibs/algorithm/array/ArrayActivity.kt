@@ -63,6 +63,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_nth_ugly_number).setOnClickListener(this)
         findViewById<View>(R.id.btn_largest_number).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_and_say).setOnClickListener(this)
+        findViewById<View>(R.id.btn_longest_consecutive).setOnClickListener(this)
         findViewById<View>(R.id.btn_can_finish).setOnClickListener(this)
     }
 
@@ -215,6 +216,9 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_count_and_say -> {
             LogUtils.d(TAG, "38. 外观数列：${countAndSay(5)}")
+        }
+        R.id.btn_longest_consecutive -> {
+            LogUtils.d(TAG, "128. 最长连续序列：${longestConsecutive(intArrayOf(100, 4, 200, 1, 3, 2))}")
         }
         R.id.btn_can_finish -> {
             val array = arrayOf(
@@ -1558,6 +1562,46 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
+     * 128. 最长连续序列
+     *
+     * 时间复杂度：O(n)；
+     * 空间复杂度：O(n)；
+     *
+     * https://leetcode-cn.com/problems/longest-consecutive-sequence/solution/128-zui-chang-lian-xu-xu-lie-by-chen-li-jxkyk/
+     *
+     * @param nums
+     * @return
+     */
+    fun longestConsecutive(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+
+        var res = 1
+
+        // 找到 nums 中有哪些元素能够当做连续序列的左边界
+        val set = hashSetOf<Int>()
+        for (num in nums) {
+            set.add(num)
+        }
+
+        for (num in nums) {
+            // 若一个元素值 num 满足：num - 1 不在 set 中，则该元素值 num 就可以当做连续序列的左边界。否则就不是连续序列了。
+            if (set.contains(num - 1)) continue
+
+            // r: 表示「以 num 当做左边界，则继续找 num + 1，num + 2... 是否存在于 set 集合中」
+            var r = num
+            // 逐个查看
+            while (set.contains(r + 1)) {
+                r++
+            }
+
+            // 记录最大的连续序列的长度
+            res = Math.max(res, r - num + 1)
+        }
+        return res
+    }
+
+
+    /**
      * 207. 课程表  方法一：拓扑排序（Kahn 算法，其实就是广度优先遍历的思路）
      * 题意：numCourses = 2, prerequisites = [[1,0]]。总共有 2 门课程，学习课程 1 之前，你需要完成课程 0。
      *
@@ -1615,11 +1659,6 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         // 当队列为空的时候，检查结果集中的顶点个数是否和课程数相等即可
         return cnt == numCourses
     }
-
-
-//    https://leetcode-cn.com/problems/simplify-path/
-
-//    https://leetcode-cn.com/problems/lru-cache-lcci/
 }
 
 
