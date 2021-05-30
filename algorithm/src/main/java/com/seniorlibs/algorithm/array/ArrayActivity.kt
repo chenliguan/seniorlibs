@@ -63,6 +63,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_nth_ugly_number).setOnClickListener(this)
         findViewById<View>(R.id.btn_largest_number).setOnClickListener(this)
         findViewById<View>(R.id.btn_count_and_say).setOnClickListener(this)
+        findViewById<View>(R.id.btn_can_finish).setOnClickListener(this)
     }
 
     override fun onClick(v: View) = when (v.id) {
@@ -214,6 +215,12 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
         R.id.btn_count_and_say -> {
             LogUtils.d(TAG, "38. 外观数列：${countAndSay(5)}")
+        }
+        R.id.btn_can_finish -> {
+            val array = arrayOf(
+                    intArrayOf(1, 0)
+            )
+            LogUtils.d(TAG, "207. 课程表：${canFinish(2, array)}")
         }
         else -> {
         }
@@ -1551,8 +1558,65 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-//
-//    https://leetcode-cn.com/problems/maximum-swap/
+    /**
+     * 207. 课程表  方法一：拓扑排序（Kahn 算法，其实就是广度优先遍历的思路）
+     * 题意：numCourses = 2, prerequisites = [[1,0]]。总共有 2 门课程，学习课程 1 之前，你需要完成课程 0。
+     *
+     * 拓扑排序：每一次都从图中删除没有前驱的顶点，这里并不需要真正的做删除操作，可以设置一个入度数组，每一轮都输出入度为 0 的结点，
+     *          并移除它、修改它指向的结点的入度（-1即可），依次得到的结点序列就是拓扑排序的结点序列。如果图中还有结点没有被移除，则说明“不能完成所有课程的学习”。
+     * 邻接表：通过结点的索引，我们能够得到这个结点的后继结点；
+     * 入度数组：通过结点的索引，我们能够得到指向这个结点的结点个数。
+     *
+     * 时间复杂度：O(E + V)。这里 E 表示邻边的条数，V 表示结点的个数。
+     * 空间复杂度：O(E + V)。邻接表长度是 V，每个课程里又保存了它所有的边。
+     *
+     * https://leetcode-cn.com/problems/course-schedule/solution/207-ke-cheng-biao-by-chen-li-guan-ixkm/
+     *
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
+        if (numCourses <= 0) return false
+        if (prerequisites.isEmpty()) return true
+
+        // 开始排序前，扫描对应的存储空间（使用邻接表），将入度为 0 的结点放入队列
+        val inDegree = IntArray(numCourses)
+        val adj = arrayOfNulls<HashSet<Int>>(numCourses)
+        for (i in 0 until numCourses) {
+            adj[i] = HashSet()
+        }
+        for (p in prerequisites) {
+            inDegree[p[0]]++
+            adj[p[1]]?.add(p[0])
+        }
+
+        val queue = LinkedList<Int>()
+        // 首先加入入度为 0 的结点
+        for (i in 0 until numCourses) {
+            if (inDegree[i] == 0) {
+                queue.add(i)
+            }
+        }
+
+        // 记录已经出队的课程数量：只要队列非空，就从队首取出入度为 0 的结点，将这个结点输出到结果集中
+        var cnt = 0
+        while (queue.isNotEmpty()) {
+            val top = queue.poll()
+            cnt += 1
+            // 遍历当前出队结点的所有后继结点
+            for (successor in adj[top]!!) {
+                // 这个结点的所有邻接结点（它指向的结点）的入度减 11，在减 11 以后，如果这个被减 1 的结点的入度为 0，就继续入队
+                inDegree[successor]--
+                if (inDegree[successor] == 0) {
+                    queue.add(successor)
+                }
+            }
+        }
+        // 当队列为空的时候，检查结果集中的顶点个数是否和课程数相等即可
+        return cnt == numCourses
+    }
+
 
 //    https://leetcode-cn.com/problems/course-schedule/
 

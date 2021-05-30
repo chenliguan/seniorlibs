@@ -82,16 +82,15 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun canJump(nums: IntArray): Boolean {
-        val n = nums.size
         var cover = 0
-        for (i in 0 until n - 1) {
+        for (i in 0 until nums.size - 1) {
             // 不断计算可以覆盖的最大范围
             cover = Math.max(cover, i + nums[i])
             // 可能碰到了 0，卡住跳不动了 [0,2,3]
             if (cover <= i) return false
         }
         // 说明可以覆盖到终点了
-        return cover >= n - 1
+        return cover >= nums.size - 1
     }
 
     /**
@@ -103,8 +102,6 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun jump(nums: IntArray): Int {
-        val n = nums.size
-
         // 当前覆盖的最远距离下标
         var end = 0
         // 总覆盖的最远距离下标
@@ -112,7 +109,7 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
         // 记录了跳跃次数
         var jumps = 0
 
-        for (i in 0 until n - 1) {
+        for (i in 0 until nums.size - 1) {
             cover = Math.max(nums[i] + i, cover)
             // i 等于 当前覆盖的最远距离下标时，跳跃到下一个覆盖范围，更新为当前覆盖范围
             if (i == end) {
