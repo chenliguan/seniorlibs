@@ -560,18 +560,18 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         // 定义两个指针，分别称之为 cur、q
         var cur = dummy
-        var p = dummy.next
+        var q = dummy.next
 
         // 将 cur 移动到第一个要反转的节点的前面，将 q 移动到第一个要反转的节点的位置上
         for (i in 0 until left - 1) {
             cur = cur.next!!
-            p = p?.next
+            q = q?.next
         }
 
         // 将 cur 后面的元素删除，然后插入到 cur 的后面，也即头插法。（根据 left 和 right 重复此步骤）
         for (i in 0 until right - left) {   // cur = 1，q = 2
-            val remove = p?.next      // remove = 3
-            p?.next = p?.next?.next              // q?.next = 4  ->  1，2，4
+            val remove = q?.next      // remove = 3
+            q?.next = q?.next?.next              // q?.next = 4  ->  1，2，4
 
             remove?.next = cur.next              // 1、3、2
             cur.next = remove
@@ -639,14 +639,15 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             slow = slow!!.next
         }
 
-        var left = head
-        // 从 slow 开始反转后面的链表，然后开始比较回文串
-        var right = reverseList(slow)
-        while (right != null) {
-            if (left!!.`val` != right.`val`) return false
+        var l1 = head
+        // 从 slow 开始反转后面的链表
+        var l2 = reverseList(slow)
+        // 开始比较回文串
+        while (l2 != null) {
+            if (l1?.`val` != l2.`val`) return false
 
-            left = left.next
-            right = right.next
+            l1 = l1.next
+            l2 = l2.next
         }
         return true
     }
@@ -662,7 +663,6 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
      * 第一步，将链表平均分成两半
      * 1 -> 2 -> 3
      * 4 -> 5 -> 6
-
      * 第二步，反转第二个链表
      * 1 -> 2 -> 3
      * 6 -> 5 -> 4
@@ -681,7 +681,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         // 1.通过快、慢指针找到链表的中点，最终 slow 指针现在指向链表中点
         var slow = head
         var fast = head
-        while (fast?.next != null && fast.next!!.next != null) {
+        while (fast?.next != null) {
             slow = slow!!.next
             fast = fast.next!!.next
         }
@@ -740,7 +740,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 l2 = l2.next
             }
 
-            // 指针往前移动
+            // 记住：指针往前移动
             cur = cur.next!!
         }
 
@@ -805,12 +805,16 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
 
         // 获取链表的中间结点
         val slow = middleNode1(head)
-
-        // 分治递归
         val head2 = slow?.next
         slow?.next = null
 
-        return mergeTwoLists(sortList(head),sortList(head2))
+        // 分治递归
+        val l1 = sortList(head)
+
+        val l2 = sortList(head2)
+
+        // 合并链表
+        return mergeTwoLists(l1, l2)
     }
 
     /**
@@ -997,9 +1001,9 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
             // cur -> 2 -> 1 -> next
             start?.next = end?.next
             end?.next = start
-
             // cur -> 2 -> 1 -> next
             cur.next = end
+
             // 1 -> 2(cur) -> next
             cur = start!!
         }
@@ -1093,7 +1097,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
                 x = x.next  // x->3  x->3--x->4
             }
 
-            if (x == cur.next?.next) {
+            if (x?.`val` == cur.next?.next?.`val`) {
                 // 将 cur 指向 cur.next，正常移动 cur 指针到下一个节点
                 cur = cur.next!!  // x->3 == cur.next.next->0.next->1.next->3  -->  cur->3
             } else {
@@ -1186,34 +1190,34 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
     fun copyRandomList(head: ListNode?): ListNode? {
         if (head == null) return null
 
-        // 创建一个哈希表，key 是原节点，value 是新节点
+        // 1.创建一个哈希表，key 是原节点，value 是新节点
         val map = hashMapOf<ListNode, ListNode>()
-        var p = head
+        var cur = head
         // 将原节点作为 key，新节点作为 value 放入哈希表中
-        while (p != null) {
-            val newNode = ListNode(p.`val`)
-            map[p] = newNode
-            p = p.next
+        while (cur != null) {
+            val newNode = ListNode(cur.`val`)
+            map[cur] = newNode
+            cur = cur.next
         }
 
-        // 重新执行原链表头结点
-        p = head
-        // 遍历原链表，设置新节点的 next 和 random 指针
-        while (p != null) {
-            val newNode = map[p]
-            // p 是原节点，map[p] 是对应的新节点。p.next 是原节点的next，map[p.next] 是原节点的next对应的 新节点的next
-            if (p.next != null) {
-                newNode?.next = map[p.next!!]
+        // 2.重新执行原链表头结点
+        cur = head
+        // 3.遍历原链表，设置新节点的 next 和 random 指针
+        while (cur != null) {
+            val newNode = map[cur]
+            // cur 是原节点，map[cur] 是对应的新节点。cur.next 是原节点的next，map[cur.next] 是原节点的next对应的 新节点的next
+            if (cur.next != null) {
+                newNode?.next = map[cur.next!!]
             }
-            // p.random 是原节点随机指向，map[p.random] 是原节点随机指向对应的新节点
-//            if (p.random != null) {
-//                newNode.random = map[p.random]
+            // cur.random 是原节点随机指向，map[cur.random] 是原节点随机指向对应的新节点
+//            if (cur.random != null) {
+//                newNode.random = map[cur.random]
 //            }
             // 移动旧链表
-            p = p.next
+            cur = cur.next
         }
 
-        // 返回头结点，即原头节点对应的 新链表的头节点
+        // 4.返回头结点，即原头节点对应的 新链表的头节点
         return map[head]
     }
 

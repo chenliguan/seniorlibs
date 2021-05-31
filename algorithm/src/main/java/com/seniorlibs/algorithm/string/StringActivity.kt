@@ -1217,6 +1217,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
 
             // 添加下一个节点
             cur?.next = ListNode(sum)
+            // 记住：指针往前移动
             cur = cur?.next
 
             if (l1 != null) l1 = l1.next
@@ -1273,6 +1274,7 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
             // 添加下一个节点
             val curNode = ListNode(sum)
             curNode.next = cur
+            // 记住：指针往前移动
             cur = curNode
         }
 

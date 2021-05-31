@@ -1685,7 +1685,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         val inDegree = IntArray(numCourses)
         val adj = arrayOfNulls<HashSet<Int>>(numCourses)
         for (i in 0 until numCourses) {
-            adj[i] = HashSet()
+            adj[i] = hashSetOf()
         }
         for (p in prerequisites) {
             inDegree[p[0]]++
