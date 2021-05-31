@@ -1731,17 +1731,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
             val right = queue.poll()
 
             // 如果两个节点都为空就继续循环
-            if (left == null && right == null) {
-                continue
-            }
+            if (left == null && right == null) continue
 
             // 两个节点中有一个为空，或者两个节点的值不相等，返回 false
-            if (left == null || right == null) {
-                return false
-            }
-            if (left.`val` != right.`val`) {
-                return false
-            }
+            if (left == null || right == null) return false
+
+            if (left.`val` != right.`val`) return false
 
             // 将左节点的左孩子，右节点的右孩子放入队列
             queue.offer(left.left)
@@ -1834,7 +1829,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 //    private var head: DNode? = null
 //
 //    // 记录遍历的当前节点的前一个节点, 用来把当前节点给串起来的
-//    private var pre: DNode? = null
+//    private var tail: DNode? = null
 //
 //    fun treeToDoublyList(root: DNode?): DNode? {
 //        if (root == null) return root
@@ -1843,8 +1838,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 //
 //        // 注意，上面的方法中，我们只是把第一个接点到最后一个节点串了起来，但并没有把第一个节点
 //        // 和最后一个节点串起来连成一个环形，所以这里还要把链表的首尾连接起来（这里pre已经是尾节点了）
-//        head.left = pre
-//        pre.right = head
+//        head.left = tail
+//        tail.right = head
 //        return head
 //    }
 //
@@ -1857,17 +1852,17 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 //        inorder(root.left)
 //
 //        // 下面是对当前节点的操作
-//        if (pre == null) {
+//        if (tail == null) {
 //            // 这行代码只会执行一次，就是root是树的左子节点的左子节点的……,一直没有左子节点为止,实际上就是中序遍历结果的第一个节点
 //            head = root
 //        } else {
 //            // 串起来的结果就是前一个节点pre的right指向当前节点，然后当前节点的left指向前一个节点pre
-//            pre.right = root
+//            tail.right = root
 //        }
-//        root.left = pre
+//        root.left = tail
 //
 //        // 前一个节点和当前节点串起来之后，就让当前节点变成前一个节点
-//        pre = root
+//        tail = root
 //
 //        // 最后在遍历右子节点
 //        inorder(root.right)
@@ -1984,10 +1979,10 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
      * @param head
      * @return
      */
-    var dummy: ListNode? = null
+    var cur: ListNode? = null
 
     fun sortedListToBST(head: ListNode?): TreeNode? {
-        dummy = head
+        cur = head
         val length = listLength(head)
         return buildTree(0, length - 1)
     }
@@ -2002,8 +1997,8 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         root.left = buildTree(l, mid - 1)
 
         // 关键：二叉搜索树的中序遍历结果就是链表本身，因此获取当前链表节点，赋值
-        root.`val` = dummy?.`val`!!
-        dummy = dummy?.next
+        root.`val` = cur?.`val`!!
+        cur = cur?.next
 
         root.right = buildTree(mid + 1, r)
         return root
@@ -2078,10 +2073,12 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * 剑指 Offer 26. 树的子结构
-     * 思路：若树 B 是树 A 的子结构，则子结构的根节点可能为树 A 的任意一个节点。
+     * 思路：若树 B 是树 A 的子结构，则子结构的根节点和孩子节点为树 A 的任意一个节点。
      *
      * 时间复杂度 O(MN)：其中 M,N 分别为树 A 和 树 B 的节点数量；先序遍历树 A 占用 O(M)，每次调用 recur(A, B) 判断占用 O(N)。
      * 空间复杂度 O(M)：当树 A 和树 B 都退化为链表时，递归调用深度最大。
+     *
+     * https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/solution/jian-zhi-offer-26-shu-de-zi-jie-gou-by-c-zg41/
      *
      * @param A
      * @param B
@@ -2091,7 +2088,7 @@ class BinaryTreeActivity : AppCompatActivity(), View.OnClickListener {
         // 约定空树不是任意一个树的子结构
         if (A == null || B == null) return false
 
-        // 判断 A 树和 B 树的 根节点值 和 孩子节点值 是否对应相等
+        // 判断 A 树和 B 树的根节点值和孩子节点值是否对应相等
         if (helper(A, B)) return true
 
         // 递归判断 A 树的左、右子树是否包含 B 树

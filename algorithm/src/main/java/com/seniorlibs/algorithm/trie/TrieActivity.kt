@@ -127,8 +127,8 @@ class TrieActivity : AppCompatActivity(), View.OnClickListener {
                 LogUtils.e(TAG, "547. 朋友圈——方法三：广度优先遍历BFS：${findCircleNum3(grid2)}")
             }
             R.id.btn_lexical_order -> {
-                LogUtils.e(TAG, "386. 字典序排数：${lexicalOrder(9)}")
-                LogUtils.e(TAG, "386. 字典序排数2：${lexicalOrder2(9)}")
+                LogUtils.e(TAG, "386. 字典序排数：${lexicalOrder(13)}")
+                LogUtils.e(TAG, "386. 字典序排数2：${lexicalOrder2(13)}")
             }
             else -> {
             }
