@@ -1544,7 +1544,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun countAndSay(n: Int): String? {
         var s = "1"
-        for (i in 2 until n + 1) {
+        for (i in 1 until n) {
             // 只需要统计字符串 s 中每一段连续出现的字符的类型和出现次数即可
             s = nextString(s)
         }
@@ -1556,18 +1556,17 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         val s = s + "a"
         val sb = StringBuilder()
 
-        var pre = s[0]
-        var cnt = 1
+        var first = s[0]
+        var count = 1
         for (i in 1 until s.length) {
-            val cur = s[i]
-            if (cur == pre) {
-                cnt++
+            if (s[i] == first) {
+                count++
             } else {
-                sb.append(cnt)
-                sb.append(pre)
+                sb.append(count)
+                sb.append(first)
 
-                pre = cur
-                cnt = 1
+                first = s[i]
+                count = 1
             }
         }
         return sb.toString()
@@ -1628,7 +1627,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * [5,0], [7,0], [5,2], [6,1], [7,1]          // 将 [5, 2] 插入到 i = 2 处
      * [5,0], [7,0], [5,2], [6,1], [4,4], [7,1]   // 将 [4, 4] 插入到 i = 4 处
      *
-     * 时间复杂度：O(n^2)，其中 n 是数组 people 的长度。我们需要 O(nlogn) 的时间进行排序，随后需要 O(n^2) 的时间遍历每一个人并将他们放入队列中。
+     * 时间复杂度：O(nlogn)，其中 n 是数组 people 的长度。我们需要 O(nlogn) 的时间进行排序，随后需要 O(n^2) 的时间遍历每一个人并将他们放入队列中???
      * 空间复杂度：O(logn)，即为排序需要使用的栈空间。
      *
      * https://leetcode-cn.com/problems/queue-reconstruction-by-height/solution/406-gen-ju-shen-gao-zhong-jian-dui-lie-b-99hr/
@@ -1673,28 +1672,28 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      *
      * https://leetcode-cn.com/problems/course-schedule/solution/207-ke-cheng-biao-by-chen-li-guan-ixkm/
      *
-     * @param numCourses
-     * @param prerequisites
+     * @param courses
+     * @param preres
      * @return
      */
-    fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
-        if (numCourses <= 0) return false
-        if (prerequisites.isEmpty()) return true
+    fun canFinish(courses: Int, preres: Array<IntArray>): Boolean {
+        if (courses <= 0) return false
+        if (preres.isEmpty()) return true
 
         // 开始排序前，扫描对应的存储空间（使用邻接表），将入度为 0 的结点放入队列
-        val inDegree = IntArray(numCourses)
-        val adj = arrayOfNulls<HashSet<Int>>(numCourses)
-        for (i in 0 until numCourses) {
+        val inDegree = IntArray(courses)
+        val adj = arrayOfNulls<HashSet<Int>>(courses)
+        for (i in 0 until courses) {
             adj[i] = hashSetOf()
         }
-        for (p in prerequisites) {
+        for (p in preres) {
             inDegree[p[0]]++
             adj[p[1]]?.add(p[0])
         }
 
         val queue = LinkedList<Int>()
         // 首先加入入度为 0 的结点
-        for (i in 0 until numCourses) {
+        for (i in 0 until courses) {
             if (inDegree[i] == 0) {
                 queue.add(i)
             }
@@ -1707,7 +1706,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             cnt += 1
             // 遍历当前出队结点的所有后继结点
             for (successor in adj[top]!!) {
-                // 这个结点的所有邻接结点（它指向的结点）的入度减 11，在减 11 以后，如果这个被减 1 的结点的入度为 0，就继续入队
+                // 这个结点的所有邻接结点（它指向的结点）的入度减 1，在减 1 以后，如果这个被减 1 的结点的入度为 0，就继续入队
                 inDegree[successor]--
                 if (inDegree[successor] == 0) {
                     queue.add(successor)
@@ -1715,7 +1714,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         // 当队列为空的时候，检查结果集中的顶点个数是否和课程数相等即可
-        return cnt == numCourses
+        return cnt == courses
     }
 }
 
