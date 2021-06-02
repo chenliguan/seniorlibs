@@ -355,20 +355,20 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         var res = 0
 
         // l_max是height[0..left]中最高柱子的高度，r_max是height[right..n-1]的最高柱子的高度
-        var l_max = height[0]
-        var r_max = height[height.size - 1]
+        var lMax = height[0]
+        var rMax = height[height.size - 1]
 
         while (left <= right) {
-            l_max = Math.max(l_max, height[left])
-            r_max = Math.max(r_max, height[right])
+            lMax = Math.max(lMax, height[left])
+            rMax = Math.max(rMax, height[right])
 
-            // res += min(l_max, r_max) - height[i]
-            if (l_max < r_max) {
-                // height[left] 只和 l_max 有关
-                res += l_max - height[left]
+            // res += min(lMax, rMax) - height[i]
+            if (lMax < rMax) {
+                // height[left] 只和 lMax 有关
+                res += lMax - height[left]
                 left++
             } else {
-                res += r_max - height[right]
+                res += rMax - height[right]
                 right--
             }
         }
@@ -793,7 +793,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * 56. 合并区间
      *
      * 时间复杂度：O(nlogn)，其中 n 为区间的数量。除去排序的开销，我们只需要一次线性扫描，所以主要的时间开销是排序的 O(nlogn)。
-     * 空间复杂度：O(nlogn)，其中 n 为区间的数量。这里计算的是存储答案之外，使用的额外空间。(nlogn) 即为排序所需要的空间复杂度。
+     * 空间复杂度：O(logn)，其中 n 为区间的数量。这里计算的是存储答案之外，使用的额外空间。(logn) 即为排序所需要的空间复杂度。
      *
      * https://leetcode-cn.com/problems/merge-intervals/solution/56-he-bing-qu-jian-by-chen-li-guan-7trv/
      * @param intervals
@@ -850,7 +850,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * 253. 会议室 II
      *
      * 时间复杂度：O(NlogN)；
-     * 空间复杂度：O(N)；
+     * 空间复杂度：O(N)；额外空间用于建立 最小堆 。在最坏的情况下，堆需要容纳全部 N 个元素。因此空间复杂度为 O(N)。
      *
      * https://leetcode-cn.com/problems/meeting-rooms-ii/solution/253-hui-yi-shi-ii-by-chen-li-guan-n8yr/
      * @param intervals
@@ -861,7 +861,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         // 先按照区间起始位置排序
         Arrays.sort(intervals) { v1, v2 -> v1[0] - v2[0] }
 
-        // 大顶堆，堆顶数据是最大的一个
+        // 优先堆队列：按升序用小顶堆保存结束的时间最大的k个元素
         val heap = PriorityQueue(Comparator<Int> { o1, o2 -> o1 - o2 })
         // 添加第一次会议
         heap.add(intervals[0][1])
@@ -1220,6 +1220,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
      * 空间复杂度：O(N)。
      *
      * https://leetcode-cn.com/problems/subarray-sum-equals-k/solution/560-he-wei-kde-zi-shu-zu-by-chen-li-guan-6y6i/
+     *
      * @param nums
      * @param k
      * @return
@@ -1390,7 +1391,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 if (j == 0 || j == i) {
                     row.add(1)
                 } else {
-                    // 每个数是它 左上方 和 右上方 的数的 和
+                    // 每个数是它 左上方 和 正上方 的数的 和
                     row.add(res[i - 1][j - 1] + res[i - 1][j])
                 }
             }
@@ -1463,6 +1464,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         val nums = intArrayOf(2, 3, 5)
 
         val set = hashSetOf<Long>()
+        // 小顶堆
         val pq = PriorityQueue<Long>()
 
         // 先将最小丑数 1 放入队列
