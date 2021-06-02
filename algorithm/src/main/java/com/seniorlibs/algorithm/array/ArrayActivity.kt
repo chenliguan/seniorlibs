@@ -1650,8 +1650,8 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // 2.遍历排序后的数组，第二个数字作为索引位置，把数组插入到目标索引位置上，如果原来位置有数据了，会往后移。
-        for (i in array) {
-            res.add(i[1], i)
+        for (ar in array) {
+            res.add(ar[1], ar)
         }
 
         return res.toArray(Array(res.size) { IntArray(2) })

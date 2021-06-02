@@ -1872,23 +1872,23 @@ class StringActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun compareVersion(version1: String, version2: String): Int {
-        var index1 = 0
-        var index2 = 0
+        var i1 = 0
+        var i2 = 0
 
-        while (index1 < version1.length || index2 < version2.length) {
-            if (index1 < version1.length && version1[index1] == '.') index1++
-            if (index2 < version2.length && version2[index2] == '.') index2++
+        while (i1 < version1.length || i2 < version2.length) {
+            if (i1 < version1.length && version1[i1] == '.') i1++
+            if (i2 < version2.length && version2[i2] == '.') i2++
 
             // 指针 p1 和 p2 分别指向 version1 和 version2 的起始位置：p1=p2=0。
             var curr1 = 0
             var curr2 = 0
 
             // 并行遍历两个字符串。
-            while (index1 < version1.length && version1[index1] != '.') {
-                curr1 = curr1 * 10 + (version1[index1++] - '0')
+            while (i1 < version1.length && version1[i1] != '.') {
+                curr1 = curr1 * 10 + (version1[i1++] - '0')
             }
-            while (index2 < version2.length && version2[index2] != '.') {
-                curr2 = curr2 * 10 + (version2[index2++] - '0')
+            while (i2 < version2.length && version2[i2] != '.') {
+                curr2 = curr2 * 10 + (version2[i2++] - '0')
             }
 
             if (curr1 != curr2) {

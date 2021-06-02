@@ -254,9 +254,9 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         if (stack.isEmpty()) return "0"
 
         while (stack.isNotEmpty()) {
-            res += stack.pollLast()
+            res += stack.poll()
         }
-        return res
+        return res.reversed()
     }
 
     /**
@@ -279,8 +279,8 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 0 until T.size) {
             // 如果当前遍历的数比栈顶大，立马弹出栈顶计算天数，直到栈为空
             while (stack.isNotEmpty() && T[i] > T[stack.peek()]) {
-                val prevIndex = stack.pop()
-                res[prevIndex] = i - prevIndex
+                val prevI = stack.pop()
+                res[prevI] = i - prevI
             }
 
             stack.push(i)
@@ -425,7 +425,8 @@ class StackActivity : AppCompatActivity(), View.OnClickListener {
 
         for (i in 0 until nums.size * 2 - 1) {
             while (stack.isNotEmpty() && nums[i % nums.size] > nums[stack.peek()]) {
-                res[stack.pop()] = nums[i % nums.size]
+                val j = stack.pop()
+                res[j] = nums[i % nums.size]
             }
 
             stack.push(i % nums.size)
