@@ -895,11 +895,11 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
         // 遍历背包：字符串 s
         for (i in 1 until s.length + 1) {
             // 遍历物品：wordDict 中的词
-            for(j in 0 until wordList.size) {
+            for(j in 1 until wordList.size + 1) {
                 // 判断 s.substring(i - wordLen, i) == wordList[j]：
                 // 若不相等，说明 从[i - wordLen]到i的字符 与该word不匹配，继续遍历；若相等，说明匹配。
-                val wordLen = wordList[j].length
-                if (i - wordLen >= 0 && s.substring(i - wordLen, i) == wordList[j]) {
+                val wordLen = wordList[j - 1].length
+                if (i - wordLen >= 0 && s.substring(i - wordLen, i) == wordList[j - 1]) {
                     dp[i] = dp[i] || dp[i - wordLen]
                 }
             }
@@ -1180,8 +1180,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
                 dp[i] = dp[i - 1]
             }
 
-            // 只能由位置 i 的与前一位置（i-1）共同作为一个 item --> dp[i] 由 dp[i - 2] 转移过来
             // 位置 i 既能作为独立 item 也能与上一位置形成 item  --> dp[i] 由 dp[i - 1] 转移过来，dp[i-1] 计算到 dp[i] 了
+            // 只能由位置 i 的与前一位置（i-1）共同作为一个 item --> dp[i] 由 dp[i - 2] 转移过来
             if (i > 1 && s[i - 2] != '0' && ((s[i - 2] - '0') * 10 + (s[i - 1] - '0')) <= 26) {
                 dp[i] = dp[i] + dp[i - 2]
             }

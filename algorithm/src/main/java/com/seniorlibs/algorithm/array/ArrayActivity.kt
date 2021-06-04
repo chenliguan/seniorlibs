@@ -1190,10 +1190,10 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         val array = Array(n) { IntArray(n) }
         var num = 1
-        val tar = n * n
+        val target = n * n
 
         // 注意：<=，包含 =
-        while (num <= tar) {
+        while (num <= target) {
             // left to right.
             for (i in l..r) array[t][i] = num++
             ++t
@@ -1465,16 +1465,16 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
 
         val set = hashSetOf<Long>()
         // 小顶堆
-        val pq = PriorityQueue<Long>()
+        val queue = PriorityQueue<Long>()
 
         // 先将最小丑数 1 放入队列
         set.add(1L)
-        pq.add(1L)
+        queue.add(1L)
 
         // 循环多次，第 n 次出队的值即是答案
         for (i in 1 until n + 1) {
             // 每次从队列取出最小值 x
-            val x = pq.poll()
+            val x = queue.poll()
             if (i == n) {
                 return x.toInt()
             }
@@ -1484,7 +1484,7 @@ class ArrayActivity : AppCompatActivity(), View.OnClickListener {
                 val t = num * x
                 if (!set.contains(t)) {
                     set.add(t)
-                    pq.add(t)
+                    queue.add(t)
                 }
             }
         }

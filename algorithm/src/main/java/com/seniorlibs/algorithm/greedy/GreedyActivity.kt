@@ -185,9 +185,9 @@ class GreedyActivity : AppCompatActivity(), View.OnClickListener {
         // 原数组从左到右遍历，找到当前位置右边的最大的数字并交换
         for (i in 0 until s.length - 1) {
             // 遇到比当前位值大的，交换，因为索引数组从后往前遍历的，所以保证了值为最大
-            for (j in 9 downTo ch[i] - '0' + 1) {
-                if (array[j] > i) {
-                    swap(ch, i, array[j])
+            for (v in 9 downTo ch[i] - '0' + 1) {
+                if (array[v] > i) {
+                    swap(ch, i, array[v])
                     // 只允许交换一次，因此直接返回
                     return String(ch).toInt()
                 }
