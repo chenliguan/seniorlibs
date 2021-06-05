@@ -215,7 +215,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         if (n == 0) return 0
 
         // 当选中第 i 状态时，以 nums[i] 结尾的连续子数组的最值，计算最大值还是最小值由 j 来表示，j 就两个状态值；
-        // dp[i][0]：以 nums[i] 结尾的连续子数组的最小值。dp[i][1]：以 nums[i] 结尾的连续子数组的最大值
+        // dp[i] 有两种「选择」，要么自成一派，要么和前面的子数组乘积；
         val dp = Array(n) { IntArray(2) }
 
         // base case，由于 nums[i] 必须被选取，那么
@@ -247,7 +247,7 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 300. 最长递增子序列  解法：动态规划
+     * 300. 最长递增子序列（不连续）  解法：动态规划
      *
      * 时间复杂度：O(N^2)，这里 N 是数组的长度，写了两个 for 循环；
      * 空间复杂度：O(N)，要使用和输入数组长度相等的状态数组，因此空间复杂度是 O(N)。
@@ -260,10 +260,10 @@ class DbActivity : AppCompatActivity(), View.OnClickListener {
         val n = nums.size
         if (n == 0) return 0
 
-        // dp定义：表示以 nums[i] 结尾的「上升子序列」的长度（不连续）
+        // dp定义：表示以 nums[i] 结尾的「上升子序列」的长度。也就是等于下标 i 之前严格小于 nums[i] 的状态值的最大者 +1。
         val dp = IntArray(n)
 
-        // base case
+        // base case：每个数字本身长度就是 1
         for (i in 0 until n) dp[i] = 1
 
         // dp方程

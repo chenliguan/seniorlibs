@@ -1055,8 +1055,8 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
     fun longestCommonSubsequence(s1: String, s2: String): Int {
         if (s1.isEmpty() || s2.isEmpty()) return 0
 
-        val m: Int = s1.length + 1
-        val n: Int = s2.length + 1
+        val m = s1.length + 1
+        val n = s2.length + 1
         // dp 定义是：s1的前i个子序列 和 s2的前i个子序列 的最长公共子序列长度。因此宽高是s1.length+1和s2.length+1
         val dp = Array(m) { IntArray(n) }
 
@@ -1168,7 +1168,7 @@ class DbActivity2 : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     fun numDecodings(s: String): Int {
-        // dp 定义是：「位置 i 自己能否形成独立 item 」和「位置 i 能够与上一位置（i-1）能否形成 item」
+        // dp 定义是：「位置 i 自己能否形成独立 item 」和「位置 i 能够与上一位置（i-1）能否形成 item」中 解码 方法的 总数
         val dp = IntArray(s.length + 1)
 
         // base case
