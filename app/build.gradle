@@ -1,5 +1,17 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'com.seniorlibs.plugin'
+
+// 测试gradles和systrace库：com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
+//apply plugin: 'com.seniorlibs.buildsrc'
+
+//apply plugin: 'com.seniorlibs.systrace-plugin'
+//systrace {
+//    enable = true
+//    baseMethodMapFile = "${project.buildDir}/systrace_output/Debug.methodmap"
+//    blackListFile = "${project.projectDir}/blacklist/blackMethodList.txt"
+//}
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -104,16 +116,6 @@ dependencies {
 def static releaseTime() {
     return new Date().format("MMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
 }
-
-// 测试gradles和systrace库：com.seniorlibs.buildsrc为resources/META-INF/gradle-plugins下的properties文件名称
-//apply plugin: 'com.seniorlibs.buildsrc'
-
-//apply plugin: 'com.seniorlibs.systrace-plugin'
-//systrace {
-//    enable = true
-//    baseMethodMapFile = "${project.buildDir}/systrace_output/Debug.methodmap"
-//    blackListFile = "${project.projectDir}/blacklist/blackMethodList.txt"
-//}
 
 // 文件拷贝
 copy {
