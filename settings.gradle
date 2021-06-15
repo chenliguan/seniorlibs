@@ -1,3 +1,3 @@
 include ':baselib'
 include ':aspectj', ':thread', ':algorithm', ':binder', ':app', ':lifecycle', ':event',  ':thirdlib', ':view', ':ipc', ':kotlinlib'
-include ':gradles', ':systrace'
+include ':gradles', ':systrace', ':asm_plugin'

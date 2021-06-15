@@ -7,14 +7,20 @@ buildscript {
         google()
         jcenter()
 
+        // 自定义插件maven地址
         maven {
-            // 添加Maven的本地依赖
+            url './asm_plugin_repo'
+        }
+        maven {
             url uri('./gradles/repository')
         }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
+
+        // 加载自定义插件 group + module + version
+        classpath 'com.seniorlibs.plugin:asm_plugin:1.0.0'
 
         // 格式为-->group:module:version
 //        classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'
@@ -402,12 +408,12 @@ task lib1 {
         println "lib1"
     }
 }
-task lib2 << {
-    println "lib2"
-}
-task nolib << {
-    println "nolib"
-}
+//task lib2 << {
+//    println "lib2"
+//}
+//task nolib << {
+//    println "nolib"
+//}
 // 动态添加依赖：dependsOn依赖lib1和lib2，执行tasklib会同时执行lib1和lib2
 task tasklib {
     dependsOn this.tasks.findAll {
