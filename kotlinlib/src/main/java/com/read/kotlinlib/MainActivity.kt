@@ -1,10 +1,13 @@
 package com.read.kotlinlib
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.read.kotlinlib.annotation.AnnotationParser
-import com.read.kotlinlib.basic.*
+import com.read.kotlinlib.basic.AdvanceActivity
+import com.read.kotlinlib.basic.BasicActivity
+import com.read.kotlinlib.basic.ComponentActivity
+import com.read.kotlinlib.basic.FlowFunActivity
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.coroutine.CoroutineActivity
 import com.read.kotlinlib.generic.GenericTest
@@ -68,6 +71,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         BasicActivity.companionFun()
+
+        initEvent()
+    }
+
+    /**
+     * 初始化事件
+     */
+    fun initEvent() {
+        val v = findViewById<View>(R.id.btn_asm)
+        v.setOnClickListener(View.OnClickListener {
+            LogUtils.e("AutoTrackHelper", "MainActivity点击")
+        })
+
+        // 06-16 21:30:36.671 19544-19544/com.read.kotlinlib I/AutoTrackHelper: +——trackViewOnClick——+
+        // 06-16 21:30:36.672 19544-19544/com.read.kotlinlib E/AutoTrackHelper: MainActivity点击
+
+//        AutoTrackHelper.trackViewOnClick("+——trackViewOnClick——+")
     }
 
     /**

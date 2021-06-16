@@ -13,7 +13,9 @@ public class LifecycleMethodVisitor extends MethodVisitor {
         this.methodName = methodName;
     }
 
-    // 方法执行前插入
+    /**
+     * 方法执行前插入
+     */
     @Override
     public void visitCode() {
         super.visitCode();

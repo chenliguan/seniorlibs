@@ -8,19 +8,15 @@ buildscript {
         jcenter()
 
         // 自定义插件maven地址
-        maven {
-            url './asm_plugin_repo'
-        }
-        maven {
-            url uri('./gradles/repository')
-        }
+        maven { url uri('./asm_plugin_repo') }
+        maven { url uri('./gradles/repository') }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
 
         // 加载自定义插件 group + module + version
-        classpath 'com.seniorlibs.plugin:asm_plugin:1.0.0'
+        classpath 'com.seniorlibs.plugin:asm_plugin:1.0.1'
 
         // 格式为-->group:module:version
 //        classpath 'com.seniorlibs.buildsrc:gradles:1.0.0'

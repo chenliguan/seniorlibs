@@ -13,7 +13,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name="com.seniorlibs.ReparentActivity"
+            android:name="com.seniorlibs.MainActivity"
             android:taskAffinity="com.affinity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

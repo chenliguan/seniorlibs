@@ -23,11 +23,6 @@ public class LifecycleClassVisitor extends ClassVisitor {
         this.className = name;
         this.superName = superName;
         this.interfaces = interfaces;
-
-        if (superName.equals("android/support/v7/app/AppCompatActivity")
-                || superName.equals("androidx/appcompat/app/AppCompatActivity")) {
-            System.out.println("ClassVisitor visit name-------" + name + ", superName is " + superName);
-        }
     }
 
     @Override
@@ -38,8 +33,10 @@ public class LifecycleClassVisitor extends ClassVisitor {
 
         List<String> interList = Arrays.asList(interfaces);
         if(name.equals("onClick") && desc.equals("(Landroid/view/View;)V")
-                && interList.contains("android/view/View$OnClickListener")){
+                && interList.contains("android/view/View$OnClickListener")) {
             System.out.println("ClassVisitor visitMethod onClick-onClick-onClick-onClick-interfaces：" + interList.get(0));
+            // 处理 onClick() 方法
+            return new StatMethodVisitor(mv, className, name);
         }
 
         // 1.crash错误：Caused by: java.lang.ClassNotFoundException: Didn't find class "androidx.appcompat.R$drawable"

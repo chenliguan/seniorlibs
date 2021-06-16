@@ -3,7 +3,6 @@ package com.seniorlibs.baselib;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -13,8 +12,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.seniorlibs.baselib.hook.ImageHook;
 import com.seniorlibs.baselib.utils.DebugUtils;
-import com.seniorlibs.baselib.utils.LogUtils;
-
 import java.io.File;
 
 import de.robv.android.xposed.DexposedBridge;
@@ -90,7 +87,6 @@ public class BaseApplication extends Application {
                 super.afterHookedMethod(param);
                 // 查找挂钩方法
                 DexposedBridge.findAndHookMethod(ImageView.class, "setImageBitmap", Bitmap.class, new ImageHook());
-                DexposedBridge.findAndHookMethod(ImageView.class, "setImageDrawable", Bitmap.class, new ImageHook());
             }
         });
     }
