@@ -62,5 +62,9 @@ class ComponentActivity : AppCompatActivity() {
 
         // 如果不调用 Func.setGetNameFun { }，打印如下：
 //        testComponent2 : 11111 aaaaaaaaaaaaaaaaaaaaaaa ddddddddddddddddddddddddddddddddddddd
+
+        Func.getBaseFunc()
+        Func.mPublicFieLd
+        Func.mInternalFieLd
     }
 }

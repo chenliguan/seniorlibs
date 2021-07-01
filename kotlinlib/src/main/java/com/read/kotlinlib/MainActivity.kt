@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.read.kotlinlib.annotation.AnnotationParser
-import com.read.kotlinlib.basic.AdvanceActivity
-import com.read.kotlinlib.basic.BasicActivity
-import com.read.kotlinlib.basic.ComponentActivity
-import com.read.kotlinlib.basic.FlowFunActivity
+import com.read.kotlinlib.basic.*
 import com.read.kotlinlib.bit.BitTest
 import com.read.kotlinlib.coroutine.CoroutineActivity
 import com.read.kotlinlib.generic.GenericTest
@@ -211,6 +208,8 @@ class MainActivity : AppCompatActivity() {
      * @param view
      */
     fun testComponentInterface(view: View?) {
+        Func.mInternalFieLd
+        Func.mPublicFieLd
         ComponentActivity.actionStart(this)
     }
 
