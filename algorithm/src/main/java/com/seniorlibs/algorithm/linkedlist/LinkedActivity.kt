@@ -932,7 +932,7 @@ open class LinkedActivity : AppCompatActivity(), View.OnClickListener {
         val dummy = ListNode(0)
         dummy.next = head
 
-        // head 为奇数链表的头节点，odd 为奇数链表的尾节点
+        // head 为奇数链表的头节点 == odd 为奇数链表的头节点
         var odd = dummy.next
         // even 为偶数链表的头节点
         var even = dummy.next?.next
