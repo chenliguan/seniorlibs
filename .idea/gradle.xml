@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/aspectj" />
             <option value="$PROJECT_DIR$/baselib" />
             <option value="$PROJECT_DIR$/binder" />
+            <option value="$PROJECT_DIR$/designpattern" />
             <option value="$PROJECT_DIR$/event" />
             <option value="$PROJECT_DIR$/gradles" />
             <option value="$PROJECT_DIR$/ipc" />
