@@ -20,5 +20,10 @@
             style="@style/BtnStyles"
             android:text="实战：V1 最小原型-针对非业务的通用框架开发，如何做需求分析和设计？" />
 
+        <Button
+            android:id="@+id/btn_c15_v2"
+            style="@style/BtnStyles"
+            android:text="实战：V2 面向对象设计-针对非业务的通用框架开发，如何做需求分析和设计？" />
+
     </LinearLayout>
 </ScrollView>

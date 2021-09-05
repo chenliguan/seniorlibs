@@ -12,11 +12,17 @@ import com.seniorlibs.designpattern.ch14.model.AuthToken;
  * Modify:
  * Description: API 授权认证实现
  */
-public class DefaultIApiAuthencatorImpl implements IApiAuthencator {
+public class ApiAuthencatorImpl implements IApiAuthencator {
 
+    // 基于接口而非实现编程
     private ICredentialStorage mStorage;
 
-    public DefaultIApiAuthencatorImpl(ICredentialStorage storage) {
+    /**
+     * 依赖注入
+     *
+     * @param storage
+     */
+    public ApiAuthencatorImpl(ICredentialStorage storage) {
         mStorage = storage;
     }
 
