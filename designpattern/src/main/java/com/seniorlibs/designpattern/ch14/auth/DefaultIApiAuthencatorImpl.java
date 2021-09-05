@@ -2,7 +2,7 @@ package com.seniorlibs.designpattern.ch14.auth;
 
 import com.seniorlibs.designpattern.ch14.apirequest.ApiRequest;
 import com.seniorlibs.designpattern.ch14.storage.ICredentialStorage;
-import com.seniorlibs.designpattern.ch14.token.AuthToken;
+import com.seniorlibs.designpattern.ch14.model.AuthToken;
 
 /**
  * Author: chen

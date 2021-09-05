@@ -11,9 +11,14 @@
         tools:ignore="MissingDefaultResource">
 
         <Button
-            android:id="@+id/btn_c_14"
+            android:id="@+id/btn_c14"
             style="@style/BtnStyles"
             android:text="实战：如何利用面向对象设计和编程开发接口鉴权功能？" />
+
+        <Button
+            android:id="@+id/btn_c15_v1"
+            style="@style/BtnStyles"
+            android:text="实战：V1 最小原型-针对非业务的通用框架开发，如何做需求分析和设计？" />
 
     </LinearLayout>
 </ScrollView>

@@ -1,4 +1,4 @@
-package com.seniorlibs.designpattern.ch14.token;
+package com.seniorlibs.designpattern.ch14.model;
 
 import com.seniorlibs.designpattern.ch14.apirequest.ApiRequest;
 import com.seniorlibs.designpattern.ch14.utils.AuthUtils;
