@@ -6,9 +6,9 @@ package com.seniorlibs.designpattern.ch14.auth;
  * Date: 2021/8/15
  * Mender:
  * Modify:
- * Description: 主页
+ * Description: API 授权认证接口
  */
-public interface ApiAuthencator {
+public interface IApiAuthencator {
 
   void auth(String url);
 }

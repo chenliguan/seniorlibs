@@ -1,8 +1,7 @@
 package com.seniorlibs.designpattern.ch14.auth;
 
 import com.seniorlibs.designpattern.ch14.apirequest.ApiRequest;
-import com.seniorlibs.designpattern.ch14.storage.CredentialStorage;
-import com.seniorlibs.designpattern.ch14.storage.MySqlCredentialStorage;
+import com.seniorlibs.designpattern.ch14.storage.ICredentialStorage;
 import com.seniorlibs.designpattern.ch14.token.AuthToken;
 
 /**
@@ -11,14 +10,14 @@ import com.seniorlibs.designpattern.ch14.token.AuthToken;
  * Date: 2021/8/15
  * Mender:
  * Modify:
- * Description: 主页
+ * Description: API 授权认证实现
  */
-public class DefaultApiAuthencatorImpl implements ApiAuthencator {
+public class DefaultIApiAuthencatorImpl implements IApiAuthencator {
 
-    private CredentialStorage mStorage;
+    private ICredentialStorage mStorage;
 
-    public DefaultApiAuthencatorImpl() {
-        mStorage = new MySqlCredentialStorage();
+    public DefaultIApiAuthencatorImpl(ICredentialStorage storage) {
+        mStorage = storage;
     }
 
     @Override

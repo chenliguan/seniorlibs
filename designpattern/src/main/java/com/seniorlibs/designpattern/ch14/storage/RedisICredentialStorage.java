@@ -8,10 +8,10 @@ package com.seniorlibs.designpattern.ch14.storage;
  * Modify:
  * Description: 从存储中取出 AppID 和对应的密码
  */
-public class MySqlCredentialStorage implements CredentialStorage {
+public class RedisICredentialStorage implements ICredentialStorage {
 
     @Override
     public String getPasswordByAppID(String appId) {
-        return "123";
+        return null;
     }
 }

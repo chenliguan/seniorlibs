@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.designpattern.R
-import com.seniorlibs.designpattern.ch14.auth.DefaultApiAuthencatorImpl
+import com.seniorlibs.designpattern.ch14.auth.DefaultIApiAuthencatorImpl
+import com.seniorlibs.designpattern.ch14.storage.MySqlICredentialStorage
 
 /**
  * Author: chen
@@ -44,10 +45,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * C14 鉴权功能客户端
      */
     fun authencatorClient() {
-        val req = ("geekbang?AppID=designpattern&Token=IXIGIpJ9hdOBCyjStaDJ5Nom07g=1&Timestamp=1465185768")
-        val authencator = DefaultApiAuthencatorImpl()
+        val req =
+            ("geekbang?AppID=designpattern&Token=IXIGIpJ9hdOBCyjStaDJ5Nom07g=1&Timestamp=1465185768")
+        // 通过依赖注入 MySqlICredentialStorage，提高了代码的扩展性，灵活地替换依赖的类
+        val authencator =
+            DefaultIApiAuthencatorImpl(
+                MySqlICredentialStorage()
+            )
         authencator.auth(req)
-        //    buildAuthToken: IXIGIpJ9hdOBCyjStaDJ5Nom07g=
-        //    pass auth!
     }
 }
