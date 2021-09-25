@@ -7,14 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.designpattern.R
 import com.seniorlibs.designpattern.ch14.auth.ApiAuthencatorImpl
 import com.seniorlibs.designpattern.ch14.storage.MySqlICredentialStorage
-import com.seniorlibs.designpattern.ch25v1.controller.UserController
-import com.seniorlibs.designpattern.ch25v1.model.UserVo
-import com.seniorlibs.designpattern.ch25v2.metrics.MetricsCollector
-import com.seniorlibs.designpattern.ch25v2.model.RequestInfo
-import com.seniorlibs.designpattern.ch25v2.report.ConsoleReporter
-import com.seniorlibs.designpattern.ch25v2.report.EmailReporter
-import com.seniorlibs.designpattern.ch25v2.repository.MetricsStorage
-import com.seniorlibs.designpattern.ch25v2.repository.RedisMetricsStorage
+import com.seniorlibs.designpattern.ch25v0.controller.UserController
+import com.seniorlibs.designpattern.ch25v0.model.UserVo
+import com.seniorlibs.designpattern.ch25v1.metrics.MetricsCollector
+import com.seniorlibs.designpattern.ch25v1.model.RequestInfo
+import com.seniorlibs.designpattern.ch25v1.report.ConsoleReporter
+import com.seniorlibs.designpattern.ch25v1.report.EmailReporter
+import com.seniorlibs.designpattern.ch25v1.repository.MetricsStorage
+import com.seniorlibs.designpattern.ch25v1.repository.RedisMetricsStorage
 
 
 /**

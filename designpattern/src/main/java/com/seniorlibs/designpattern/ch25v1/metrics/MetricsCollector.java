@@ -1,7 +1,7 @@
-package com.seniorlibs.designpattern.ch25v2.metrics;
+package com.seniorlibs.designpattern.ch25v1.metrics;
 
-import com.seniorlibs.designpattern.ch25v2.model.RequestInfo;
-import com.seniorlibs.designpattern.ch25v2.repository.MetricsStorage;
+import com.seniorlibs.designpattern.ch25v1.model.RequestInfo;
+import com.seniorlibs.designpattern.ch25v1.repository.MetricsStorage;
 import external.org.apache.commons.lang3.StringUtils;
 
 /**

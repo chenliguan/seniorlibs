@@ -1,10 +1,10 @@
-package com.seniorlibs.designpattern.ch25v2.report;
+package com.seniorlibs.designpattern.ch25v1.report;
 
 import com.google.gson.Gson;
-import com.seniorlibs.designpattern.ch25v2.aggregate.Aggregator;
-import com.seniorlibs.designpattern.ch25v2.model.RequestInfo;
-import com.seniorlibs.designpattern.ch25v2.model.RequestStat;
-import com.seniorlibs.designpattern.ch25v2.repository.MetricsStorage;
+import com.seniorlibs.designpattern.ch25v1.aggregate.Aggregator;
+import com.seniorlibs.designpattern.ch25v1.model.RequestInfo;
+import com.seniorlibs.designpattern.ch25v1.model.RequestStat;
+import com.seniorlibs.designpattern.ch25v1.repository.MetricsStorage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

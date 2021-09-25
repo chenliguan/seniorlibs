@@ -1,4 +1,4 @@
-package com.seniorlibs.designpattern.ch25v1.model;
+package com.seniorlibs.designpattern.ch25v0.model;
 
 /**
  * Author: chen

@@ -1,7 +1,7 @@
-package com.seniorlibs.designpattern.ch25v2.aggregate;
+package com.seniorlibs.designpattern.ch25v1.aggregate;
 
-import com.seniorlibs.designpattern.ch25v2.model.RequestInfo;
-import com.seniorlibs.designpattern.ch25v2.model.RequestStat;
+import com.seniorlibs.designpattern.ch25v1.model.RequestInfo;
+import com.seniorlibs.designpattern.ch25v1.model.RequestStat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.seniorlibs.designpattern.ch25v2.repository;
+package com.seniorlibs.designpattern.ch25v1.repository;
 
-import com.seniorlibs.designpattern.ch25v2.model.RequestInfo;
+import com.seniorlibs.designpattern.ch25v1.model.RequestInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
