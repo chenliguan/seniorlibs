@@ -16,6 +16,7 @@ import com.seniorlibs.designpattern.ch25v1.report.ConsoleReporter
 import com.seniorlibs.designpattern.ch25v1.report.EmailReporter
 import com.seniorlibs.designpattern.ch25v1.repository.MetricsStorage
 import com.seniorlibs.designpattern.ch25v1.repository.RedisMetricsStorage
+import com.seniorlibs.designpattern.ch25v2.PerfCounterTest
 import com.seniorlibs.designpattern.ch35v1.IdGenerator
 import com.seniorlibs.designpattern.ch35v2.RandomIdGenerator
 
@@ -49,10 +50,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_c14 -> {
                 authencatorClient()
             }
-            R.id.btn_c15_v1 -> {
+            R.id.btn_c25_v0 -> {
+                metricsClientV0()
+            }
+            R.id.btn_c25_v1 -> {
                 metricsClientV1()
             }
-            R.id.btn_c15_v2 -> {
+            R.id.btn_c25_v2 -> {
                 metricsClientV2()
             }
             R.id.btn_c35_v1 -> {
@@ -96,9 +100,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     /**
-     * 实战：V1 最小原型-针对非业务的通用框架开发，如何做需求分析和设计？
+     * 实战：V0 最小原型-针对非业务的通用框架开发，如何做需求分析和设计？
      */
-    fun metricsClientV1() {
+    fun metricsClientV0() {
         val user = UserVo()
         val controller = UserController()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -108,9 +112,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * 实战：V2 面向对象设计-针对非业务的通用框架开发，如何做需求分析和设计？
+     * 实战：V1 面向对象设计-针对非业务的通用框架开发，如何做需求分析和设计？
      */
-    fun metricsClientV2() {
+    fun metricsClientV1() {
         // 有两个执行入口：一个是 ConsoleReporter 类和 EmailReporter 类，用来触发统计显示；
         val storage: MetricsStorage = RedisMetricsStorage()
         val consoleReporter = ConsoleReporter(storage)
@@ -130,5 +134,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
+    }
+
+    /**
+     * 实战：V2 运用学过的设计原则和思想完善之前讲的性能计数器项目
+     */
+    fun metricsClientV2() {
+        PerfCounterTest.main()
     }
 }

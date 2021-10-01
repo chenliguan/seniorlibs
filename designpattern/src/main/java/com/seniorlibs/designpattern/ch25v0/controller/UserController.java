@@ -7,12 +7,7 @@ import com.seniorlibs.designpattern.ch25v0.model.UserVo;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Author: chen
- * Version: 1.0.0
- * Date: 2021/9/5
- * Mender:
- * Modify:
- * Description: 统计下面两个接口(注册和登录）的响应时间和访问次数
+ * 统计下面两个接口(注册和登录）的响应时间和访问次数
  */
 public class UserController {
 

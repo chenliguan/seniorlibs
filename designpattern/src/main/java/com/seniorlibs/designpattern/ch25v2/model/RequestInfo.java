@@ -1,4 +1,4 @@
-package com.seniorlibs.designpattern.ch25v1.model;
+package com.seniorlibs.designpattern.ch25v2.model;
 
 /**
  * 统计实体

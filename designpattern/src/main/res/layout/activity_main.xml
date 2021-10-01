@@ -16,14 +16,19 @@
             android:text="实战：如何利用面向对象设计和编程开发接口鉴权功能？" />
 
         <Button
-            android:id="@+id/btn_c15_v1"
+            android:id="@+id/btn_c25_v0"
             style="@style/BtnStyles"
-            android:text="实战：V1 最小原型-针对非业务的通用框架开发，如何做需求分析和设计？" />
+            android:text="实战：V0 最小原型-针对非业务的通用框架开发，如何做需求分析和设计？" />
 
         <Button
-            android:id="@+id/btn_c15_v2"
+            android:id="@+id/btn_c25_v1"
             style="@style/BtnStyles"
-            android:text="实战：V2 面向对象设计-针对非业务的通用框架开发，如何做需求分析和设计？" />
+            android:text="实战：V1 面向对象设计-针对非业务的通用框架开发，如何做需求分析和设计？" />
+
+        <Button
+            android:id="@+id/btn_c25_v2"
+            style="@style/BtnStyles"
+            android:text="实战：V2 运用学过的设计原则和思想完善之前讲的性能计数器项目" />
 
         <Button
             android:id="@+id/btn_c35_v1"
