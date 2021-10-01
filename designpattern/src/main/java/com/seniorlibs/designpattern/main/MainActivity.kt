@@ -2,6 +2,7 @@ package com.seniorlibs.designpattern.main
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.designpattern.R
@@ -15,6 +16,8 @@ import com.seniorlibs.designpattern.ch25v1.report.ConsoleReporter
 import com.seniorlibs.designpattern.ch25v1.report.EmailReporter
 import com.seniorlibs.designpattern.ch25v1.repository.MetricsStorage
 import com.seniorlibs.designpattern.ch25v1.repository.RedisMetricsStorage
+import com.seniorlibs.designpattern.ch35v1.IdGenerator
+import com.seniorlibs.designpattern.ch35v2.RandomIdGenerator
 
 
 /**
@@ -51,6 +54,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_c15_v2 -> {
                 metricsClientV2()
+            }
+            R.id.btn_c35_v1 -> {
+                // 能用的 ID 生成器的开发
+                val idGenerator = IdGenerator()
+                Log.d(TAG, idGenerator.generate())
+            }
+            R.id.btn_c35_v2 -> {
+                // 第一轮重构：提高代码的可读性
+                val idGenerator = IdGenerator()
+                Log.d(TAG, idGenerator.generate())
+            }
+            R.id.btn_c35_v3 -> {
+                // 第二轮重构：提高代码的可测试性
+                val logIdGenerator = RandomIdGenerator()
+                Log.d(TAG, logIdGenerator.generate())
+            }
+            R.id.btn_c35_v4 -> {
+                // 第二轮重构：提高代码的可测试性
+                val logIdGenerator = RandomIdGenerator()
+                Log.d(TAG, logIdGenerator.generate())
             }
             else -> {
             }

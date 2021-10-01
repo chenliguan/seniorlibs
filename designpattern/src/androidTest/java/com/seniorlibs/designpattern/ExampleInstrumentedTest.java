@@ -1,4 +1,4 @@
-package com.seniorlibs.algorithm;
+package com.seniorlibs.designpattern;
 
 import android.content.Context;
 

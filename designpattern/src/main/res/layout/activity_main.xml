@@ -25,5 +25,25 @@
             style="@style/BtnStyles"
             android:text="实战：V2 面向对象设计-针对非业务的通用框架开发，如何做需求分析和设计？" />
 
+        <Button
+            android:id="@+id/btn_c35_v1"
+            style="@style/BtnStyles"
+            android:text="能用的 ID 生成器的开发" />
+
+        <Button
+            android:id="@+id/btn_c35_v2"
+            style="@style/BtnStyles"
+            android:text="第一轮重构：提高代码的可读性" />
+
+        <Button
+            android:id="@+id/btn_c35_v3"
+            style="@style/BtnStyles"
+            android:text="第二轮重构：提高代码的可测试性" />
+
+        <Button
+            android:id="@+id/btn_c35_v4"
+            style="@style/BtnStyles"
+            android:text="第三轮重构：编写完善的单元测试性" />
+
     </LinearLayout>
 </ScrollView>
