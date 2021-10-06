@@ -17,6 +17,7 @@ import com.seniorlibs.designpattern.ch25v1.report.EmailReporter
 import com.seniorlibs.designpattern.ch25v1.repository.MetricsStorage
 import com.seniorlibs.designpattern.ch25v1.repository.RedisMetricsStorage
 import com.seniorlibs.designpattern.ch25v2.PerfCounterTest
+import com.seniorlibs.designpattern.ch25v3.PerfCounterTestV3
 import com.seniorlibs.designpattern.ch35v1.IdGenerator
 import com.seniorlibs.designpattern.ch35v2.RandomIdGenerator
 
@@ -31,9 +32,7 @@ import com.seniorlibs.designpattern.ch35v2.RandomIdGenerator
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    companion object {
-        const val TAG = "MainActivity"
-    }
+    val reporter = com.seniorlibs.designpattern.ch25v3.report.ConsoleReporter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +42,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.btn_c14).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c25_v0).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c25_v1).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c25_v2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c25_v3).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c35_v1).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c35_v2).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c35_v3).setOnClickListener(this)
+        findViewById<View>(R.id.btn_c35_v4).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -58,6 +65,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btn_c25_v2 -> {
                 metricsClientV2()
+            }
+            R.id.btn_c25_v3 -> {
+                metricsClientV3()
             }
             R.id.btn_c35_v1 -> {
                 // 能用的 ID 生成器的开发
@@ -142,4 +152,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     fun metricsClientV2() {
         PerfCounterTest.main()
     }
+
+    /**
+     * 实战：V3 运用学过的设计原则和思想完善之前讲的性能计数器项目
+     */
+    fun metricsClientV3() {
+//        PerfCounterTestV3.mainDefault()
+
+        // 快速连续点击5次
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+        Thread { reporter.startRepeatedReport(1, 2) }.start()
+    }
+
+
+    companion object {
+        const val TAG = "MainActivity"
+    }
+
 }

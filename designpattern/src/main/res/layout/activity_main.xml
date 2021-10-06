@@ -31,6 +31,11 @@
             android:text="实战：V2 运用学过的设计原则和思想完善之前讲的性能计数器项目" />
 
         <Button
+            android:id="@+id/btn_c25_v3"
+            style="@style/BtnStyles"
+            android:text="实战：V3 运用学过的设计原则和思想完善之前讲的性能计数器项目" />
+
+        <Button
             android:id="@+id/btn_c35_v1"
             style="@style/BtnStyles"
             android:text="能用的 ID 生成器的开发" />

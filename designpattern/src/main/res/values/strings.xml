@@ -1,6 +1,3 @@
 <resources>
-    <string name="app_name">algorithm</string>
-    <string name="stack_get_min">带getMin功能的栈</string>
-    <string name="two_stack_queue">两个栈实现队列的接口</string>
-    <string name="anagram_my">判断两个字符串是否互为变形词</string>
+    <string name="app_name">designpattren</string>
 </resources>

@@ -5,12 +5,7 @@ import org.junit.Assert
 import org.junit.Test
 
 /**
- * Author: chen
- * Version: 1.0.0
- * Date: 2021/9/20
- * Mender:
- * Modify:
- * Description: 第三轮重构：编写完善的单元测试
+ * Id 生成器的第三轮重构：编写完善的单元测试
  */
 class RandomIdGeneratorTest {
 
