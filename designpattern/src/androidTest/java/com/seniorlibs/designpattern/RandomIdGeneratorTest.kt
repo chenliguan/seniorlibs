@@ -1,11 +1,12 @@
 package com.seniorlibs.designpattern
 
-import com.seniorlibs.designpattern.ch35v3.RandomIdGenerator
+import com.seniorlibs.designpattern.ch35v3v4.RandomIdGenerator
 import org.junit.Assert
 import org.junit.Test
 
 /**
  * Id 生成器的第三轮重构：编写完善的单元测试
+ * Id 生成器的第四轮重构：所有重构完成之后添加注释
  */
 class RandomIdGeneratorTest {
 
