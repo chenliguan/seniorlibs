@@ -1,8 +1,8 @@
 package com.seniorlibs.designpattern.proxy.v1
 
-import com.seniorlibs.designpattern.ch25v0.model.UserVo
-import com.seniorlibs.designpattern.ch25v3.metrics.MetricsCollector
-import com.seniorlibs.designpattern.ch25v3.model.RequestInfo
+import com.seniorlibs.designpattern.principle.frame.ch25v0.model.UserVo
+import com.seniorlibs.designpattern.principle.frame.ch25v3.metrics.MetricsCollector
+import com.seniorlibs.designpattern.principle.frame.ch25v3.model.RequestInfo
 
 /**
  * 参照基于接口而非实现编程的设计思想，将原始类对象替换为代理类对象的时候，

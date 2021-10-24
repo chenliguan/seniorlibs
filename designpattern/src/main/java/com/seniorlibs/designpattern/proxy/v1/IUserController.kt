@@ -1,6 +1,6 @@
 package com.seniorlibs.designpattern.proxy.v1
 
-import com.seniorlibs.designpattern.ch25v0.model.UserVo
+import com.seniorlibs.designpattern.principle.frame.ch25v0.model.UserVo
 
 interface IUserController {
     fun login(telephone: String?, password: String?): UserVo?

@@ -1,6 +1,6 @@
 package com.seniorlibs.designpattern
 
-import com.seniorlibs.designpattern.ch25v3.report.EmailReporter
+import com.seniorlibs.designpattern.principle.frame.ch25v3.report.EmailReporter
 import org.junit.Assert
 import org.junit.Test
 import java.util.Date

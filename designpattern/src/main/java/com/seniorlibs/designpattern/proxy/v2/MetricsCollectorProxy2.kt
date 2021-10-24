@@ -1,7 +1,7 @@
 package com.seniorlibs.designpattern.proxy.v2
 
-import com.seniorlibs.designpattern.ch25v3.metrics.MetricsCollector
-import com.seniorlibs.designpattern.ch25v3.model.RequestInfo
+import com.seniorlibs.designpattern.principle.frame.ch25v3.metrics.MetricsCollector
+import com.seniorlibs.designpattern.principle.frame.ch25v3.model.RequestInfo
 import com.seniorlibs.designpattern.proxy.v1.IUserController
 import com.seniorlibs.designpattern.proxy.v1.UserController
 import java.lang.reflect.InvocationHandler

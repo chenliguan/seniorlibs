@@ -1,8 +1,8 @@
 package com.seniorlibs.designpattern.proxy.v0
 
-import com.seniorlibs.designpattern.ch25v0.model.UserVo
-import com.seniorlibs.designpattern.ch25v3.metrics.MetricsCollector
-import com.seniorlibs.designpattern.ch25v3.model.RequestInfo
+import com.seniorlibs.designpattern.principle.frame.ch25v0.model.UserVo
+import com.seniorlibs.designpattern.principle.frame.ch25v3.metrics.MetricsCollector
+import com.seniorlibs.designpattern.principle.frame.ch25v3.model.RequestInfo
 
 /**
  * 有两个问题：

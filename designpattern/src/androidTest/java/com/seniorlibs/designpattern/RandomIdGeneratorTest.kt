@@ -1,6 +1,6 @@
 package com.seniorlibs.designpattern
 
-import com.seniorlibs.designpattern.ch35v3v4.RandomIdGenerator
+import com.seniorlibs.designpattern.refactor.ch35v3v4.RandomIdGenerator
 import org.junit.Assert
 import org.junit.Test
 

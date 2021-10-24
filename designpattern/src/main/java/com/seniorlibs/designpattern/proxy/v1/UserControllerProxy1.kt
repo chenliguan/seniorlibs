@@ -1,8 +1,8 @@
 package com.seniorlibs.designpattern.proxy.v1
 
-import com.seniorlibs.designpattern.ch25v0.model.UserVo
-import com.seniorlibs.designpattern.ch25v3.metrics.MetricsCollector
-import com.seniorlibs.designpattern.ch25v3.model.RequestInfo
+import com.seniorlibs.designpattern.principle.frame.ch25v0.model.UserVo
+import com.seniorlibs.designpattern.principle.frame.ch25v3.metrics.MetricsCollector
+import com.seniorlibs.designpattern.principle.frame.ch25v3.model.RequestInfo
 
 /**
  * 但是，如果原始类并没有定义接口，并且原始类代码并不是我们开发维护的（比如它来自一个第三方的类库），我们也没办法直接修改原始类，给它重新定义一个接口。

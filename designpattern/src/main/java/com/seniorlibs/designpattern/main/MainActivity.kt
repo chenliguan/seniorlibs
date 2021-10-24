@@ -6,20 +6,19 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.seniorlibs.designpattern.R
-import com.seniorlibs.designpattern.ch14.auth.ApiAuthencatorImpl
-import com.seniorlibs.designpattern.ch14.storage.MySqlICredentialStorage
-import com.seniorlibs.designpattern.ch25v0.controller.UserController
-import com.seniorlibs.designpattern.ch25v0.model.UserVo
-import com.seniorlibs.designpattern.ch25v1.metrics.MetricsCollector
-import com.seniorlibs.designpattern.ch25v1.model.RequestInfo
-import com.seniorlibs.designpattern.ch25v1.report.ConsoleReporter
-import com.seniorlibs.designpattern.ch25v1.report.EmailReporter
-import com.seniorlibs.designpattern.ch25v1.repository.MetricsStorage
-import com.seniorlibs.designpattern.ch25v1.repository.RedisMetricsStorage
-import com.seniorlibs.designpattern.ch25v2.PerfCounterTest
-import com.seniorlibs.designpattern.ch25v3.PerfCounterTestV3
-import com.seniorlibs.designpattern.ch35v1.IdGenerator
-import com.seniorlibs.designpattern.ch35v2.RandomIdGenerator
+import com.seniorlibs.designpattern.ooa.interfaceauth.auth.ApiAuthencatorImpl
+import com.seniorlibs.designpattern.ooa.interfaceauth.storage.MySqlICredentialStorage
+import com.seniorlibs.designpattern.principle.frame.ch25v0.controller.UserController
+import com.seniorlibs.designpattern.principle.frame.ch25v0.model.UserVo
+import com.seniorlibs.designpattern.principle.frame.ch25v1.metrics.MetricsCollector
+import com.seniorlibs.designpattern.principle.frame.ch25v1.model.RequestInfo
+import com.seniorlibs.designpattern.principle.frame.ch25v1.report.ConsoleReporter
+import com.seniorlibs.designpattern.principle.frame.ch25v1.report.EmailReporter
+import com.seniorlibs.designpattern.principle.frame.ch25v1.repository.MetricsStorage
+import com.seniorlibs.designpattern.principle.frame.ch25v1.repository.RedisMetricsStorage
+import com.seniorlibs.designpattern.principle.frame.ch25v2.PerfCounterTest
+import com.seniorlibs.designpattern.refactor.ch35v1.IdGenerator
+import com.seniorlibs.designpattern.refactor.ch35v2.RandomIdGenerator
 
 
 /**
@@ -32,7 +31,7 @@ import com.seniorlibs.designpattern.ch35v2.RandomIdGenerator
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    val reporter = com.seniorlibs.designpattern.ch25v3.report.ConsoleReporter()
+    val reporter = com.seniorlibs.designpattern.principle.frame.ch25v3.report.ConsoleReporter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
